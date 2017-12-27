@@ -1,0 +1,4 @@
+* getMapViewportTopEdge and map draw need better Y offsets
+
+
+

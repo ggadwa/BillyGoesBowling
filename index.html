@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>BrickLayer</title>
+<link rel="stylesheet" type="text/css" href="common.css">
+
+<!-- the script -->
+
+<script type="module">
+    import * as main from './engine/main.js';
+    import BillyGoesBowlingClass from './code/billy.js';
+    
+    main.run(new BillyGoesBowlingClass());
+</script>
+<script nomodule>
+    alert('Browser with module support required.')
+</script>
+
+</head>
+
+<canvas id="mainCanvas" style="mainCanvas" width="1280" height="640"></canvas>
+
+<body>
+    
+</body>
+</html>
