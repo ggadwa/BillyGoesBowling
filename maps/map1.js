@@ -28,15 +28,8 @@ export default class Map1Class extends MapClass
         this.addTile(game.loadImage('../images/girder_right_horizontal.png'));          // I
         this.addTile(game.loadImage('../images/girder_top_vertical.png'));              // J
         this.addTile(game.loadImage('../images/girder_middle_vertical.png'));           // K
-        this.addTile(game.loadImage('../images/girder_bottom_vertical.png'));           // M
-        this.addTile(game.loadImage('../images/girder_connect.png'));                   // N
-        
-            // controllers for this map
-                
-        this.addController(new PlayerClass());              // a (always the player)
-        this.addController(new BallClass());                // b
-        this.addController(new BreakBlockClass());          // c
-        this.addController(new ExplodeBlockClass());        // d
+        this.addTile(game.loadImage('../images/girder_bottom_vertical.png'));           // L
+        this.addTile(game.loadImage('../images/girder_connect.png'));                   // M
         
             // the map itself
     
@@ -47,10 +40,10 @@ export default class Map1Class extends MapClass
                 '                                                                                                                                                      ',
                 '                 cc                                       cc                                                                                          ',
                 '                 ccc                                    ccddc        cc                                                                               ',
-                '                 cccc     ccc                  d       cccdddc      ccdcc                                                                             ',
-                '  b             cccccc  cccJcc                dJd    ccccddddcccc  cccddccc                                                                           ',
-                '             BAAAAACcccccccKccc               dKdddddddddddddddddddddddcccccc                                                                         ',
-                '  a      BAAAFFFFFFECccccccMcccc              dMcccccccccccccccccccccccccccccc                                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA     ',
+                '                 cccc     ccc                  J       cccdddc      ccdcc                                                                             ',
+                '  b            dcccccc  cccJcc               cdKd    ccccddddcccc  cccddccc                                                                           ',
+                '             BAAAAACcccccccKccc             ccdMHHIddddddddddddddddddddcccccc                                                                         ',
+                '  a      BAAAFFFFFFECccccccLcccc     ccccc  ddddddddcccccccccccccccccccccccccc                                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA     ',
                 'BAAAAAAAAFFFFFFFFFFFEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC'
             ]
         );
@@ -71,5 +64,22 @@ export default class Map1Class extends MapClass
             ]
         );
         */
+    }
+    
+    createSpriteForCharacterIndex(idx)
+    {
+        switch (idx)
+        {
+            case 0:
+                return(new PlayerClass());              // a (always the player)
+            case 1:
+                return(new BallClass());                // b
+            case 2:
+                return(new BreakBlockClass());          // c
+            case 3:
+                return(new ExplodeBlockClass());        // d
+         }
+         
+         return(null);
     }
 }

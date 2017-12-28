@@ -1,12 +1,13 @@
-import ControllerClass from '../engine/controller.js';
+import SpriteClass from '../engine/sprite.js';
+import BallClass from './ball.js';
 
-export default class ExplodeBlockClass extends ControllerClass
+export default class ExplodeBlockClass extends SpriteClass
 {
     constructor()
     {
         super();
         
-        this.COUNT_DOWN_TICK_WAIT=20;
+        this.COUNT_DOWN_TICK_WAIT=30;
         
         this.countDown=-1;
         this.countDownTick=0;
@@ -15,16 +16,16 @@ export default class ExplodeBlockClass extends ControllerClass
         Object.seal(this);
     }
     
-    initialize(game,sprite)
+    initialize(game)
     {
         let imgIdx;
         
-        imgIdx=sprite.addImage(game.loadImage('../images/explode_block.png'));
-        this.countDownImageIdxs[0]=sprite.addImage(game.loadImage('../images/explode_block_1.png'));
-        this.countDownImageIdxs[1]=sprite.addImage(game.loadImage('../images/explode_block_2.png'));
-        this.countDownImageIdxs[2]=sprite.addImage(game.loadImage('../images/explode_block_3.png'));
+        imgIdx=this.addImage(game.loadImage('../images/explode_block.png'));
+        this.countDownImageIdxs[0]=this.addImage(game.loadImage('../images/explode_block_1.png'));
+        this.countDownImageIdxs[1]=this.addImage(game.loadImage('../images/explode_block_2.png'));
+        this.countDownImageIdxs[2]=this.addImage(game.loadImage('../images/explode_block_3.png'));
         
-        sprite.setCurrentImage(imgIdx);
+        this.setCurrentImage(imgIdx);
     }
     
     getGravityFactor()
@@ -32,20 +33,20 @@ export default class ExplodeBlockClass extends ControllerClass
         return(0.1);
     }
     
-    interactWithSprite(sprite,interactSprite,dataObj)
+    interactWithSprite(interactSprite,dataObj)
     {
         if (this.countDown!==-1) return;
         
             // start the countdown
             
-        if (interactSprite.getControllerName()==='BallClass') {
+        if (interactSprite instanceof BallClass) {
             this.countDown=2;
             this.countDownTick=this.COUNT_DOWN_TICK_WAIT;
-            sprite.setCurrentImage(this.countDownImageIdxs[2]);
+            this.setCurrentImage(this.countDownImageIdxs[this.countDown]);
         }
     }
     
-    run(game,sprite,timestamp)
+    runAI(game,timestamp)
     {
         if (this.countDown===-1) return;
         
@@ -57,15 +58,15 @@ export default class ExplodeBlockClass extends ControllerClass
             // countdown has changed
             
         this.countDown--;
+        this.countDownTick=this.COUNT_DOWN_TICK_WAIT;
 
-        if (this.countDown!==-1) {
-            this.countDownTick=this.COUNT_DOWN_TICK_WAIT;
-            sprite.setCurrentImage(this.countDownImageIdxs[this.countDown]);
+        if (this.countDown>=0) {
+            this.setCurrentImage(this.countDownImageIdxs[this.countDown]);
             return;
         }
 
             // explode
         
-        sprite.setShow(false);
+        this.setShow(false);
     }
 }

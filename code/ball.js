@@ -1,6 +1,6 @@
-import ControllerClass from '../engine/controller.js';
+import SpriteClass from '../engine/sprite.js';
 
-export default class BallClass extends ControllerClass
+export default class BallClass extends SpriteClass
 {
     constructor()
     {
@@ -24,12 +24,12 @@ export default class BallClass extends ControllerClass
         Object.seal(this);
     }
     
-    initialize(game,sprite)
+    initialize(game)
     {
         let imgIdx;
         
-        imgIdx=sprite.addImage(game.loadImage('../images/ball.png'));
-        sprite.setCurrentImage(imgIdx);
+        imgIdx=this.addImage(game.loadImage('../images/ball.png'));
+        this.setCurrentImage(imgIdx);
     }
     
     canCollide()
@@ -37,12 +37,12 @@ export default class BallClass extends ControllerClass
         return(false);
     }
     
-    run(game,sprite,timestamp)
+    runAI(game,timestamp)
     {
         let input=game.getInput();
         let playerSprite=game.getMap().getSpritePlayer();
         let x,y,lftEdge,rgtEdge,botEdge;
-        let xOffset=Math.trunc((playerSprite.getWidth()-sprite.getWidth())*0.5);
+        let xOffset=Math.trunc((playerSprite.getWidth()-this.getWidth())*0.5);
         
             // get the position by the mode
         
@@ -69,8 +69,8 @@ export default class BallClass extends ControllerClass
                 if (this.travelXDirection<0) {
                     this.travelX-=30;
                     lftEdge=game.getMap().getMapViewportLeftEdge(game);
-                    if (((x+this.travelX)+sprite.getWidth())<lftEdge) {
-                        this.travelX=lftEdge-(x+sprite.getWidth());
+                    if (((x+this.travelX)+this.getWidth())<lftEdge) {
+                        this.travelX=lftEdge-(x+this.getWidth());
                         this.travelY=0;
                         this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
                     }
@@ -100,7 +100,7 @@ export default class BallClass extends ControllerClass
             case this.TRAVEL_MODE_SLAM_UP:
                 x=this.travelX;
                 this.travelY-=30;
-                if ((y+this.travelY)<=(-sprite.getHeight())) {
+                if ((y+this.travelY)<=(-this.getHeight())) {
                     this.travelMode=this.TRAVEL_MODE_SLAM_DOWN;
                 }
                 y+=this.travelY;
@@ -110,7 +110,7 @@ export default class BallClass extends ControllerClass
                 x=this.travelX;
                 this.travelY+=40;
                 botEdge=game.getMap().getMapViewportBottomEdge(game);
-                if (((y+this.travelY)-sprite.getHeight())>botEdge) {
+                if (((y+this.travelY)-this.getHeight())>botEdge) {
                     this.travelY=0;
                     this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
                 }
@@ -121,14 +121,14 @@ export default class BallClass extends ControllerClass
         
             // move ball and check for collisions
         
-        sprite.setPosition(x,y);
+        this.setPosition(x,y);
             
         if ((this.travelMode===this.TRAVEL_MODE_BOWL_ACROSS) || (this.travelMode===this.TRAVEL_MODE_SLAM_DOWN)) {
-            if (game.getMap().checkCollision(sprite)) {
+            if (game.getMap().checkCollision(this)) {
                 
                     // colliding with map, return ball
                     
-                if (!sprite.hasCollideSprite()) {
+                if (!this.hasCollideSprite()) {
                     this.travelY=0;
                     this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
                     return;
@@ -136,7 +136,7 @@ export default class BallClass extends ControllerClass
                 
                     // hit sprite
                     
-                sprite.getCollideSprite().interactWithSprite(sprite,null);
+                this.getCollideSprite().interactWithSprite(this,null);
                 return;
             }
         }
@@ -148,7 +148,7 @@ export default class BallClass extends ControllerClass
                 this.travelMode=this.TRAVEL_MODE_BOWL_DOWN;
                 this.travelX=0;
                 this.travelY=0;
-                this.travelXDirection=(game.getMap().getSpritePlayer().getFacing()===sprite.FACING_LEFT)?-1:1;
+                this.travelXDirection=(game.getMap().getSpritePlayer().getFacing()===this.FACING_LEFT)?-1:1;
             }
             if (input.isUp()) {
                 this.travelMode=this.TRAVEL_MODE_SLAM_UP;

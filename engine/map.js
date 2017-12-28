@@ -13,7 +13,6 @@ export default class MapClass
         this.gridSpotPerHeight=0;
         
         this.playerIdx=0;
-        this.controllers=[];
         
         this.tiles=[];
         this.sprites=[];
@@ -57,14 +56,9 @@ export default class MapClass
         return(this.tiles.push(img)-1);
     }
     
-    addController(controller)
+    addSprite(sprite)
     {
-        return(this.controllers.push(controller)-1);
-    }
-    
-    addSprite(x,y,controller)
-    {
-        return(this.sprites.push(new SpriteClass(x,y,controller))-1);
+        return(this.sprites.push(sprite)-1);
     }
     
     getSprite(spriteIdx)
@@ -77,9 +71,17 @@ export default class MapClass
         return(this.sprites[this.playerIdx]);
     }
     
+    /**
+     * Override this to get a sprite object for an index in the map text.
+     */
+    createSpriteForCharacterIndex(idx)
+    {
+    }
+    
     setMapFromText(game,mapText)
     {
-        let x,y,row,rowStr,ch,spriteIdx;
+        let x,y,row,rowStr,ch;
+        let sprite,spriteIdx;
         let rowCount=mapText.length;
         let colCount=mapText[0].length;
         
@@ -107,7 +109,9 @@ export default class MapClass
                     // a..z is sprites
                     
                 if ((ch>=97) && (ch<=122)) {
-                    spriteIdx=this.addSprite((x*this.gridPixelSize),((y+1)*this.gridPixelSize),this.controllers[ch-97]);        // sprites Y is on the bottom
+                    sprite=this.createSpriteForCharacterIndex(ch-97);
+                    sprite.setPosition((x*this.gridPixelSize),((y+1)*this.gridPixelSize));              // sprites Y is on the bottom
+                    spriteIdx=this.addSprite(sprite);        
                     if (ch===97) this.playerIdx=spriteIdx;
                     continue;
                 }
@@ -186,7 +190,7 @@ export default class MapClass
     
     checkCollisionStand(checkSprite,dist)
     {
-        let sprite,cy;
+        let sprite;
         let ty=-1;
         let x,y,dx,dy,gx,gy;
         let lft,top,rgt,bot;
@@ -303,7 +307,9 @@ export default class MapClass
             // run through all the sprites
                 
         for (sprite of this.sprites) {
-            if (sprite!==playerSprite) sprite.run(game,timestamp);
+            if (sprite!==playerSprite) {
+                if (sprite.getShow()) sprite.run(game,timestamp);
+            }   
         }
     }
     
