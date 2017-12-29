@@ -14,6 +14,12 @@ export function run(gameObj)
         
     game.initialize();
     game.prepare();
+    window.requestAnimationFrame(initTiming);
+}
+
+function initTiming(timestamp)
+{
+    game.initTiming(timestamp);
     window.requestAnimationFrame(runLoop);
 }
 
@@ -34,9 +40,10 @@ function runLoop(timestamp)
         
     timestamp=Math.trunc(timestamp);
         
-    try {    
-        game.run(timestamp);
-        game.draw(timestamp);
+    try {
+        game.setTimestamp(timestamp);
+        game.run();
+        game.draw();
     }
     catch (e) {
         window.cancelAnimationFrame(id);

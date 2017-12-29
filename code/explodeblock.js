@@ -3,11 +3,11 @@ import BallClass from './ball.js';
 
 export default class ExplodeBlockClass extends SpriteClass
 {
-    constructor()
+    constructor(game)
     {
-        super();
+        super(game);
         
-        this.COUNT_DOWN_TICK_WAIT=30;
+        this.COUNT_DOWN_TICK_WAIT=5;
         
         this.countDown=-1;
         this.countDownTick=0;
@@ -16,38 +16,39 @@ export default class ExplodeBlockClass extends SpriteClass
         Object.seal(this);
     }
     
-    initialize(game)
+    initialize()
     {
-        let imgIdx;
+        this.setCurrentImage(this.addImage('../images/explode_block.png'));
         
-        imgIdx=this.addImage(game.loadImage('../images/explode_block.png'));
-        this.countDownImageIdxs[0]=this.addImage(game.loadImage('../images/explode_block_1.png'));
-        this.countDownImageIdxs[1]=this.addImage(game.loadImage('../images/explode_block_2.png'));
-        this.countDownImageIdxs[2]=this.addImage(game.loadImage('../images/explode_block_3.png'));
-        
-        this.setCurrentImage(imgIdx);
+        this.countDownImageIdxs[0]=this.addImage('../images/explode_block_1.png');
+        this.countDownImageIdxs[1]=this.addImage('../images/explode_block_2.png');
+        this.countDownImageIdxs[2]=this.addImage('../images/explode_block_3.png');
     }
     
     getGravityFactor()
     {
-        return(0.1);
+        return(0.2);
     }
     
     interactWithSprite(interactSprite,dataObj)
     {
         if (this.countDown!==-1) return;
         
-            // start the countdown
+            // start the countdown if ball or
+            // another exploding block
             
-        if (interactSprite instanceof BallClass) {
+        if ((interactSprite instanceof BallClass) || (interactSprite instanceof ExplodeBlockClass)) {
             this.countDown=2;
             this.countDownTick=this.COUNT_DOWN_TICK_WAIT;
             this.setCurrentImage(this.countDownImageIdxs[this.countDown]);
         }
     }
     
-    runAI(game,timestamp)
+    runAI()
     {
+        let map=this.getGame().getMap();
+        let sprites,sprite;
+        
         if (this.countDown===-1) return;
         
             // wait for next countdown
@@ -67,6 +68,13 @@ export default class ExplodeBlockClass extends SpriteClass
 
             // explode
         
+        sprites=map.getSurroundSprites(this,map.getGridPixelSize());
+        
+        for (sprite of sprites) {
+            sprite.interactWithSprite(this,null);
+        }
+        
+        this.getMap().addParticle(this.getMiddleX(),this.getMiddleY(),5,0.09,'../images/particle_explode_block.png',15,800);
         this.setShow(false);
     }
 }

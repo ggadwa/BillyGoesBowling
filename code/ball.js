@@ -1,10 +1,13 @@
 import SpriteClass from '../engine/sprite.js';
+import BlockClass from './block.js';
+import BreakBlockStrongClass from './breakblockstrong.js';
+import ExplodeBlockClass from './explodeblock.js';
 
 export default class BallClass extends SpriteClass
 {
-    constructor()
+    constructor(game)
     {
-        super();
+        super(game);
         
         this.TRAVEL_MODE_FLOATING=0;
         this.TRAVEL_MODE_BOWL_DOWN=1;
@@ -24,11 +27,11 @@ export default class BallClass extends SpriteClass
         Object.seal(this);
     }
     
-    initialize(game)
+    initialize()
     {
         let imgIdx;
         
-        imgIdx=this.addImage(game.loadImage('../images/ball.png'));
+        imgIdx=this.addImage('../images/ball.png');
         this.setCurrentImage(imgIdx);
     }
     
@@ -37,10 +40,13 @@ export default class BallClass extends SpriteClass
         return(false);
     }
     
-    runAI(game,timestamp)
+    runAI()
     {
+        let game=this.getGame();
+        let map=game.getMap();
         let input=game.getInput();
-        let playerSprite=game.getMap().getSpritePlayer();
+        let playerSprite=map.getSpritePlayer();
+        let collideSprite;
         let x,y,lftEdge,rgtEdge,botEdge;
         let xOffset=Math.trunc((playerSprite.getWidth()-this.getWidth())*0.5);
         
@@ -52,7 +58,7 @@ export default class BallClass extends SpriteClass
         switch (this.travelMode) {
             
             case this.TRAVEL_MODE_BOWL_DOWN:
-                this.travelY+=20;
+                this.travelY+=30;
                 botEdge=playerSprite.getRectBottom();
                 if ((y+this.travelY)>=botEdge) {
                     this.travelX=0;
@@ -68,7 +74,7 @@ export default class BallClass extends SpriteClass
                 
                 if (this.travelXDirection<0) {
                     this.travelX-=30;
-                    lftEdge=game.getMap().getMapViewportLeftEdge(game);
+                    lftEdge=map.getMapViewportLeftEdge();
                     if (((x+this.travelX)+this.getWidth())<lftEdge) {
                         this.travelX=lftEdge-(x+this.getWidth());
                         this.travelY=0;
@@ -77,7 +83,7 @@ export default class BallClass extends SpriteClass
                 }
                 else {
                     this.travelX+=25;
-                    rgtEdge=game.getMap().getMapViewportRightEdge(game);
+                    rgtEdge=map.getMapViewportRightEdge();
                     if ((x+this.travelX)>rgtEdge) {
                         this.travelX=rgtEdge-x;
                         this.travelY=0;
@@ -109,7 +115,7 @@ export default class BallClass extends SpriteClass
             case this.TRAVEL_MODE_SLAM_DOWN:
                 x=this.travelX;
                 this.travelY+=40;
-                botEdge=game.getMap().getMapViewportBottomEdge(game);
+                botEdge=map.getMapViewportBottomEdge();
                 if (((y+this.travelY)-this.getHeight())>botEdge) {
                     this.travelY=0;
                     this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
@@ -124,7 +130,7 @@ export default class BallClass extends SpriteClass
         this.setPosition(x,y);
             
         if ((this.travelMode===this.TRAVEL_MODE_BOWL_ACROSS) || (this.travelMode===this.TRAVEL_MODE_SLAM_DOWN)) {
-            if (game.getMap().checkCollision(this)) {
+            if (map.checkCollision(this)) {
                 
                     // colliding with map, return ball
                     
@@ -135,8 +141,17 @@ export default class BallClass extends SpriteClass
                 }
                 
                     // hit sprite
+                
+                collideSprite=this.getCollideSprite();    
+                collideSprite.interactWithSprite(this,null);
+                
+                    // stop ball for everything but breakable blocks
                     
-                this.getCollideSprite().interactWithSprite(this,null);
+                if ((collideSprite instanceof BlockClass) || (collideSprite instanceof BreakBlockStrongClass) || (collideSprite instanceof ExplodeBlockClass)) {
+                    this.travelY=0;
+                    this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
+                }
+                
                 return;
             }
         }
@@ -148,7 +163,7 @@ export default class BallClass extends SpriteClass
                 this.travelMode=this.TRAVEL_MODE_BOWL_DOWN;
                 this.travelX=0;
                 this.travelY=0;
-                this.travelXDirection=(game.getMap().getSpritePlayer().getFacing()===this.FACING_LEFT)?-1:1;
+                this.travelXDirection=(map.getSpritePlayer().getFacing()===this.FACING_LEFT)?-1:1;
             }
             if (input.isUp()) {
                 this.travelMode=this.TRAVEL_MODE_SLAM_UP;

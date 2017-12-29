@@ -1,9 +1,11 @@
 import SpriteClass from './sprite.js';
+import ParticleClass from './particle.js';
 
 export default class MapClass
 {
-    constructor(gridPixelSize)
+    constructor(game,gridPixelSize)
     {
+        this.game=game;
         this.gridPixelSize=gridPixelSize;
         
         this.grid=null;
@@ -12,22 +14,32 @@ export default class MapClass
         this.gridSpotPerWidth=0;
         this.gridSpotPerHeight=0;
         
-        this.playerIdx=0;
+        this.playerIdx=-1;
         
-        this.tiles=[];
         this.sprites=[];
+        this.particles=[];
     }
     
-    initialize(game)
+    getGame()
+    {
+        return(this.game);
+    }
+    
+    loadImage(filePath)
+    {
+        return(this.game.loadImage(filePath));
+    }
+    
+    initialize()
     {
     }
     
-    prepare(game)
+    prepare()
     {
         let sprite;
         
         for (sprite of this.sprites) {
-            sprite.initialize(game);
+            sprite.initialize(this.game);
         }
     }
     
@@ -51,9 +63,9 @@ export default class MapClass
         return(this.gridHeight*this.gridPixelSize);
     }
     
-    addTile(img)
+    getGridPixelSize()
     {
-        return(this.tiles.push(img)-1);
+        return(this.gridPixelSize);
     }
     
     addSprite(sprite)
@@ -71,48 +83,78 @@ export default class MapClass
         return(this.sprites[this.playerIdx]);
     }
     
+    addParticle(x,y,initialRadius,moveFactor,filePath,count,lifeTick)
+    {
+        let particle=new ParticleClass(this.game,x,y,initialRadius,moveFactor,this.game.loadImage(filePath),count,lifeTick);
+        return(this.particles.push(particle)-1);
+    }
+    
     /**
-     * Override this to get a sprite object for an index in the map text.
+     * Override this to return the minimum gravity start
+     * value.  Usually 1.
      */
-    createSpriteForCharacterIndex(idx)
+    getMinGravityValue()
+    {
+        return(1);
+    }
+    
+    /**
+     * Override this to return the maximum gravity value.
+     */
+    getMaxGravityValue()
+    {
+        return(15);
+    }
+    
+    /**
+     * Override this to return the map item for a character
+     * in the map text.  Accepts Image and SpriteClass.
+     */
+    createMapItemForCharacter(ch)
     {
     }
     
-    setMapFromText(game,mapText)
+    setMapFromText(playerCharacter,mapText)
     {
-        let x,y,row,rowStr,ch;
-        let sprite,spriteIdx;
+        let x,y,row,rowStr,ch,item;
+        let idx;
         let rowCount=mapText.length;
         let colCount=mapText[0].length;
         
         this.grid=[];
+        this.playerIdx=-1;
         
         for (y=0;y!==rowCount;y++) {
-            row=new Int16Array(colCount);
+            row=new Array(colCount);
             rowStr=mapText[y];
             
             for (x=0;x!==colCount;x++) {
-                ch=rowStr.charCodeAt(x);
-                row[x]=-1;
+                row[x]=null;
+                ch=rowStr.charAt(x);
                 
                     // space is nothing
                     
                 if (ch===32) continue;
                 
-                    // A...Z is map tiles
+                    // get the item
                     
-                if ((ch>=65) && (ch<=90)) {
-                    row[x]=ch-65;
+                item=this.createMapItemForCharacter(ch);
+                if (item===null) continue;
+                
+                    // a tile
+                
+                if (typeof(item)==='string') {
+                    row[x]=this.game.loadImage(item);
                     continue;
                 }
                 
-                    // a..z is sprites
+                    // a sprite
                     
-                if ((ch>=97) && (ch<=122)) {
-                    sprite=this.createSpriteForCharacterIndex(ch-97);
-                    sprite.setPosition((x*this.gridPixelSize),((y+1)*this.gridPixelSize));              // sprites Y is on the bottom
-                    spriteIdx=this.addSprite(sprite);        
-                    if (ch===97) this.playerIdx=spriteIdx;
+                if (item instanceof SpriteClass) {
+                    item.setGame(this.game);
+                    item.setPosition((x*this.gridPixelSize),((y+1)*this.gridPixelSize));              // sprites Y is on the bottom
+                    idx=this.addSprite(item);        
+                    if (ch===playerCharacter) this.playerIdx=idx;
                     continue;
                 }
             }
@@ -123,8 +165,12 @@ export default class MapClass
         this.gridWidth=colCount;
         this.gridHeight=rowCount;
         
-        this.gridSpotPerWidth=(game.getCanvasWidth()/this.gridPixelSize);
-        this.gridSpotPerHeight=(game.getCanvasHeight()/this.gridPixelSize);
+        this.gridSpotPerWidth=(this.game.getCanvasWidth()/this.gridPixelSize);
+        this.gridSpotPerHeight=(this.game.getCanvasHeight()/this.gridPixelSize);
+        
+            // quick system out if no player
+            
+        if (this.playerIdx===-1) console.log('No player in map data');
     }
     
     checkCollision(checkSprite)
@@ -173,7 +219,7 @@ export default class MapClass
             row=this.grid[gy];
 
             for (gx=lx;gx<=rx;gx++) {
-                if (row[gx]===-1) continue;
+                if (row[gx]===null) continue;
                 
                 dx=gx*this.gridPixelSize;
                 if ((rgt<=dx) || (lft>=(dx+this.gridPixelSize))) continue;
@@ -239,7 +285,7 @@ export default class MapClass
             row=this.grid[gy];
 
             for (gx=0;gx!==(x+2);gx++) {
-                if (row[gx]===-1) continue;
+                if (row[gx]===null) continue;
                 
                 dx=gx*this.gridPixelSize;
                 if ((rgt<=dx) || (lft>=(dx+this.gridPixelSize))) continue;
@@ -257,11 +303,32 @@ export default class MapClass
         return(ty);
     }
     
-    getMapViewportLeftEdge(game)
+    getSurroundSprites(checkSprite,radius)
+    {
+        let sprite,lft,top,rgt,bot;
+        let sprites=[];
+            
+        lft=checkSprite.getMiddleX()-radius;
+        rgt=lft+(radius*2);
+        top=checkSprite.getMiddleY()-radius;
+        bot=top+(radius*2);
+        
+        for (sprite of this.sprites) {
+            if (sprite===checkSprite) continue;
+            if (!sprite.getShow()) continue;
+            if (!sprite.canCollide()) continue;
+            
+            if (sprite.collideRect(lft,top,rgt,bot)) sprites.push(sprite);
+        }
+        
+        return(sprites);
+    }
+    
+    getMapViewportLeftEdge()
     {
         let sprite,x;
-        let wid=game.getCanvasWidth();
-        let rgt=game.getMap().getWidth()-wid;
+        let wid=this.game.getCanvasWidth();
+        let rgt=this.game.getMap().getWidth()-wid;
 
         sprite=this.sprites[this.playerIdx];
         x=sprite.getX()-Math.trunc(wid*0.5);
@@ -271,16 +338,16 @@ export default class MapClass
         return(x);
     }
     
-    getMapViewportRightEdge(game)
+    getMapViewportRightEdge()
     {
-        return(this.getMapViewportLeftEdge(game)+game.getCanvasWidth());
+        return(this.getMapViewportLeftEdge()+this.game.getCanvasWidth());
     }
     
-    getMapViewportTopEdge(game)
+    getMapViewportTopEdge()
     {
         let sprite,y;
-        let high=game.getCanvasHeight();
-        let bot=game.getMap().getHeight()-high;
+        let high=this.game.getCanvasHeight();
+        let bot=this.game.getMap().getHeight()-high;
 
         sprite=this.sprites[this.playerIdx];
         y=0;
@@ -290,36 +357,49 @@ export default class MapClass
         return(y);
     }
     
-    getMapViewportBottomEdge(game)
+    getMapViewportBottomEdge()
     {
-        return(this.getMapViewportTopEdge(game)+game.getCanvasHeight());
+        return(this.getMapViewportTopEdge()+this.game.getCanvasHeight());
     }
     
-    run(game,timestamp)
+    run()
     {
-        let sprite;
+        let n;
+        let sprite,particle;
         let playerSprite=this.getSpritePlayer();
         
             // always run the player first
             
-        playerSprite.run(game,timestamp);
+        playerSprite.run();
 
             // run through all the sprites
                 
         for (sprite of this.sprites) {
             if (sprite!==playerSprite) {
-                if (sprite.getShow()) sprite.run(game,timestamp);
+                if (sprite.getShow()) sprite.run();
             }   
+        }
+        
+            // delete any finished particles
+        
+        n=0;
+        while (n<this.particles.length) {
+            if (this.particles[n].isFinished()) {
+                this.particles.splice(n,1);
+            }
+            else {
+                n++;
+            }
         }
     }
     
-    draw(game,ctx,timestamp)
+    draw(ctx)
     {
-        let x,y,idx;
+        let x,y;
         let row,lx,rx,ty,by,offX,offY;
-        let sprite;
-        let wid=game.getCanvasWidth();
-        let rgt=game.getMap().getWidth()-wid;
+        let sprite,particle;
+        let wid=this.game.getCanvasWidth();
+        let rgt=this.game.getMap().getWidth()-wid;
         
             // get offset
             
@@ -348,17 +428,21 @@ export default class MapClass
             row=this.grid[y];
             
             for (x=lx;x<rx;x++) {
-                idx=row[x];
-                if (idx>=0) ctx.drawImage(this.tiles[idx],((x*this.gridPixelSize)-offX),((y*this.gridPixelSize)-offY));
+                if (row[x]!==null) ctx.drawImage(row[x],((x*this.gridPixelSize)-offX),((y*this.gridPixelSize)-offY));
             }
         }
         
             // draw the sprites
             
         for (sprite of this.sprites) {
-            if (sprite.getShow()) sprite.draw(game,ctx,offX,offY);
+            if (sprite.getShow()) sprite.draw(ctx,offX,offY);
         }
-    
+        
+            // draw the particles
+            
+        for (particle of this.particles) {
+            particle.draw(ctx,offX,offY);
+        }
     }
     
 }

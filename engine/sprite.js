@@ -2,6 +2,8 @@ export default class SpriteClass
 {
     constructor()
     {
+        this.game=null;         // gets set when the map is created
+        
         this.x=0;
         this.y=0;
         
@@ -27,10 +29,30 @@ export default class SpriteClass
         // can't seal this object as it's extended
     }
     
+    getGame()
+    {
+        return(this.game);
+    }
+    
+    setGame(game)
+    {
+        this.game=game;
+    }
+    
+    getMap()
+    {
+        return(this.game.getMap());
+    }
+    
+    loadImage(filePath)
+    {
+        return(this.game.loadImage(filePath));
+    }
+    
     /**
      * Sets up this game sprite.  Add in images here.
      */
-    initialize(game)
+    initialize()
     {
     }
     
@@ -62,13 +84,13 @@ export default class SpriteClass
      * Override this to change the per-tick AI of object.  Will need to call
      * super before or after.
      */
-    runAI(game,timestamp)
+    runAI()
     {
     }
         
-    addImage(img)
+    addImage(filePath)
     {
-        return(this.images.push(img)-1);
+        return(this.images.push(this.game.loadImage(filePath))-1);
     }
     
     setCurrentImage(imageIdx)
@@ -119,6 +141,16 @@ export default class SpriteClass
         return(this.height);
     }
     
+    getMiddleX()
+    {
+        return(this.x+Math.trunc(this.width*0.5));
+    }
+    
+    getMiddleY()
+    {
+        return(this.y-Math.trunc(this.height*0.5));
+    }
+    
     setShow(show)
     {
         this.show=show;
@@ -147,6 +179,14 @@ export default class SpriteClass
         y=this.getRectBottom()+dist;                // for stand on collisions, the bottom of the standing object must intersect the top and bottom of check sprite
         if (y<hitSprite.getRectTop()) return(false);
         return(y<hitSprite.getRectBottom());
+    }
+    
+    collideRect(lft,top,rgt,bot)
+    {
+        if (this.getRectRight()<=lft) return(false);
+        if (this.getRectLeft()>=rgt) return(false);
+        if (this.getRectBottom()<=top) return(false);
+        return(this.getRectTop()<bot);
     }
     
     hasCollideSprite()
@@ -181,10 +221,10 @@ export default class SpriteClass
         this.y+=my;
     }
     
-    moveWithCollision(game,mx,my)
+    moveWithCollision(mx,my)
     {
         this.move(mx,my);
-        if (game.getMap().checkCollision(this)) this.move(-mx,-my);
+        if (this.game.getMap().checkCollision(this)) this.move(-mx,-my);
     }
     
     addMotion(mx,my)
@@ -214,29 +254,31 @@ export default class SpriteClass
         return(this.grounded);
     }
     
-    run(game,timestamp)
+    run()
     {
         let y,gravityFactor;
+        let map=this.game.getMap();
         
             // run any AI
             
-        this.runAI(game,timestamp);
+        this.runAI();
         
             // add in motion
             
         this.x+=this.motion.x;
         this.y+=this.motion.y;
+        this.grounded=true;
         
             // physics
-            
+
         gravityFactor=this.getGravityFactor();
         if (gravityFactor!==0.0) {
-            y=game.getMap().checkCollisionStand(this,Math.trunc(this.gravityAdd));
+            y=this.game.getMap().checkCollisionStand(this,Math.trunc(this.gravityAdd));
             if (y===-1) {
                 this.y=Math.trunc(this.y+this.gravityAdd);
-                if (this.gravityAdd<=0.0) this.gravityAdd=game.getMinGravityValue();
+                if (this.gravityAdd<=0.0) this.gravityAdd=map.getMinGravityValue();
                 this.gravityAdd+=(this.gravityAdd*gravityFactor);
-                if (this.gravityAdd>game.getMaxGravityValue()) this.gravityAdd=game.getMaxGravityValue();
+                if (this.gravityAdd>map.getMaxGravityValue()) this.gravityAdd=map.getMaxGravityValue();
                 this.grounded=false;
             }
             else {
@@ -245,7 +287,7 @@ export default class SpriteClass
                 this.grounded=true;
             }
         }
-        
+
             // gravity slows down motion
             
         if (this.motion.y<0) {
@@ -254,13 +296,13 @@ export default class SpriteClass
         }
     }
     
-    draw(game,ctx,offX,offY)
+    draw(ctx,offX,offY)
     {
         let x=this.x-offX;
         let y=(this.y-this.height)-offY;
         
-        if ((x>=game.getCanvasWidth()) || ((x+this.width)<=0)) return;
-        if ((y>=game.getCanvasHeight()) || ((x+this.height)<=0)) return;
+        if ((x>=this.game.getCanvasWidth()) || ((x+this.width)<=0)) return;
+        if ((y>=this.game.getCanvasHeight()) || ((x+this.height)<=0)) return;
         
         ctx.drawImage(this.images[this.currentImageIdx],x,y);
     }

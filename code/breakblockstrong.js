@@ -1,8 +1,7 @@
 import SpriteClass from '../engine/sprite.js';
-import BallClass from './ball.js';
 import ExplodeBlockClass from './explodeblock.js';
 
-export default class BreakBlockClass extends SpriteClass
+export default class BreakBlockStrongClass extends SpriteClass
 {
     constructor(game)
     {
@@ -13,7 +12,10 @@ export default class BreakBlockClass extends SpriteClass
     
     initialize()
     {
-        this.setCurrentImage(this.addImage('../images/break_block.png'));
+        let imgIdx;
+        
+        imgIdx=this.addImage('../images/break_block_strong.png');
+        this.setCurrentImage(imgIdx);
     }
     
     getGravityFactor()
@@ -23,7 +25,7 @@ export default class BreakBlockClass extends SpriteClass
     
     interactWithSprite(interactSprite,dataObj)
     {
-        if ((interactSprite instanceof BallClass) || (interactSprite instanceof ExplodeBlockClass)) {
+        if (interactSprite instanceof ExplodeBlockClass) {
             this.getMap().addParticle(this.getMiddleX(),this.getMiddleY(),5,0.08,'../images/particle_block.png',10,800);
             this.setShow(false);
         }

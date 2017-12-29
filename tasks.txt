@@ -1,6 +1,2 @@
 * getMapViewportTopEdge and map draw need better Y offsets
-* figure out weird timing jump at beginning
-* need block only destroyed by bombs
-* need indestructable block that falls
-
-
+* particles need view culling

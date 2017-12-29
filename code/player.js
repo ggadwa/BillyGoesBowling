@@ -2,9 +2,9 @@ import SpriteClass from '../engine/sprite.js';
 
 export default class PlayerClass extends SpriteClass
 {
-    constructor()
+    constructor(game)
     {
-        super();
+        super(game);
         
         this.leftImageIdx=0;
         this.rightImageIdx=0;
@@ -12,10 +12,10 @@ export default class PlayerClass extends SpriteClass
         Object.seal(this);
     }
     
-    initialize(game)
+    initialize()
     {
-        this.leftImageIdx=this.addImage(game.loadImage('../images/billy_left.png'));
-        this.rightImageIdx=this.addImage(game.loadImage('../images/billy_right.png'));
+        this.leftImageIdx=this.addImage('../images/billy_left.png');
+        this.rightImageIdx=this.addImage('../images/billy_right.png');
         
         this.setCurrentImage(this.rightImageIdx);
         this.setFacing(this.FACING_RIGHT);
@@ -23,27 +23,29 @@ export default class PlayerClass extends SpriteClass
     
     getGravityFactor()
     {
-        return(0.08);
+        return(0.15);
     }
     
-    runAI(game,timestamp)
+    runAI()
     {
+        let game=this.getGame();
+        let map=game.getMap();
         let input=game.getInput();
         
         if (input.isLeft()) {
-            this.moveWithCollision(game,-10,0);
+            this.moveWithCollision(-12,0);
             this.setCurrentImage(this.leftImageIdx);
             this.setFacing(this.FACING_LEFT);
         }
         
         if (input.isRight()) {
-            this.moveWithCollision(game,10,0);
+            this.moveWithCollision(12,0);
             this.setCurrentImage(this.rightImageIdx);
             this.setFacing(this.FACING_RIGHT);
         }
         
-        this.clampX(0,(game.getMap().getWidth()-this.getWidth()));
+        this.clampX(0,(map.getWidth()-this.getWidth()));
         
-        if ((input.isAction()) && (this.isGrounded())) this.addMotion(0,-35);
+        if ((input.isAction()) && (this.isGrounded())) this.addMotion(0,-30);
     }
 }

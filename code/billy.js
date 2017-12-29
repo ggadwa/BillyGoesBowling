@@ -14,16 +14,6 @@ export default class BillyGoesBowlingClass extends GameClass
     {
         super.initialize();
         
-        this.setMap(new Map1Class(64));
-    }
-    
-    getMinGravityValue()
-    {
-        return(5);
-    }
-    
-    getMaxGravityValue()
-    {
-        return(25);
+        this.setMap(new Map1Class(this,64));
     }
 }

@@ -2,54 +2,40 @@ import MapClass from '../engine/map.js';
 import PlayerClass from '../code/player.js';
 import BallClass from '../code/ball.js';
 import BreakBlockClass from '../code/breakblock.js';
+import BreakBlockStrongClass from '../code/breakblockstrong.js';
 import ExplodeBlockClass from '../code/explodeblock.js';
+import BlockClass from '../code/block.js';
 
 export default class Map1Class extends MapClass
 {
-    constructor(gridPixelSize)
+    constructor(game,gridPixelSize)
     {
-        super(gridPixelSize);
+        super(game,gridPixelSize);
     }
     
-    initialize(game)
+    initialize()
     {
         super.initialize();
         
-            // tiles for this map
-            
-        this.addTile(game.loadImage('../images/ground_grass.png'));                     // A
-        this.addTile(game.loadImage('../images/ground_grass_end_left.png'));            // B
-        this.addTile(game.loadImage('../images/ground_grass_end_right.png'));           // C
-        this.addTile(game.loadImage('../images/ground_grass_connect_left.png'));        // D
-        this.addTile(game.loadImage('../images/ground_grass_connect_right.png'));       // E
-        this.addTile(game.loadImage('../images/ground_dirt_fill.png'));                 // F
-        this.addTile(game.loadImage('../images/girder_left_horizontal.png'));           // G
-        this.addTile(game.loadImage('../images/girder_middle_horizontal.png'));         // H
-        this.addTile(game.loadImage('../images/girder_right_horizontal.png'));          // I
-        this.addTile(game.loadImage('../images/girder_top_vertical.png'));              // J
-        this.addTile(game.loadImage('../images/girder_middle_vertical.png'));           // K
-        this.addTile(game.loadImage('../images/girder_bottom_vertical.png'));           // L
-        this.addTile(game.loadImage('../images/girder_connect.png'));                   // M
-        
             // the map itself
     
-        this.setMapFromText(game,
+        this.setMapFromText('a',
             [
                 '                                                                                                                                                      ',
                 '                                                                                                                                                      ',
                 '                                                                                                                                                      ',
-                '                 cc                                       cc                                                                                          ',
-                '                 ccc                                    ccddc        cc                                                                               ',
-                '                 cccc     ccc                  J       cccdddc      ccdcc                                                                             ',
-                '  b            dcccccc  cccJcc               cdKd    ccccddddcccc  cccddccc                                                                           ',
-                '             BAAAAACcccccccKccc             ccdMHHIddddddddddddddddddddcccccc                                                                         ',
-                '  a      BAAAFFFFFFECccccccLcccc     ccccc  ddddddddcccccccccccccccccccccccccc                                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA     ',
+                '                 cc                                       ff                                                                                          ',
+                '                 ccc                                    cceec        ff                                                                               ',
+                '                 cddc     ccc        dd        J       ccceeec      ffeff                                                                             ',
+                '  b            ccccccc  cccJcc       de      ccKe    cccceeeecccc  ccceeccc                                                                           ',
+                '             BAAAAACcccccccKccc      de     GHHMHHIeeeeeeeeeeeeeeeeeeeecccccc                                                                         ',
+                '  a      BAAAFFFFFFECccccccLcccc     eeccc  eeeeeeeecccdddcccccccccccccccccccc                                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA     ',
                 'BAAAAAAAAFFFFFFFFFFFEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC'
             ]
         );
 
         /*
-        this.setMapFromText(game,
+        this.setMapFromText('a',
             [
                 '                                                                                                                                                      ',
                 '                                                                                                                                                      ',
@@ -66,20 +52,66 @@ export default class Map1Class extends MapClass
         */
     }
     
-    createSpriteForCharacterIndex(idx)
+    createMapItemForCharacter(ch)
     {
-        switch (idx)
+        switch (ch)
         {
-            case 0:
-                return(new PlayerClass());              // a (always the player)
-            case 1:
-                return(new BallClass());                // b
-            case 2:
-                return(new BreakBlockClass());          // c
-            case 3:
-                return(new ExplodeBlockClass());        // d
+                // tiles, return string path
+                // an array would be better but it's easy to see the letter like this
+                
+            case 'A':
+                return('../images/ground_grass.png');
+            case 'B':
+                return('../images/ground_grass_end_left.png');
+            case 'C':
+                return('../images/ground_grass_end_right.png');
+            case 'D':
+                return('../images/ground_grass_connect_left.png');
+            case 'E':
+                return('../images/ground_grass_connect_right.png');
+            case 'F':
+                return('../images/ground_dirt_fill.png');
+            case 'G':
+                return('../images/girder_left_horizontal.png');
+            case 'H':
+                return('../images/girder_middle_horizontal.png');
+            case 'I':
+                return('../images/girder_right_horizontal.png');
+            case 'J':
+                return('../images/girder_top_vertical.png');
+            case 'K':
+                return('../images/girder_middle_vertical.png');
+            case 'L':
+                return('../images/girder_bottom_vertical.png');
+            case 'M':
+                return('../images/girder_connect.png');
+        
+                // sprites, return object
+                
+            case 'a':
+                return(new PlayerClass());
+            case 'b':
+                return(new BallClass());
+            case 'c':
+                return(new BreakBlockClass());
+            case 'd':
+                return(new BreakBlockStrongClass());
+            case 'e':
+                return(new ExplodeBlockClass());
+            case 'f':
+                return(new BlockClass());
          }
          
          return(null);
+    }
+    
+    getMinGravityValue()
+    {
+        return(2);
+    }
+    
+    getMaxGravityValue()
+    {
+        return(15);
     }
 }

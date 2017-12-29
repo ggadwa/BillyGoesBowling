@@ -15,6 +15,8 @@ export default class GameClass
         
         this.input=null;
         
+        this.timestamp=0;
+        
         this.PHYSICS_TICK_FREQUENCY=33;
         this.DRAW_TICK_FREQUENCY=33;
 
@@ -47,9 +49,22 @@ export default class GameClass
     {
         this.map.initialize(this);
         this.map.prepare(this);
-        
-        this.physicsTimestamp=-1;
-        this.drawTimestamp=-1;
+    }
+    
+    initTiming(timestamp)
+    {
+        this.physicsTimestamp=timestamp;
+        this.drawTimestamp=timestamp;
+    }
+    
+    setTimestamp(timestamp)
+    {
+        this.timestamp=timestamp;
+    }
+    
+    getTimestamp()
+    {
+        return(this.timestamp);
     }
     
     getCanvasWidth()
@@ -83,16 +98,6 @@ export default class GameClass
         return(img);
     }
     
-    getMinGravityValue()
-    {
-        return(0);
-    }
-    
-    getMaxGravityValue()
-    {
-        return(0);
-    }
-    
     getMapOffset(offset)
     {
     }
@@ -107,42 +112,28 @@ export default class GameClass
         return(this.input);
     }
         
-    run(timestamp)
+    run()
     {
         let physicTick;
-        
-            // first time through loop resets the timestamps
-            
-        if (this.physicsTimestamp===-1) {
-            this.physicsTimestamp=timestamp;
-            return;
-        }
         
             // continue to run physics until we've caught up
             
         while (true) {
-            physicTick=timestamp-this.physicsTimestamp;
+            physicTick=this.timestamp-this.physicsTimestamp;
             if (physicTick<this.PHYSICS_TICK_FREQUENCY) return;
             
             this.physicsTimestamp+=this.PHYSICS_TICK_FREQUENCY;
             
-            this.map.run(this,timestamp);
+            this.map.run();
         }
     }
     
-    draw(timestamp)
+    draw()
     {
-            // first time through loop resets the timestamps
-            
-        if (this.drawTimestamp===-1) {
-            this.drawTimestamp=timestamp;
-            return;
-        }
-        
             // time to draw?
             
-        if ((timestamp-this.drawTimestamp)<this.DRAW_TICK_FREQUENCY) return;
-        this.drawTimestamp=timestamp;
+        if ((this.timestamp-this.drawTimestamp)<this.DRAW_TICK_FREQUENCY) return;
+        this.drawTimestamp=this.timestamp;
         
             // erase the back canvas
             
@@ -151,7 +142,7 @@ export default class GameClass
         
             // draw the map
             
-        this.map.draw(this,this.backCTX,timestamp);
+        this.map.draw(this.backCTX);
         
             // transfer to front canvas
             
