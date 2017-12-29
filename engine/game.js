@@ -15,9 +15,10 @@ export default class GameClass
         
         this.input=null;
         
-        this.physicsTickFrequency=33;
+        this.PHYSICS_TICK_FREQUENCY=33;
+        this.DRAW_TICK_FREQUENCY=33;
+
         this.physicsTimestamp=0;
-        this.drawTickFrequency=33;
         this.drawTimestamp=0;
         
         this.images=new Map();
@@ -40,15 +41,15 @@ export default class GameClass
         
         this.input=new InputClass();
         this.input.initialize();
-        
-        this.physicsTimestamp=0;
-        this.drawTimestamp=0;
     }
     
     prepare()
     {
         this.map.initialize(this);
         this.map.prepare(this);
+        
+        this.physicsTimestamp=-1;
+        this.drawTimestamp=-1;
     }
     
     getCanvasWidth()
@@ -110,13 +111,20 @@ export default class GameClass
     {
         let physicTick;
         
+            // first time through loop resets the timestamps
+            
+        if (this.physicsTimestamp===-1) {
+            this.physicsTimestamp=timestamp;
+            return;
+        }
+        
             // continue to run physics until we've caught up
             
         while (true) {
             physicTick=timestamp-this.physicsTimestamp;
-            if (physicTick<this.physicsTickFrequency) return;
+            if (physicTick<this.PHYSICS_TICK_FREQUENCY) return;
             
-            this.physicsTimestamp+=this.physicsTickFrequency;
+            this.physicsTimestamp+=this.PHYSICS_TICK_FREQUENCY;
             
             this.map.run(this,timestamp);
         }
@@ -124,9 +132,16 @@ export default class GameClass
     
     draw(timestamp)
     {
+            // first time through loop resets the timestamps
+            
+        if (this.drawTimestamp===-1) {
+            this.drawTimestamp=timestamp;
+            return;
+        }
+        
             // time to draw?
             
-        if ((timestamp-this.drawTimestamp)<this.drawTickFrequency) return;
+        if ((timestamp-this.drawTimestamp)<this.DRAW_TICK_FREQUENCY) return;
         this.drawTimestamp=timestamp;
         
             // erase the back canvas

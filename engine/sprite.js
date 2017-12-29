@@ -1,10 +1,9 @@
 export default class SpriteClass
 {
-    constructor(x,y,controller)
+    constructor()
     {
-        this.x=x;
-        this.y=y;
-        this.controller=controller;
+        this.x=0;
+        this.y=0;
         
         this.FACING_FORWARD=0;
         this.FACING_LEFT=1;
@@ -25,24 +24,48 @@ export default class SpriteClass
         this.collideSprite=null;
         this.standSprite=null;
         
-        Object.seal(this);
+        // can't seal this object as it's extended
     }
     
+    /**
+     * Sets up this game sprite.  Add in images here.
+     */
     initialize(game)
     {
-        this.controller.initialize(game,this);
     }
     
-    getController()
+    /**
+     * A gravity factor of 0.0 = object is static, no gravity
+     */
+    getGravityFactor()
     {
-        return(this.controller);
+        return(0.0);
     }
     
-    getControllerName()
+    /**
+     * Can this object collide with other objects?
+     */
+    canCollide()
     {
-        return(this.controller.constructor.name);
+        return(true);
     }
     
+    /**
+     * Called when another sprite is interacting with this one, this
+     * is up to the game developer what this means.
+     */
+    interactWithSprite(interactSprite,dataObj)
+    {
+    }
+    
+    /**
+     * Override this to change the per-tick AI of object.  Will need to call
+     * super before or after.
+     */
+    runAI(game,timestamp)
+    {
+    }
+        
     addImage(img)
     {
         return(this.images.push(img)-1);
@@ -104,11 +127,6 @@ export default class SpriteClass
     getShow()
     {
         return(this.show);
-    }
-    
-    canCollide()
-    {
-        return(this.controller.canCollide());
     }
     
     collide(hitSprite)
@@ -181,11 +199,6 @@ export default class SpriteClass
         if (this.x>max) this.x=max;
     }
     
-    interactWithSprite(interactSprite,dataObj)
-    {
-        this.controller.interactWithSprite(this,interactSprite,dataObj);
-    }
-    
     setFacing(facing)
     {
         this.facing=facing;
@@ -205,13 +218,9 @@ export default class SpriteClass
     {
         let y,gravityFactor;
         
-            // no controller, do nothing
+            // run any AI
             
-        if (this.controller===null) return;
-        
-            // controller run
-            
-        this.controller.run(game,this,timestamp);
+        this.runAI(game,timestamp);
         
             // add in motion
             
@@ -220,7 +229,7 @@ export default class SpriteClass
         
             // physics
             
-        gravityFactor=this.controller.getGravityFactor();
+        gravityFactor=this.getGravityFactor();
         if (gravityFactor!==0.0) {
             y=game.getMap().checkCollisionStand(this,Math.trunc(this.gravityAdd));
             if (y===-1) {

@@ -1,7 +1,7 @@
-import ControllerClass from '../engine/controller.js';
+import SpriteClass from '../engine/sprite.js';
 import BallClass from '../code/ball.js';
 
-export default class BreakBlockClass extends ControllerClass
+export default class BreakBlockClass extends SpriteClass
 {
     constructor()
     {
@@ -10,12 +10,12 @@ export default class BreakBlockClass extends ControllerClass
         Object.seal(this);
     }
     
-    initialize(game,sprite)
+    initialize(game)
     {
         let imgIdx;
         
-        imgIdx=sprite.addImage(game.loadImage('../images/break_block.png'));
-        sprite.setCurrentImage(imgIdx);
+        imgIdx=this.addImage(game.loadImage('../images/break_block.png'));
+        this.setCurrentImage(imgIdx);
     }
     
     getGravityFactor()
@@ -23,12 +23,12 @@ export default class BreakBlockClass extends ControllerClass
         return(0.1);
     }
     
-    interactWithSprite(sprite,interactSprite,dataObj)
+    interactWithSprite(interactSprite,dataObj)
     {
-        if (interactSprite.getControllerName()==='BallClass') sprite.setShow(false);
+        if (interactSprite instanceof BallClass) this.setShow(false);
     }
     
-    run(game,sprite,timestamp)
+    runAI(game,timestamp)
     {
     }
 }

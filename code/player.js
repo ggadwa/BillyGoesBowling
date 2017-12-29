@@ -1,6 +1,6 @@
-import ControllerClass from '../engine/controller.js';
+import SpriteClass from '../engine/sprite.js';
 
-export default class PlayerClass extends ControllerClass
+export default class PlayerClass extends SpriteClass
 {
     constructor()
     {
@@ -12,13 +12,13 @@ export default class PlayerClass extends ControllerClass
         Object.seal(this);
     }
     
-    initialize(game,sprite)
+    initialize(game)
     {
-        this.leftImageIdx=sprite.addImage(game.loadImage('../images/billy_left.png'));
-        this.rightImageIdx=sprite.addImage(game.loadImage('../images/billy_right.png'));
+        this.leftImageIdx=this.addImage(game.loadImage('../images/billy_left.png'));
+        this.rightImageIdx=this.addImage(game.loadImage('../images/billy_right.png'));
         
-        sprite.setCurrentImage(this.rightImageIdx);
-        sprite.setFacing(sprite.FACING_RIGHT);
+        this.setCurrentImage(this.rightImageIdx);
+        this.setFacing(this.FACING_RIGHT);
     }
     
     getGravityFactor()
@@ -26,24 +26,24 @@ export default class PlayerClass extends ControllerClass
         return(0.08);
     }
     
-    run(game,sprite,timestamp)
+    runAI(game,timestamp)
     {
         let input=game.getInput();
         
         if (input.isLeft()) {
-            sprite.moveWithCollision(game,-10,0);
-            sprite.setCurrentImage(this.leftImageIdx);
-            sprite.setFacing(sprite.FACING_LEFT);
+            this.moveWithCollision(game,-10,0);
+            this.setCurrentImage(this.leftImageIdx);
+            this.setFacing(this.FACING_LEFT);
         }
         
         if (input.isRight()) {
-            sprite.moveWithCollision(game,10,0);
-            sprite.setCurrentImage(this.rightImageIdx);
-            sprite.setFacing(sprite.FACING_RIGHT);
+            this.moveWithCollision(game,10,0);
+            this.setCurrentImage(this.rightImageIdx);
+            this.setFacing(this.FACING_RIGHT);
         }
         
-        sprite.clampX(0,(game.getMap().getWidth()-sprite.getWidth()));
+        this.clampX(0,(game.getMap().getWidth()-this.getWidth()));
         
-        if ((input.isAction()) && (sprite.isGrounded())) sprite.addMotion(0,-35);
+        if ((input.isAction()) && (this.isGrounded())) this.addMotion(0,-35);
     }
 }
