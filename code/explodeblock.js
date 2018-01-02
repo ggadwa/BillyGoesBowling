@@ -18,11 +18,11 @@ export default class ExplodeBlockClass extends SpriteClass
     
     initialize()
     {
-        this.setCurrentImage(this.addImage('../images/explode_block.png'));
+        this.setCurrentImage(this.addImage('explode_block'));
         
-        this.countDownImageIdxs[0]=this.addImage('../images/explode_block_1.png');
-        this.countDownImageIdxs[1]=this.addImage('../images/explode_block_2.png');
-        this.countDownImageIdxs[2]=this.addImage('../images/explode_block_3.png');
+        this.countDownImageIdxs[0]=this.addImage('explode_block_1');
+        this.countDownImageIdxs[1]=this.addImage('explode_block_2');
+        this.countDownImageIdxs[2]=this.addImage('explode_block_3');
     }
     
     getGravityFactor()
@@ -74,7 +74,7 @@ export default class ExplodeBlockClass extends SpriteClass
             sprite.interactWithSprite(this,null);
         }
         
-        this.getMap().addParticle(this.getMiddleX(),this.getMiddleY(),5,0.09,'../images/particle_explode_block.png',15,800);
+        this.getMap().addParticle(this.getMiddleX(),this.getMiddleY(),5,0.09,this.getGame().getImageList().get('particle_explode_block'),15,800);
         this.setShow(false);
     }
 }

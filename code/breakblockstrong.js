@@ -14,7 +14,7 @@ export default class BreakBlockStrongClass extends SpriteClass
     {
         let imgIdx;
         
-        imgIdx=this.addImage('../images/break_block_strong.png');
+        imgIdx=this.addImage('break_block_strong');
         this.setCurrentImage(imgIdx);
     }
     
@@ -26,7 +26,7 @@ export default class BreakBlockStrongClass extends SpriteClass
     interactWithSprite(interactSprite,dataObj)
     {
         if (interactSprite instanceof ExplodeBlockClass) {
-            this.getMap().addParticle(this.getMiddleX(),this.getMiddleY(),5,0.08,'../images/particle_block.png',10,800);
+            this.getMap().addParticle(this.getMiddleX(),this.getMiddleY(),5,0.08,this.getGame().getImageList().get('particle_block'),10,800);
             this.setShow(false);
         }
     }

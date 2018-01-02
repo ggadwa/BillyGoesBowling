@@ -11,7 +11,7 @@ export default class BlockClass extends SpriteClass
     
     initialize()
     {
-        this.setCurrentImage(this.addImage('../images/block.png'));
+        this.setCurrentImage(this.addImage('block'));
     }
     
     getGravityFactor()

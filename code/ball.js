@@ -31,7 +31,7 @@ export default class BallClass extends SpriteClass
     {
         let imgIdx;
         
-        imgIdx=this.addImage('../images/ball.png');
+        imgIdx=this.addImage('ball');
         this.setCurrentImage(imgIdx);
     }
     

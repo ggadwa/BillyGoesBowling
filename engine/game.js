@@ -1,4 +1,6 @@
 import MapClass from './map.js';
+import ImageListClass from './imageList.js';
+import SoundListClass from './soundList.js';
 import InputClass from './input.js';
 
 export default class GameClass
@@ -13,7 +15,9 @@ export default class GameClass
         this.backCanvas=null;
         this.backCTX=null;
         
-        this.input=null;
+        this.imageList=new ImageListClass();
+        this.soundList=new SoundListClass();
+        this.input=new InputClass();
         
         this.timestamp=0;
         
@@ -22,8 +26,6 @@ export default class GameClass
 
         this.physicsTimestamp=0;
         this.drawTimestamp=0;
-        
-        this.images=new Map();
         
         this.map=null;
     }
@@ -41,7 +43,6 @@ export default class GameClass
         this.backCanvas.height=this.canvasHeight;
         this.backCTX=this.backCanvas.getContext('2d');
         
-        this.input=new InputClass();
         this.input.initialize();
     }
     
@@ -77,6 +78,26 @@ export default class GameClass
         return(this.canvasHeight);
     }
     
+    getPreloadImages()
+    {
+        return(null);
+    }
+    
+    getImageList()
+    {
+        return(this.imageList);
+    }
+    
+    getPreloadSounds()
+    {
+        return(null);
+    }
+    
+    getSoundList()
+    {
+        return(this.soundList);
+    }
+    
     setMap(map)
     {
         this.map=map;
@@ -85,18 +106,7 @@ export default class GameClass
     getMap()
     {
         return(this.map);
-    }
-    
-    loadImage(filePath)
-    {
-        if (this.images.has(filePath)) return(this.images.get(filePath));
-        
-        let img=new Image();
-        img.src=filePath;      // note, no error checking or load checking, eventually that will need to be added
-        
-        this.images.set(filePath,img);
-        return(img);
-    }
+    }    
     
     getMapOffset(offset)
     {

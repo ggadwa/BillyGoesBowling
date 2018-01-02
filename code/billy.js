@@ -10,6 +10,50 @@ export default class BillyGoesBowlingClass extends GameClass
         Object.seal(this);
     }
     
+    getPreloadImages()
+    {
+        return(
+            [
+                'ball',
+                'billy_left',
+                'billy_right',
+                'block',
+                'break_block',
+                'break_block_strong',
+                'explode_block',
+                'explode_block_1',
+                'explode_block_2',
+                'explode_block_3',
+                'girder_connect',
+                'girder_top_vertical',
+                'girder_middle_vertical',
+                'girder_bottom_vertical',
+                'girder_left_horizontal',
+                'girder_middle_horizontal',
+                'girder_right_horizontal',
+                'ground_grass',
+                'ground_grass_end_left',
+                'ground_grass_end_right',
+                'ground_grass_connect_left',
+                'ground_grass_connect_right',
+                'ground_dirt_fill',
+                'particle_block',
+                'particle_explode_block'
+            ]
+        );
+    }
+    
+    getPreloadSounds()
+    {
+        return(
+            [
+                'crack',
+                'explode',
+                'pop'
+            ]
+        );
+    }
+    
     initialize()
     {
         super.initialize();

@@ -25,11 +25,6 @@ export default class MapClass
         return(this.game);
     }
     
-    loadImage(filePath)
-    {
-        return(this.game.loadImage(filePath));
-    }
-    
     initialize()
     {
     }
@@ -83,9 +78,9 @@ export default class MapClass
         return(this.sprites[this.playerIdx]);
     }
     
-    addParticle(x,y,initialRadius,moveFactor,filePath,count,lifeTick)
+    addParticle(x,y,initialRadius,moveFactor,img,count,lifeTick)
     {
-        let particle=new ParticleClass(this.game,x,y,initialRadius,moveFactor,this.game.loadImage(filePath),count,lifeTick);
+        let particle=new ParticleClass(this.game,x,y,initialRadius,moveFactor,img,count,lifeTick);
         return(this.particles.push(particle)-1);
     }
     
@@ -144,7 +139,7 @@ export default class MapClass
                     // a tile
                 
                 if (typeof(item)==='string') {
-                    row[x]=this.game.loadImage(item);
+                    row[x]=this.game.getImageList().get(item);
                     continue;
                 }
                 

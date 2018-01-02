@@ -60,31 +60,31 @@ export default class Map1Class extends MapClass
                 // an array would be better but it's easy to see the letter like this
                 
             case 'A':
-                return('../images/ground_grass.png');
+                return('ground_grass');
             case 'B':
-                return('../images/ground_grass_end_left.png');
+                return('ground_grass_end_left');
             case 'C':
-                return('../images/ground_grass_end_right.png');
+                return('ground_grass_end_right');
             case 'D':
-                return('../images/ground_grass_connect_left.png');
+                return('ground_grass_connect_left');
             case 'E':
-                return('../images/ground_grass_connect_right.png');
+                return('ground_grass_connect_right');
             case 'F':
-                return('../images/ground_dirt_fill.png');
+                return('ground_dirt_fill');
             case 'G':
-                return('../images/girder_left_horizontal.png');
+                return('girder_left_horizontal');
             case 'H':
-                return('../images/girder_middle_horizontal.png');
+                return('girder_middle_horizontal');
             case 'I':
-                return('../images/girder_right_horizontal.png');
+                return('girder_right_horizontal');
             case 'J':
-                return('../images/girder_top_vertical.png');
+                return('girder_top_vertical');
             case 'K':
-                return('../images/girder_middle_vertical.png');
+                return('girder_middle_vertical');
             case 'L':
-                return('../images/girder_bottom_vertical.png');
+                return('girder_bottom_vertical');
             case 'M':
-                return('../images/girder_connect.png');
+                return('girder_connect');
         
                 // sprites, return object
                 

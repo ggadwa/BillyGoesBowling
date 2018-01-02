@@ -44,11 +44,6 @@ export default class SpriteClass
         return(this.game.getMap());
     }
     
-    loadImage(filePath)
-    {
-        return(this.game.loadImage(filePath));
-    }
-    
     /**
      * Sets up this game sprite.  Add in images here.
      */
@@ -88,9 +83,9 @@ export default class SpriteClass
     {
     }
         
-    addImage(filePath)
+    addImage(name)
     {
-        return(this.images.push(this.game.loadImage(filePath))-1);
+        return(this.images.push(this.game.getImageList().get(name))-1);
     }
     
     setCurrentImage(imageIdx)

@@ -14,8 +14,8 @@ export default class PlayerClass extends SpriteClass
     
     initialize()
     {
-        this.leftImageIdx=this.addImage('../images/billy_left.png');
-        this.rightImageIdx=this.addImage('../images/billy_right.png');
+        this.leftImageIdx=this.addImage('billy_left');
+        this.rightImageIdx=this.addImage('billy_right');
         
         this.setCurrentImage(this.rightImageIdx);
         this.setFacing(this.FACING_RIGHT);

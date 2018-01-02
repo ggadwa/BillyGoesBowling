@@ -13,7 +13,7 @@ export default class BreakBlockClass extends SpriteClass
     
     initialize()
     {
-        this.setCurrentImage(this.addImage('../images/break_block.png'));
+        this.setCurrentImage(this.addImage('break_block'));
     }
     
     getGravityFactor()
@@ -24,7 +24,7 @@ export default class BreakBlockClass extends SpriteClass
     interactWithSprite(interactSprite,dataObj)
     {
         if ((interactSprite instanceof BallClass) || (interactSprite instanceof ExplodeBlockClass)) {
-            this.getMap().addParticle(this.getMiddleX(),this.getMiddleY(),5,0.08,'../images/particle_block.png',10,800);
+            this.getMap().addParticle(this.getMiddleX(),this.getMiddleY(),5,0.08,this.getGame().getImageList().get('particle_block'),10,800);
             this.setShow(false);
         }
     }
