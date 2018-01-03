@@ -68,6 +68,14 @@ export default class SpriteClass
     }
     
     /**
+     * Can this object be stood on by other objects?
+     */
+    canStandOn()
+    {
+        return(true);
+    }
+    
+    /**
      * Called when another sprite is interacting with this one, this
      * is up to the game developer what this means.
      */
@@ -257,6 +265,10 @@ export default class SpriteClass
             // run any AI
             
         this.runAI();
+        
+            // if not shown, skip the rest of this
+            
+        if (!this.getShow()) return;
         
             // add in motion
             

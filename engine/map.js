@@ -250,7 +250,7 @@ export default class MapClass
         for (sprite of this.sprites) {
             if (sprite===checkSprite) continue;
             if (!sprite.getShow()) continue;
-            if (!sprite.canCollide()) continue;
+            if (!sprite.canStandOn()) continue;
             
             if (checkSprite.collideStand(sprite,dist)) {
                 y=sprite.getRectTop();
@@ -371,7 +371,7 @@ export default class MapClass
                 
         for (sprite of this.sprites) {
             if (sprite!==playerSprite) {
-                if (sprite.getShow()) sprite.run();
+                sprite.run();
             }   
         }
         

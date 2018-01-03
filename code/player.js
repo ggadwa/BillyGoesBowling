@@ -1,4 +1,5 @@
 import SpriteClass from '../engine/sprite.js';
+import CloudBlockClass from './cloudBlock.js';
 
 export default class PlayerClass extends SpriteClass
 {
@@ -32,6 +33,8 @@ export default class PlayerClass extends SpriteClass
         let map=game.getMap();
         let input=game.getInput();
         
+            // input
+            
         if (input.isLeft()) {
             this.moveWithCollision(-12,0);
             this.setCurrentImage(this.leftImageIdx);
@@ -47,5 +50,13 @@ export default class PlayerClass extends SpriteClass
         this.clampX(0,(map.getWidth()-this.getWidth()));
         
         if ((input.isAction()) && (this.isGrounded())) this.addMotion(0,-30);
+        
+            // check for standing on a cloud
+            
+        if (this.standSprite!==null) {
+            if (this.standSprite instanceof CloudBlockClass) {
+                this.standSprite.interactWithSprite(this,null);
+            }
+        }
     }
 }

@@ -1,10 +1,11 @@
 import MapClass from '../engine/map.js';
 import PlayerClass from '../code/player.js';
 import BallClass from '../code/ball.js';
-import BreakBlockClass from '../code/breakblock.js';
-import BreakBlockStrongClass from '../code/breakblockstrong.js';
-import ExplodeBlockClass from '../code/explodeblock.js';
+import BreakBlockClass from '../code/breakBlock.js';
+import BreakBlockStrongClass from '../code/breakBlockStrong.js';
+import ExplodeBlockClass from '../code/explodeBlock.js';
 import BlockClass from '../code/block.js';
+import cloudBlockClass from '../code/cloudBlock.js';
 
 export default class Map1Class extends MapClass
 {
@@ -25,12 +26,12 @@ export default class Map1Class extends MapClass
                 '                                                                                                                                                      ',
                 '                                                                                                                                                      ',
                 '                 cc                                       ff                                                                                          ',
-                '                 ccc                                    cceec        ff                                                                               ',
-                '                 cddc     ccc        dd        J       ccceeec      ffeff                                                                             ',
-                '  b            ccccccc  cccJcc       de      ccKe    cccceeeecccc  ccceeccc                                                                           ',
+                '                 ccc                                    cceec        ff ggggggg                                                                       ',
+                '                 cddc     ccc        dd        J       ccceeec      ffeff    gggggg                                                                   ',
+                '  b            ccccccc  cccJcc       de      ccKe    cccceeeecccc  ccceeccc       ggggggg                                                             ',
                 '             BAAAAACcccccccKccc      de     GHHMHHIeeeeeeeeeeeeeeeeeeeecccccc                                                                         ',
-                '  a      BAAAFFFFFFECccccccLcccc     eeccc  eeeeeeeecccdddcccccccccccccccccccc                                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA     ',
-                'BAAAAAAAAFFFFFFFFFFFEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC'
+                '  a      BAAADFFFFFECccccccLcccc     eeccc  eeeeeeeecccdddcccccccccccccccccccc                                BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC     ',
+                'BAAAAAAAADFFFFFFFFFFEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEAAAAC'
             ]
         );
 
@@ -100,6 +101,8 @@ export default class Map1Class extends MapClass
                 return(new ExplodeBlockClass());
             case 'f':
                 return(new BlockClass());
+            case 'g':
+                return(new cloudBlockClass());
          }
          
          return(null);

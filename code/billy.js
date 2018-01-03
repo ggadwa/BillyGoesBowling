@@ -24,6 +24,7 @@ export default class BillyGoesBowlingClass extends GameClass
                 'explode_block_1',
                 'explode_block_2',
                 'explode_block_3',
+                'cloud_block',
                 'girder_connect',
                 'girder_top_vertical',
                 'girder_middle_vertical',

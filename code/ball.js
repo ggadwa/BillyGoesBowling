@@ -1,7 +1,7 @@
 import SpriteClass from '../engine/sprite.js';
 import BlockClass from './block.js';
-import BreakBlockStrongClass from './breakblockstrong.js';
-import ExplodeBlockClass from './explodeblock.js';
+import BreakBlockStrongClass from './breakBlockStrong.js';
+import ExplodeBlockClass from './explodeBlock.js';
 
 export default class BallClass extends SpriteClass
 {
@@ -36,6 +36,11 @@ export default class BallClass extends SpriteClass
     }
     
     canCollide()
+    {
+        return(false);
+    }
+    
+    canStandOn()
     {
         return(false);
     }

@@ -17,8 +17,8 @@ export default class SoundListClass
     
     loadProcessLoaded(req,soundList,index,callback)
     {
-        let source;
         let name=soundList[index];
+        let buffers=this.buffers;
         
             // error
             
@@ -27,16 +27,13 @@ export default class SoundListClass
             return;
         }
         
-            // the new source
-            
-        source=this.ctx.createBufferSource();    
-        this.buffers.set(name,source);
-        
             // need to decode the sound
             
+        buffers=this.buffers;
+        
         this.ctx.decodeAudioData(req.response,
                             function(buffer) {
-                                source.buffer=buffer;
+                                buffers.set(name,buffer);
                             },
                             function(err) {
                                 console.log(name+': '+err);
@@ -74,6 +71,19 @@ export default class SoundListClass
     load(soundList,callback)
     {
         this.loadProcess(soundList,0,callback);
+    }
+    
+    play(name)
+    {
+        let source=this.ctx.createBufferSource();
+        let gain=this.ctx.createGain();
+        
+        source.buffer=this.buffers.get(name);
+        gain.gain.value=0.25;
+
+        source.connect(gain);
+        gain.connect(this.ctx.destination);
+        source.start(0);
     }
 }
 
