@@ -1,6 +1,6 @@
 import MapClass from './map.js';
-import ImageListClass from './imageList.js';
-import SoundListClass from './soundList.js';
+import ImageListClass from './image_list.js';
+import SoundListClass from './sound_list.js';
 import InputClass from './input.js';
 
 export default class GameClass

@@ -1,3 +1,2 @@
-* getMapViewportTopEdge and map draw need better Y offsets
 * particles need view culling
-* cloud/pop block
+* tick sound effect

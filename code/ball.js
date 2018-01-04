@@ -1,7 +1,7 @@
 import SpriteClass from '../engine/sprite.js';
 import BlockClass from './block.js';
-import BreakBlockStrongClass from './breakBlockStrong.js';
-import ExplodeBlockClass from './explodeBlock.js';
+import BreakBlockStrongClass from './break_block_strong.js';
+import ExplodeBlockClass from './explode_block.js';
 
 export default class BallClass extends SpriteClass
 {
@@ -33,16 +33,11 @@ export default class BallClass extends SpriteClass
         
         imgIdx=this.addImage('ball');
         this.setCurrentImage(imgIdx);
-    }
-    
-    canCollide()
-    {
-        return(false);
-    }
-    
-    canStandOn()
-    {
-        return(false);
+        
+        this.show=true;
+        this.gravityFactor=0.0;
+        this.canCollide=false;
+        this.canStandOn=false;
     }
     
     runAI()
@@ -53,18 +48,18 @@ export default class BallClass extends SpriteClass
         let playerSprite=map.getSpritePlayer();
         let collideSprite;
         let x,y,lftEdge,rgtEdge,botEdge;
-        let xOffset=Math.trunc((playerSprite.getWidth()-this.getWidth())*0.5);
+        let xOffset=Math.trunc((playerSprite.width-this.width)*0.5);
         
             // get the position by the mode
         
-        x=playerSprite.getX()+xOffset;
-        y=playerSprite.getRectTop()-this.HEAD_PIXEL_DISTANCE;
+        x=playerSprite.x+xOffset;
+        y=(playerSprite.y-playerSprite.height)-this.HEAD_PIXEL_DISTANCE;
             
         switch (this.travelMode) {
             
             case this.TRAVEL_MODE_BOWL_DOWN:
                 this.travelY+=30;
-                botEdge=playerSprite.getRectBottom();
+                botEdge=playerSprite.y;
                 if ((y+this.travelY)>=botEdge) {
                     this.travelX=0;
                     this.travelY=botEdge-y;
@@ -80,8 +75,8 @@ export default class BallClass extends SpriteClass
                 if (this.travelXDirection<0) {
                     this.travelX-=30;
                     lftEdge=map.getMapViewportLeftEdge();
-                    if (((x+this.travelX)+this.getWidth())<lftEdge) {
-                        this.travelX=lftEdge-(x+this.getWidth());
+                    if (((x+this.travelX)+this.width)<lftEdge) {
+                        this.travelX=lftEdge-(x+this.width);
                         this.travelY=0;
                         this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
                     }
@@ -111,7 +106,7 @@ export default class BallClass extends SpriteClass
             case this.TRAVEL_MODE_SLAM_UP:
                 x=this.travelX;
                 this.travelY-=30;
-                if ((y+this.travelY)<=(-this.getHeight())) {
+                if ((y+this.travelY)<=(-this.height)) {
                     this.travelMode=this.TRAVEL_MODE_SLAM_DOWN;
                 }
                 y+=this.travelY;
@@ -121,7 +116,7 @@ export default class BallClass extends SpriteClass
                 x=this.travelX;
                 this.travelY+=40;
                 botEdge=map.getMapViewportBottomEdge();
-                if (((y+this.travelY)-this.getHeight())>botEdge) {
+                if (((y+this.travelY)-this.height)>botEdge) {
                     this.travelY=0;
                     this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
                 }
@@ -172,7 +167,7 @@ export default class BallClass extends SpriteClass
             }
             if (input.isUp()) {
                 this.travelMode=this.TRAVEL_MODE_SLAM_UP;
-                this.travelX=playerSprite.getX()+xOffset;
+                this.travelX=playerSprite.x+xOffset;
                 this.travelY=0;
             }
         }

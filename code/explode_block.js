@@ -23,11 +23,11 @@ export default class ExplodeBlockClass extends SpriteClass
         this.countDownImageIdxs[0]=this.addImage('explode_block_1');
         this.countDownImageIdxs[1]=this.addImage('explode_block_2');
         this.countDownImageIdxs[2]=this.addImage('explode_block_3');
-    }
-    
-    getGravityFactor()
-    {
-        return(0.2);
+        
+        this.show=true;
+        this.gravityFactor=0.0;
+        this.canCollide=true;
+        this.canStandOn=true;
     }
     
     interactWithSprite(interactSprite,dataObj)
@@ -75,6 +75,9 @@ export default class ExplodeBlockClass extends SpriteClass
         }
         
         this.getMap().addParticle(this.getMiddleX(),this.getMiddleY(),5,0.09,this.getGame().getImageList().get('particle_explode_block'),15,800);
-        this.setShow(false);
+        this.getGame().getSoundList().play('explode');
+        this.show=false;
+        
+        this.countDown=-1;
     }
 }

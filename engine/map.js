@@ -8,6 +8,9 @@ export default class MapClass
         this.game=game;
         this.gridPixelSize=gridPixelSize;
         
+        this.width=0;
+        this.height=0;
+        
         this.grid=null;
         this.gridWidth=0;
         this.gridHeight=0;
@@ -46,16 +49,6 @@ export default class MapClass
     getGridHeight()
     {
         return(this.gridHeight);
-    }
-    
-    getWidth()
-    {
-        return(this.gridWidth*this.gridPixelSize);
-    }
-    
-    getHeight()
-    {
-        return(this.gridHeight*this.gridPixelSize);
     }
     
     getGridPixelSize()
@@ -163,6 +156,9 @@ export default class MapClass
         this.gridSpotPerWidth=(this.game.getCanvasWidth()/this.gridPixelSize);
         this.gridSpotPerHeight=(this.game.getCanvasHeight()/this.gridPixelSize);
         
+        this.width=this.gridWidth*this.gridPixelSize;
+        this.height=this.gridHeight*this.gridPixelSize;
+        
             // quick system out if no player
             
         if (this.playerIdx===-1) console.log('No player in map data');
@@ -183,8 +179,8 @@ export default class MapClass
             
         for (sprite of this.sprites) {
             if (sprite===checkSprite) continue;
-            if (!sprite.getShow()) continue;
-            if (!sprite.canCollide()) continue;
+            if (!sprite.show) continue;
+            if (!sprite.canCollide) continue;
             
             if (checkSprite.collide(sprite)) {
                 checkSprite.collideSprite=sprite;
@@ -194,10 +190,10 @@ export default class MapClass
         
             // check map
             
-        lft=checkSprite.getRectLeft();
-        top=checkSprite.getRectTop();
-        rgt=checkSprite.getRectRight();
-        bot=checkSprite.getRectBottom();
+        lft=checkSprite.x;
+        top=checkSprite.y-checkSprite.height;
+        rgt=checkSprite.x+checkSprite.width;
+        bot=checkSprite.y;
             
         lx=Math.trunc(lft/this.gridPixelSize);
         if (lx<0) lx=0;
@@ -249,11 +245,11 @@ export default class MapClass
             
         for (sprite of this.sprites) {
             if (sprite===checkSprite) continue;
-            if (!sprite.getShow()) continue;
-            if (!sprite.canStandOn()) continue;
+            if (!sprite.show) continue;
+            if (!sprite.canStandOn) continue;
             
             if (checkSprite.collideStand(sprite,dist)) {
-                y=sprite.getRectTop();
+                y=sprite.y-sprite.height;
                 if ((y<ty) || (ty===-1)) {
                     checkSprite.standSprite=sprite;
                     ty=y;
@@ -261,12 +257,19 @@ export default class MapClass
             }
         }
         
+            // any collision with a sprite
+            // outweights any map collision because
+            // we expect objects to be outside of map
+            // to hit another sprite
+            
+        if (ty!==-1) return(ty);
+        
             // check map
             
-        lft=checkSprite.getRectLeft();
-        top=checkSprite.getRectTop();
-        rgt=checkSprite.getRectRight();
-        bot=checkSprite.getRectBottom();
+        lft=checkSprite.x;
+        top=checkSprite.y-checkSprite.height;
+        rgt=checkSprite.x+checkSprite.width;
+        bot=checkSprite.y;
         
         x=Math.trunc(((lft+rgt)*0.5)/this.gridPixelSize);
         y=Math.trunc(bot/this.gridPixelSize);
@@ -310,8 +313,8 @@ export default class MapClass
         
         for (sprite of this.sprites) {
             if (sprite===checkSprite) continue;
-            if (!sprite.getShow()) continue;
-            if (!sprite.canCollide()) continue;
+            if (!sprite.show) continue;
+            if (!sprite.canCollide) continue;
             
             if (sprite.collideRect(lft,top,rgt,bot)) sprites.push(sprite);
         }
@@ -323,10 +326,10 @@ export default class MapClass
     {
         let sprite,x;
         let wid=this.game.getCanvasWidth();
-        let rgt=this.game.getMap().getWidth()-wid;
+        let rgt=this.game.getMap().width-wid;
 
         sprite=this.sprites[this.playerIdx];
-        x=sprite.getX()-Math.trunc(wid*0.5);
+        x=sprite.x-Math.trunc(wid*0.5);
         if (x<0) x=0;
         if (x>rgt) x=rgt;
         
@@ -342,10 +345,10 @@ export default class MapClass
     {
         let sprite,y;
         let high=this.game.getCanvasHeight();
-        let bot=this.game.getMap().getHeight()-high;
+        let bot=this.game.getMap().height-high;
 
         sprite=this.sprites[this.playerIdx];
-        y=0;
+        y=sprite.y-Math.trunc(high*0.5);
         if (y<0) y=0;
         if (y>bot) y=bot;
         
@@ -394,16 +397,20 @@ export default class MapClass
         let row,lx,rx,ty,by,offX,offY;
         let sprite,particle;
         let wid=this.game.getCanvasWidth();
-        let rgt=this.game.getMap().getWidth()-wid;
+        let rgt=this.game.getMap().width-wid;
+        let high=this.game.getCanvasHeight();
+        let bot=this.game.getMap().height-high;
         
             // get offset
             
         sprite=this.sprites[this.playerIdx];
-        offX=sprite.getX()-Math.trunc(wid*0.5);
+        offX=sprite.x-Math.trunc(wid*0.5);
         if (offX<0) offX=0;
         if (offX>rgt) offX=rgt;
         
-        offY=0;
+        offY=sprite.y-Math.trunc(high*0.5);
+        if (offY<0) offY=0;
+        if (offY>bot) offY=bot;
             
             // draw the map
             
@@ -430,7 +437,7 @@ export default class MapClass
             // draw the sprites
             
         for (sprite of this.sprites) {
-            if (sprite.getShow()) sprite.draw(ctx,offX,offY);
+            if (sprite.show) sprite.draw(ctx,offX,offY);
         }
         
             // draw the particles

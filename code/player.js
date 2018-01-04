@@ -1,5 +1,5 @@
 import SpriteClass from '../engine/sprite.js';
-import CloudBlockClass from './cloudBlock.js';
+import CloudBlockClass from './cloud_block.js';
 
 export default class PlayerClass extends SpriteClass
 {
@@ -20,11 +20,11 @@ export default class PlayerClass extends SpriteClass
         
         this.setCurrentImage(this.rightImageIdx);
         this.setFacing(this.FACING_RIGHT);
-    }
-    
-    getGravityFactor()
-    {
-        return(0.15);
+        
+        this.show=true;
+        this.gravityFactor=0.15;
+        this.canCollide=true;
+        this.canStandOn=true;
     }
     
     runAI()
@@ -47,7 +47,7 @@ export default class PlayerClass extends SpriteClass
             this.setFacing(this.FACING_RIGHT);
         }
         
-        this.clampX(0,(map.getWidth()-this.getWidth()));
+        this.clampX(0,(map.width-this.width));
         
         if ((input.isAction()) && (this.isGrounded())) this.addMotion(0,-30);
         

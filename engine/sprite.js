@@ -17,6 +17,7 @@ export default class SpriteClass
         this.width=0;
         this.height=0;
         
+        this.gravityFactor=0.0;
         this.gravityAdd=0.0;
         this.motion={x:0,y:0};
         this.facing=this.FACING_FORWARD;
@@ -25,6 +26,9 @@ export default class SpriteClass
         this.grounded=false;
         this.collideSprite=null;
         this.standSprite=null;
+        
+        this.canCollide=true;
+        this.canStandOn=true;
         
         // can't seal this object as it's extended
     }
@@ -49,30 +53,6 @@ export default class SpriteClass
      */
     initialize()
     {
-    }
-    
-    /**
-     * A gravity factor of 0.0 = object is static, no gravity
-     */
-    getGravityFactor()
-    {
-        return(0.0);
-    }
-    
-    /**
-     * Can this object collide with other objects?
-     */
-    canCollide()
-    {
-        return(true);
-    }
-    
-    /**
-     * Can this object be stood on by other objects?
-     */
-    canStandOn()
-    {
-        return(true);
     }
     
     /**
@@ -104,46 +84,6 @@ export default class SpriteClass
         this.height=this.images[imageIdx].height;
     }
     
-    getX()
-    {
-        return(this.x);
-    }
-    
-    getY()
-    {
-        return(this.y);
-    }
-    
-    getRectLeft()
-    {
-        return(this.x);
-    }
-    
-    getRectRight()
-    {
-        return(this.x+this.width);
-    }
-    
-    getRectTop()
-    {
-        return(this.y-this.height);
-    }
-    
-    getRectBottom()
-    {
-        return(this.y);
-    }
-    
-    getWidth()
-    {
-        return(this.width);
-    }
-    
-    getHeight()
-    {
-        return(this.height);
-    }
-    
     getMiddleX()
     {
         return(this.x+Math.trunc(this.width*0.5));
@@ -154,42 +94,32 @@ export default class SpriteClass
         return(this.y-Math.trunc(this.height*0.5));
     }
     
-    setShow(show)
-    {
-        this.show=show;
-    }
-    
-    getShow()
-    {
-        return(this.show);
-    }
-    
     collide(hitSprite)
     {
-        if (this.getRectRight()<=hitSprite.getRectLeft()) return(false);
-        if (this.getRectLeft()>=hitSprite.getRectRight()) return(false);
-        if (this.getRectBottom()<=hitSprite.getRectTop()) return(false);
-        return(this.getRectTop()<hitSprite.getRectBottom());
+        if ((this.x+this.width)<=hitSprite.x) return(false);
+        if (this.x>=(hitSprite.x+hitSprite.width)) return(false);
+        if (this.y<=(hitSprite.y-hitSprite.height)) return(false);
+        return((this.y-this.height)<hitSprite.y);
     }
     
     collideStand(hitSprite,dist)
     {
         let y;
         
-        if (this.getRectRight()<=hitSprite.getRectLeft()) return(false);
-        if (this.getRectLeft()>=hitSprite.getRectRight()) return(false);
+        if ((this.x+this.width)<=hitSprite.x) return(false);
+        if (this.x>=(hitSprite.x+hitSprite.width)) return(false);
         
-        y=this.getRectBottom()+dist;                // for stand on collisions, the bottom of the standing object must intersect the top and bottom of check sprite
-        if (y<hitSprite.getRectTop()) return(false);
-        return(y<hitSprite.getRectBottom());
+        y=this.y+dist;                // for stand on collisions, the bottom of the standing object must intersect the top and bottom of check sprite
+        if (y<(hitSprite.y-hitSprite.height)) return(false);
+        return(y<hitSprite.y);
     }
     
     collideRect(lft,top,rgt,bot)
     {
-        if (this.getRectRight()<=lft) return(false);
-        if (this.getRectLeft()>=rgt) return(false);
-        if (this.getRectBottom()<=top) return(false);
-        return(this.getRectTop()<bot);
+        if ((this.x+this.width)<=lft) return(false);
+        if (this.x>=rgt) return(false);
+        if (this.y<=top) return(false);
+        return((this.y-this.height)<bot);
     }
     
     hasCollideSprite()
@@ -259,7 +189,7 @@ export default class SpriteClass
     
     run()
     {
-        let y,gravityFactor;
+        let y;
         let map=this.game.getMap();
         
             // run any AI
@@ -268,7 +198,7 @@ export default class SpriteClass
         
             // if not shown, skip the rest of this
             
-        if (!this.getShow()) return;
+        if (!this.show) return;
         
             // add in motion
             
@@ -277,14 +207,13 @@ export default class SpriteClass
         this.grounded=true;
         
             // physics
-
-        gravityFactor=this.getGravityFactor();
-        if (gravityFactor!==0.0) {
-            y=this.game.getMap().checkCollisionStand(this,Math.trunc(this.gravityAdd));
+            
+        if (this.gravityFactor!==0.0) {
+            y=map.checkCollisionStand(this,Math.trunc(this.gravityAdd));
             if (y===-1) {
                 this.y=Math.trunc(this.y+this.gravityAdd);
                 if (this.gravityAdd<=0.0) this.gravityAdd=map.getMinGravityValue();
-                this.gravityAdd+=(this.gravityAdd*gravityFactor);
+                this.gravityAdd+=(this.gravityAdd*this.gravityFactor);
                 if (this.gravityAdd>map.getMaxGravityValue()) this.gravityAdd=map.getMaxGravityValue();
                 this.grounded=false;
             }
@@ -294,7 +223,7 @@ export default class SpriteClass
                 this.grounded=true;
             }
         }
-
+        
             // gravity slows down motion
             
         if (this.motion.y<0) {

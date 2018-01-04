@@ -12,10 +12,10 @@ export default class BlockClass extends SpriteClass
     initialize()
     {
         this.setCurrentImage(this.addImage('block'));
-    }
-    
-    getGravityFactor()
-    {
-        return(0.2);
+        
+        this.show=true;
+        this.gravityFactor=0.2;
+        this.canCollide=true;
+        this.canStandOn=true;
     }
 }

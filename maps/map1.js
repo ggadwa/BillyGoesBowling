@@ -1,11 +1,11 @@
 import MapClass from '../engine/map.js';
 import PlayerClass from '../code/player.js';
 import BallClass from '../code/ball.js';
-import BreakBlockClass from '../code/breakBlock.js';
-import BreakBlockStrongClass from '../code/breakBlockStrong.js';
-import ExplodeBlockClass from '../code/explodeBlock.js';
+import BreakBlockClass from '../code/break_block.js';
+import BreakBlockStrongClass from '../code/break_block_strong.js';
+import ExplodeBlockClass from '../code/explode_block.js';
 import BlockClass from '../code/block.js';
-import cloudBlockClass from '../code/cloudBlock.js';
+import cloudBlockClass from '../code/cloud_block.js';
 
 export default class Map1Class extends MapClass
 {
@@ -19,18 +19,25 @@ export default class Map1Class extends MapClass
         super.initialize();
         
             // the map itself
-    
+
         this.setMapFromText('a',
             [
                 '                                                                                                                                                      ',
                 '                                                                                                                                                      ',
-                '                                                                                                                                                      ',
-                '                 cc                                       ff                                                                                          ',
-                '                 ccc                                    cceec        ff ggggggg                                                                       ',
-                '                 cddc     ccc        dd        J       ccceeec      ffeff    gggggg                                                                   ',
-                '  b            ccccccc  cccJcc       de      ccKe    cccceeeecccc  ccceeccc       ggggggg                                                             ',
-                '             BAAAAACcccccccKccc      de     GHHMHHIeeeeeeeeeeeeeeeeeeeecccccc                                                                         ',
-                '  a      BAAADFFFFFECccccccLcccc     eeccc  eeeeeeeecccdddcccccccccccccccccccc                                BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC     ',
+                '                                                                                                                                          fff         ',
+                '                                                                                                                                         fffc         ',
+                '                                                                                                                                        fffcc         ',
+                '                                                                                                                                       fffffc         ',
+                '                                                                                                                                     fffffffc         ',
+                '                                                                                                                                   fffffffffcc        ',
+                '                                                                                                                                fffffccccccccc        ',
+                '                                                                                                                              fffffccccccccccc        ',
+                '                 cc                                       ff                                                                ffffffffcccccccccc        ',
+                '                 ccc                                    cceec        ff ggggggg                                           ffffffffffffcccccccc        ',
+                '                 cddc     ccc        dd        J       ccceeec      ffeff    gggggg                                     fffffffffffffffccccccc        ',
+                '  b            ccccccc  cccJcc       de      ccKe    cccceeeecccc  ccceeccc       ggggggg                           BAAAAAAAAAAAAAAAAAAAAAACccc       ',
+                '             BAAAAACcccccccKccc      de     GHHMHHIeeeeeeeeeeeeeeeeeeeecccccc                                    BAADFFFFFFFFFFFFFFFFFFFFFFEACc       ',
+                '         BAAADFFFFFECccccccLcccc     eeccc  eeeeeeeecccdddcccccccccccccccccccc                          a     BAADFFFFFFFFFFFFFFFFFFFFFFFFFFEAAAC     ',
                 'BAAAAAAAADFFFFFFFFFFEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEAAAAC'
             ]
         );
@@ -45,9 +52,9 @@ export default class Map1Class extends MapClass
                 '                                                                                                                                                      ',
                 '                                                                                                                                                      ',
                 '  b         c                                                                                                                                         ',
-                '       c   c                                                                                                                                          ',
-                '  a  c c                                                                                                                                              ',
-                'BAAAAAAAAFFFFFFFFFFFEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC'
+                '       c   ccc                                                                                                                                        ',
+                '  a  ccccBAAAAAAAAAAC                                                                                                                                 ',
+                'BAAAAAAAADFFFFFFFFFFEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC'
             ]
         );
         */

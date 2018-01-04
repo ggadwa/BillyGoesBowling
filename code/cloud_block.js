@@ -15,21 +15,11 @@ export default class cloudBlockClass extends SpriteClass
     initialize()
     {
         this.setCurrentImage(this.addImage('cloud_block'));
-    }
-    
-    getGravityFactor()
-    {
-        return(0.0);
-    }
-    
-    canCollide()
-    {
-        return(false);
-    }
-    
-    canStandOn()
-    {
-        return(true);
+        
+        this.show=true;
+        this.gravityFactor=0.0;
+        this.canCollide=false;
+        this.canStandOn=true;
     }
     
     interactWithSprite(interactSprite,dataObj)
@@ -48,15 +38,15 @@ export default class cloudBlockClass extends SpriteClass
         
             // disappear
             
-        if (this.getShow()) {
-            this.setShow(false);
+        if (this.show) {
+            this.show=false;
             this.countDown=40;
             return;
         }
         
             // reappear
             
-        this.setShow(true);
+        this.show=true;
         this.countDown=-1;
     }
 }
