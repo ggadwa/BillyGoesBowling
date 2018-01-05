@@ -6,6 +6,7 @@ import BreakBlockStrongClass from '../code/break_block_strong.js';
 import ExplodeBlockClass from '../code/explode_block.js';
 import BlockClass from '../code/block.js';
 import cloudBlockClass from '../code/cloud_block.js';
+import platformClass from '../code/platform.js';
 
 export default class Map1Class extends MapClass
 {
@@ -24,20 +25,20 @@ export default class Map1Class extends MapClass
             [
                 '                                                                                                                                                      ',
                 '                                                                                                                                                      ',
-                '                                                                                                                                          fff         ',
-                '                                                                                                                                         fffc         ',
-                '                                                                                                                                        fffcc         ',
-                '                                                                                                                                       fffffc         ',
-                '                                                                                                                                     fffffffc         ',
-                '                                                                                                                                   fffffffffcc        ',
-                '                                                                                                                                fffffccccccccc        ',
-                '                                                                                                                              fffffccccccccccc        ',
-                '                 cc                                       ff                                                                ffffffffcccccccccc        ',
+                '                                                                                                                                                      ',
+                '                                                                                                                                                      ',
+                '                                                                                                                                                      ',
+                '                                                                                                                                                      ',
+                '                                                                                                                                                      ',
+                '                                                                                                           e    BAAC                                  ',
+                '                                                                                                    BAACh       ONNP            fffffccccccccc        ',
+                '                                                                                   BAACh            ONNP                      fffffccccccccccc        ',
+                '                 cc                                       ff                   ggggONNP                                     ffffffffcccccccccc        ',
                 '                 ccc                                    cceec        ff ggggggg                                           ffffffffffffcccccccc        ',
-                '                 cddc     ccc        dd        J       ccceeec      ffeff    gggggg                                     fffffffffffffffccccccc        ',
-                '  b            ccccccc  cccJcc       de      ccKe    cccceeeecccc  ccceeccc       ggggggg                           BAAAAAAAAAAAAAAAAAAAAAACccc       ',
+                '      BAAC       cddc     ccc        dd        J       ccceeec      ffeff                                               fffffffffffffffccccccc        ',
+                '  b   ONNP     ccccccc  cccJcc       de      ccKe    cccceeeecccc  ccceeccc                                         BAAAAAAAAAAAAAAAAAAAAAACccc       ',
                 '             BAAAAACcccccccKccc      de     GHHMHHIeeeeeeeeeeeeeeeeeeeecccccc                                    BAADFFFFFFFFFFFFFFFFFFFFFFEACc       ',
-                '         BAAADFFFFFECccccccLcccc     eeccc  eeeeeeeecccdddcccccccccccccccccccc                          a     BAADFFFFFFFFFFFFFFFFFFFFFFFFFFEAAAC     ',
+                '  a      BAAADFFFFFECccccccLcccc     eeccc  eeeeeeeecccdddcccccccccccccccccccc                                BAADFFFFFFFFFFFFFFFFFFFFFFFFFFEAAAC     ',
                 'BAAAAAAAADFFFFFFFFFFEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEAAAAC'
             ]
         );
@@ -93,6 +94,12 @@ export default class Map1Class extends MapClass
                 return('girder_bottom_vertical');
             case 'M':
                 return('girder_connect');
+            case 'N':
+                return('ground_dirt_bottom');
+            case 'O':
+                return('ground_dirt_bottom_left');
+            case 'P':
+                return('ground_dirt_bottom_right');
         
                 // sprites, return object
                 
@@ -110,6 +117,8 @@ export default class Map1Class extends MapClass
                 return(new BlockClass());
             case 'g':
                 return(new cloudBlockClass());
+            case 'h':
+                return(new platformClass());
          }
          
          return(null);
