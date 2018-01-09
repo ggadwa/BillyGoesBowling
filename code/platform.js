@@ -19,6 +19,8 @@ export default class PlatformClass extends SpriteClass
         
         this.show=true;
         this.gravityFactor=0.0;
+        this.gravityMinValue=0;
+        this.gravityMaxValue=0;
         this.canCollide=true;
         this.canStandOn=true;
     }

@@ -18,6 +18,8 @@ export default class cloudBlockClass extends SpriteClass
         
         this.show=true;
         this.gravityFactor=0.0;
+        this.gravityMinValue=0;
+        this.gravityMaxValue=0;
         this.canCollide=false;
         this.canStandOn=true;
     }

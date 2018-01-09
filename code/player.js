@@ -22,7 +22,9 @@ export default class PlayerClass extends SpriteClass
         this.setFacing(this.FACING_RIGHT);
         
         this.show=true;
-        this.gravityFactor=0.15;
+        this.gravityFactor=0.12;
+        this.gravityMinValue=3;
+        this.gravityMaxValue=20;
         this.canCollide=true;
         this.canStandOn=true;
     }
@@ -49,7 +51,7 @@ export default class PlayerClass extends SpriteClass
         
         this.clampX(0,(map.width-this.width));
         
-        if ((input.isAction()) && (this.isGrounded())) this.addMotion(0,-30);
+        if ((input.isAction()) && (this.isGrounded())) this.addMotion(0,-35);
         
             // check for standing on a cloud
             

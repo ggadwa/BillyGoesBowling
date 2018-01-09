@@ -15,6 +15,8 @@ export default class BlockClass extends SpriteClass
         
         this.show=true;
         this.gravityFactor=0.2;
+        this.gravityMinValue=2;
+        this.gravityMaxValue=15;
         this.canCollide=true;
         this.canStandOn=true;
     }

@@ -35,8 +35,8 @@ export default class Map1Class extends MapClass
                 '                                                                                   BAACh            ONNP                      fffffccccccccccc        ',
                 '                 cc                                       ff                   ggggONNP                                     ffffffffcccccccccc        ',
                 '                 ccc                                    cceec        ff ggggggg                                           ffffffffffffcccccccc        ',
-                '      BAAC       cddc     ccc        dd        J       ccceeec      ffeff                                               fffffffffffffffccccccc        ',
-                '  b   ONNP     ccccccc  cccJcc       de      ccKe    cccceeeecccc  ccceeccc                                         BAAAAAAAAAAAAAAAAAAAAAACccc       ',
+                '                 cddc     ccc        dd        J       ccceeec      ffeff                                               fffffffffffffffccccccc        ',
+                '  b            ccccccc  cccJcc       de      ccKe    cccceeeecccc  ccceeccc                                         BAAAAAAAAAAAAAAAAAAAAAACccc       ',
                 '             BAAAAACcccccccKccc      de     GHHMHHIeeeeeeeeeeeeeeeeeeeecccccc                                    BAADFFFFFFFFFFFFFFFFFFFFFFEACc       ',
                 '  a      BAAADFFFFFECccccccLcccc     eeccc  eeeeeeeecccdddcccccccccccccccccccc                                BAADFFFFFFFFFFFFFFFFFFFFFFFFFFEAAAC     ',
                 'BAAAAAAAADFFFFFFFFFFEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEAAAAC'
@@ -122,15 +122,5 @@ export default class Map1Class extends MapClass
          }
          
          return(null);
-    }
-    
-    getMinGravityValue()
-    {
-        return(2);
-    }
-    
-    getMaxGravityValue()
-    {
-        return(15);
     }
 }

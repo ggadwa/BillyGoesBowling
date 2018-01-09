@@ -18,6 +18,8 @@ export default class SpriteClass
         this.height=0;
         
         this.gravityFactor=0.0;
+        this.gravityMinValue=0;
+        this.gravityMaxValue=0;
         this.gravityAdd=0.0;
         this.motion={x:0,y:0};
         this.facing=this.FACING_FORWARD;
@@ -212,9 +214,9 @@ export default class SpriteClass
             y=map.checkCollisionStand(this,Math.trunc(this.gravityAdd));
             if (y===-1) {
                 this.y=Math.trunc(this.y+this.gravityAdd);
-                if (this.gravityAdd<=0.0) this.gravityAdd=map.getMinGravityValue();
+                if (this.gravityAdd<=0.0) this.gravityAdd=this.gravityMinValue;
                 this.gravityAdd+=(this.gravityAdd*this.gravityFactor);
-                if (this.gravityAdd>map.getMaxGravityValue()) this.gravityAdd=map.getMaxGravityValue();
+                if (this.gravityAdd>this.gravityMaxValue) this.gravityAdd=this.gravityMaxValue;
                 this.grounded=false;
             }
             else {

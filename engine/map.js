@@ -71,27 +71,10 @@ export default class MapClass
         return(this.sprites[this.playerIdx]);
     }
     
-    addParticle(x,y,initialRadius,moveFactor,img,count,lifeTick)
+    addParticle(x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,img,count,lifeTick)
     {
-        let particle=new ParticleClass(this.game,x,y,initialRadius,moveFactor,img,count,lifeTick);
+        let particle=new ParticleClass(this.game,x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,img,count,lifeTick);
         return(this.particles.push(particle)-1);
-    }
-    
-    /**
-     * Override this to return the minimum gravity start
-     * value.  Usually 1.
-     */
-    getMinGravityValue()
-    {
-        return(1);
-    }
-    
-    /**
-     * Override this to return the maximum gravity value.
-     */
-    getMaxGravityValue()
-    {
-        return(15);
     }
     
     /**

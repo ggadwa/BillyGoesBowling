@@ -1,12 +1,16 @@
 export default class ParticleClass
 {
-    constructor(game,x,y,initialRadius,moveFactor,image,count,lifeTick)
+    constructor(game,x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,image,count,lifeTick)
     {
         let n;
         
         this.game=game;
         this.x=x;
         this.y=y;
+        this.startSize=startSize;
+        this.endSize=endSize;
+        this.startAlpha=startAlpha;
+        this.endAlpha=endAlpha;
         this.moveFactor=moveFactor;
         this.image=image;
         this.count=count;
@@ -25,8 +29,8 @@ export default class ParticleClass
         this.ys=new Float32Array(count);
             
         for (n=0;n!==count;n++) {
-            this.xs[n]=(((Math.random()*2.0)-1.0)*initialRadius);
-            this.ys[n]=(((Math.random()*2.0)-1.0)*initialRadius);
+            this.xs[n]=(((Math.random()*2.0)-1.0)*initialMoveRadius);
+            this.ys[n]=(((Math.random()*2.0)-1.0)*initialMoveRadius);
         }
         
         Object.seal(this);
@@ -39,26 +43,18 @@ export default class ParticleClass
     
     draw(ctx,offX,offY)
     {
-        /*
-        let x=this.x-offX;
-        let y=(this.y-this.height)-offY;
-        
-        if ((x>=game.getCanvasWidth()) || ((x+this.width)<=0)) return;
-        if ((y>=game.getCanvasHeight()) || ((x+this.height)<=0)) return;
-        */
-       
-        let n,dx,dy;
-        let tick,halfTick,movement;
+        let n,dx,dy,sz;
+        let tick,movement;
        
             // are we done?
         
         tick=(this.game.getTimestamp()-this.startTimestamp);
         if (tick>this.lifeTick) return;
         
-            // the fade alpha
-        
-        halfTick=Math.trunc(this.lifeTick*0.5);
-        if (tick>halfTick) ctx.globalAlpha=1.0-((tick-halfTick)/halfTick);
+            // the setups
+            
+        sz=this.startSize+Math.trunc(((this.endSize-this.startSize)*tick)/this.lifeTick);
+        ctx.globalAlpha=this.startAlpha+(((this.endAlpha-this.startAlpha)*tick)/this.lifeTick);
         
             // calculate and draw the particles
             
@@ -68,9 +64,9 @@ export default class ParticleClass
             dx=((this.x+Math.trunc(this.xs[n]*movement))-this.middleOffsetX)-offX;
             dy=((this.y+Math.trunc(this.ys[n]*movement))-this.middleOffsetY)-offY;
             
-            ctx.drawImage(this.image,dx,dy);
+            ctx.drawImage(this.image,dx,dy,sz,sz);
         }
         
-        if (tick>halfTick)ctx.globalAlpha=1.0;
+        ctx.globalAlpha=1.0;
     }
 }
