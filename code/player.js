@@ -51,7 +51,7 @@ export default class PlayerClass extends SpriteClass
         
         this.clampX(0,(map.width-this.width));
         
-        if ((input.isAction()) && (this.isGrounded())) this.addMotion(0,-35);
+        if ((input.isAction()) && (this.grounded)) this.addMotion(0,-35);
         
             // check for standing on a cloud
             

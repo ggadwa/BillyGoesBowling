@@ -5,8 +5,9 @@ import BreakBlockClass from '../code/break_block.js';
 import BreakBlockStrongClass from '../code/break_block_strong.js';
 import ExplodeBlockClass from '../code/explode_block.js';
 import BlockClass from '../code/block.js';
-import cloudBlockClass from '../code/cloud_block.js';
-import platformClass from '../code/platform.js';
+import CloudBlockClass from '../code/cloud_block.js';
+import PlatformClass from '../code/platform.js';
+import NinjaBunnyClass from '../code/ninja_bunny.js';
 
 export default class Map1Class extends MapClass
 {
@@ -29,16 +30,16 @@ export default class Map1Class extends MapClass
                 '                                                                                                                                                      ',
                 '                                                                                                                                                      ',
                 '                                                                                                                                                      ',
-                '                                                                                                                                                      ',
-                '                                                                                                           e    BAAC                                  ',
+                '                                                                                                                 i                                    ',
+                '                                                                                                           e    BAAC              i                   ',
                 '                                                                                                    BAACh       ONNP            fffffccccccccc        ',
                 '                                                                                   BAACh            ONNP                      fffffccccccccccc        ',
-                '                 cc                                       ff                   ggggONNP                                     ffffffffcccccccccc        ',
-                '                 ccc                                    cceec        ff ggggggg                                           ffffffffffffcccccccc        ',
+                '                 cc                                       ff         i         ggggONNP                                     ffffffffcccccccccc        ',
+                '                 ccc                 i                  cceec        ff ggggggg                                           ffffffffffffcccccccc        ',
                 '                 cddc     ccc        dd        J       ccceeec      ffeff                                               fffffffffffffffccccccc        ',
                 '  b            ccccccc  cccJcc       de      ccKe    cccceeeecccc  ccceeccc                                         BAAAAAAAAAAAAAAAAAAAAAACccc       ',
                 '             BAAAAACcccccccKccc      de     GHHMHHIeeeeeeeeeeeeeeeeeeeecccccc                                    BAADFFFFFFFFFFFFFFFFFFFFFFEACc       ',
-                '  a      BAAADFFFFFECccccccLcccc     eeccc  eeeeeeeecccdddcccccccccccccccccccc                                BAADFFFFFFFFFFFFFFFFFFFFFFFFFFEAAAC     ',
+                '  a      BAAADFFFFFECccccccLcccc     eeccc  eeeeeeeecccdddcccccccccccccccccccc          i           i         BAADFFFFFFFFFFFFFFFFFFFFFFFFFFEAAAC     ',
                 'BAAAAAAAADFFFFFFFFFFEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEAAAAC'
             ]
         );
@@ -116,9 +117,11 @@ export default class Map1Class extends MapClass
             case 'f':
                 return(new BlockClass());
             case 'g':
-                return(new cloudBlockClass());
+                return(new CloudBlockClass());
             case 'h':
-                return(new platformClass());
+                return(new PlatformClass());
+            case 'i':
+                return(new NinjaBunnyClass());
          }
          
          return(null);

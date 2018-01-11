@@ -184,11 +184,6 @@ export default class SpriteClass
         return(this.facing);
     }
     
-    isGrounded()
-    {
-        return(this.grounded);
-    }
-    
     run()
     {
         let y;

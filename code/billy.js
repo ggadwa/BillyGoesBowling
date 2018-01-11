@@ -43,7 +43,8 @@ export default class BillyGoesBowlingClass extends GameClass
                 'ground_dirt_bottom_right',
                 'particle_block',
                 'particle_explode_block',
-                'platform'
+                'platform',
+                'ninja_bunny'
             ]
         );
     }
