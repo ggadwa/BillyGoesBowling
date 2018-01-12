@@ -37,7 +37,7 @@ export default class ImageListClass
         
         img.onload=this.loadProcessLoaded.bind(this,imageList,index,callback);
         img.onerror=this.loadProcessError.bind(this,name);
-        img.src='../images/'+name+'.png';
+        img.src='images/'+name+'.png';
     }
     
     load(imageList,callback)

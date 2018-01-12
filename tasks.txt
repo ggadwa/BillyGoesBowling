@@ -1,2 +1,3 @@
 * particles need view culling
 * tick sound effect
+* needs a sprite removal (break/explode/etc, don't hide, remove) -- use flag, then remove at end of AI

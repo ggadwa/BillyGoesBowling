@@ -48,7 +48,6 @@ export default class BallClass extends SpriteClass
         let map=game.getMap();
         let input=game.getInput();
         let playerSprite=map.getSpritePlayer();
-        let collideSprite;
         let x,y,lftEdge,rgtEdge,topEdge,botEdge;
         let xOffset=Math.trunc((playerSprite.width-this.width)*0.5);
         
@@ -137,7 +136,7 @@ export default class BallClass extends SpriteClass
                 
                     // colliding with map, return ball
                     
-                if (!this.hasCollideSprite()) {
+                if (this.collideSprite===null) {
                     this.travelY=0;
                     this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
                     return;
@@ -145,12 +144,11 @@ export default class BallClass extends SpriteClass
                 
                     // hit sprite
                 
-                collideSprite=this.getCollideSprite();    
-                collideSprite.interactWithSprite(this,null);
+                this.collideSprite.interactWithSprite(this,null);
                 
                     // stop ball for everything but breakable blocks
                     
-                if ((collideSprite instanceof BlockClass) || (collideSprite instanceof BreakBlockStrongClass) || (collideSprite instanceof ExplodeBlockClass)) {
+                if ((this.collideSprite instanceof BlockClass) || (this.collideSprite instanceof BreakBlockStrongClass) || (this.collideSprite instanceof ExplodeBlockClass)) {
                     this.travelY=0;
                     this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
                 }

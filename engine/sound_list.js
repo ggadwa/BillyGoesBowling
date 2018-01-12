@@ -62,7 +62,7 @@ export default class SoundListClass
         let name=soundList[index];
         
         req=new XMLHttpRequest();
-        req.open('GET',('../sounds/'+name+'.wav'),true);
+        req.open('GET',('sounds/'+name+'.wav'),true);
         req.responseType='arraybuffer';
         req.onload=this.loadProcessLoaded.bind(this,req,soundList,index,callback);
         req.send();

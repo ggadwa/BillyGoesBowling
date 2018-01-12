@@ -32,6 +32,8 @@ export default class SpriteClass
         this.canCollide=true;
         this.canStandOn=true;
         
+        this.removeFlag=false;          // make this private
+        
         // can't seal this object as it's extended
     }
     
@@ -124,26 +126,6 @@ export default class SpriteClass
         return((this.y-this.height)<bot);
     }
     
-    hasCollideSprite()
-    {
-        return(this.collideSprite!==null);
-    }
-    
-    getCollideSprite()
-    {
-        return(this.collideSprite);
-    }
-    
-    hasStandSprite()
-    {
-        return(this.standSprite!==null);
-    }
-    
-    getStandSprite()
-    {
-        return(this.standSprite);
-    }
-    
     setPosition(x,y)
     {
         this.x=x;
@@ -182,6 +164,16 @@ export default class SpriteClass
     getFacing()
     {
         return(this.facing);
+    }
+    
+    delete()
+    {
+        this.removeFlag=true;
+    }
+    
+    isDeleted()
+    {
+        return(this.removeFlag);
     }
     
     run()

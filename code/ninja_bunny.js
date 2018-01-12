@@ -1,5 +1,6 @@
 import SpriteClass from '../engine/sprite.js';
 import BallClass from './ball.js';
+import ShurikinClass from './shurikin.js';
 
 export default class NinjaBunnyClass extends SpriteClass
 {
@@ -28,7 +29,7 @@ export default class NinjaBunnyClass extends SpriteClass
     interactWithSprite(interactSprite,dataObj)
     {
         if (interactSprite instanceof BallClass) {
-            this.show=false;
+            this.delete();
         }
     }
     
@@ -37,10 +38,7 @@ export default class NinjaBunnyClass extends SpriteClass
         let game=this.getGame();
         let map=game.getMap();
         let playerSprite=map.getSpritePlayer();
-        
-            // not shown, destroyed
-            
-        if (!this.show) return;
+        let sx,sy,shurikinSprite;
         
             // distance from player
             
@@ -72,6 +70,22 @@ export default class NinjaBunnyClass extends SpriteClass
         
         if (this.bunnyPause>0) {
             this.bunnyPause--;
+            
+                // half way through pause, throw a shurikin
+                
+            if (this.bunnyPause===15) {
+                /*
+                sx=Math.trunc(this.width*0.8);
+                if (dist<0) sx=-sx;
+                sx=this.x+sx;
+                sy=this.y-Math.trunc(this.height*0.5);
+                
+                shurikinSprite=new ShurikinClass();
+                shurikinSprite.setPosition(sx,sy);
+                map.addSprite(shurikinSprite);
+                */
+            }
+            
             return;
         }
         

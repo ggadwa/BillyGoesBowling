@@ -30,7 +30,7 @@ export default class BreakBlockStrongClass extends SpriteClass
         if (interactSprite instanceof ExplodeBlockClass) {
             this.getMap().addParticle(this.getMiddleX(),this.getMiddleY(),16,16,1.0,0.1,0.08,5,this.getGame().getImageList().get('particle_block'),10,800);
             this.getGame().getSoundList().play('crack');
-            this.show=false;
+            this.delete();
         }
     }
 }

@@ -58,6 +58,7 @@ export default class MapClass
     
     addSprite(sprite)
     {
+        sprite.setGame(this.game);
         return(this.sprites.push(sprite)-1);
     }
     
@@ -122,9 +123,8 @@ export default class MapClass
                     // a sprite
                     
                 if (item instanceof SpriteClass) {
-                    item.setGame(this.game);
                     item.setPosition((x*this.gridPixelSize),((y+1)*this.gridPixelSize));              // sprites Y is on the bottom
-                    idx=this.addSprite(item);        
+                    idx=this.addSprite(item);
                     if (ch===playerCharacter) this.playerIdx=idx;
                     continue;
                 }
@@ -346,7 +346,7 @@ export default class MapClass
     run()
     {
         let n;
-        let sprite,particle;
+        let sprite;
         let playerSprite=this.getSpritePlayer();
         
             // always run the player first
@@ -359,6 +359,19 @@ export default class MapClass
             if (sprite!==playerSprite) {
                 sprite.run();
             }   
+        }
+        
+            // delete any finished sprites
+            
+        n=0;
+        while (n<this.sprites.length) {
+            if (this.sprites[n].isDeleted()) {
+                this.sprites.splice(n,1);
+                if (n<this.playerIdx) this.playerIdx--;     // make sure player index doesn't change
+            }
+            else {
+                n++;
+            }
         }
         
             // delete any finished particles
