@@ -3,10 +3,10 @@ import ParticleClass from './particle.js';
 
 export default class MapClass
 {
-    constructor(game,gridPixelSize)
+    constructor(game)
     {
         this.game=game;
-        this.gridPixelSize=gridPixelSize;
+        this.gridPixelSize=64;
         
         this.width=0;
         this.height=0;
@@ -78,27 +78,19 @@ export default class MapClass
         return(this.particles.push(particle)-1);
     }
     
-    /**
-     * Override this to return the map item for a character
-     * in the map text.  Accepts Image and SpriteClass.
-     */
-    createMapItemForCharacter(ch)
-    {
-    }
-    
-    setMapFromText(playerCharacter,mapText)
+    setMapFromArray(mapArray)
     {
         let x,y,row,rowStr,ch,item;
         let idx;
-        let rowCount=mapText.length;
-        let colCount=mapText[0].length;
+        let rowCount=mapArray.length;
+        let colCount=mapArray[0].length;
         
         this.grid=[];
         this.playerIdx=-1;
         
         for (y=0;y!==rowCount;y++) {
             row=new Array(colCount);
-            rowStr=mapText[y];
+            rowStr=mapArray[y];
             
             for (x=0;x!==colCount;x++) {
                 row[x]=null;
@@ -110,7 +102,7 @@ export default class MapClass
                 
                     // get the item
                     
-                item=this.createMapItemForCharacter(ch);
+                item=this.game.createMapItemForCharacter(ch);
                 if (item===null) continue;
                 
                     // a tile
@@ -125,7 +117,7 @@ export default class MapClass
                 if (item instanceof SpriteClass) {
                     item.setPosition((x*this.gridPixelSize),((y+1)*this.gridPixelSize));              // sprites Y is on the bottom
                     idx=this.addSprite(item);
-                    if (ch===playerCharacter) this.playerIdx=idx;
+                    if (ch==='*') this.playerIdx=idx;
                     continue;
                 }
             }

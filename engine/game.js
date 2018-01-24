@@ -1,6 +1,7 @@
 import MapClass from './map.js';
 import ImageListClass from './image_list.js';
 import SoundListClass from './sound_list.js';
+import MapListClass from './map_list.js';
 import InputClass from './input.js';
 
 export default class GameClass
@@ -17,6 +18,7 @@ export default class GameClass
         
         this.imageList=new ImageListClass();
         this.soundList=new SoundListClass();
+        this.mapList=new MapListClass();
         this.input=new InputClass();
         
         this.timestamp=0;
@@ -27,7 +29,7 @@ export default class GameClass
         this.physicsTimestamp=0;
         this.drawTimestamp=0;
         
-        this.map=null;
+        this.map=new MapClass(this);
     }
     
     initialize()
@@ -98,11 +100,31 @@ export default class GameClass
         return(this.soundList);
     }
     
-    setMap(map)
+    getMapList()
     {
-        this.map=map;
+        return(this.mapList);
     }
     
+    /**
+     * Override this to return the map item for a character
+     * in the map text.  Accepts Image (for static map tiles)
+     * and SpriteClass (for active javascript controlled items.)
+     * 
+     * Note: '*' is a special character that always represents
+     * the player sprite.  Any other chacters can be used for
+     * anything else.
+     */
+    createMapItemForCharacter(ch)
+    {
+    }
+    
+    loadMapByName(name)
+    {
+        console.log('load='+name);
+        console.log('data='+this.mapList.get(name));
+        this.map.setMapFromArray(this.mapList.get(name));
+    }
+        
     getMap()
     {
         return(this.map);
