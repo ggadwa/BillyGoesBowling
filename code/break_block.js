@@ -8,11 +8,6 @@ export default class BreakBlockClass extends SpriteClass
     {
         super(game);
         
-        Object.seal(this);
-    }
-    
-    initialize()
-    {
         this.setCurrentImage(this.addImage('break_block'));
         
         this.show=true;
@@ -21,6 +16,8 @@ export default class BreakBlockClass extends SpriteClass
         this.gravityMaxValue=15;
         this.canCollide=true;
         this.canStandOn=true;
+        
+        Object.seal(this);
     }
     
     interactWithSprite(interactSprite,dataObj)

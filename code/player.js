@@ -1,4 +1,5 @@
 import SpriteClass from '../engine/sprite.js';
+import BallClass from '../code/ball.js';
 import CloudBlockClass from './cloud_block.js';
 
 export default class PlayerClass extends SpriteClass
@@ -7,14 +8,8 @@ export default class PlayerClass extends SpriteClass
     {
         super(game);
         
-        this.leftImageIdx=0;
-        this.rightImageIdx=0;
-        
-        Object.seal(this);
-    }
-    
-    initialize()
-    {
+            // setup
+            
         this.leftImageIdx=this.addImage('billy_left');
         this.rightImageIdx=this.addImage('billy_right');
         
@@ -27,6 +22,14 @@ export default class PlayerClass extends SpriteClass
         this.gravityMaxValue=20;
         this.canCollide=true;
         this.canStandOn=true;
+        
+            // add in the ball
+            // the ball automatically sets it's position so we don't
+            // need to set one here
+            
+        this.getGame().getMap().addSprite(new BallClass(this.getGame()));
+        
+        Object.seal(this);
     }
     
     runAI()

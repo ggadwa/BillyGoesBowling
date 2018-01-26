@@ -29,6 +29,7 @@ export default class GameClass
         this.physicsTimestamp=0;
         this.drawTimestamp=0;
         
+        this.data=new Map();
         this.map=new MapClass(this);
     }
     
@@ -46,12 +47,10 @@ export default class GameClass
         this.backCTX=this.backCanvas.getContext('2d');
         
         this.input.initialize();
-    }
-    
-    prepare()
-    {
-        this.map.initialize(this);
-        this.map.prepare(this);
+        
+            // load the starting map
+            
+        this.map.setMapFromArray(this.mapList.get(this.getStartMapName()));
     }
     
     initTiming(timestamp)
@@ -68,16 +67,6 @@ export default class GameClass
     getTimestamp()
     {
         return(this.timestamp);
-    }
-    
-    getCanvasWidth()
-    {
-        return(this.canvasWidth);
-    }
-    
-    getCanvasHeight()
-    {
-        return(this.canvasHeight);
     }
     
     getPreloadImages()
@@ -104,26 +93,6 @@ export default class GameClass
     {
         return(this.mapList);
     }
-    
-    /**
-     * Override this to return the map item for a character
-     * in the map text.  Accepts Image (for static map tiles)
-     * and SpriteClass (for active javascript controlled items.)
-     * 
-     * Note: '*' is a special character that always represents
-     * the player sprite.  Any other chacters can be used for
-     * anything else.
-     */
-    createMapItemForCharacter(ch)
-    {
-    }
-    
-    loadMapByName(name)
-    {
-        console.log('load='+name);
-        console.log('data='+this.mapList.get(name));
-        this.map.setMapFromArray(this.mapList.get(name));
-    }
         
     getMap()
     {
@@ -143,7 +112,88 @@ export default class GameClass
     {
         return(this.input);
     }
-        
+    
+    getData(name)
+    {
+        return(this.data.get(name));
+    }
+    
+    setData(name,value)
+    {
+        this.data.set(name,value);
+    }
+    
+    incrementData(name)
+    {
+        this.data.set(name,(this.data.get(name)+1));
+    }
+    
+    decrementData(name)
+    {
+        this.data.set(name,(this.data.get(name)-1));
+    }
+    
+    addData(name,addValue)
+    {
+        this.data.set(name,(this.data.get(name)+addValue));
+    }
+            
+    /**
+     * Override this to return the name of the start map.
+     * This must be a map that was previously loaded into
+     * the map list passed to getPreloadMaps().
+     */
+    getStartMapName()
+    {
+    }
+    
+    /**
+     * Override this to return the map item for a character
+     * in the map text.  Accepts Image (for static map tiles)
+     * and SpriteClass (for active javascript controlled items.)
+     * 
+     * Note: '*' is a special character that always represents
+     * the player sprite.  Any other chacters can be used for
+     * anything else.
+     */
+    createMapItemForCharacter(ch)
+    {
+    }
+    
+    /**
+     * Override this to run any game based AI, it is called before
+     * any sprite AI.
+     */
+    runAI()
+    {
+    }
+    
+    /**
+     * Override this to draw the UI.  Use the drawUIImage, setupUIText,
+     * and drawUIText methods to draw the UI.
+     */
+    drawUI()
+    {
+    }
+    
+    drawUIImage(name,x,y)
+    {
+        this.backCTX.drawImage(this.imageList.get(name),x,y);
+    }
+    
+    setupUIText(font,color,align,baseLine)
+    {
+        this.backCTX.font=font;
+        this.backCTX.fillStyle=color;
+        this.backCTX.textAlign=align;
+        this.backCTX.textBaseline=baseLine;
+    }
+    
+    drawUIText(str,x,y)
+    {
+        this.backCTX.fillText(str,x,y);
+    }
+
     run()
     {
         let physicTick;
@@ -156,6 +206,7 @@ export default class GameClass
             
             this.physicsTimestamp+=this.PHYSICS_TICK_FREQUENCY;
             
+            this.runAI();
             this.map.run();
         }
     }
@@ -175,6 +226,10 @@ export default class GameClass
             // draw the map
             
         this.map.draw(this.backCTX);
+        
+            // draw the UI
+            
+        this.drawUI();
         
             // transfer to front canvas
             

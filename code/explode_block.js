@@ -7,19 +7,20 @@ export default class ExplodeBlockClass extends SpriteClass
     {
         super(game);
         
+            // statics
+            
         this.COUNT_DOWN_TICK_WAIT=5;
         
+            // variables
+            
         this.countDown=-1;
         this.countDownTick=0;
-        this.countDownImageIdxs=[];
-        
-        Object.seal(this);
-    }
-    
-    initialize()
-    {
+         
+            // setup
+            
         this.setCurrentImage(this.addImage('explode_block'));
         
+        this.countDownImageIdxs=[];
         this.countDownImageIdxs[0]=this.addImage('explode_block_1');
         this.countDownImageIdxs[1]=this.addImage('explode_block_2');
         this.countDownImageIdxs[2]=this.addImage('explode_block_3');
@@ -30,6 +31,8 @@ export default class ExplodeBlockClass extends SpriteClass
         this.gravityMaxValue=0;
         this.canCollide=true;
         this.canStandOn=true;
+        
+        Object.seal(this);
     }
     
     interactWithSprite(interactSprite,dataObj)

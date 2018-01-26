@@ -9,6 +9,8 @@ export default class BallClass extends SpriteClass
     {
         super(game);
         
+            // statics
+            
         this.TRAVEL_MODE_FLOATING=0;
         this.TRAVEL_MODE_BOWL_DOWN=1;
         this.TRAVEL_MODE_BOWL_ACROSS=2;
@@ -18,21 +20,17 @@ export default class BallClass extends SpriteClass
         
         this.HEAD_PIXEL_DISTANCE=10;
         
+            // variables
+            
         this.travelMode=this.TRAVEL_MODE_FLOATING;
         this.travelX=0;
         this.travelY=0;
         this.travelXDirection=1;
         this.travelYAcross=0;
         
-        Object.seal(this);
-    }
-    
-    initialize()
-    {
-        let imgIdx;
-        
-        imgIdx=this.addImage('ball');
-        this.setCurrentImage(imgIdx);
+            // setup
+            
+        this.setCurrentImage(this.addImage('ball'));
         
         this.show=true;
         this.gravityFactor=0.0;
@@ -40,6 +38,8 @@ export default class BallClass extends SpriteClass
         this.gravityMaxValue=0;
         this.canCollide=false;
         this.canStandOn=false;
+        
+        Object.seal(this);
     }
     
     runAI()

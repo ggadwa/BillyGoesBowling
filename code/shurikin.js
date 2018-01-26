@@ -6,19 +6,15 @@ export default class ShurikinClass extends SpriteClass
     {
         super(game);
         
-        this.needTravelSetup=false;
+            // variables
+            
+        this.needTravelSetup=true;
         this.travelX=0;
         this.travelY=0;
         
-        Object.seal(this);
-    }
-    
-    initialize()
-    {
-        let imgIdx;
-        
-        imgIdx=this.addImage('shurikin');
-        this.setCurrentImage(imgIdx);
+            // setup
+            
+        this.setCurrentImage(this.addImage('shurikin'));
         
         this.show=true;
         this.gravityFactor=0.0;
@@ -27,9 +23,7 @@ export default class ShurikinClass extends SpriteClass
         this.canCollide=false;
         this.canStandOn=false;
         
-        this.needTravelSetup=true;
-        this.travelX=0;
-        this.travelY=0;
+        Object.seal(this);
     }
     
     runAI()

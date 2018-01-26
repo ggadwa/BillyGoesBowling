@@ -6,11 +6,6 @@ export default class BlockClass extends SpriteClass
     {
         super(game);
         
-        Object.seal(this);
-    }
-    
-    initialize()
-    {
         this.setCurrentImage(this.addImage('block'));
         
         this.show=true;
@@ -19,5 +14,7 @@ export default class BlockClass extends SpriteClass
         this.gravityMaxValue=15;
         this.canCollide=true;
         this.canStandOn=true;
+        
+        Object.seal(this);
     }
 }

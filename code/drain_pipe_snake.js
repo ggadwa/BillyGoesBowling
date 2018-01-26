@@ -1,8 +1,7 @@
 import SpriteClass from '../engine/sprite.js';
 import BallClass from './ball.js';
-import ShurikinClass from './shurikin.js';
 
-export default class NinjaBunnyClass extends SpriteClass
+export default class DrainPipeSnakeClass extends SpriteClass
 {
     constructor(game)
     {
@@ -15,7 +14,7 @@ export default class NinjaBunnyClass extends SpriteClass
         
             // setup
             
-        this.setCurrentImage(this.addImage('ninja_bunny'));
+        this.setCurrentImage(this.addImage('drain_pipe_snake_cover'));
         
         this.show=true;
         this.gravityFactor=0.12;
@@ -63,7 +62,7 @@ export default class NinjaBunnyClass extends SpriteClass
         
             // jump whenever you are grounded
             // after a pause
-            
+           /* 
         if (!this.grounded) {
             this.bunnyPause=15;
             return;
@@ -75,22 +74,14 @@ export default class NinjaBunnyClass extends SpriteClass
                 // half way through pause, throw a shurikin
                 
             if (this.bunnyPause===15) {
-                /*
-                sx=Math.trunc(this.width*0.8);
-                if (dist<0) sx=-sx;
-                sx=this.x+sx;
-                sy=this.y-Math.trunc(this.height*0.5);
-                
-                shurikinSprite=new ShurikinClass();
-                shurikinSprite.setPosition(sx,sy);
-                map.addSprite(shurikinSprite);
-                */
+
             }
             
             return;
         }
         
         this.addMotion(0,-55);
+        */
     }
     
 }

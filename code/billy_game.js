@@ -1,6 +1,5 @@
 import GameClass from '../engine/game.js';
 import PlayerClass from '../code/player.js';
-import BallClass from '../code/ball.js';
 import PinClass from '../code/pin.js';
 import DoorClass from '../code/door.js';
 import BreakBlockClass from '../code/break_block.js';
@@ -9,6 +8,7 @@ import ExplodeBlockClass from '../code/explode_block.js';
 import BlockClass from '../code/block.js';
 import CloudBlockClass from '../code/cloud_block.js';
 import PlatformClass from '../code/platform.js';
+import DrainPipeSnakeClass from '../code/drain_pipe_snake.js';
 import NinjaBunnyClass from '../code/ninja_bunny.js';
 
 export default class BillyGameClass extends GameClass
@@ -16,6 +16,9 @@ export default class BillyGameClass extends GameClass
     constructor()
     {
         super();
+        
+        this.setData('pins',0);             // number of pins
+        this.setData('door_name','');
         
         Object.seal(this);
     }
@@ -57,7 +60,10 @@ export default class BillyGameClass extends GameClass
                 'particle_explode_block',
                 'platform',
                 'ninja_bunny',
-                'shurikin'
+                'shurikin',
+                'drain_pipe_snake_cover',
+                'drain_pipe_snake_free',
+                'ui_pin'
             ]
         );
     }
@@ -77,8 +83,13 @@ export default class BillyGameClass extends GameClass
     {
         return(
             [
-                'the_bowling_hub',
-                'my_second_pin'
+                'bowling_hub',
+                'second_pin',
+                'snakes_plain',
+                'puzzling_bombs',
+                'hill_ninja',
+                'cloud_ninja',
+                'easy_boss'
             ]
         );
     }
@@ -126,37 +137,62 @@ export default class BillyGameClass extends GameClass
                 // sprites, return object
                 
             case '*':
-                return(new PlayerClass());
+                return(new PlayerClass(this));
             case 'a':
-                return(new BallClass());
+                return(new DoorClass(this));
             case 'b':
-                return(new PinClass());
+                return(new PinClass(this));
             case 'c':
-                return(new BreakBlockClass());
+                return(new BreakBlockClass(this));
             case 'd':
-                return(new BreakBlockStrongClass());
+                return(new BreakBlockStrongClass(this));
             case 'e':
-                return(new ExplodeBlockClass());
+                return(new ExplodeBlockClass(this));
             case 'f':
-                return(new BlockClass());
+                return(new BlockClass(this));
             case 'g':
-                return(new CloudBlockClass());
+                return(new CloudBlockClass(this));
             case 'h':
-                return(new PlatformClass());
-            case 'i':
-                return(new DoorClass());
+                return(new PlatformClass(this));
                 
-            case '@':
-                return(new NinjaBunnyClass());
+            case '1':
+                return(new DrainPipeSnakeClass(this));
+            case '2':
+                return(new NinjaBunnyClass(this));
          }
          
          return(null);
     }
     
-    initialize()
+    getStartMapName()
     {
-        super.initialize();
+        //return('second_pin');
+        return('bowling_hub');
+    }
+    
+    runAI()
+    {
+            // clear the door name
+            
+        this.setData('door_name','');
+    }
+    
+    drawUI()
+    {
+        let str;
         
-        this.loadMapByName('the_bowling_hub');
+            // the pin readout
+            
+        this.drawUIImage('ui_pin',(this.canvasWidth-110),2);
+        this.setupUIText('24px Arial','#000000','left','alphabetic');
+        this.drawUIText(('x '+this.getData('pins')),(this.canvasWidth-75),25);
+        
+            // the door text
+            
+        str=this.getData('door_name');
+        if (str.length!==0) {
+            this.setupUIText('bolder 36px Arial','#000000','center','alphabetic');
+            this.drawUIText(str,Math.trunc(this.canvasWidth*0.5),(this.canvasHeight-40));
+        }
     }
 }

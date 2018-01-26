@@ -1,11 +1,14 @@
 export default class SpriteClass
 {
-    constructor()
+    constructor(game)
     {
-        this.game=null;         // gets set when the map is created
+        this.game=game;
         
         this.x=0;
         this.y=0;
+        
+        this.gridSpawnX=0;
+        this.gridSpawnY=0;
         
         this.FACING_FORWARD=0;
         this.FACING_LEFT=1;
@@ -32,6 +35,8 @@ export default class SpriteClass
         this.canCollide=true;
         this.canStandOn=true;
         
+        this.background=false;
+        
         this.removeFlag=false;          // make this private
         
         // can't seal this object as it's extended
@@ -42,21 +47,9 @@ export default class SpriteClass
         return(this.game);
     }
     
-    setGame(game)
-    {
-        this.game=game;
-    }
-    
     getMap()
     {
         return(this.game.getMap());
-    }
-    
-    /**
-     * Sets up this game sprite.  Add in images here.
-     */
-    initialize()
-    {
     }
     
     /**
@@ -124,6 +117,12 @@ export default class SpriteClass
         if (this.x>=rgt) return(false);
         if (this.y<=top) return(false);
         return((this.y-this.height)<bot);
+    }
+    
+    setGridSpawnPoint(gridSpawnX,gridSpawnY)
+    {
+        this.gridSpawnX=gridSpawnX;
+        this.gridSpawnY=gridSpawnY;
     }
     
     setPosition(x,y)
@@ -226,8 +225,8 @@ export default class SpriteClass
         let x=this.x-offX;
         let y=(this.y-this.height)-offY;
         
-        if ((x>=this.game.getCanvasWidth()) || ((x+this.width)<=0)) return;
-        if ((y>=this.game.getCanvasHeight()) || ((x+this.height)<=0)) return;
+        if ((x>=this.game.canvasWidth) || ((x+this.width)<=0)) return;
+        if ((y>=this.game.canvasHeight) || ((x+this.height)<=0)) return;
         
         ctx.drawImage(this.images[this.currentImageIdx],x,y);
     }

@@ -35,7 +35,6 @@ function run3()
 function run4()
 {
     game.initialize();
-    game.prepare();
     
     window.requestAnimationFrame(initTiming);
 }

@@ -7,13 +7,12 @@ export default class CloudBlockClass extends SpriteClass
     {
         super(game);
         
+            // variables
+            
         this.countDown=-1;
         
-        Object.seal(this);
-    }
-    
-    initialize()
-    {
+            // setup
+            
         this.setCurrentImage(this.addImage('cloud_block'));
         
         this.show=true;
@@ -22,6 +21,8 @@ export default class CloudBlockClass extends SpriteClass
         this.gravityMaxValue=0;
         this.canCollide=false;
         this.canStandOn=true;
+        
+        Object.seal(this);
     }
     
     interactWithSprite(interactSprite,dataObj)

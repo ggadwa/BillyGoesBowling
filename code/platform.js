@@ -6,16 +6,13 @@ export default class PlatformClass extends SpriteClass
     {
         super(game);
         
-        this.xAdd=0;
-        
-        Object.seal(this);
-    }
-    
-    initialize()
-    {
-        this.setCurrentImage(this.addImage('platform'));
-        
+            // variables
+            
         this.xAdd=10;
+        
+            // setup
+            
+        this.setCurrentImage(this.addImage('platform'));
         
         this.show=true;
         this.gravityFactor=0.0;
@@ -23,6 +20,8 @@ export default class PlatformClass extends SpriteClass
         this.gravityMaxValue=0;
         this.canCollide=true;
         this.canStandOn=true;
+        
+        Object.seal(this);
     }
     
     runAI()

@@ -28,19 +28,6 @@ export default class MapClass
         return(this.game);
     }
     
-    initialize()
-    {
-    }
-    
-    prepare()
-    {
-        let sprite;
-        
-        for (sprite of this.sprites) {
-            sprite.initialize(this.game);
-        }
-    }
-    
     getGridWidth()
     {
         return(this.gridWidth);
@@ -56,9 +43,11 @@ export default class MapClass
         return(this.gridPixelSize);
     }
     
+    /**
+     * Adds a sprite in-game.
+     */
     addSprite(sprite)
     {
-        sprite.setGame(this.game);
         return(this.sprites.push(sprite)-1);
     }
     
@@ -117,6 +106,7 @@ export default class MapClass
                 if (item instanceof SpriteClass) {
                     item.setPosition((x*this.gridPixelSize),((y+1)*this.gridPixelSize));              // sprites Y is on the bottom
                     idx=this.addSprite(item);
+                    item.setGridSpawnPoint(x,y);
                     if (ch==='*') this.playerIdx=idx;
                     continue;
                 }
@@ -128,8 +118,8 @@ export default class MapClass
         this.gridWidth=colCount;
         this.gridHeight=rowCount;
         
-        this.gridSpotPerWidth=(this.game.getCanvasWidth()/this.gridPixelSize);
-        this.gridSpotPerHeight=(this.game.getCanvasHeight()/this.gridPixelSize);
+        this.gridSpotPerWidth=(this.game.canvasWidth/this.gridPixelSize);
+        this.gridSpotPerHeight=(this.game.canvasHeight/this.gridPixelSize);
         
         this.width=this.gridWidth*this.gridPixelSize;
         this.height=this.gridHeight*this.gridPixelSize;
@@ -300,7 +290,7 @@ export default class MapClass
     getMapViewportLeftEdge()
     {
         let sprite,x;
-        let wid=this.game.getCanvasWidth();
+        let wid=this.game.canvasWidth;
         let rgt=this.game.getMap().width-wid;
 
         sprite=this.sprites[this.playerIdx];
@@ -313,13 +303,13 @@ export default class MapClass
     
     getMapViewportRightEdge()
     {
-        return(this.getMapViewportLeftEdge()+this.game.getCanvasWidth());
+        return(this.getMapViewportLeftEdge()+this.game.canvasWidth);
     }
     
     getMapViewportTopEdge()
     {
         let sprite,y;
-        let high=this.game.getCanvasHeight();
+        let high=this.game.canvasHeight;
         let bot=this.game.getMap().height-high;
 
         sprite=this.sprites[this.playerIdx];
@@ -332,7 +322,7 @@ export default class MapClass
     
     getMapViewportBottomEdge()
     {
-        return(this.getMapViewportTopEdge()+this.game.getCanvasHeight());
+        return(this.getMapViewportTopEdge()+this.game.canvasHeight);
     }
     
     run()
@@ -384,9 +374,9 @@ export default class MapClass
         let x,y;
         let row,lx,rx,ty,by,offX,offY;
         let sprite,particle;
-        let wid=this.game.getCanvasWidth();
+        let wid=this.game.canvasWidth;
         let rgt=this.game.getMap().width-wid;
-        let high=this.game.getCanvasHeight();
+        let high=this.game.canvasHeight;
         let bot=this.game.getMap().height-high;
         
             // get offset
@@ -425,7 +415,11 @@ export default class MapClass
             // draw the sprites
             
         for (sprite of this.sprites) {
-            if (sprite.show) sprite.draw(ctx,offX,offY);
+            if ((sprite.show) && (sprite.background)) sprite.draw(ctx,offX,offY);
+        }
+        
+        for (sprite of this.sprites) {
+            if ((sprite.show) && (!sprite.background)) sprite.draw(ctx,offX,offY);
         }
         
             // draw the particles
