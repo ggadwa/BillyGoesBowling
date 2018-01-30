@@ -2,7 +2,7 @@ import SpriteClass from '../engine/sprite.js';
 import BallClass from '../code/ball.js';
 import CloudBlockClass from './cloud_block.js';
 
-export default class PlayerClass extends SpriteClass
+export default class PlayerSideScrollClass extends SpriteClass
 {
     constructor(game)
     {

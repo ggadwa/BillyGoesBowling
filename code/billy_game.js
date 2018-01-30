@@ -1,15 +1,6 @@
 import GameClass from '../engine/game.js';
-import PlayerClass from '../code/player.js';
-import PinClass from '../code/pin.js';
-import DoorClass from '../code/door.js';
-import BreakBlockClass from '../code/break_block.js';
-import BreakBlockStrongClass from '../code/break_block_strong.js';
-import ExplodeBlockClass from '../code/explode_block.js';
-import BlockClass from '../code/block.js';
-import CloudBlockClass from '../code/cloud_block.js';
-import PlatformClass from '../code/platform.js';
-import DrainPipeSnakeClass from '../code/drain_pipe_snake.js';
-import NinjaBunnyClass from '../code/ninja_bunny.js';
+import WorldMainMapClass from '../maps/world_main.js';
+import BuffetOfBlocksMapClass from '../maps/buffet_of_blocks.js';
 
 export default class BillyGameClass extends GameClass
 {
@@ -63,6 +54,18 @@ export default class BillyGameClass extends GameClass
                 'shurikin',
                 'drain_pipe_snake_cover',
                 'drain_pipe_snake_free',
+                'roto_carrot',
+                'world_dot',
+                'world_grass',
+                'world_grass_left',
+                'world_grass_right',
+                'world_grass_top',
+                'world_grass_bottom',
+                'world_grass_top_left',
+                'world_grass_top_right',
+                'world_grass_bottom_left',
+                'world_grass_bottom_right',
+                'world_water',
                 'ui_pin'
             ]
         );
@@ -94,80 +97,10 @@ export default class BillyGameClass extends GameClass
         );
     }
     
-    createMapItemForCharacter(ch)
+    getStartMap()
     {
-        switch (ch)
-        {
-                // tiles, return string path
-                // an array would be better but it's easy to see the letter like this
-                
-            case 'A':
-                return('ground_grass');
-            case 'B':
-                return('ground_grass_end_left');
-            case 'C':
-                return('ground_grass_end_right');
-            case 'D':
-                return('ground_grass_connect_left');
-            case 'E':
-                return('ground_grass_connect_right');
-            case 'F':
-                return('ground_dirt_fill');
-            case 'G':
-                return('girder_left_horizontal');
-            case 'H':
-                return('girder_middle_horizontal');
-            case 'I':
-                return('girder_right_horizontal');
-            case 'J':
-                return('girder_top_vertical');
-            case 'K':
-                return('girder_middle_vertical');
-            case 'L':
-                return('girder_bottom_vertical');
-            case 'M':
-                return('girder_connect');
-            case 'N':
-                return('ground_dirt_bottom');
-            case 'O':
-                return('ground_dirt_bottom_left');
-            case 'P':
-                return('ground_dirt_bottom_right');
-        
-                // sprites, return object
-                
-            case '*':
-                return(new PlayerClass(this));
-            case 'a':
-                return(new DoorClass(this));
-            case 'b':
-                return(new PinClass(this));
-            case 'c':
-                return(new BreakBlockClass(this));
-            case 'd':
-                return(new BreakBlockStrongClass(this));
-            case 'e':
-                return(new ExplodeBlockClass(this));
-            case 'f':
-                return(new BlockClass(this));
-            case 'g':
-                return(new CloudBlockClass(this));
-            case 'h':
-                return(new PlatformClass(this));
-                
-            case '1':
-                return(new DrainPipeSnakeClass(this));
-            case '2':
-                return(new NinjaBunnyClass(this));
-         }
-         
-         return(null);
-    }
-    
-    getStartMapName()
-    {
-        //return('second_pin');
-        return('bowling_hub');
+        return(new WorldMainMapClass(this));
+        //return(new BuffetOfBlocksMapClass(this));
     }
     
     runAI()

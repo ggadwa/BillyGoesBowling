@@ -1,5 +1,5 @@
 import SpriteClass from '../engine/sprite.js';
-import PlayerClass from './player.js';
+import PlayerSideScrollClass from './player_sidescroll.js';
 
 export default class PinClass extends SpriteClass
 {
@@ -27,7 +27,7 @@ export default class PinClass extends SpriteClass
             
         if (!game.getMap().checkCollision(this)) return;
         if (this.collideSprite===null) return;
-        if (!(this.collideSprite instanceof PlayerClass)) return;
+        if (!(this.collideSprite instanceof PlayerSideScrollClass)) return;
             
             // add pin
             

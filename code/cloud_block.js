@@ -1,5 +1,5 @@
 import SpriteClass from '../engine/sprite.js';
-import PlayerClass from './player.js';
+import PlayerSideScrollClass from './player_sidescroll.js';
 
 export default class CloudBlockClass extends SpriteClass
 {
@@ -29,7 +29,7 @@ export default class CloudBlockClass extends SpriteClass
     {
         if (this.countDown!==-1) return;            // already doing something
 
-        if (interactSprite instanceof PlayerClass) this.countDown=15;
+        if (interactSprite instanceof PlayerSideScrollClass) this.countDown=15;
     }
     
     runAI()

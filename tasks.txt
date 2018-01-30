@@ -1,3 +1,5 @@
 * particles need view culling
 * tick sound effect
-* textual prompts for doors
+
+
+* remove all door stuff (including data stuff)

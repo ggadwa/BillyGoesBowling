@@ -23,6 +23,11 @@ export default class MapClass
         this.particles=[];
     }
     
+    initialize()
+    {
+        this.setMapFromArray();
+    }
+    
     getGame()
     {
         return(this.game);
@@ -45,6 +50,9 @@ export default class MapClass
     
     /**
      * Adds a sprite in-game.
+     * 
+     * @param {SpriteClass} The sprite to add to the map
+     * @returns {number} The index of the sprite (do not save, can change)
      */
     addSprite(sprite)
     {
@@ -67,13 +75,54 @@ export default class MapClass
         return(this.particles.push(particle)-1);
     }
     
-    setMapFromArray(mapArray)
+    /**
+     * Override this to return the map item for a character
+     * in the map text.  Accepts Image (for static map tiles)
+     * and SpriteClass (for active javascript controlled items.)
+     * 
+     * Note: '*' is a special character that always represents
+     * the player sprite.  Any other chacters can be used for
+     * anything else.
+     * 
+     * @param {character} The character for the grid spot
+     * @returns {Image|SpriteClass} Either an Image object or a SpriteClass object
+     */
+    createMapItemForCharacter(ch)
+    {
+    }
+    
+    /**
+     * Override this to return the map layout for this map.  The
+     * expected return is an array of strings, which each character
+     * in the string representing a single grid spot in the map.
+     *
+     * @returns {array} The map textual array
+     */
+    getMapLayout()
+    {
+    }
+    
+    setMapFromArray()
     {
         let x,y,row,rowStr,ch,item;
         let idx;
+        let mapArray=this.getMapLayout();
         let rowCount=mapArray.length;
-        let colCount=mapArray[0].length;
+        let colCount=0;
         
+            // find longest horizontal line
+            // and pad all lines to that size
+        
+        for (y=0;y!==rowCount;y++) {
+            if (mapArray[y].length>colCount) colCount=mapArray[y].length;
+        }
+        
+        for (y=0;y!==rowCount;y++) {
+            mapArray[y]=mapArray[y].padEnd(colCount,' ');
+        }
+
+            // translate to grid
+            
         this.grid=[];
         this.playerIdx=-1;
         
@@ -91,7 +140,7 @@ export default class MapClass
                 
                     // get the item
                     
-                item=this.game.createMapItemForCharacter(ch);
+                item=this.createMapItemForCharacter(ch);
                 if (item===null) continue;
                 
                     // a tile

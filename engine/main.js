@@ -23,16 +23,8 @@ function run2()
         
     game.getSoundList().load(game.getPreloadSounds(),run3);
 }
-
-function run3()
-{
-        // loading the maps is
-        // async and requires a callback
-        
-    game.getMapList().load(game.getPreloadMaps(),run4);
-}
    
-function run4()
+function run3()
 {
     game.initialize();
     

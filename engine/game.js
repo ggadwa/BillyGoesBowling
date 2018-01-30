@@ -1,7 +1,6 @@
 import MapClass from './map.js';
 import ImageListClass from './image_list.js';
 import SoundListClass from './sound_list.js';
-import MapListClass from './map_list.js';
 import InputClass from './input.js';
 
 export default class GameClass
@@ -18,7 +17,6 @@ export default class GameClass
         
         this.imageList=new ImageListClass();
         this.soundList=new SoundListClass();
-        this.mapList=new MapListClass();
         this.input=new InputClass();
         
         this.timestamp=0;
@@ -30,7 +28,7 @@ export default class GameClass
         this.drawTimestamp=0;
         
         this.data=new Map();
-        this.map=new MapClass(this);
+        this.map=null;
     }
     
     initialize()
@@ -50,7 +48,8 @@ export default class GameClass
         
             // load the starting map
             
-        this.map.setMapFromArray(this.mapList.get(this.getStartMapName()));
+        this.map=this.getStartMap();
+        this.map.initialize();
     }
     
     initTiming(timestamp)
@@ -89,11 +88,6 @@ export default class GameClass
         return(this.soundList);
     }
     
-    getMapList()
-    {
-        return(this.mapList);
-    }
-        
     getMap()
     {
         return(this.map);
@@ -139,27 +133,14 @@ export default class GameClass
     }
             
     /**
-     * Override this to return the name of the start map.
-     * This must be a map that was previously loaded into
-     * the map list passed to getPreloadMaps().
-     */
-    getStartMapName()
-    {
-    }
-    
-    /**
-     * Override this to return the map item for a character
-     * in the map text.  Accepts Image (for static map tiles)
-     * and SpriteClass (for active javascript controlled items.)
+     * Override this to return the the starting map object.
      * 
-     * Note: '*' is a special character that always represents
-     * the player sprite.  Any other chacters can be used for
-     * anything else.
+     * @returns {MapClass}
      */
-    createMapItemForCharacter(ch)
+    getStartMap()
     {
     }
-    
+        
     /**
      * Override this to run any game based AI, it is called before
      * any sprite AI.

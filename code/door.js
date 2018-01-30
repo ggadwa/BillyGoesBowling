@@ -1,5 +1,5 @@
 import SpriteClass from '../engine/sprite.js';
-import PlayerClass from './player.js';
+import PlayerSideScrollClass from './player_sidescroll.js';
 
 class DoorDataClass
 {
@@ -54,7 +54,7 @@ export default class DoorClass extends SpriteClass
             
         if (!game.getMap().checkCollision(this)) return;
         if (this.collideSprite===null) return;
-        if (!(this.collideSprite instanceof PlayerClass)) return;
+        if (!(this.collideSprite instanceof PlayerSideScrollClass)) return;
             
             // change UI
             
