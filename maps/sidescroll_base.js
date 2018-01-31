@@ -1,4 +1,5 @@
 import MapClass from '../engine/map.js';
+import GridSpotClass from '../engine/grid_spot.js';
 import PlayerSideScrollClass from '../code/player_sidescroll.js';
 import PinClass from '../code/pin.js';
 import DoorClass from '../code/door.js';
@@ -26,37 +27,37 @@ export default class SideScrollBaseMapClass extends MapClass
                 // an array would be better but it's easy to see the letter like this
                 
             case 'A':
-                return('ground_grass');
+                return(new GridSpotClass(game,imageList.get('ground_grass'),true,true));
             case 'B':
-                return('ground_grass_end_left');
+                return(new GridSpotClass(game,imageList.get('ground_grass_end_left'),true,true));
             case 'C':
-                return('ground_grass_end_right');
+                return(new GridSpotClass(game,imageList.get('ground_grass_end_right'),true,true));
             case 'D':
-                return('ground_grass_connect_left');
+                return(new GridSpotClass(game,imageList.get('ground_grass_connect_left'),true,true));
             case 'E':
-                return('ground_grass_connect_right');
+                return(new GridSpotClass(game,imageList.get('ground_grass_connect_right'),true,true));
             case 'F':
-                return('ground_dirt_fill');
+                return(new GridSpotClass(game,imageList.get('ground_dirt_fill'),true,true));
             case 'G':
-                return('girder_left_horizontal');
+                return(new GridSpotClass(game,imageList.get('girder_left_horizontal'),true,true));
             case 'H':
-                return('girder_middle_horizontal');
+                return(new GridSpotClass(game,imageList.get('girder_middle_horizontal'),true,true));
             case 'I':
-                return('girder_right_horizontal');
+                return(new GridSpotClass(game,imageList.get('girder_right_horizontal'),true,true));
             case 'J':
-                return('girder_top_vertical');
+                return(new GridSpotClass(game,imageList.get('girder_top_vertical'),true,true));
             case 'K':
-                return('girder_middle_vertical');
+                return(new GridSpotClass(game,imageList.get('girder_middle_vertical'),true,true));
             case 'L':
-                return('girder_bottom_vertical');
+                return(new GridSpotClass(game,imageList.get('girder_bottom_vertical'),true,true));
             case 'M':
-                return('girder_connect');
+                return(new GridSpotClass(game,imageList.get('girder_connect'),true,true));
             case 'N':
-                return('ground_dirt_bottom');
+                return(new GridSpotClass(game,imageList.get('ground_dirt_bottom'),true,true));
             case 'O':
-                return('ground_dirt_bottom_left');
+                return(new GridSpotClass(game,imageList.get('ground_dirt_bottom_left'),true,true));
             case 'P':
-                return('ground_dirt_bottom_right');
+                return(new GridSpotClass(game,imageList.get('ground_dirt_bottom_right'),true,true));
         
                 // sprites, return object
                 

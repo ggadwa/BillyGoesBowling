@@ -1,4 +1,5 @@
 import MapClass from '../engine/map.js';
+import GridSpotClass from '../engine/grid_spot.js';
 import PlayerWorldClass from '../code/player_world.js';
 
 export default class WorldBaseMapClass extends MapClass
@@ -10,37 +11,40 @@ export default class WorldBaseMapClass extends MapClass
     
     createMapItemForCharacter(ch)
     {
+        let game=this.getGame();
+        let imageList=game.getImageList();
+        
         switch (ch)
         {
                 // tiles, return string path
                 // an array would be better but it's easy to see the letter like this
 
             case 'A':
-                return('world_grass');
+                return(new GridSpotClass(game,imageList.get('world_grass'),true,false));
             case 'B':
-                return('world_grass_left');
+                return(new GridSpotClass(game,imageList.get('world_grass_left'),true,false));
             case 'C':
-                return('world_grass_right');
+                return(new GridSpotClass(game,imageList.get('world_grass_right'),true,false));
             case 'D':
-                return('world_grass_top');
+                return(new GridSpotClass(game,imageList.get('world_grass_top'),true,false));
             case 'E':
-                return('world_grass_bottom');
+                return(new GridSpotClass(game,imageList.get('world_grass_bottom'),true,false));
             case 'F':
-                return('world_grass_top_left');
+                return(new GridSpotClass(game,imageList.get('world_grass_top_left'),true,false));
             case 'G':
-                return('world_grass_top_right');
+                return(new GridSpotClass(game,imageList.get('world_grass_top_right'),true,false));
             case 'H':
-                return('world_grass_bottom_left');
+                return(new GridSpotClass(game,imageList.get('world_grass_bottom_left'),true,false));
             case 'I':
-                return('world_grass_bottom_right');
+                return(new GridSpotClass(game,imageList.get('world_grass_bottom_right'),true,false));
 
             case '.':
-                return('world_water');
+                return(new GridSpotClass(game,imageList.get('world_water'),true,true));
         
                 // sprites, return object
                 
             case '*':
-                return(new PlayerWorldClass(this.getGame()));
+                return(new PlayerWorldClass(game));
 
         }
          

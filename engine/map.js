@@ -1,5 +1,6 @@
 import SpriteClass from './sprite.js';
 import ParticleClass from './particle.js';
+import GridSpotClass from './grid_spot.js';
 
 export default class MapClass
 {
@@ -26,6 +27,7 @@ export default class MapClass
     initialize()
     {
         this.setMapFromArray();
+        this.finalSetup();
     }
     
     getGame()
@@ -77,7 +79,7 @@ export default class MapClass
     
     /**
      * Override this to return the map item for a character
-     * in the map text.  Accepts Image (for static map tiles)
+     * in the map text.  Accepts GridSpotClass (for static map tiles)
      * and SpriteClass (for active javascript controlled items.)
      * 
      * Note: '*' is a special character that always represents
@@ -102,6 +104,15 @@ export default class MapClass
     {
     }
     
+    /**
+     * Override this to deal with any final setup in the map, like
+     * moving sprites around for save states, etc.
+     */
+    finalSetup()
+    {
+        
+    }
+
     setMapFromArray()
     {
         let x,y,row,rowStr,ch,item;
@@ -145,8 +156,8 @@ export default class MapClass
                 
                     // a tile
                 
-                if (typeof(item)==='string') {
-                    row[x]=this.game.getImageList().get(item);
+                if (item instanceof GridSpotClass) {
+                    row[x]=item;
                     continue;
                 }
                 
@@ -180,7 +191,7 @@ export default class MapClass
     
     checkCollision(checkSprite)
     {
-        let sprite;
+        let sprite,gridSpot;
         let lx,rx,ty,by,dx,dy,gx,gy;
         let lft,top,rgt,bot;
         let row;
@@ -222,15 +233,18 @@ export default class MapClass
         
         for (gy=ty;gy<=by;gy++) {
             row=this.grid[gy];
+                
+            dy=gy*this.gridPixelSize;
+            if ((bot<=dy) || (top>(dy+this.gridPixelSize))) continue;
 
             for (gx=lx;gx<=rx;gx++) {
                 if (row[gx]===null) continue;
                 
+                gridSpot=row[gx];
+                if ((!gridSpot.show) || (!gridSpot.canCollide)) continue;
+                
                 dx=gx*this.gridPixelSize;
                 if ((rgt<=dx) || (lft>=(dx+this.gridPixelSize))) continue;
-                
-                dy=gy*this.gridPixelSize;
-                if ((bot<=dy) || (top>(dy+this.gridPixelSize))) continue;
                 
                 return(true);
             }
@@ -241,7 +255,7 @@ export default class MapClass
     
     checkCollisionStand(checkSprite,dist)
     {
-        let sprite;
+        let sprite,gridSpot;
         let ty=-1;
         let x,y,dx,dy,gx,gy;
         let lft,top,rgt,bot;
@@ -295,15 +309,18 @@ export default class MapClass
         
         for (gy=y;gy!==(y+2);gy++) {
             row=this.grid[gy];
+            
+            dy=gy*this.gridPixelSize;
+            if ((bot<dy) || (bot>(dy+this.gridPixelSize))) continue;              
 
             for (gx=0;gx!==(x+2);gx++) {
                 if (row[gx]===null) continue;
                 
+                gridSpot=row[gx];
+                if ((!gridSpot.show) || (!gridSpot.canCollide)) continue;
+                
                 dx=gx*this.gridPixelSize;
                 if ((rgt<=dx) || (lft>=(dx+this.gridPixelSize))) continue;
-                
-                dy=gy*this.gridPixelSize;
-                if ((bot<dy) || (bot>(dy+this.gridPixelSize))) continue;
                 
                 if ((dy<ty) || (ty===-1)) {
                     checkSprite.standSprite=null;
@@ -422,7 +439,7 @@ export default class MapClass
     {
         let x,y;
         let row,lx,rx,ty,by,offX,offY;
-        let sprite,particle;
+        let sprite,particle,gridSpot;
         let wid=this.game.canvasWidth;
         let rgt=this.game.getMap().width-wid;
         let high=this.game.canvasHeight;
@@ -457,7 +474,12 @@ export default class MapClass
             row=this.grid[y];
             
             for (x=lx;x<rx;x++) {
-                if (row[x]!==null) ctx.drawImage(row[x],((x*this.gridPixelSize)-offX),((y*this.gridPixelSize)-offY));
+                if (row[x]===null) continue;
+                
+                gridSpot=row[x];
+                if (!gridSpot.show) continue;
+                    
+                ctx.drawImage(gridSpot.image,((x*this.gridPixelSize)-offX),((y*this.gridPixelSize)-offY));
             }
         }
         

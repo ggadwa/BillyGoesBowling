@@ -35,25 +35,25 @@ export default class PlayerWorldClass extends SpriteClass
             // input
             
         if (input.isLeft()) {
-            this.move(-12,0);
+            this.moveWithCollision(-12,0);
             this.setCurrentImage(this.leftImageIdx);
             this.setFacing(this.FACING_LEFT);
         }
         
         if (input.isRight()) {
-            this.move(12,0);
+            this.moveWithCollision(12,0);
             this.setCurrentImage(this.rightImageIdx);
             this.setFacing(this.FACING_RIGHT);
         }
         
         if (input.isUp()) {
-            this.move(0,-12);
+            this.moveWithCollision(0,-12);
             //this.setCurrentImage(this.leftImageIdx);
             //this.setFacing(this.FACING_LEFT);
         }
         
         if (input.isDown()) {
-            this.move(0,12);
+            this.moveWithCollision(0,12);
         }
         
         this.clampX(0,(map.width-this.width));

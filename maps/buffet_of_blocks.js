@@ -7,6 +7,10 @@ export default class BuffetOfBlocksMapClass extends SideScrollBaseMapClass
         super(game);
     }
     
+    finalSetup()
+    {
+    }
+    
     getMapLayout()
     {
         return(
