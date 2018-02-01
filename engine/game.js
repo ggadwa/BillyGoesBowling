@@ -46,6 +46,10 @@ export default class GameClass
         
         this.input.initialize();
         
+            // create game specific data
+            
+        this.createData();
+        
             // load the starting map
             
         this.map=this.getStartMap();
@@ -130,6 +134,14 @@ export default class GameClass
     addData(name,addValue)
     {
         this.data.set(name,(this.data.get(name)+addValue));
+    }
+    
+    /**
+     * Override this to create any data that needs to be
+     * persisted for game state.
+     */
+    createData()
+    {
     }
             
     /**

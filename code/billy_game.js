@@ -1,6 +1,7 @@
 import GameClass from '../engine/game.js';
 import WorldMainMapClass from '../maps/world_main.js';
 import BuffetOfBlocksMapClass from '../maps/buffet_of_blocks.js';
+import MapSpotDataClass from './map_spot_data.js';
 
 export default class BillyGameClass extends GameClass
 {
@@ -8,10 +9,24 @@ export default class BillyGameClass extends GameClass
     {
         super();
         
+        Object.seal(this);
+    }
+    
+    createData()
+    {
+        let mapSpotList;
+        
         this.setData('pins',0);             // number of pins
         this.setData('door_name','');
         
-        Object.seal(this);
+            // world map spots
+ 
+        mapSpotList=[];
+        mapSpotList.push(new MapSpotDataClass('abc','xyz',1,10,10));
+        mapSpotList.push(new MapSpotDataClass('def','xyz',1,11,11));
+        mapSpotList.push(new MapSpotDataClass('hij','xyz',1,12,12));
+        
+        this.setData('map_spot_list',mapSpotList);
     }
     
     getPreloadImages()
@@ -21,6 +36,7 @@ export default class BillyGameClass extends GameClass
                 'ball',
                 'billy_left',
                 'billy_right',
+                'billy_world',
                 'pin',
                 'door',
                 'block',
@@ -55,7 +71,7 @@ export default class BillyGameClass extends GameClass
                 'drain_pipe_snake_cover',
                 'drain_pipe_snake_free',
                 'roto_carrot',
-                'world_dot',
+                'world_map_spot',
                 'world_grass',
                 'world_grass_left',
                 'world_grass_right',

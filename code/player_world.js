@@ -10,11 +10,7 @@ export default class PlayerWorldClass extends SpriteClass
         
             // setup
             
-        this.leftImageIdx=this.addImage('billy_left');
-        this.rightImageIdx=this.addImage('billy_right');
-        
-        this.setCurrentImage(this.rightImageIdx);
-        this.setFacing(this.FACING_RIGHT);
+        this.setCurrentImage(this.addImage('billy_world'));
         
         this.show=true;
         this.gravityFactor=0.0;
@@ -34,29 +30,13 @@ export default class PlayerWorldClass extends SpriteClass
         
             // input
             
-        if (input.isLeft()) {
-            this.moveWithCollision(-12,0);
-            this.setCurrentImage(this.leftImageIdx);
-            this.setFacing(this.FACING_LEFT);
-        }
-        
-        if (input.isRight()) {
-            this.moveWithCollision(12,0);
-            this.setCurrentImage(this.rightImageIdx);
-            this.setFacing(this.FACING_RIGHT);
-        }
-        
-        if (input.isUp()) {
-            this.moveWithCollision(0,-12);
-            //this.setCurrentImage(this.leftImageIdx);
-            //this.setFacing(this.FACING_LEFT);
-        }
-        
-        if (input.isDown()) {
-            this.moveWithCollision(0,12);
-        }
+        if (input.isLeft()) this.moveWithCollision(-12,0);
+        if (input.isRight()) this.moveWithCollision(12,0);
+        if (input.isUp())this.moveWithCollision(0,-12);
+        if (input.isDown()) this.moveWithCollision(0,12);
         
         this.clampX(0,(map.width-this.width));
+        this.clampY(0,(map.height-this.height));
         
         //if ((input.isAction()) && (this.grounded)) this.addMotion(0,-35);
     }

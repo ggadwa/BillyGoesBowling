@@ -155,6 +155,12 @@ export default class SpriteClass
         if (this.x>max) this.x=max;
     }
     
+    clampY(min,max)
+    {
+        if (this.y<min) this.y=min;
+        if (this.y>max) this.y=max;
+    }
+    
     setFacing(facing)
     {
         this.facing=facing;

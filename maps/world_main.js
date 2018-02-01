@@ -1,4 +1,5 @@
 import WorldBaseMapClass from './world_base.js';
+import MapSpotClass from '../code/map_spot.js';
 
 export default class WorldMainMapClass extends WorldBaseMapClass
 {
@@ -9,10 +10,25 @@ export default class WorldMainMapClass extends WorldBaseMapClass
     
     finalSetup()
     {
-        let x=8*this.gridPixelSize;
-        let y=11*this.gridPixelSize;
+        let n;
+        let sprites,mapSpotList;
         
-        this.getSpritePlayer().setPosition(x,y);
+            // the player
+            
+        this.getSpritePlayer().setPosition((8*this.gridPixelSize),(11*this.gridPixelSize));
+        
+            // map spots
+        
+        sprites=this.getSpritesOfType(MapSpotClass);
+        
+        mapSpotList=this.getGame().getData('map_spot_list');
+        console.log(mapSpotList);
+        
+        console.log(sprites.length+'='+mapSpotList.length);
+        
+        for (n=0;n!==sprites.length;n++) {
+            sprites[n].setPosition((mapSpotList[n].gridX*this.gridPixelSize),(mapSpotList[n].gridY*this.gridPixelSize));
+        }
     }
     
     getMapLayout()
@@ -42,7 +58,7 @@ export default class WorldMainMapClass extends WorldBaseMapClass
                 '.........................................................................................................................................................................',
                 '.........................................................................................................................................................................',
                 '.........................................................................................................................................................................',
-                '*'
+                '*###'
             ]
         );
     }

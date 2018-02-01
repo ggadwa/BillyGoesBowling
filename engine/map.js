@@ -71,6 +71,18 @@ export default class MapClass
         return(this.sprites[this.playerIdx]);
     }
     
+    getSpritesOfType(typeClass)
+    {
+        let sprite;
+        let list=[];
+
+        for (sprite of this.sprites) {
+            if (sprite instanceof typeClass) list.push(sprite);
+        }
+        
+        return(list);
+    }
+    
     addParticle(x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,img,count,lifeTick)
     {
         let particle=new ParticleClass(this.game,x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,img,count,lifeTick);

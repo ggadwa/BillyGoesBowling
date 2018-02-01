@@ -1,6 +1,7 @@
 import MapClass from '../engine/map.js';
 import GridSpotClass from '../engine/grid_spot.js';
 import PlayerWorldClass from '../code/player_world.js';
+import MapSpotClass from '../code/map_spot.js';
 
 export default class WorldBaseMapClass extends MapClass
 {
@@ -45,6 +46,8 @@ export default class WorldBaseMapClass extends MapClass
                 
             case '*':
                 return(new PlayerWorldClass(game));
+            case '#':
+                return(new MapSpotClass(game));
 
         }
          
