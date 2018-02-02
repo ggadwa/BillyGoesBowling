@@ -2,6 +2,7 @@ import MapClass from '../engine/map.js';
 import GridSpotClass from '../engine/grid_spot.js';
 import PlayerWorldClass from '../code/player_world.js';
 import MapSpotClass from '../code/map_spot.js';
+import MapCastleClass from '../code/map_castle.js';
 
 export default class WorldBaseMapClass extends MapClass
 {
@@ -38,6 +39,13 @@ export default class WorldBaseMapClass extends MapClass
                 return(new GridSpotClass(game,imageList.get('world_grass_bottom_left'),true,false));
             case 'I':
                 return(new GridSpotClass(game,imageList.get('world_grass_bottom_right'),true,false));
+            case 'J':
+                return(new GridSpotClass(game,imageList.get('world_bridge_horizontal'),true,false));
+            case 'K':
+                return(new GridSpotClass(game,imageList.get('world_bridge_vertical'),true,false));
+                
+            case 'M':
+                return(new GridSpotClass(game,imageList.get('world_mountain'),true,true));
 
             case '.':
                 return(new GridSpotClass(game,imageList.get('world_water'),true,true));
@@ -48,6 +56,8 @@ export default class WorldBaseMapClass extends MapClass
                 return(new PlayerWorldClass(game));
             case '#':
                 return(new MapSpotClass(game));
+            case '%':
+                return(new MapCastleClass(game));
 
         }
          

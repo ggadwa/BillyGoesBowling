@@ -2,6 +2,7 @@ import GameClass from '../engine/game.js';
 import WorldMainMapClass from '../maps/world_main.js';
 import BuffetOfBlocksMapClass from '../maps/buffet_of_blocks.js';
 import MapSpotDataClass from './map_spot_data.js';
+import MapCastleDataClass from './map_castle_data.js';
 
 export default class BillyGameClass extends GameClass
 {
@@ -14,7 +15,7 @@ export default class BillyGameClass extends GameClass
     
     createData()
     {
-        let mapSpotList;
+        let mapSpotList,mapCastleList;
         
         this.setData('pins',0);             // number of pins
         this.setData('door_name','');
@@ -22,11 +23,19 @@ export default class BillyGameClass extends GameClass
             // world map spots
  
         mapSpotList=[];
-        mapSpotList.push(new MapSpotDataClass('abc','xyz',1,10,10));
+        mapSpotList.push(new MapSpotDataClass('abc','xyz',1,8,12));
         mapSpotList.push(new MapSpotDataClass('def','xyz',1,11,11));
         mapSpotList.push(new MapSpotDataClass('hij','xyz',1,12,12));
+        mapSpotList.push(new MapSpotDataClass('hij','xyz',1,13,13));
         
         this.setData('map_spot_list',mapSpotList);
+        
+            // world map castles
+ 
+        mapCastleList=[];
+        mapCastleList.push(new MapCastleDataClass('abc','xyz',1,14,11));
+        
+        this.setData('map_castle_list',mapCastleList);
     }
     
     getPreloadImages()
@@ -72,6 +81,7 @@ export default class BillyGameClass extends GameClass
                 'drain_pipe_snake_free',
                 'roto_carrot',
                 'world_map_spot',
+                'world_map_castle',
                 'world_grass',
                 'world_grass_left',
                 'world_grass_right',
@@ -81,6 +91,9 @@ export default class BillyGameClass extends GameClass
                 'world_grass_top_right',
                 'world_grass_bottom_left',
                 'world_grass_bottom_right',
+                'world_mountain',
+                'world_bridge_horizontal',
+                'world_bridge_vertical',
                 'world_water',
                 'ui_pin'
             ]
