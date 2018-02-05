@@ -3,6 +3,7 @@ import WorldMainMapClass from '../maps/world_main.js';
 import BuffetOfBlocksMapClass from '../maps/buffet_of_blocks.js';
 import MapSpotDataClass from './map_spot_data.js';
 import MapCastleDataClass from './map_castle_data.js';
+import MapBlockDataClass from './map_block_data.js';
 
 export default class BillyGameClass extends GameClass
 {
@@ -15,7 +16,7 @@ export default class BillyGameClass extends GameClass
     
     createData()
     {
-        let mapSpotList,mapCastleList;
+        let mapSpotList,mapCastleList,mapBlockList;
         
         this.setData('pins',0);             // number of pins
         this.setData('door_name','');
@@ -23,10 +24,10 @@ export default class BillyGameClass extends GameClass
             // world map spots
  
         mapSpotList=[];
-        mapSpotList.push(new MapSpotDataClass('abc','xyz',1,8,12));
-        mapSpotList.push(new MapSpotDataClass('def','xyz',1,11,11));
-        mapSpotList.push(new MapSpotDataClass('hij','xyz',1,12,12));
-        mapSpotList.push(new MapSpotDataClass('hij','xyz',1,13,13));
+        mapSpotList.push(new MapSpotDataClass('abc','xyz',1,8,13));
+        mapSpotList.push(new MapSpotDataClass('def','xyz',1,9,14));
+        mapSpotList.push(new MapSpotDataClass('hij','xyz',1,10,11));
+        mapSpotList.push(new MapSpotDataClass('hij','xyz',1,16,15));
         
         this.setData('map_spot_list',mapSpotList);
         
@@ -36,6 +37,14 @@ export default class BillyGameClass extends GameClass
         mapCastleList.push(new MapCastleDataClass('abc','xyz',1,14,11));
         
         this.setData('map_castle_list',mapCastleList);
+        
+            // world blocks
+            
+        mapBlockList=[];
+        mapBlockList.push(new MapSpotDataClass('abc','xyz',1,16,11));
+        mapBlockList.push(new MapSpotDataClass('def','xyz',1,18,15));
+        
+        this.setData('map_block_list',mapBlockList);
     }
     
     getPreloadImages()
@@ -82,6 +91,7 @@ export default class BillyGameClass extends GameClass
                 'roto_carrot',
                 'world_map_spot',
                 'world_map_castle',
+                'world_map_block',
                 'world_grass',
                 'world_grass_left',
                 'world_grass_right',

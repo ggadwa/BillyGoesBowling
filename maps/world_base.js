@@ -3,6 +3,7 @@ import GridSpotClass from '../engine/grid_spot.js';
 import PlayerWorldClass from '../code/player_world.js';
 import MapSpotClass from '../code/map_spot.js';
 import MapCastleClass from '../code/map_castle.js';
+import MapBlockClass from '../code/map_block.js';
 
 export default class WorldBaseMapClass extends MapClass
 {
@@ -58,6 +59,8 @@ export default class WorldBaseMapClass extends MapClass
                 return(new MapSpotClass(game));
             case '%':
                 return(new MapCastleClass(game));
+            case '&':
+                return(new MapBlockClass(game));
 
         }
          
