@@ -1,10 +1,10 @@
 export default class MapCastleDataClass
 {
-    constructor(title,fileName,pinCount,gridX,gridY)
+    constructor(title,pinCount,mapBlockOpenList,gridX,gridY)
     {
         this.title=title;
-        this.fileName=fileName;
         this.pinCount=pinCount;
+        this.mapBlockOpenList=mapBlockOpenList;
         this.gridX=gridX;
         this.gridY=gridY;
         

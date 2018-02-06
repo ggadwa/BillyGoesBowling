@@ -2,4 +2,4 @@
 * tick sound effect
 
 
-* remove all door stuff (including data stuff)
+* need smaller movement when world map colliding

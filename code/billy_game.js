@@ -19,30 +19,31 @@ export default class BillyGameClass extends GameClass
         let mapSpotList,mapCastleList,mapBlockList;
         
         this.setData('pins',0);             // number of pins
-        this.setData('door_name','');
+        this.setData('banner_text','');     // banner messages
+        this.setData('banner_count',-1);
         
             // world map spots
  
         mapSpotList=[];
-        mapSpotList.push(new MapSpotDataClass('abc','xyz',1,8,13));
-        mapSpotList.push(new MapSpotDataClass('def','xyz',1,9,14));
-        mapSpotList.push(new MapSpotDataClass('hij','xyz',1,10,11));
-        mapSpotList.push(new MapSpotDataClass('hij','xyz',1,16,15));
+        mapSpotList.push(new MapSpotDataClass('Buffet of Blocks','BuffetOfBlocksMapClass',8,13));
+        mapSpotList.push(new MapSpotDataClass('def','xyz',9,14));
+        mapSpotList.push(new MapSpotDataClass('hij','xyz',10,11));
+        mapSpotList.push(new MapSpotDataClass('hij','xyz',16,15));
         
         this.setData('map_spot_list',mapSpotList);
         
             // world map castles
  
         mapCastleList=[];
-        mapCastleList.push(new MapCastleDataClass('abc','xyz',1,14,11));
+        mapCastleList.push(new MapCastleDataClass('The Executioner\'s Castle',2,[1],14,11));
         
         this.setData('map_castle_list',mapCastleList);
         
             // world blocks
             
         mapBlockList=[];
-        mapBlockList.push(new MapSpotDataClass('abc','xyz',1,16,11));
-        mapBlockList.push(new MapSpotDataClass('def','xyz',1,18,15));
+        mapBlockList.push(new MapBlockDataClass(16,11));
+        mapBlockList.push(new MapBlockDataClass(18,15));
         
         this.setData('map_block_list',mapBlockList);
     }
@@ -105,7 +106,8 @@ export default class BillyGameClass extends GameClass
                 'world_bridge_horizontal',
                 'world_bridge_vertical',
                 'world_water',
-                'ui_pin'
+                'ui_pin',
+                'ui_banner'
             ]
         );
     }
@@ -142,16 +144,34 @@ export default class BillyGameClass extends GameClass
         //return(new BuffetOfBlocksMapClass(this));
     }
     
+    setBanner(str)
+    {   
+        let count=this.getData('banner_count');
+        
+        if (count===-1) {
+            this.setData('banner_count',0);
+        }
+        else {
+            if (count>=10) this.setData('banner_count',10);
+        }
+        
+        this.setData('banner_text',str);
+
+    }
+    
     runAI()
     {
-            // clear the door name
-            
-        this.setData('door_name','');
+            // run any banners
+
+        if (this.getData('banner_count')!==-1) {
+            this.incrementData('banner_count');
+            if (this.getData('banner_count')>=100) this.setData('banner_count',-1);
+        }
     }
     
     drawUI()
     {
-        let str;
+        let count,mx,wid;
         
             // the pin readout
             
@@ -159,12 +179,29 @@ export default class BillyGameClass extends GameClass
         this.setupUIText('24px Arial','#000000','left','alphabetic');
         this.drawUIText(('x '+this.getData('pins')),(this.canvasWidth-75),25);
         
-            // the door text
+            // banners
             
-        str=this.getData('door_name');
-        if (str.length!==0) {
+        count=this.getData('banner_count');
+        if (count!==-1) {
+            
+                // the alpha
+                
+            if (count<10) {
+                this.drawSetAlpha(count/10);
+            }
+            else {
+                if (count>90) this.drawSetAlpha(1.0-((count-90)/10));
+            }
+            
+                // the banner
+                
+            mx=Math.trunc(this.canvasWidth*0.5);
+            wid=this.getImageList().get('ui_banner').width;
+            this.drawUIImage('ui_banner',(mx-Math.trunc(wid*0.5)),(this.canvasHeight-70));
             this.setupUIText('bolder 36px Arial','#000000','center','alphabetic');
-            this.drawUIText(str,Math.trunc(this.canvasWidth*0.5),(this.canvasHeight-40));
+            this.drawUIText(this.getData('banner_text'),mx,(this.canvasHeight-30));
+            
+            this.drawSetAlpha(1.0);
         }
     }
 }

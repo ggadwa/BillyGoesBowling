@@ -1,10 +1,9 @@
 export default class MapSpotDataClass
 {
-    constructor(title,fileName,pinCount,gridX,gridY)
+    constructor(title,mapName,gridX,gridY)
     {
         this.title=title;
-        this.fileName=fileName;
-        this.pinCount=pinCount;
+        this.mapName=mapName;
         this.gridX=gridX;
         this.gridY=gridY;
         

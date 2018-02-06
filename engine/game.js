@@ -169,6 +169,11 @@ export default class GameClass
     {
     }
     
+    drawSetAlpha(alpha)
+    {
+        this.backCTX.globalAlpha=alpha;
+    }
+    
     drawUIImage(name,x,y)
     {
         this.backCTX.drawImage(this.imageList.get(name),x,y);
