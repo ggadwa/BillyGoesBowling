@@ -29,6 +29,7 @@ export default class GameClass
         
         this.data=new Map();
         this.map=null;
+        this.gotoMapTrigger=null;
     }
     
     initialize()
@@ -136,6 +137,11 @@ export default class GameClass
         this.data.set(name,(this.data.get(name)+addValue));
     }
     
+    gotoMap(map)
+    {
+        this.gotoMapTrigger=map;
+    }
+    
     /**
      * Override this to create any data that needs to be
      * persisted for game state.
@@ -196,6 +202,7 @@ export default class GameClass
     {
         let physicTick;
         
+        
             // continue to run physics until we've caught up
             
         while (true) {
@@ -204,8 +211,22 @@ export default class GameClass
             
             this.physicsTimestamp+=this.PHYSICS_TICK_FREQUENCY;
             
+                // no map gotos
+
+            this.gotoMapTrigger=null;
+            
+                // run game and map AI
+                // which runs the sprite AI
+                
             this.runAI();
             this.map.run();
+            
+                // check for map goto triggers
+                
+            if (this.gotoMapTrigger!==null) {
+                this.map=this.gotoMapTrigger;
+                this.map.initialize();
+            }
         }
     }
     

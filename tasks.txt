@@ -2,4 +2,3 @@
 * tick sound effect
 
 
-* need smaller movement when world map colliding

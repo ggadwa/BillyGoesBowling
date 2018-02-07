@@ -26,6 +26,7 @@ export default class WorldMainMapClass extends WorldBaseMapClass
         
         for (n=0;n!==sprites.length;n++) {
             sprites[n].setPosition(((mapSpotList[n].gridX*this.gridPixelSize)+16),((mapSpotList[n].gridY*this.gridPixelSize)-16));
+            sprites[n].setUserData(mapSpotList[n]);
         }
         
             // map castles
@@ -35,6 +36,7 @@ export default class WorldMainMapClass extends WorldBaseMapClass
         
         for (n=0;n!==sprites.length;n++) {
             sprites[n].setPosition((mapCastleList[n].gridX*this.gridPixelSize),(mapCastleList[n].gridY*this.gridPixelSize));
+            sprites[n].setUserData(mapCastleList[n]);
         }
         
             // map blocks
@@ -44,6 +46,7 @@ export default class WorldMainMapClass extends WorldBaseMapClass
         
         for (n=0;n!==sprites.length;n++) {
             sprites[n].setPosition((mapBlockList[n].gridX*this.gridPixelSize),(mapBlockList[n].gridY*this.gridPixelSize));
+            sprites[n].setUserData(mapBlockList[n]);
         }
     }
     

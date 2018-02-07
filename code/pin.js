@@ -1,5 +1,6 @@
 import SpriteClass from '../engine/sprite.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
+import WorldMainMapClass from '../maps/world_main.js';
 
 export default class PinClass extends SpriteClass
 {
@@ -32,7 +33,10 @@ export default class PinClass extends SpriteClass
             // add pin
             
         game.incrementData('pins',1);
-        
         this.delete();
+        
+            // jump back to map
+            
+        game.gotoMap(new WorldMainMapClass(game));
     }
 }

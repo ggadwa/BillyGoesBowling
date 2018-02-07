@@ -24,6 +24,7 @@ export default class MapSpotClass extends SpriteClass
     runAI()
     {
         let game=this.getGame();
+        let input=game.getInput();
         
             // are we colliding with player?
             
@@ -31,7 +32,13 @@ export default class MapSpotClass extends SpriteClass
             
             // change UI
             
-        game.setBanner('Test');
+        game.setBanner(this.getUserData().title);
+        
+            // if action, than jump to make
+            
+        if (input.isAction()) {
+            game.gotoMap(this.getUserData().map);
+        }
     }
 
 }

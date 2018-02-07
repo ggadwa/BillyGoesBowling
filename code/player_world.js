@@ -24,20 +24,29 @@ export default class PlayerWorldClass extends SpriteClass
     
     runAI()
     {
+        let n,moveX,moveY;
         let game=this.getGame();
         let map=game.getMap();
         let input=game.getInput();
         
-            // input
+            // movement
             
-        if (input.isLeft()) this.moveWithCollision(-12,0);
-        if (input.isRight()) this.moveWithCollision(12,0);
-        if (input.isUp())this.moveWithCollision(0,-12);
-        if (input.isDown()) this.moveWithCollision(0,12);
+        moveX=0;
+        moveY=0;
+        
+        if (input.isLeft()) moveX=-1;
+        if (input.isRight()) moveX=1;
+        if (input.isUp()) moveY=-1;
+        if (input.isDown()) moveY=1;
+        
+        if ((moveX!==0) || (moveY!==0)) {
+            for (n=0;n!==10;n++) {
+                if (moveX!==0) this.moveWithCollision(moveX,0);
+                if (moveY!==0) this.moveWithCollision(0,moveY);
+            }
+        }
         
         this.clampX(0,(map.width-this.width));
         this.clampY(0,(map.height-this.height));
-        
-        //if ((input.isAction()) && (this.grounded)) this.addMotion(0,-35);
     }
 }

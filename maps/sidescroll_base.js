@@ -21,6 +21,9 @@ export default class SideScrollBaseMapClass extends MapClass
     
     createMapItemForCharacter(ch)
     {
+        let game=this.getGame();
+        let imageList=game.getImageList();
+        
         switch (ch)
         {
                 // tiles, return string path

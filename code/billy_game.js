@@ -1,9 +1,9 @@
 import GameClass from '../engine/game.js';
-import WorldMainMapClass from '../maps/world_main.js';
-import BuffetOfBlocksMapClass from '../maps/buffet_of_blocks.js';
 import MapSpotDataClass from './map_spot_data.js';
 import MapCastleDataClass from './map_castle_data.js';
 import MapBlockDataClass from './map_block_data.js';
+import WorldMainMapClass from '../maps/world_main.js';
+import BuffetOfBlocksMapClass from '../maps/buffet_of_blocks.js';
 
 export default class BillyGameClass extends GameClass
 {
@@ -25,7 +25,7 @@ export default class BillyGameClass extends GameClass
             // world map spots
  
         mapSpotList=[];
-        mapSpotList.push(new MapSpotDataClass('Buffet of Blocks','BuffetOfBlocksMapClass',8,13));
+        mapSpotList.push(new MapSpotDataClass('Buffet of Blocks',new BuffetOfBlocksMapClass(this),8,13));
         mapSpotList.push(new MapSpotDataClass('def','xyz',9,14));
         mapSpotList.push(new MapSpotDataClass('hij','xyz',10,11));
         mapSpotList.push(new MapSpotDataClass('hij','xyz',16,15));
@@ -35,7 +35,7 @@ export default class BillyGameClass extends GameClass
             // world map castles
  
         mapCastleList=[];
-        mapCastleList.push(new MapCastleDataClass('The Executioner\'s Castle',2,[1],14,11));
+        mapCastleList.push(new MapCastleDataClass('The Executioner\'s Castle',null,2,[1],14,11));
         
         this.setData('map_castle_list',mapCastleList);
         
@@ -165,7 +165,7 @@ export default class BillyGameClass extends GameClass
 
         if (this.getData('banner_count')!==-1) {
             this.incrementData('banner_count');
-            if (this.getData('banner_count')>=100) this.setData('banner_count',-1);
+            if (this.getData('banner_count')>=20) this.setData('banner_count',-1);
         }
     }
     
@@ -190,7 +190,7 @@ export default class BillyGameClass extends GameClass
                 this.drawSetAlpha(count/10);
             }
             else {
-                if (count>90) this.drawSetAlpha(1.0-((count-90)/10));
+                if (count>10) this.drawSetAlpha(1.0-((count-10)/10));
             }
             
                 // the banner
@@ -199,7 +199,7 @@ export default class BillyGameClass extends GameClass
             wid=this.getImageList().get('ui_banner').width;
             this.drawUIImage('ui_banner',(mx-Math.trunc(wid*0.5)),(this.canvasHeight-70));
             this.setupUIText('bolder 36px Arial','#000000','center','alphabetic');
-            this.drawUIText(this.getData('banner_text'),mx,(this.canvasHeight-30));
+            this.drawUIText(this.getData('banner_text'),mx,(this.canvasHeight-27));
             
             this.drawSetAlpha(1.0);
         }

@@ -1,9 +1,9 @@
 export default class MapSpotDataClass
 {
-    constructor(title,mapName,gridX,gridY)
+    constructor(title,map,gridX,gridY)
     {
         this.title=title;
-        this.mapName=mapName;
+        this.map=map;
         this.gridX=gridX;
         this.gridY=gridY;
         

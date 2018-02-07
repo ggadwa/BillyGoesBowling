@@ -20,6 +20,8 @@ export default class SpriteClass
         this.width=0;
         this.height=0;
         
+        this.userData=null;
+        
         this.gravityFactor=0.0;
         this.gravityMinValue=0;
         this.gravityMaxValue=0;
@@ -179,6 +181,16 @@ export default class SpriteClass
     isDeleted()
     {
         return(this.removeFlag);
+    }
+    
+    setUserData(userData)
+    {
+        this.userData=userData;
+    }
+    
+    getUserData()
+    {
+        return(this.userData);
     }
     
     run()
