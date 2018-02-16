@@ -7,8 +7,9 @@ export default class BuffetOfBlocksMapClass extends SideScrollBaseMapClass
         super(game);
     }
     
-    finalSetup()
+    mapStartup()
     {
+        super.mapStartup();
     }
     
     getMapLayout()
@@ -21,7 +22,7 @@ export default class BuffetOfBlocksMapClass extends SideScrollBaseMapClass
                 '',
                 '',
                 '                                                                                                                @',
-                '                                                                                                          e    BAAC             b @',
+                '                                                                                                          e    BAAC               @',
                 '                                                                                                   BAACh       ONNP            fffffccccccccc',
                 '                                                                                  BAACh            ONNP                      fffffccccccccccc',
                 '                cc                                       ff         @         ggggONNP                                     ffffffffcccccccccc',
@@ -29,7 +30,7 @@ export default class BuffetOfBlocksMapClass extends SideScrollBaseMapClass
                 '                cddc     ccc        dd        J       ccceeec      ffeff                                               fffffffffffffffccccccc',
                 '              ccccccc  cccJcc       de      ccKe    cccceeeecccc  ccceeccc                                         BAAAAAAAAAAAAAAAAAAAAAACccc',
                 '            BAAAAACcccccccKccc      de     GHHMHH@eeeeeeeeeeeeeeeeeeeecccccc                                    BAADFFFFFFFFFFFFFFFFFFFFFFEACc',
-                ' *      BAAADFFFFFECccccccLcccc     eeccc  eeeeeeeecccdddcccccccccccccccccccc          @           @         BAADFFFFFFFFFFFFFFFFFFFFFFFFFFEAAAC',
+                ' *   b   BAAADFFFFFECccccccLcccc     eeccc  eeeeeeeecccdddcccccccccccccccccccc          @           @         BAADFFFFFFFFFFFFFFFFFFFFFFFFFFEAAAC',
                 'BAAAAAAAADFFFFFFFFFFEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEAAAAC'
             ]
         );

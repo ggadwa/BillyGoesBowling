@@ -26,13 +26,26 @@ export default class MapClass
     
     initialize()
     {
+        let sprite;
+
         this.setMapFromArray();
-        this.finalSetup();
+        this.mapStartup();
+        
+            // call all the sprite map enter
+            
+        for (sprite of this.sprites) {
+            sprite.mapStartup();
+        }
     }
     
     getGame()
     {
         return(this.game);
+    }
+    
+    getMapName()
+    {
+        return(this.constructor.name);
     }
     
     getGridWidth()
@@ -117,12 +130,12 @@ export default class MapClass
     }
     
     /**
-     * Override this to deal with any final setup in the map, like
-     * moving sprites around for save states, etc.
+     * Override this to deal with any setup when a map is started, like
+     * moving sprites around for save states, etc.  All sprites in a map
+     * also get this call.
      */
-    finalSetup()
-    {
-        
+    mapStartup()
+    {   
     }
 
     setMapFromArray()

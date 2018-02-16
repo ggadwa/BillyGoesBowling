@@ -114,27 +114,13 @@ export default class GameClass
     
     getData(name)
     {
-        return(this.data.get(name));
+        let val=this.data.get(name);
+        return((val===undefined)?null:val);
     }
     
     setData(name,value)
     {
         this.data.set(name,value);
-    }
-    
-    incrementData(name)
-    {
-        this.data.set(name,(this.data.get(name)+1));
-    }
-    
-    decrementData(name)
-    {
-        this.data.set(name,(this.data.get(name)-1));
-    }
-    
-    addData(name,addValue)
-    {
-        this.data.set(name,(this.data.get(name)+addValue));
     }
     
     gotoMap(map)
@@ -224,6 +210,7 @@ export default class GameClass
                 // check for map goto triggers
                 
             if (this.gotoMapTrigger!==null) {
+                this.input.keyClear();
                 this.map=this.gotoMapTrigger;
                 this.map.initialize();
             }

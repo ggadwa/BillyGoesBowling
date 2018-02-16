@@ -19,8 +19,9 @@ export default class SpriteClass
         
         this.width=0;
         this.height=0;
+        this.alpha=1.0;
         
-        this.userData=null;
+        this.data=new Map();
         
         this.gravityFactor=0.0;
         this.gravityMinValue=0;
@@ -52,6 +53,14 @@ export default class SpriteClass
     getMap()
     {
         return(this.game.getMap());
+    }
+    
+    /**
+     * Override this to do any operations on this sprite
+     * that happen when a map is started.
+     */
+    mapStartup()
+    {
     }
     
     /**
@@ -183,14 +192,15 @@ export default class SpriteClass
         return(this.removeFlag);
     }
     
-    setUserData(userData)
+    getData(name)
     {
-        this.userData=userData;
+        let val=this.data.get(name);
+        return((val===undefined)?null:val);
     }
     
-    getUserData()
+    setData(name,value)
     {
-        return(this.userData);
+        this.data.set(name,value);
     }
     
     run()
@@ -246,6 +256,13 @@ export default class SpriteClass
         if ((x>=this.game.canvasWidth) || ((x+this.width)<=0)) return;
         if ((y>=this.game.canvasHeight) || ((x+this.height)<=0)) return;
         
-        ctx.drawImage(this.images[this.currentImageIdx],x,y);
+        if (this.alpha!==1.0) {
+            ctx.globalAlpha=this.alpha;
+            ctx.drawImage(this.images[this.currentImageIdx],x,y);
+            ctx.globalAlpha=1.0;
+        }
+        else {
+            ctx.drawImage(this.images[this.currentImageIdx],x,y);
+        }
     }
 }

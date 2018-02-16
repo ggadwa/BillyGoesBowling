@@ -1,9 +1,5 @@
 import GameClass from '../engine/game.js';
-import MapSpotDataClass from './map_spot_data.js';
-import MapCastleDataClass from './map_castle_data.js';
-import MapBlockDataClass from './map_block_data.js';
 import WorldMainMapClass from '../maps/world_main.js';
-import BuffetOfBlocksMapClass from '../maps/buffet_of_blocks.js';
 
 export default class BillyGameClass extends GameClass
 {
@@ -16,36 +12,9 @@ export default class BillyGameClass extends GameClass
     
     createData()
     {
-        let mapSpotList,mapCastleList,mapBlockList;
-        
         this.setData('pins',0);             // number of pins
         this.setData('banner_text','');     // banner messages
         this.setData('banner_count',-1);
-        
-            // world map spots
- 
-        mapSpotList=[];
-        mapSpotList.push(new MapSpotDataClass('Buffet of Blocks',new BuffetOfBlocksMapClass(this),8,13));
-        mapSpotList.push(new MapSpotDataClass('def','xyz',9,14));
-        mapSpotList.push(new MapSpotDataClass('hij','xyz',10,11));
-        mapSpotList.push(new MapSpotDataClass('hij','xyz',16,15));
-        
-        this.setData('map_spot_list',mapSpotList);
-        
-            // world map castles
- 
-        mapCastleList=[];
-        mapCastleList.push(new MapCastleDataClass('The Executioner\'s Castle',null,2,[1],14,11));
-        
-        this.setData('map_castle_list',mapCastleList);
-        
-            // world blocks
-            
-        mapBlockList=[];
-        mapBlockList.push(new MapBlockDataClass(16,11));
-        mapBlockList.push(new MapBlockDataClass(18,15));
-        
-        this.setData('map_block_list',mapBlockList);
     }
     
     getPreloadImages()
@@ -141,7 +110,6 @@ export default class BillyGameClass extends GameClass
     getStartMap()
     {
         return(new WorldMainMapClass(this));
-        //return(new BuffetOfBlocksMapClass(this));
     }
     
     setBanner(str)
@@ -161,11 +129,15 @@ export default class BillyGameClass extends GameClass
     
     runAI()
     {
+        let bannerCount;
+        
             // run any banners
+        
+        bannerCount=this.getData('banner_count');
 
-        if (this.getData('banner_count')!==-1) {
-            this.incrementData('banner_count');
-            if (this.getData('banner_count')>=20) this.setData('banner_count',-1);
+        if (bannerCount!==-1) {
+            bannerCount++;
+            this.setData('banner_count',((bannerCount>=20)?-1:bannerCount));
         }
     }
     

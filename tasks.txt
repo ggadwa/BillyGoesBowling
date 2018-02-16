@@ -2,3 +2,4 @@
 * tick sound effect
 
 
+--> sprites and tiles need to be separate text, it's annoying but too much work otherwise

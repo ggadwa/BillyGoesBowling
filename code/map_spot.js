@@ -32,12 +32,12 @@ export default class MapSpotClass extends SpriteClass
             
             // change UI
             
-        game.setBanner(this.getUserData().title);
+        game.setBanner(this.getData('title'));
         
             // if action, than jump to make
             
         if (input.isAction()) {
-            game.gotoMap(this.getUserData().map);
+            game.gotoMap(this.getData('map'));
         }
     }
 

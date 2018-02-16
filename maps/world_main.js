@@ -2,6 +2,7 @@ import WorldBaseMapClass from './world_base.js';
 import MapSpotClass from '../code/map_spot.js';
 import MapCastleClass from '../code/map_castle.js';
 import MapBlockClass from '../code/map_block.js';
+import BuffetOfBlocksMapClass from '../maps/buffet_of_blocks.js';
 
 export default class WorldMainMapClass extends WorldBaseMapClass
 {
@@ -10,10 +11,10 @@ export default class WorldMainMapClass extends WorldBaseMapClass
         super(game);
     }
     
-    finalSetup()
+    mapStartup()
     {
-        let n;
-        let sprites,mapSpotList,mapCastleList,mapBlockList;
+        let game=this.getGame();
+        let sprites;
         
             // the player
             
@@ -22,32 +23,39 @@ export default class WorldMainMapClass extends WorldBaseMapClass
             // map spots
         
         sprites=this.getSpritesOfType(MapSpotClass);
-        mapSpotList=this.getGame().getData('map_spot_list');
         
-        for (n=0;n!==sprites.length;n++) {
-            sprites[n].setPosition(((mapSpotList[n].gridX*this.gridPixelSize)+16),((mapSpotList[n].gridY*this.gridPixelSize)-16));
-            sprites[n].setUserData(mapSpotList[n]);
-        }
+        sprites[0].setData('title','Buffet of Blocks');
+        sprites[0].setData('map',new BuffetOfBlocksMapClass(game));
+        sprites[0].setPosition(((8*this.gridPixelSize)+16),((13*this.gridPixelSize)-16));
+        
+        sprites[1].setData('title','abc');
+        sprites[1].setData('map',new BuffetOfBlocksMapClass(game));
+        sprites[1].setPosition(((9*this.gridPixelSize)+16),((14*this.gridPixelSize)-16));
+
+        sprites[2].setData('title','def');
+        sprites[2].setData('map',new BuffetOfBlocksMapClass(game));
+        sprites[2].setPosition(((10*this.gridPixelSize)+16),((11*this.gridPixelSize)-16));
+
+        sprites[3].setData('title','hij');
+        sprites[3].setData('map',new BuffetOfBlocksMapClass(game));
+        sprites[3].setPosition(((16*this.gridPixelSize)+16),((15*this.gridPixelSize)-16));
         
             // map castles
         
         sprites=this.getSpritesOfType(MapCastleClass);
-        mapCastleList=this.getGame().getData('map_castle_list');
         
-        for (n=0;n!==sprites.length;n++) {
-            sprites[n].setPosition((mapCastleList[n].gridX*this.gridPixelSize),(mapCastleList[n].gridY*this.gridPixelSize));
-            sprites[n].setUserData(mapCastleList[n]);
-        }
+        sprites[0].setData('title','The Executioner\'s Castle');
+        sprites[0].setData('map',null);
+        sprites[0].setData('pin_count',2);
+        sprites[0].setData('block_open_list',[1]);
+        sprites[0].setPosition((14*this.gridPixelSize),(11*this.gridPixelSize));
         
             // map blocks
         
         sprites=this.getSpritesOfType(MapBlockClass);
-        mapBlockList=this.getGame().getData('map_block_list');
         
-        for (n=0;n!==sprites.length;n++) {
-            sprites[n].setPosition((mapBlockList[n].gridX*this.gridPixelSize),(mapBlockList[n].gridY*this.gridPixelSize));
-            sprites[n].setUserData(mapBlockList[n]);
-        }
+        sprites[0].setPosition((16*this.gridPixelSize),(11*this.gridPixelSize));
+        sprites[0].setPosition((18*this.gridPixelSize),(15*this.gridPixelSize));
     }
     
     getMapLayout()
