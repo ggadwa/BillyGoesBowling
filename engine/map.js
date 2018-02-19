@@ -103,29 +103,56 @@ export default class MapClass
     }
     
     /**
-     * Override this to return the map item for a character
-     * in the map text.  Accepts GridSpotClass (for static map tiles)
-     * and SpriteClass (for active javascript controlled items.)
+     * Override this to return the map tiles for a character
+     * in the map tile text.  Accepts GridSpotClass as the return.
+     * 
+     * @param {character} The character for the grid spot
+     * @returns {GridSpotClass} A GridSpotClass object to place at that grid spot
+     */
+    createMapTileForCharacter(ch)
+    {
+    }
+    
+    /**
+     * Override this to return the map sprite for a character
+     * in the map text.  Accepts SpriteClass as the return.
      * 
      * Note: '*' is a special character that always represents
      * the player sprite.  Any other chacters can be used for
      * anything else.
      * 
      * @param {character} The character for the grid spot
-     * @returns {Image|SpriteClass} Either an Image object or a SpriteClass object
+     * @returns {SpriteClass} A SpriteClass object to spawn at this spot
      */
-    createMapItemForCharacter(ch)
+    createMapSpriteForCharacter(ch)
     {
     }
     
     /**
-     * Override this to return the map layout for this map.  The
+     * Override this to return the map tile layout.  The
      * expected return is an array of strings, which each character
      * in the string representing a single grid spot in the map.
+     * 
+     * Each character in this array calls back to
+     * createMapTileForCharacter(ch).
      *
      * @returns {array} The map textual array
      */
-    getMapLayout()
+    getMapTileLayout()
+    {
+    }
+    
+    /**
+     * Override this to return the map sprite layout.  The
+     * expected return is an array of strings, which each character
+     * in the string representing a single grid spot in the map.
+     * 
+     * Each character in this array calls back to
+     * createMapSpriteForCharacter(ch).
+     *
+     * @returns {array} The map textual array
+     */
+    getMapSpriteLayout()
     {
     }
     
@@ -140,21 +167,24 @@ export default class MapClass
 
     setMapFromArray()
     {
-        let x,y,row,rowStr,ch,item;
+        let x,y,row,tileRowStr,spriteRowStr,ch,tile,sprite;
         let idx;
-        let mapArray=this.getMapLayout();
-        let rowCount=mapArray.length;
+        let mapTileLayou=this.getMapTileLayout();
+        let mapSpriteLayout=this.getMapSpriteLayout();
+        let rowCount=mapTileLayou.length;
         let colCount=0;
         
             // find longest horizontal line
             // and pad all lines to that size
         
         for (y=0;y!==rowCount;y++) {
-            if (mapArray[y].length>colCount) colCount=mapArray[y].length;
+            if (mapTileLayou[y].length>colCount) colCount=mapTileLayou[y].length;
+            if (mapSpriteLayout[y].length>colCount) colCount=mapSpriteLayout[y].length;
         }
         
         for (y=0;y!==rowCount;y++) {
-            mapArray[y]=mapArray[y].padEnd(colCount,' ');
+            mapTileLayou[y]=mapTileLayou[y].padEnd(colCount,' ');
+            mapSpriteLayout[y]=mapSpriteLayout[y].padEnd(colCount,' ');
         }
 
             // translate to grid
@@ -164,36 +194,33 @@ export default class MapClass
         
         for (y=0;y!==rowCount;y++) {
             row=new Array(colCount);
-            rowStr=mapArray[y];
+            
+            tileRowStr=mapTileLayou[y];
+            spriteRowStr=mapSpriteLayout[y];
             
             for (x=0;x!==colCount;x++) {
+                
+                    // get the tile
+                    
                 row[x]=null;
-                ch=rowStr.charAt(x);
-                
-                    // space is nothing
                     
-                if (ch===32) continue;
-                
-                    // get the item
-                    
-                item=this.createMapItemForCharacter(ch);
-                if (item===null) continue;
-                
-                    // a tile
-                
-                if (item instanceof GridSpotClass) {
-                    row[x]=item;
-                    continue;
+                ch=tileRowStr.charAt(x);
+                if (ch!==32) {
+                    tile=this.createMapTileForCharacter(ch);
+                    if (tile!==null) row[x]=tile;
                 }
                 
                     // a sprite
-                    
-                if (item instanceof SpriteClass) {
-                    item.setPosition((x*this.gridPixelSize),((y+1)*this.gridPixelSize));              // sprites Y is on the bottom
-                    idx=this.addSprite(item);
-                    item.setGridSpawnPoint(x,y);
-                    if (ch==='*') this.playerIdx=idx;
-                    continue;
+                
+                ch=spriteRowStr.charAt(x);
+                if (ch!==32) {
+                    sprite=this.createMapSpriteForCharacter(ch);
+                    if (sprite!==null) {
+                        sprite.setPosition((x*this.gridPixelSize),((y+1)*this.gridPixelSize));              // sprites Y is on the bottom
+                        idx=this.addSprite(sprite);
+                        sprite.setGridSpawnPoint(x,y);
+                        if (ch==='*') this.playerIdx=idx;
+                    }
                 }
             }
             

@@ -19,16 +19,13 @@ export default class SideScrollBaseMapClass extends MapClass
         super(game);
     }
     
-    createMapItemForCharacter(ch)
+    createMapTileForCharacter(ch)
     {
         let game=this.getGame();
         let imageList=game.getImageList();
         
         switch (ch)
         {
-                // tiles, return string path
-                // an array would be better but it's easy to see the letter like this
-                
             case 'A':
                 return(new GridSpotClass(game,imageList.get('ground_grass'),true,true));
             case 'B':
@@ -61,9 +58,18 @@ export default class SideScrollBaseMapClass extends MapClass
                 return(new GridSpotClass(game,imageList.get('ground_dirt_bottom_left'),true,true));
             case 'P':
                 return(new GridSpotClass(game,imageList.get('ground_dirt_bottom_right'),true,true));
-        
-                // sprites, return object
                 
+         }
+         
+         return(null);
+    }
+    
+    createMapSpriteForCharacter(ch)
+    {
+        let game=this.getGame();
+        
+        switch (ch)
+        {
             case '*':
                 return(new PlayerSideScrollClass(this.getGame()));
             case 'a':
@@ -92,4 +98,5 @@ export default class SideScrollBaseMapClass extends MapClass
          
          return(null);
     }
+
 }

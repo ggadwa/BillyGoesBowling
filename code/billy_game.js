@@ -112,7 +112,7 @@ export default class BillyGameClass extends GameClass
         return(new WorldMainMapClass(this));
     }
     
-    setBanner(str)
+    setBanner(str,pinCount)
     {   
         let count=this.getData('banner_count');
         
@@ -124,7 +124,7 @@ export default class BillyGameClass extends GameClass
         }
         
         this.setData('banner_text',str);
-
+        this.setData('banner_pin_count',pinCount);
     }
     
     runAI()
@@ -143,7 +143,7 @@ export default class BillyGameClass extends GameClass
     
     drawUI()
     {
-        let count,mx,wid;
+        let count,mx,lx,rx,wid,pinCount;
         
             // the pin readout
             
@@ -167,11 +167,24 @@ export default class BillyGameClass extends GameClass
             
                 // the banner
                 
-            mx=Math.trunc(this.canvasWidth*0.5);
             wid=this.getImageList().get('ui_banner').width;
-            this.drawUIImage('ui_banner',(mx-Math.trunc(wid*0.5)),(this.canvasHeight-70));
-            this.setupUIText('bolder 36px Arial','#000000','center','alphabetic');
-            this.drawUIText(this.getData('banner_text'),mx,(this.canvasHeight-27));
+            mx=Math.trunc(this.canvasWidth*0.5);
+            lx=mx-Math.trunc(wid*0.5);
+            this.drawUIImage('ui_banner',lx,(this.canvasHeight-70));
+            
+            pinCount=this.getData('banner_pin_count');
+            if (pinCount===-1) {
+                this.setupUIText('bolder 36px Arial','#000000','center','alphabetic');
+                this.drawUIText(this.getData('banner_text'),mx,(this.canvasHeight-25));
+            }
+            else {
+                this.setupUIText('bolder 36px Arial','#000000','left','alphabetic');
+                this.drawUIText(this.getData('banner_text'),(lx+5),(this.canvasHeight-25));
+                
+                rx=lx+wid;
+                this.drawUIImage('ui_pin',(rx-95),(this.canvasHeight-55));
+                this.drawUIText(('x '+pinCount),(rx-60),(this.canvasHeight-25));
+            }
             
             this.drawSetAlpha(1.0);
         }
