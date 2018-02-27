@@ -78,7 +78,10 @@ export default class BillyGameClass extends GameClass
                 'world_grass_corner_top_right',
                 'world_grass_corner_bottom_left',
                 'world_grass_corner_bottom_right',
-                'world_water',
+                'world_water_1',
+                'world_water_2',
+                'world_water_3',
+                'world_water_4',
                 'ui_pin',
                 'ui_banner'
             ]

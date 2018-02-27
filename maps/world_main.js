@@ -21,23 +21,23 @@ export default class WorldMainMapClass extends WorldBaseMapClass
                 '........................FDDG.............................................................................................................................................',
                 '...................FDDDDJAAC.........FDDDDDDDG....................FDDDDDDDDG..........................................................FDDDDDDDDDDDDG.....................',
                 '................FDDJAAAAAAAC---------EAAAAAAAAG..................FAAAAAAAAAAG........................................................AAAAAAAAAAAAAAA.....................',
-                '................BAAAAAAAAAEI..........HAAAAAAA-----------------AAAAAAAAAAAAAAAG..................FDDDDDDDDG..........................AAAAAAAAAAAAAAAAAAA.................',
-                '................BAAAAAAAEC.............HAAAAEI..................AAAAAAAAAAAAAAA------------------AAAAAAAAAAA........................AAAAAAAAAAAAAAAAAAAAAAAA.............',
+                '................BAAAAAAAAMEI..........HAAAAAAA-----------------AAAAAAAAAAAAAAAG..................FDDDDDDDDG..........................AAAAAAAAAAAAAAAAAAA.................',
+                '................BAAAAAAMEI.............HAAAAEI..................AAAAAAAAAAAAAAA------------------AAAAAAAAAAA........................AAAAAAAAAAAAAAAAAAAAAAAA.............',
                 '................BAAAAAAC................HEEI.......................AAAAAAAAAA.....................AAAAAAAAAAA-------------------------AAAAAAAAAAAAAAAAAAA................',
-                '................BAAAAAAAC.............................................AAAAAAAA......................AAAAAAAA............................AAAAAAAAAAAAAAAAA................',
-                '.....FDDDDDDDDG.HLAAAAAAAC...............................................AAAAAAAAA.................AAAAAAAA................................AAAAAAAA......................',
-                '.....BAAAAAAAAC..BAAAAAAAADDDDDDDDDDC.......................................AAAAAAAAA................AAAAA...............................AAAAAAAAAAAAAA..................',
-                '.....BA00AAAAAC--BAAAAAAAAAAAAAAAAAAAC.......................................AAAAAAAA.................|............................AAAAAAAAAAAAAAAAAAAAAA...............',
-                '.....BAA000AAAC..HEEELAAAAAAAAAAAAAAAADDDDC.................................AAAAAAAAAAA................|.......................AAAAAAAAAAAAAAAAAAAAAAAAAAA...............',
-                '.....BAAA00AAAKG.....BAAAAAAAAAAAAAAAAAAAAADC...............................AAAAAAAAA..................|.....................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA............',
+                '................BAAAAAAKG.............................................AAAAAAAA......................AAAAAAAA............................AAAAAAAAAAAAAAAAA................',
+                '.....FDDDDDDDDG.HLAAAAAAKG...............................................AAAAAAAAA.................AAAAAAAA................................AAAAAAAA......................',
+                '.....BAAAAAAAAC..BAAAAAAAKDDDDDDDDDDG.......................................AAAAAAAAA................AAAAA...............................AAAAAAAAAAAAAA..................',
+                '.....BA00AAAAAC--BAAAAAAAAAAAAAAAAAAKG.......................................AAAAAAAA.................|............................AAAAAAAAAAAAAAAAAAAAAA...............',
+                '.....BAA000AAAC..HEEELAAAAAAAAAAAAAAAKDDDDG.................................AAAAAAAAAAA................|.......................AAAAAAAAAAAAAAAAAAAAAAAAAAA...............',
+                '.....BAAA00AAAKG.....BAAAAAAAAAAAAAAAAAAAAC.................................AAAAAAAAA..................|.....................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA............',
                 '.....HLAAA0AAAAKDDDG.HEEEELAAAAAAAAAAAAAAAC............................AAAAAAAAAAAAAA..................|....................AAAAAA......AAAAAAAAAAAAAAAAAAAAA............',
-                '......BAAAAAAAAAAAAC......HEEELAAAAAAAAAAEC......................AAAAAAAAAAAAAAA.....................AAAAA..................AAAAA........AAAAAAAAAAAA....AAAAAAA.........',
+                '......BAAAAAAAAAAAAC......HEEELAAAAAAAAAMEI......................AAAAAAAAAAAAAAA.....................AAAAA..................AAAAA........AAAAAAAAAAAA....AAAAAAA.........',
                 '......HLAAAAAAMEEEEI..........HELAAAAAAAC...................AAAAAAAAAAAAAAAAAAA......................AAAAA.................AAAAAAA.........AAAAAA.........AAAAAAA........',
-                '.......HEEEEEEI.................HEEELAAAADDC............AAAAAAAAAAAAAAAAA............................AAAAA.................AAAAAAA........AAAAAAAAA......AAAAAAAAAA......',
-                '....................................HELAAAAAC........AAAAAAAAAAAAAAAAA.................................|.....................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.......',
-                '......................................BAAAAC......AAAAAAAAAAAAAAAAAAA..................................|......................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.........',
-                '......................................HLAAAADC----AAAAAAAAAAAAAAAAAAAA...............................AAAAAA....................AAAAAAAAAAAAAAAAAAAAAAAAAAAAA.............',
-                '.......................................BAAAAAI....AAAAAAAAAAAAAAAAA.................................AAAAAAAAA------------------AAAAAAAAAAA...............................',
+                '.......HEEEEEEI.................HEEELAAAKDDG............AAAAAAAAAAAAAAAAA............................AAAAA.................AAAAAAA........AAAAAAAAA......AAAAAAAAAA......',
+                '....................................HELAAAAKG........AAAAAAAAAAAAAAAAA.................................|.....................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.......',
+                '......................................BAAAAAKG....AAAAAAAAAAAAAAAAAAA..................................|......................AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.........',
+                '......................................HLAAAAAC----AAAAAAAAAAAAAAAAAAAA...............................AAAAAA....................AAAAAAAAAAAAAAAAAAAAAAAAAAAAA.............',
+                '.......................................BAAAAMI....AAAAAAAAAAAAAAAAA.................................AAAAAAAAA------------------AAAAAAAAAAA...............................',
                 '.......................................HEEEEI......AAAAAAAAAAAAA.....................................AAAAAA...................AAAAAAAAAAAA...............................',
                 '.........................................................................................................................................................................',
                 '.........................................................................................................................................................................'
@@ -123,7 +123,7 @@ export default class WorldMainMapClass extends WorldBaseMapClass
                 return(new GridSpotClass(game,imageList.get('world_mountain'),true,true));
 
             case '.':
-                return(new GridSpotClass(game,imageList.get('world_water'),true,true));
+                return(new GridSpotClass(game,imageList.get('world_water_1'),true,true));
         }
          
          return(null);
