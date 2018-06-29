@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Billy Goes Bowling Editor</title>
+<link rel="stylesheet" type="text/css" href="common.css">
+
+<!-- the script -->
+
+<script type="module">
+    import * as main from './editor/main.js';
+    import BillyGameClass from './code/billy_game.js';
+    
+    main.run(new BillyGameClass());
+</script>
+
+</head>
+
+<div id="editorToolBar" class="editorToolBar">
+    <div id="compileButton" class="editorToolButton">Compile</div>
+</div>
+
+<div id="editorSpriteWrapper" class="editorSpriteWrapper">
+    <canvas id="editorSpriteCanvas" class="editorSpriteCanvas" width="128" height="4096"></canvas>
+</div>
+
+<div id="editorMapWrapper" class="editorMapWrapper">
+    <canvas id="editorMapCanvas" class="editorMapCanvas" width="16384" height="8192"></canvas>
+</div>
+    
+<div id="editorTileWrapper" class="editorTileWrapper">
+    <canvas id="editorTileCanvas" class="editorTileCanvas" width="192" height="4096"></canvas>
+</div>
+
+<div id="editorCompile" class="editorCompile" style="display:none"></div>
+
+<body>
+    
+</body>
+</html>

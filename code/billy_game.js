@@ -17,6 +17,82 @@ export default class BillyGameClass extends GameClass
         this.setData('banner_count',-1);
     }
     
+    fillTileList()
+    {
+        let tileList=this.getTileList();
+        
+        tileList.add('ground_grass_end_left',true);
+        tileList.add('ground_grass',true);
+        tileList.add('ground_grass_end_right',true);
+        
+        tileList.add('ground_grass_connect_left',true);
+        tileList.add('ground_dirt_fill',true);
+        tileList.add('ground_grass_connect_right',true);
+        
+        tileList.add('ground_dirt_bottom_left',true);
+        tileList.add('ground_dirt_bottom',true);
+        tileList.add('ground_dirt_bottom_right',true);
+        
+        tileList.add('girder_left_horizontal',true);
+        tileList.add('girder_middle_horizontal',true);
+        tileList.add('girder_right_horizontal',true);
+        
+        tileList.add('girder_top_vertical',true);
+        tileList.add('girder_middle_vertical',true);
+        tileList.add('girder_bottom_vertical',true);
+        
+        tileList.add('girder_connect',true);
+        tileList.add('world_mountain',true);
+        tileList.add('world_water_1',true);
+        
+        tileList.add('world_grass_top_left',false);
+        tileList.add('world_grass_top',false);
+        tileList.add('world_grass_top_right',false);
+        
+        tileList.add('world_grass_left',false);
+        tileList.add('world_grass',false);
+        tileList.add('world_grass_right',false);
+        
+        tileList.add('world_grass_bottom_left',false);
+        tileList.add('world_grass_bottom',false);
+        tileList.add('world_grass_bottom_right',false);
+        
+        tileList.add('world_grass_corner_top_left',false);
+        tileList.add('world_bridge_horizontal',false);
+        tileList.add('world_grass_corner_top_right',false);
+        
+        tileList.add('world_grass_corner_bottom_left',false);
+        tileList.add('world_bridge_vertical',false);
+        tileList.add('world_grass_corner_bottom_right',false);
+        
+    }
+    
+    fillSpriteList()
+    {
+        let spriteList=this.getSpriteList();
+        
+        spriteList.add('ball');
+        spriteList.add('billy_left');
+        spriteList.add('billy_world');
+        spriteList.add('pin');
+        spriteList.add('door');
+        spriteList.add('block');
+        spriteList.add('break_block');
+        spriteList.add('break_block_strong');
+        spriteList.add('explode_block');
+        spriteList.add('cloud_block');
+        
+        spriteList.add('world_map_spot');
+        spriteList.add('world_map_castle');
+        spriteList.add('world_map_block');
+        
+        spriteList.add('platform');
+        spriteList.add('particle_explode_block');
+        spriteList.add('ninja_bunny');
+        spriteList.add('drain_pipe_snake_cover');
+        spriteList.add('roto_carrot');
+    }
+    
     getPreloadImages()
     {
         return(

@@ -1,4 +1,6 @@
 import MapClass from './map.js';
+import TileListClass from './tile_list.js';
+import SpriteListClass from './sprite_list.js';
 import ImageListClass from './image_list.js';
 import SoundListClass from './sound_list.js';
 import InputClass from './input.js';
@@ -15,6 +17,8 @@ export default class GameClass
         this.backCanvas=null;
         this.backCTX=null;
         
+        this.tileList=new TileListClass(this);
+        this.spriteList=new SpriteListClass(this);
         this.imageList=new ImageListClass();
         this.soundList=new SoundListClass();
         this.input=new InputClass();
@@ -31,6 +35,11 @@ export default class GameClass
         this.map=null;
         this.gotoMapTrigger=null;
     }
+    
+        //
+        // the tiles
+        //
+        
     
     initialize()
     {
@@ -71,6 +80,24 @@ export default class GameClass
     getTimestamp()
     {
         return(this.timestamp);
+    }
+    
+    fillTileList()
+    {
+    }
+    
+    getTileList()
+    {
+        return(this.tileList);
+    }
+    
+    fillSpriteList()
+    {
+    }
+    
+    getSpriteList()
+    {
+        return(this.spriteList);
     }
     
     getPreloadImages()

@@ -2,4 +2,8 @@
 * tick sound effect
 
 
---> sprites and tiles need to be separate text, it's annoying but too much work otherwise
+
+
++ use new tile list
++ use new sprite list
++ separate image types into sub directories
