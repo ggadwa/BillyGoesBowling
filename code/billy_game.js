@@ -42,8 +42,8 @@ export default class BillyGameClass extends GameClass
         tileList.add('girder_bottom_vertical',true);
         
         tileList.add('girder_connect',true);
-        tileList.add('world_mountain',true);
-        tileList.add('world_water_1',true);
+        tileList.add('temp_1',true);
+        tileList.add('temp_2',true);
         
         tileList.add('world_grass_top_left',false);
         tileList.add('world_grass_top',false);
@@ -58,24 +58,35 @@ export default class BillyGameClass extends GameClass
         tileList.add('world_grass_bottom_right',false);
         
         tileList.add('world_grass_corner_top_left',false);
-        tileList.add('world_bridge_horizontal',false);
         tileList.add('world_grass_corner_top_right',false);
+        tileList.add('world_bridge_horizontal',false);
         
         tileList.add('world_grass_corner_bottom_left',false);
-        tileList.add('world_bridge_vertical',false);
         tileList.add('world_grass_corner_bottom_right',false);
+        tileList.add('world_bridge_vertical',false);
         
+        tileList.add('world_road_curve_top_left',false);
+        tileList.add('world_road_horizontal',false);
+        tileList.add('world_road_curve_top_right',false);
+        
+        tileList.add('world_road_vertical',false);
+        tileList.add('world_road_cross',false);
+        tileList.add('world_road_dot',false);
+
+        tileList.add('world_road_curve_bottom_left',false);
+        tileList.add('world_mountain',false);
+        tileList.add('world_road_curve_bottom_right',false);
+        
+        tileList.add('world_water_1',true);
     }
     
     fillSpriteList()
     {
         let spriteList=this.getSpriteList();
         
-        spriteList.add('ball');
         spriteList.add('billy_left');
         spriteList.add('billy_world');
         spriteList.add('pin');
-        spriteList.add('door');
         spriteList.add('block');
         spriteList.add('break_block');
         spriteList.add('break_block_strong');
@@ -85,9 +96,8 @@ export default class BillyGameClass extends GameClass
         spriteList.add('world_map_spot');
         spriteList.add('world_map_castle');
         spriteList.add('world_map_block');
-        
         spriteList.add('platform');
-        spriteList.add('particle_explode_block');
+        
         spriteList.add('ninja_bunny');
         spriteList.add('drain_pipe_snake_cover');
         spriteList.add('roto_carrot');

@@ -81,18 +81,25 @@
 
 .editorCompile {
     position: absolute;
-    left: calc(100% - 505px);
+    left: calc(100% - 511px);
     top: 40px;
+    width: 506px;
+    height: 506px;
+    box-sizing: border-box;
+    border: 1px solid #000000;
+    background-color: #EEEEEE;
+    white-space: normal;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.editorCompileText {
+    position: absolute;
+    left: 0px;
+    top: 0px;
     width: 500px;
     height: 500px;
     font-family: 'Courier';
     font-size: 12pt;
-    padding: 5px;
-    box-sizing: border-box;
-    border: 1px solid #000000;
-    background-color: #FFFFFF;
-    white-space: normal;
-    z-index: 100;
-    overflow-x: hidden;
-    overflow-y: scroll;
+    tab-size: 4;
 }

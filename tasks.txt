@@ -2,7 +2,7 @@
 * tick sound effect
 
 
-
+-> maps don't use game, just data
 
 + use new tile list
 + use new sprite list

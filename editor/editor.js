@@ -1,14 +1,15 @@
 export default class EditorClass
 {
-    constructor(game)
+    constructor(game,map)
     {
         this.game=game;
+        this.map=map;
         
         this.MAP_TILE_WIDTH=256;
         this.MAP_TILE_HEIGHT=128;
         
-        this.tileData=new Uint16Array(this.MAP_TILE_WIDTH*this.MAP_TILE_HEIGHT);
-        this.spriteData=new Uint16Array(this.MAP_TILE_WIDTH*this.MAP_TILE_HEIGHT);
+        this.tileData=null;
+        this.spriteData=null;
         
         this.mapCanvas=null;
         this.mapCTX=null;
@@ -28,8 +29,13 @@ export default class EditorClass
     
     initialize()
     {
+        let n,len;
+        
+            // canvas and contextes
+            
         this.mapCanvas=document.getElementById('editorMapCanvas');
-        this.mapCanvas.onclick=this.clickMapCanvas.bind(this);
+        this.mapCanvas.onclick=this.leftClickMapCanvas.bind(this);
+        this.mapCanvas.oncontextmenu=this.rightClickMapCanvas.bind(this);
         this.mapCTX=this.mapCanvas.getContext('2d');
         
         this.tileCanvas=document.getElementById('editorTileCanvas');
@@ -40,6 +46,22 @@ export default class EditorClass
         this.spriteCanvas.onclick=this.clickSpriteCanvas.bind(this);
         this.spriteCTX=this.spriteCanvas.getContext('2d');
         
+            // make a new or load a map
+        
+        len=this.MAP_TILE_WIDTH*this.MAP_TILE_HEIGHT;
+        
+        if (this.map===null) {
+            this.tileData=new Uint16Array(len);
+            this.spriteData=new Array(len);
+
+            for (n=0;n!==len;n++) {
+                this.spriteData[n]=[0,null];
+            }
+        }
+        else {
+            this.tileData=this.map.getTileData();
+            this.spriteData=this.map.getSpriteData();
+        }
         this.game.getTileList().initialize(this.initialize2.bind(this));
     }
     
@@ -95,7 +117,7 @@ export default class EditorClass
             dx=0;
             
             for (x=0;x!==this.MAP_TILE_WIDTH;x++) {
-                spriteIdx=this.spriteData[idx]-1;
+                spriteIdx=this.spriteData[idx][0]-1;
                 if (spriteIdx!==-1) {
                     img=sprites[spriteIdx].images[0];
                     ctx.drawImage(img,dx,dy,Math.min(64,img.width),Math.min(64,img.height));       // some sprites are bigger than 64x64
@@ -243,20 +265,42 @@ export default class EditorClass
         // click canvases
         //
         
-    clickMapCanvas(event)
+    leftClickMapCanvas(event)
     {
         let wid=this.mapCanvas.width;
         let x=event.offsetX;
         let y=event.offsetY;
         let idx=Math.floor(x/64)+(Math.floor(y/64)*Math.floor(wid/64));
         
+        if (this.paletteSelIndex===-1) return;
+        
         switch (this.paletteSelType) {
             case this.PALETTE_TILE:
                 this.tileData[idx]=this.paletteSelIndex+1;
                 break;
             case this.PALETTE_SPRITE:
-                this.spriteData[idx]=this.paletteSelIndex+1;
+                this.spriteData[idx][0]=this.paletteSelIndex+1;
                 break;
+        }
+        
+        this.drawMapCanvas();
+    }
+    
+    rightClickMapCanvas(event)
+    {
+        let wid=this.mapCanvas.width;
+        let x=event.offsetX;
+        let y=event.offsetY;
+        let idx=Math.floor(x/64)+(Math.floor(y/64)*Math.floor(wid/64));
+        
+        event.stopPropagation();
+        event.preventDefault();
+        
+        if (this.spriteData[idx][0]!==0) {
+            this.spriteData[idx][0]=0;
+        }
+        else {
+            this.tileData[idx]=0;
         }
         
         this.drawMapCanvas();
@@ -269,7 +313,7 @@ export default class EditorClass
         let y=event.offsetY;
         let idx=Math.floor(x/64)+(Math.floor(y/64)*Math.floor(wid/64));
         
-        if (idx>this.game.getTileList().length) {
+        if (idx>=this.game.getTileList().tiles.length) {
             this.paletteSelIndex=-1;
         }
         else {
@@ -288,7 +332,7 @@ export default class EditorClass
         let y=event.offsetY;
         let idx=Math.floor(x/64)+(Math.floor(y/64)*Math.floor(wid/64));
         
-        if (idx>this.game.getSpriteList().length) {
+        if (idx>=this.game.getSpriteList().sprites.length) {
             this.paletteSelIndex=-1;
         }
         else {
@@ -308,6 +352,7 @@ export default class EditorClass
     {
         let n,str;
         let div=document.getElementById('editorCompile');
+        let textArea=document.getElementById('editorCompileText');
         
             // re-hide
             
@@ -316,20 +361,50 @@ export default class EditorClass
             return;
         }
         
-            // compile and show
+            // compile
         
-        str='[';
+        str= '    getTileData()\r\n'
+        str+='    {\r\n';
+        str+='        return(new Uint16Array(\r\n';
+        str+='            [';
         
         for (n=0;n!=this.tileData.length;n++) {
             if (n!==0) str+=',';
+            if ((n%this.MAP_TILE_WIDTH)===0) str+="\r\n                ";
             str+=this.tileData[n].toString();
         }
         
-        str+=']';
+        str+='\r\n            ]));\r\n';
+        str+='    }\r\n\r\n';
         
-        div.textContent=str;
+        str+='    getSpriteData()\r\n'
+        str+='    {\r\n';
+        str+='        return(\r\n';
+        str+='            [';
+        
+        for (n=0;n!=this.spriteData.length;n++) {
+            if (n!==0) str+=',';
+            if ((n%this.MAP_TILE_WIDTH)===0) str+="\r\n            ";
+            str+="[";
+            str+=this.spriteData[n][0].toString();
+            str+=",";
+            str+=JSON.stringify(this.spriteData[n][1]);
+            str+="]";
+        }
+        
+        str+='\r\n            ]);\r\n';
+        str+='    }\r\n';
+        
+        textArea.value=str;
+            
+            // show
             
         div.style.display='';
+        
+            // select all of it
+            
+        textArea.focus();
+        textArea.select();
     }
     
 }

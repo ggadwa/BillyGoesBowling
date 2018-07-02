@@ -12,11 +12,14 @@
 <script type="module">
     import * as main from './editor/main.js';
     import BillyGameClass from './code/billy_game.js';
+    import WorldMainMapClass from './maps/world_main.js';
     
-    main.run(new BillyGameClass());
+    main.run(new BillyGameClass(),new WorldMainMapClass(new BillyGameClass()));
 </script>
 
 </head>
+
+<body>
 
 <div id="editorToolBar" class="editorToolBar">
     <div id="compileButton" class="editorToolButton">Compile</div>
@@ -34,9 +37,9 @@
     <canvas id="editorTileCanvas" class="editorTileCanvas" width="192" height="4096"></canvas>
 </div>
 
-<div id="editorCompile" class="editorCompile" style="display:none"></div>
-
-<body>
+<div id="editorCompile" class="editorCompile" style="display:none">
+    <textarea id="editorCompileText" class="editorCompileText" rows="25" cols="45" spellcheck="false" wrap="off" readonly></textarea>
+</div>
     
 </body>
 </html>

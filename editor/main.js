@@ -2,11 +2,11 @@ import EditorClass from './editor.js';
 
 let editor=null;
 
-export function run(gameObj)
+export function run(game,map)
 {
         // start the editor
         
-    editor=new EditorClass(gameObj);
+    editor=new EditorClass(game,map);
     editor.initialize();
     
         // hook up any tool buttons
