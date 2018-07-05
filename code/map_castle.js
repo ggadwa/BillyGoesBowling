@@ -1,13 +1,15 @@
-import SpriteClass from '../engine/sprite.js';
+import EntityClass from '../engine/entity.js';
 import PlayerWorldClass from './player_world.js';
 
-export default class MapCastleClass extends SpriteClass
+export default class MapCastleClass extends EntityClass
 {
-    constructor(game)
+    constructor(game,x,y,data)
     {
-        super(game);
+        super(game,x,y,data);
         
-        this.setCurrentImage(this.addImage('world_map_castle'));
+        this.addImage('world_map_castle');
+        this.setCurrentImage('world_map_castle');
+        this.setEditorImage('world_map_castle');
         
         this.show=true;
         this.gravityFactor=0.0;

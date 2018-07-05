@@ -2,7 +2,25 @@
 * tick sound effect
 
 
+1. no image types, use tiles\ to figure it out
+2. use map in imagelist
+3. get type by iterating the entities
+4. rename entity to sprite again
+
+
+
+
+
+
+
+-> combine entities and sprites???
+// obj.constructor.name
+-> entities pick sprites
+-> sprite list is an entity list???
+
 -> maps don't use game, just data
+-> get rid of images in entity, use entity instead of sprites
+-> new way for UI images
 
 + use new tile list
 + use new sprite list

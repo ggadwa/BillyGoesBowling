@@ -1,19 +1,20 @@
-import SpriteClass from '../engine/sprite.js';
+import EntityClass from '../engine/entity.js';
 import BallClass from '../code/ball.js';
 import CloudBlockClass from './cloud_block.js';
 
-export default class PlayerSideScrollClass extends SpriteClass
+export default class PlayerSideScrollClass extends EntityClass
 {
-    constructor(game)
+    constructor(game,x,y,data)
     {
-        super(game);
+        super(game,x,y,data);
         
             // setup
             
-        this.leftImageIdx=this.addImage('billy_left');
-        this.rightImageIdx=this.addImage('billy_right');
+        this.addImage('billy_left');
+        this.addImage('billy_right');
         
-        this.setCurrentImage(this.rightImageIdx);
+        this.setCurrentImage('billy_right');
+        this.setEditorImage('billy_right');
         this.setFacing(this.FACING_RIGHT);
         
         this.show=true;
@@ -42,13 +43,13 @@ export default class PlayerSideScrollClass extends SpriteClass
             
         if (input.isLeft()) {
             this.moveWithCollision(-12,0);
-            this.setCurrentImage(this.leftImageIdx);
+            this.setCurrentImage('billy_left');
             this.setFacing(this.FACING_LEFT);
         }
         
         if (input.isRight()) {
             this.moveWithCollision(12,0);
-            this.setCurrentImage(this.rightImageIdx);
+            this.setCurrentImage('billy_right');
             this.setFacing(this.FACING_RIGHT);
         }
         

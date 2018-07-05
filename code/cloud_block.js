@@ -1,11 +1,11 @@
-import SpriteClass from '../engine/sprite.js';
+import EntityClass from '../engine/entity.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
 
-export default class CloudBlockClass extends SpriteClass
+export default class CloudBlockClass extends EntityClass
 {
-    constructor(game)
+    constructor(game,x,y,data)
     {
-        super(game);
+        super(game,x,y,data);
         
             // variables
             
@@ -13,7 +13,9 @@ export default class CloudBlockClass extends SpriteClass
         
             // setup
             
-        this.setCurrentImage(this.addImage('cloud_block'));
+        this.addImage('cloud_block');
+        this.setCurrentImage('cloud_block');
+        this.setEditorImage('cloud_block');
         
         this.show=true;
         this.gravityFactor=0.0;

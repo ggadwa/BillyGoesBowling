@@ -1,8 +1,7 @@
 import MapClass from './map.js';
-import TileListClass from './tile_list.js';
 import SpriteListClass from './sprite_list.js';
-import ImageListClass from './image_list.js';
-import SoundListClass from './sound_list.js';
+import ImageListClass from '../resources/image_list.js';
+import SoundListClass from '../resources/sound_list.js';
 import InputClass from './input.js';
 
 export default class GameClass
@@ -17,9 +16,10 @@ export default class GameClass
         this.backCanvas=null;
         this.backCTX=null;
         
-        this.tileList=new TileListClass(this);
+        this.imageList=null;            // set by overriding class
+        this.tileImageList=null;        // created from the image list
+        
         this.spriteList=new SpriteListClass(this);
-        this.imageList=new ImageListClass();
         this.soundList=new SoundListClass();
         this.input=new InputClass();
         
@@ -41,7 +41,7 @@ export default class GameClass
         //
         
     
-    initialize()
+    initialize(callback)
     {
         this.canvas=document.getElementById('mainCanvas');
         this.ctx=this.canvas.getContext('2d');
@@ -54,6 +54,18 @@ export default class GameClass
         this.backCanvas.height=this.canvasHeight;
         this.backCTX=this.backCanvas.getContext('2d');
         
+            // load the images
+        
+        this.imageList.load(this.getPreloadImages(),this.initialize2.bind(this,callback));
+    }
+    
+    initialize2(callback)
+    {
+        this.soundList.load(this.getPreloadSounds(),this.initialize3.bind(this,callback));
+    }
+   
+    initialize3(callback)
+    {
         this.input.initialize();
         
             // create game specific data
@@ -64,6 +76,8 @@ export default class GameClass
             
         this.map=this.getStartMap();
         this.map.initialize();
+        
+        callback();
     }
     
     initTiming(timestamp)
@@ -82,32 +96,17 @@ export default class GameClass
         return(this.timestamp);
     }
     
-    fillTileList()
-    {
-    }
-    
-    getTileList()
-    {
-        return(this.tileList);
-    }
-    
     fillSpriteList()
     {
     }
     
-    getSpriteList()
+    getEditorEntityPaletteList()
     {
-        return(this.spriteList);
     }
     
     getPreloadImages()
     {
         return(null);
-    }
-    
-    getImageList()
-    {
-        return(this.imageList);
     }
     
     getPreloadSounds()

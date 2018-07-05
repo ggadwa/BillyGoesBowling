@@ -103,32 +103,6 @@ export default class MapClass
     }
     
     /**
-     * Override this to return the map tiles for a character
-     * in the map tile text.  Accepts GridSpotClass as the return.
-     * 
-     * @param {character} The character for the grid spot
-     * @returns {GridSpotClass} A GridSpotClass object to place at that grid spot
-     */
-    createMapTileForCharacter(ch)
-    {
-    }
-    
-    /**
-     * Override this to return the map sprite for a character
-     * in the map text.  Accepts SpriteClass as the return.
-     * 
-     * Note: '*' is a special character that always represents
-     * the player sprite.  Any other chacters can be used for
-     * anything else.
-     * 
-     * @param {character} The character for the grid spot
-     * @returns {SpriteClass} A SpriteClass object to spawn at this spot
-     */
-    createMapSpriteForCharacter(ch)
-    {
-    }
-    
-    /**
      * Override this to return the map tile layout.  The
      * expected return is an array of strings, which each character
      * in the string representing a single grid spot in the map.

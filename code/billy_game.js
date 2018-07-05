@@ -1,11 +1,29 @@
 import GameClass from '../engine/game.js';
+import BillyImageList from '../code/billy_image_list.js';
 import WorldMainMapClass from '../maps/world_main.js';
+import PlayerWorldClass from '../code/player_world.js';
+import PlayerSideScrollClass from '../code/player_world.js';
+import BlockClass from '../code/block.js';
+import BreakBlockClass from '../code/break_block.js';
+import BreakBlockStrongClass from '../code/break_block_strong.js';
+import CloudBlockClass from '../code/cloud_block.js';
+import ExplodeBlockClass from '../code/explode_block.js';
+import PlatformClass from '../code/platform.js';
+import PinClass from '../code/pin.js';
+import MapSpotClass from '../code/map_spot.js';
+import MapCastleClass from '../code/map_castle.js';
+import MapBlockClass from '../code/map_block.js';
+import DrainPipeSnakeClass from '../code/drain_pipe_snake.js';
+import NinjaBunnyClass from '../code/ninja_bunny.js';
+import RotoCarrotClass from '../code/roto_carrot.js';
 
 export default class BillyGameClass extends GameClass
 {
     constructor()
     {
         super();
+        
+        this.imageList=new BillyImageList();
         
         Object.seal(this);
     }
@@ -17,90 +35,48 @@ export default class BillyGameClass extends GameClass
         this.setData('banner_count',-1);
     }
     
-    fillTileList()
-    {
-        let tileList=this.getTileList();
-        
-        tileList.add('ground_grass_end_left',true);
-        tileList.add('ground_grass',true);
-        tileList.add('ground_grass_end_right',true);
-        
-        tileList.add('ground_grass_connect_left',true);
-        tileList.add('ground_dirt_fill',true);
-        tileList.add('ground_grass_connect_right',true);
-        
-        tileList.add('ground_dirt_bottom_left',true);
-        tileList.add('ground_dirt_bottom',true);
-        tileList.add('ground_dirt_bottom_right',true);
-        
-        tileList.add('girder_left_horizontal',true);
-        tileList.add('girder_middle_horizontal',true);
-        tileList.add('girder_right_horizontal',true);
-        
-        tileList.add('girder_top_vertical',true);
-        tileList.add('girder_middle_vertical',true);
-        tileList.add('girder_bottom_vertical',true);
-        
-        tileList.add('girder_connect',true);
-        tileList.add('temp_1',true);
-        tileList.add('temp_2',true);
-        
-        tileList.add('world_grass_top_left',false);
-        tileList.add('world_grass_top',false);
-        tileList.add('world_grass_top_right',false);
-        
-        tileList.add('world_grass_left',false);
-        tileList.add('world_grass',false);
-        tileList.add('world_grass_right',false);
-        
-        tileList.add('world_grass_bottom_left',false);
-        tileList.add('world_grass_bottom',false);
-        tileList.add('world_grass_bottom_right',false);
-        
-        tileList.add('world_grass_corner_top_left',false);
-        tileList.add('world_grass_corner_top_right',false);
-        tileList.add('world_bridge_horizontal',false);
-        
-        tileList.add('world_grass_corner_bottom_left',false);
-        tileList.add('world_grass_corner_bottom_right',false);
-        tileList.add('world_bridge_vertical',false);
-        
-        tileList.add('world_road_curve_top_left',false);
-        tileList.add('world_road_horizontal',false);
-        tileList.add('world_road_curve_top_right',false);
-        
-        tileList.add('world_road_vertical',false);
-        tileList.add('world_road_cross',false);
-        tileList.add('world_road_dot',false);
-
-        tileList.add('world_road_curve_bottom_left',false);
-        tileList.add('world_mountain',false);
-        tileList.add('world_road_curve_bottom_right',false);
-        
-        tileList.add('world_water_1',true);
-    }
     
     fillSpriteList()
     {
-        let spriteList=this.getSpriteList();
+        this.spriteList.add('ball',['ball']);
+        this.spriteList.add('billySideScroll',['billy_left']);
+        this.spriteList.add('billyWorld',['billy_world']);
+        this.spriteList.add('pin',['pin']);
+        this.spriteList.add('block',['block']);
+        this.spriteList.add('breakBlock',['break_block']);
+        this.spriteList.add('breakBlockStrong',['break_block_strong']);
+        this.spriteList.add('explodeBlock',['explode_block','explode_block_1','explode_block_2','explode_block_3']);
+        this.spriteList.add('cloudBlock',['cloud_block']);
         
-        spriteList.add('billy_left');
-        spriteList.add('billy_world');
-        spriteList.add('pin');
-        spriteList.add('block');
-        spriteList.add('break_block');
-        spriteList.add('break_block_strong');
-        spriteList.add('explode_block');
-        spriteList.add('cloud_block');
+        this.spriteList.add('worldMapSpot',['world_map_spot']);
+        this.spriteList.add('worldMapCastle',['world_map_castle']);
+        this.spriteList.add('worldMapBlock',['world_map_block']);
+        this.spriteList.add('platform',['platform']);
         
-        spriteList.add('world_map_spot');
-        spriteList.add('world_map_castle');
-        spriteList.add('world_map_block');
-        spriteList.add('platform');
-        
-        spriteList.add('ninja_bunny');
-        spriteList.add('drain_pipe_snake_cover');
-        spriteList.add('roto_carrot');
+        this.spriteList.add('ninjaBunny',['ninja_bunny']);
+        this.spriteList.add('drainPipeSnake',['drain_pipe_snake_cover']);
+        this.spriteList.add('rotoCarrot',['roto_carrot']);
+    }
+    
+    getEditorEntityPaletteList()
+    {
+        return([
+            new PlayerWorldClass(this,0,0,null),
+            new PlayerSideScrollClass(this,0,0,null),
+            new BlockClass(this,0,0,null),
+            new BreakBlockClass(this,0,0,null),
+            new BreakBlockStrongClass(this,0,0,null),
+            new CloudBlockClass(this,0,0,null),
+            new ExplodeBlockClass(this,0,0,null),
+            new PlatformClass(this,0,0,null),
+            new PinClass(this,0,0,null),
+            new MapSpotClass(this,0,0,null),
+            new MapCastleClass(this,0,0,null),
+            new MapBlockClass(this,0,0,null),
+            new DrainPipeSnakeClass(this,0,0,null),
+            new NinjaBunnyClass(this,0,0,null),
+            new RotoCarrotClass(this,0,0,null),
+        ]);
     }
     
     getPreloadImages()

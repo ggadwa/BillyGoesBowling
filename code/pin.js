@@ -1,14 +1,16 @@
-import SpriteClass from '../engine/sprite.js';
+import EntityClass from '../engine/entity.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
 import WorldMainMapClass from '../maps/world_main.js';
 
-export default class PinClass extends SpriteClass
+export default class PinClass extends EntityClass
 {
-    constructor(game)
+    constructor(game,x,y,data)
     {
-        super(game);
+        super(game,x,y,data);
         
-        this.setCurrentImage(this.addImage('pin'));
+        this.addImage('pin');
+        this.setCurrentImage('pin');
+        this.setEditorImage('pin');
         
         this.show=true;
         this.gravityFactor=0.2;

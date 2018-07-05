@@ -1,11 +1,11 @@
-import SpriteClass from '../engine/sprite.js';
+import EntityClass from '../engine/entity.js';
 import BallClass from './ball.js';
 
-export default class DrainPipeSnakeClass extends SpriteClass
+export default class DrainPipeSnakeClass extends EntityClass
 {
-    constructor(game)
+    constructor(game,x,y,data)
     {
-        super(game);
+        super(game,x,y,data);
         
             // variables
             
@@ -13,8 +13,11 @@ export default class DrainPipeSnakeClass extends SpriteClass
         this.bunnyPause=0;
         
             // setup
-            
-        this.setCurrentImage(this.addImage('drain_pipe_snake_cover'));
+        
+        this.addImage('drain_pipe_snake_cover');
+        this.addImage('drain_pipe_snake_free');
+        this.setCurrentImage('drain_pipe_snake_cover');
+        this.setEditorImage('drain_pipe_snake_cover');
         
         this.show=true;
         this.gravityFactor=0.12;

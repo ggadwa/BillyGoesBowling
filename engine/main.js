@@ -9,25 +9,11 @@ export function run(gameObj)
         // for the run loop
         
     game=gameObj;
-    
-        // loading the images is
-        // async and requires a callback
-        
-    game.getImageList().load(game.getPreloadImages(),run2);
-}
-
-function run2()
-{
-        // loading the sounds is
-        // async and requires a callback
-        
-    game.getSoundList().load(game.getPreloadSounds(),run3);
+    game.initialize(run2);
 }
    
-function run3()
+function run2()
 {
-    game.initialize();
-    
     window.requestAnimationFrame(initTiming);
 }
 

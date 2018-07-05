@@ -1,16 +1,18 @@
-import SpriteClass from '../engine/sprite.js';
+import EntityClass from '../engine/entity.js';
 import BallClass from '../code/ball.js';
 import CloudBlockClass from './cloud_block.js';
 
-export default class PlayerWorldClass extends SpriteClass
+export default class PlayerWorldClass extends EntityClass
 {
-    constructor(game)
+    constructor(game,x,y,data)
     {
-        super(game);
+        super(game,x,y,data);
         
             // setup
             
-        this.setCurrentImage(this.addImage('billy_world'));
+        this.addImage('billy_world');
+        this.setCurrentImage('billy_world');
+        this.setEditorImage('billy_world');
         
         this.show=true;
         this.gravityFactor=0.0;

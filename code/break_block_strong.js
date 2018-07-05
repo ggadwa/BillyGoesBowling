@@ -1,13 +1,15 @@
-import SpriteClass from '../engine/sprite.js';
+import EntityClass from '../engine/entity.js';
 import ExplodeBlockClass from './explode_block.js';
 
-export default class BreakBlockStrongClass extends SpriteClass
+export default class BreakBlockStrongClass extends EntityClass
 {
-    constructor(game)
+    constructor(game,x,y,data)
     {
-        super(game);
+        super(game,x,y,data);
         
-        this.setCurrentImage(this.addImage('break_block_strong'));
+        this.addImage('break_block_strong');
+        this.setCurrentImage('break_block_strong');
+        this.setEditorImage('break_block_strong');
         
         this.show=true;
         this.gravityFactor=0.2;

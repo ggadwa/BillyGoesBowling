@@ -1,11 +1,11 @@
-import SpriteClass from '../engine/sprite.js';
+import EntityClass from '../engine/entity.js';
 import BallClass from './ball.js';
 
-export default class ExplodeBlockClass extends SpriteClass
+export default class ExplodeBlockClass extends EntityClass
 {
-    constructor(game)
+    constructor(game,x,y,data)
     {
-        super(game);
+        super(game,x,y,data);
         
             // statics
             
@@ -17,13 +17,14 @@ export default class ExplodeBlockClass extends SpriteClass
         this.countDownTick=0;
          
             // setup
-            
-        this.setCurrentImage(this.addImage('explode_block'));
         
-        this.countDownImageIdxs=[];
-        this.countDownImageIdxs[0]=this.addImage('explode_block_1');
-        this.countDownImageIdxs[1]=this.addImage('explode_block_2');
-        this.countDownImageIdxs[2]=this.addImage('explode_block_3');
+        this.addImage('explode_block_0');
+        this.addImage('explode_block_1');
+        this.addImage('explode_block_2');
+        this.addImage('explode_block_3');
+        
+        this.setCurrentImage('explode_block_0');
+        this.setEditorImage('explode_block_0');
         
         this.show=true;
         this.gravityFactor=0.0;
@@ -45,7 +46,7 @@ export default class ExplodeBlockClass extends SpriteClass
         if ((interactSprite instanceof BallClass) || (interactSprite instanceof ExplodeBlockClass)) {
             this.countDown=2;
             this.countDownTick=this.COUNT_DOWN_TICK_WAIT;
-            this.setCurrentImage(this.countDownImageIdxs[this.countDown]);
+            this.setCurrentImage('explode_block_'+this.countDown);
         }
     }
     
@@ -67,7 +68,7 @@ export default class ExplodeBlockClass extends SpriteClass
         this.countDownTick=this.COUNT_DOWN_TICK_WAIT;
 
         if (this.countDown>=0) {
-            this.setCurrentImage(this.countDownImageIdxs[this.countDown]);
+            this.setCurrentImage('explode_block_'+this.countDown);
             return;
         }
 

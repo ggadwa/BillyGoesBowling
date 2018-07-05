@@ -1,12 +1,14 @@
-import SpriteClass from '../engine/sprite.js';
+import EntityClass from '../engine/entity.js';
 
-export default class BlockClass extends SpriteClass
+export default class BlockClass extends EntityClass
 {
-    constructor(game)
+    constructor(game,x,y,data)
     {
-        super(game);
+        super(game,x,y,data);
         
-        this.setCurrentImage(this.addImage('block'));
+        this.addImage('block');
+        this.setCurrentImage('block');
+        this.setEditorImage('block');
         
         this.show=true;
         this.gravityFactor=0.2;

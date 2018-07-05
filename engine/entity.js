@@ -1,11 +1,13 @@
-export default class SpriteClass
+export default class EntityClass
 {
-    constructor(game)
+    constructor(game,x,y,data)
     {
         this.game=game;
         
-        this.x=0;
-        this.y=0;
+        this.x=x;
+        this.y=y;
+        
+        this.data=data;
         
         this.gridSpawnX=0;
         this.gridSpawnY=0;
@@ -14,14 +16,13 @@ export default class SpriteClass
         this.FACING_LEFT=1;
         this.FACING_RIGHT=2;
         
-        this.currentImageIdx=0;
-        this.images=[];
+        this.currentImage=null;
+        this.editorImage=null;
+        this.images=new Map();
         
         this.width=0;
         this.height=0;
         this.alpha=1.0;
-        
-        this.data=new Map();
         
         this.gravityFactor=0.0;
         this.gravityMinValue=0;
@@ -81,15 +82,20 @@ export default class SpriteClass
         
     addImage(name)
     {
-        return(this.images.push(this.game.getImageList().get(name))-1);
+        this.images.set(name,this.game.imageList.get(name,this.game.imageList.IMAGE_SPRITE));
     }
     
-    setCurrentImage(imageIdx)
+    setCurrentImage(name)
     {
-        this.currentImageIdx=imageIdx;
+        this.currentImage=this.images.get(name);
         
-        this.width=this.images[imageIdx].width;
-        this.height=this.images[imageIdx].height;
+        this.width=this.currentImage.img.width;
+        this.height=this.currentImage.img.height;
+    }
+    
+    setEditorImage(name)
+    {
+        this.editorImage=this.images.get(name);
     }
     
     getMiddleX()
@@ -258,11 +264,11 @@ export default class SpriteClass
         
         if (this.alpha!==1.0) {
             ctx.globalAlpha=this.alpha;
-            ctx.drawImage(this.images[this.currentImageIdx],x,y);
+            ctx.drawImage(this.currentImage.img,x,y);
             ctx.globalAlpha=1.0;
         }
         else {
-            ctx.drawImage(this.images[this.currentImageIdx],x,y);
+            ctx.drawImage(this.currentImage.img,x,y);
         }
     }
 }

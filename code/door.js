@@ -1,13 +1,15 @@
-import SpriteClass from '../engine/sprite.js';
+import EntityClass from '../engine/entity.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
 
-export default class DoorClass extends SpriteClass
+export default class DoorClass extends EntityClass
 {
-    constructor(game)
+    constructor(game,x,y,data)
     {
-        super(game);
+        super(game,x,y,data);
         
-        this.setCurrentImage(this.addImage('door'));
+        this.addImage('door');
+        this.setCurrentImage('door');
+        this.setEditorImage('door');
         
         this.show=true;
         this.gravityFactor=0.0;

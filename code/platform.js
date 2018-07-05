@@ -1,10 +1,10 @@
-import SpriteClass from '../engine/sprite.js';
+import EntityClass from '../engine/entity.js';
 
-export default class PlatformClass extends SpriteClass
+export default class PlatformClass extends EntityClass
 {
-    constructor(game)
+    constructor(game,x,y,data)
     {
-        super(game);
+        super(game,x,y,data);
         
             // variables
             
@@ -12,7 +12,9 @@ export default class PlatformClass extends SpriteClass
         
             // setup
             
-        this.setCurrentImage(this.addImage('platform'));
+        this.addImage('platform');
+        this.setCurrentImage('platform');
+        this.setEditorImage('platform');
         
         this.show=true;
         this.gravityFactor=0.0;
