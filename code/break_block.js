@@ -1,16 +1,16 @@
-import EntityClass from '../engine/entity.js';
+import SpriteClass from '../engine/sprite.js';
 import BallClass from './ball.js';
 import ExplodeBlockClass from './explode_block.js';
 
-export default class BreakBlockClass extends EntityClass
+export default class BreakBlockClass extends SpriteClass
 {
     constructor(game,x,y,data)
     {
         super(game,x,y,data);
         
-        this.addImage('break_block')
-        this.setCurrentImage('break_block');
-        this.setEditorImage('break_block');
+        this.addImage('sprites/break_block')
+        this.setCurrentImage('sprites/break_block');
+        this.setEditorImage('sprites/break_block');
         
         this.show=true;
         this.gravityFactor=0.2;
@@ -20,6 +20,11 @@ export default class BreakBlockClass extends EntityClass
         this.canStandOn=true;
         
         Object.seal(this);
+    }
+    
+    duplicate(x,y)
+    {
+        return(new BreakBlockClass(this.game,x,y,this.data));
     }
     
     interactWithSprite(interactSprite,dataObj)

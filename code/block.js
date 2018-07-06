@@ -1,14 +1,14 @@
-import EntityClass from '../engine/entity.js';
+import SpriteClass from '../engine/sprite.js';
 
-export default class BlockClass extends EntityClass
+export default class BlockClass extends SpriteClass
 {
     constructor(game,x,y,data)
     {
         super(game,x,y,data);
         
-        this.addImage('block');
-        this.setCurrentImage('block');
-        this.setEditorImage('block');
+        this.addImage('sprites/block');
+        this.setCurrentImage('sprites/block');
+        this.setEditorImage('sprites/block');
         
         this.show=true;
         this.gravityFactor=0.2;
@@ -18,5 +18,10 @@ export default class BlockClass extends EntityClass
         this.canStandOn=true;
         
         Object.seal(this);
+    }
+    
+    duplicate(x,y)
+    {
+        return(new BlockClass(this.game,x,y,this.data));
     }
 }

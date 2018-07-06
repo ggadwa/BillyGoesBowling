@@ -1,6 +1,6 @@
-import EntityClass from '../engine/entity.js';
+import SpriteClass from '../engine/sprite.js';
 
-export default class PlatformClass extends EntityClass
+export default class PlatformClass extends SpriteClass
 {
     constructor(game,x,y,data)
     {
@@ -12,9 +12,9 @@ export default class PlatformClass extends EntityClass
         
             // setup
             
-        this.addImage('platform');
-        this.setCurrentImage('platform');
-        this.setEditorImage('platform');
+        this.addImage('sprites/platform');
+        this.setCurrentImage('sprites/platform');
+        this.setEditorImage('sprites/platform');
         
         this.show=true;
         this.gravityFactor=0.0;
@@ -24,6 +24,11 @@ export default class PlatformClass extends EntityClass
         this.canStandOn=true;
         
         Object.seal(this);
+    }
+    
+    duplicate(x,y)
+    {
+        return(new PlatformClass(this.game,x,y,this.data));
     }
     
     runAI()

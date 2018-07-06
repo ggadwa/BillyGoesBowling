@@ -12,6 +12,9 @@ export default class MapClass
         this.width=0;
         this.height=0;
         
+        this.tileData=null;             // tile data for map
+        this.sprites=null;              // sprites in map
+        
         this.grid=null;
         this.gridWidth=0;
         this.gridHeight=0;
@@ -20,7 +23,6 @@ export default class MapClass
         
         this.playerIdx=-1;
         
-        this.sprites=[];
         this.particles=[];
     }
     
@@ -45,7 +47,7 @@ export default class MapClass
     
     getMapName()
     {
-        return(this.constructor.name);
+        return('');
     }
     
     getGridWidth()
@@ -74,6 +76,11 @@ export default class MapClass
         return(this.sprites.push(sprite)-1);
     }
     
+    removeSprite(spriteIdx)
+    {
+        this.sprites.splice(spriteIdx,1);
+    }
+    
     getSprite(spriteIdx)
     {
         return(this.sprites[spriteIdx]);
@@ -100,34 +107,6 @@ export default class MapClass
     {
         let particle=new ParticleClass(this.game,x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,img,count,lifeTick);
         return(this.particles.push(particle)-1);
-    }
-    
-    /**
-     * Override this to return the map tile layout.  The
-     * expected return is an array of strings, which each character
-     * in the string representing a single grid spot in the map.
-     * 
-     * Each character in this array calls back to
-     * createMapTileForCharacter(ch).
-     *
-     * @returns {array} The map textual array
-     */
-    getMapTileLayout()
-    {
-    }
-    
-    /**
-     * Override this to return the map sprite layout.  The
-     * expected return is an array of strings, which each character
-     * in the string representing a single grid spot in the map.
-     * 
-     * Each character in this array calls back to
-     * createMapSpriteForCharacter(ch).
-     *
-     * @returns {array} The map textual array
-     */
-    getMapSpriteLayout()
-    {
     }
     
     /**

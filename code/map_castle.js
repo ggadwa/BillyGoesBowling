@@ -1,15 +1,15 @@
-import EntityClass from '../engine/entity.js';
+import SpriteClass from '../engine/sprite.js';
 import PlayerWorldClass from './player_world.js';
 
-export default class MapCastleClass extends EntityClass
+export default class MapCastleClass extends SpriteClass
 {
     constructor(game,x,y,data)
     {
         super(game,x,y,data);
         
-        this.addImage('world_map_castle');
-        this.setCurrentImage('world_map_castle');
-        this.setEditorImage('world_map_castle');
+        this.addImage('sprites/world_map_castle');
+        this.setCurrentImage('sprites/world_map_castle');
+        this.setEditorImage('sprites/world_map_castle');
         
         this.show=true;
         this.gravityFactor=0.0;
@@ -21,6 +21,11 @@ export default class MapCastleClass extends EntityClass
         this.background=true;           // a background sprite, draws in the same plane as the map
 
         Object.seal(this);
+    }
+    
+    duplicate(x,y)
+    {
+        return(new MapCastleClass(this.game,x,y,this.data));
     }
     
     runAI()

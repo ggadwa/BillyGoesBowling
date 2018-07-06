@@ -1,11 +1,9 @@
-import EntityClass from '../engine/entity.js';
-
 export default class EditorClass
 {
-    constructor(game,map)
+    constructor(game)
     {
         this.game=game;
-        this.map=map;
+        this.map=null;
         
         this.MAP_TILE_WIDTH=256;
         this.MAP_TILE_HEIGHT=128;
@@ -16,13 +14,13 @@ export default class EditorClass
         this.tilePaletteCanvas=null;
         this.tilePaletteCTX=null;
         
-        this.entityPaletteCanvas=null;
-        this.entityPaletteCTX=null;
+        this.spritePaletteCanvas=null;
+        this.spritePaletteCTX=null;
         
-        this.entityPaletteList=null;                // preloaded entities that we use for the palette
+        this.spritePaletteList=null;                // preloaded sprites that we use for the palette
         
         this.PALETTE_TILE=0;
-        this.PALETTE_ENTITY=1;
+        this.PALETTE_SPRITE=1;
         
         this.paletteSelType=this.PALETTE_TILE;
         this.paletteSelIndex=-1;
@@ -43,9 +41,9 @@ export default class EditorClass
         this.tilePaletteCanvas.onclick=this.clickTilePaletteCanvas.bind(this);
         this.tilePaletteCTX=this.tilePaletteCanvas.getContext('2d');
         
-        this.entityPaletteCanvas=document.getElementById('editorEntityPaletteCanvas');
-        this.entityPaletteCanvas.onclick=this.clickEntityPaletteCanvas.bind(this);
-        this.entityPaletteCTX=this.entityPaletteCanvas.getContext('2d');
+        this.spritePaletteCanvas=document.getElementById('editorSpritePaletteCanvas');
+        this.spritePaletteCanvas.onclick=this.clickSpritePaletteCanvas.bind(this);
+        this.spritePaletteCTX=this.spritePaletteCanvas.getContext('2d');
         
             // initialize the image list
             
@@ -55,14 +53,25 @@ export default class EditorClass
     initialize2()
     {
             // the tile list is a list of all the loaded
-            // images that are of type tile
+            // images from the tile subdirectory
             
-        this.game.tileImageList=this.game.imageList.getArrayOfImageType(this.game.imageList.IMAGE_TILE);
+        this.game.tileImageList=this.game.imageList.getArrayOfImageByPrefix('tiles/');
 
             // get a set of classes for the
             // entities we can put in this map
             
-        this.entityPaletteList=this.game.getEditorEntityPaletteList();
+        this.spritePaletteList=this.game.getEditorSpritePaletteList();
+        
+            // and get the map to edit
+            
+        this.map=this.game.getStartMap();
+        
+            // if tileData or sprites are null, then
+            // start with a clear map
+            
+        if (this.map.tileData===null) this.map.tileData=new Uint16Array(this.MAP_TILE_WIDTH*this.MAP_TILE_HEIGHT);
+        if (this.map.sprites===null) this.map.sprites=[];
+        
         this.refresh();
     }
     
@@ -72,7 +81,7 @@ export default class EditorClass
         
     drawMapCanvas()
     {
-        let x,y,dx,dy,idx,tileIdx,entity;
+        let x,y,dx,dy,idx,tileIdx,sprite;
         let img,rgt,bot;
         let ctx=this.mapCTX;
         let tiles=this.game.tileImageList;
@@ -93,7 +102,7 @@ export default class EditorClass
             
             for (x=0;x!==this.MAP_TILE_WIDTH;x++) {
                 tileIdx=this.map.tileData[idx]-1;
-                if (tileIdx!==-1) ctx.drawImage(tiles[tileIdx].img,dx,dy);
+                if (tileIdx!==-1) ctx.drawImage(tiles[tileIdx],dx,dy);
                 
                 idx++;
                 dx+=64;
@@ -104,12 +113,11 @@ export default class EditorClass
         
             // entities
         
-        for (entity of this.map.entityList) {
-            dx=entity.x*64;
-            dy=entity.y*64;
-            console.log(entity.constructor.name+'='+entity.editorImage);
-            img=entity.editorImage.img;
-            ctx.drawImage(img,dx,dy,Math.min(64,img.width),Math.min(64,img.height));       // some sprites are bigger than 64x64
+        for (sprite of this.map.sprites) {
+            img=sprite.editorImage;
+            dx=sprite.x*64;
+            dy=((sprite.y+1)*64)-img.height;
+            ctx.drawImage(img,dx,dy);
         }
         
             // grid
@@ -161,7 +169,7 @@ export default class EditorClass
             // the images
             
         for (tile of tiles) {
-            ctx.drawImage(tile.img,x,y);
+            ctx.drawImage(tile,x,y);
             
             x+=64;
             if (x>=wid) {
@@ -189,24 +197,24 @@ export default class EditorClass
         }
     }
     
-    drawEntityPaletteCanvas()
+    drawSpritePaletteCanvas()
     {
-        let x,y,entity,img,cnt;
-        let wid=this.entityPaletteCanvas.width;
-        let ctx=this.entityPaletteCTX;
+        let x,y,sprite,img,cnt;
+        let wid=this.spritePaletteCanvas.width;
+        let ctx=this.spritePaletteCTX;
         
             // clear
             
         ctx.fillStyle='#EEEEEE';
-        ctx.fillRect(0,0,this.entityPaletteCanvas.width,this.entityPaletteCanvas.height);
+        ctx.fillRect(0,0,this.spritePaletteCanvas.width,this.spritePaletteCanvas.height);
         
         x=0;
         y=0;
         
             // the images
             
-        for (entity of this.entityPaletteList) {
-            img=entity.editorImage.img;
+        for (sprite of this.spritePaletteList) {
+            img=sprite.editorImage;
             ctx.drawImage(img,x,y,Math.min(64,img.width),Math.min(64,img.height));      // sprites can be bigger than 64/64
             
             x+=64;
@@ -218,7 +226,7 @@ export default class EditorClass
         
             // the selection
             
-        if ((this.paletteSelType===this.PALETTE_ENTITY) && (this.paletteSelIndex!==-1)) {
+        if ((this.paletteSelType===this.PALETTE_SPRITE) && (this.paletteSelIndex!==-1)) {
             ctx.strokeStyle='#FF3333';
             ctx.lineWidth=4;
             
@@ -239,30 +247,30 @@ export default class EditorClass
     {
         this.drawMapCanvas();
         this.drawTilePaletteCanvas();
-        this.drawEntityPaletteCanvas();
+        this.drawSpritePaletteCanvas();
     }
     
         //
         // lookups
         //
         
-    findEntityIndexForPosition(x,y)
+    findSpriteIndexForPosition(x,y)
     {
-        let n,entity;
+        let n,sprite;
 
-        for (n=0;n!=this.map.entityList.length;n++) {
-            entity=this.map.entityList[n];
-            if ((entity.x===x) && (entity.y===y)) return(n);
+        for (n=0;n!=this.map.sprites.length;n++) {
+            sprite=this.map.sprites[n];
+            if ((sprite.x===x) && (sprite.y===y)) return(n);
         }
         
         return(-1);
     }
     
-    findEntityForPosition(x,y)
+    findSpriteForPosition(x,y)
     {
-        let idx=this.findEntityIndexForPosition(x,y);
+        let idx=this.findSpriteIndexForPosition(x,y);
         if (idx===-1) return(null);
-        return(this.map.entityList[idx]);
+        return(this.map.sprites[idx]);
     }
     
         //
@@ -271,13 +279,13 @@ export default class EditorClass
         
     clearSpot(x,y,idx)
     {
-        let entityIdx;
+        let spriteIdx;
         
             // is there a sprite?
         
-        entityIdx=this.findEntityIndexForPosition(x,y);
-        if (entityIdx!==-1) {
-            this.map.entityList.splice(entityIdx,1);
+        spriteIdx=this.findSpriteIndexForPosition(x,y);
+        if (spriteIdx!==-1) {
+            this.map.removeSprite(spriteIdx);
             return;
         }
         
@@ -288,20 +296,14 @@ export default class EditorClass
     
     setSpot(x,y,idx)
     {
-        let entity,orgEntity;
-        
         if (this.paletteSelIndex===-1) return;
         
         switch (this.paletteSelType) {
             case this.PALETTE_TILE:
                 this.map.tileData[idx]=this.paletteSelIndex+1;
                 break;
-            case this.PALETTE_ENTITY:
-                orgEntity=this.entityPaletteList[this.paletteSelIndex];
-                entity=Object.assign(Object.create(orgEntity),orgEntity);
-                entity.x=x;
-                entity.y=y;
-                this.map.entityList.push(entity);
+            case this.PALETTE_SPRITE:
+                this.map.addSprite(this.spritePaletteList[this.paletteSelIndex].duplicate(x,y));
                 break;
         }
     }
@@ -332,17 +334,17 @@ export default class EditorClass
     
     rightClickMapCanvas(event)
     {
-        let entityIdx;
+        let spriteIdx;
         let x=Math.floor(event.offsetX/64);
         let y=Math.floor(event.offsetY/64);
         
         event.stopPropagation();
         event.preventDefault();
         
-            // edit entity data
+            // edit sprite data
             
-        entityIdx=this.findEntityIndexForPosition(x,y);
-        if (entityIdx===-1) return;
+        spriteIdx=this.findSpriteIndexForPosition(x,y);
+        if (spriteIdx===-1) return;
         
         this.drawMapCanvas();
     }
@@ -363,26 +365,26 @@ export default class EditorClass
         }
         
         this.drawTilePaletteCanvas();
-        this.drawEntityPaletteCanvas();
+        this.drawSpritePaletteCanvas();
     }
     
-    clickEntityPaletteCanvas(event)
+    clickSpritePaletteCanvas(event)
     {
-        let wid=this.entityPaletteCanvas.width;
+        let wid=this.spritePaletteCanvas.width;
         let x=event.offsetX;
         let y=event.offsetY;
         let idx=Math.floor(x/64)+(Math.floor(y/64)*Math.floor(wid/64));
         
-        if (idx>=this.entityPaletteList.length) {
+        if (idx>=this.spritePaletteList.length) {
             this.paletteSelIndex=-1;
         }
         else {
-            this.paletteSelType=this.PALETTE_ENTITY;
+            this.paletteSelType=this.PALETTE_SPRITE;
             this.paletteSelIndex=idx;
         }
         
         this.drawTilePaletteCanvas();
-        this.drawEntityPaletteCanvas();
+        this.drawSpritePaletteCanvas();
     }
     
         //
@@ -391,7 +393,7 @@ export default class EditorClass
         
     compile()
     {
-        let n,entity,first,str;
+        let n,sprite,first,str;
         let div=document.getElementById('editorCompile');
         let textArea=document.getElementById('editorCompileText');
         
@@ -414,21 +416,23 @@ export default class EditorClass
         
         str+='\r\n        ]);\r\n\r\n';
         
-        str+='        this.entityList=[\r\n'
+        str+='        this.sprites=[\r\n'
         
         first=true;
         
-        for (entity of this.map.entityList) {
+        for (sprite of this.map.sprites) {
             if (!first) str+=',\r\n';
             first=false;
             
-            str+='            new EntityClass(this.game,';
-            str+=entity.x.toString();
+            str+='            new ';
+            str+=sprite.constructor.name;
+            str+='(this.game,';
+            str+=sprite.x.toString();
             str+=",";
-            str+=entity.y.toString();
-            str+=",new Map([";
-            str+=JSON.stringify([...entity.data]);
-            str+=")))";
+            str+=sprite.y.toString();
+            str+=",new Map(";
+            str+=JSON.stringify([...sprite.data]);
+            str+="))";
         }
         
         str+='\r\n        ];\r\n\r\n';
@@ -439,7 +443,7 @@ export default class EditorClass
             
         div.style.display='';
         
-            // select all of it
+            // select it
             
         textArea.focus();
         textArea.select();

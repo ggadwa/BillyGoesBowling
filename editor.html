@@ -12,9 +12,8 @@
 <script type="module">
     import * as main from './editor/main.js';
     import BillyGameClass from './code/billy_game.js';
-    import WorldMainMapClass from './maps/world_main.js';
     
-    main.run(new BillyGameClass(),new WorldMainMapClass(new BillyGameClass()));
+    main.run(new BillyGameClass());
 </script>
 
 </head>
@@ -25,8 +24,8 @@
     <div id="compileButton" class="editorToolButton">Compile</div>
 </div>
 
-<div id="editorEntityPaletteWrapper" class="editorEntityPaletteWrapper">
-    <canvas id="editorEntityPaletteCanvas" class="editorEntityPaletteCanvas" width="128" height="4096"></canvas>
+<div id="editorSpritePaletteWrapper" class="editorSpritePaletteWrapper">
+    <canvas id="editorSpritePaletteCanvas" class="editorSpritePaletteCanvas" width="128" height="4096"></canvas>
 </div>
 
 <div id="editorMapWrapper" class="editorMapWrapper">

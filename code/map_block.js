@@ -1,15 +1,15 @@
-import EntityClass from '../engine/entity.js';
+import SpriteClass from '../engine/sprite.js';
 import PlayerWorldClass from './player_world.js';
 
-export default class MapBlockClass extends EntityClass
+export default class MapBlockClass extends SpriteClass
 {
     constructor(game,x,y,data)
     {
         super(game,x,y,data);
         
-        this.addImage('world_map_block');
-        this.setCurrentImage('world_map_block');
-        this.setEditorImage('world_map_block');
+        this.addImage('sprites/world_map_block');
+        this.setCurrentImage('sprites/world_map_block');
+        this.setEditorImage('sprites/world_map_block');
         
         this.show=true;
         this.gravityFactor=0.0;
@@ -21,5 +21,10 @@ export default class MapBlockClass extends EntityClass
         this.background=true;           // a background sprite, draws in the same plane as the map
 
         Object.seal(this);
+    }
+    
+    duplicate(x,y)
+    {
+        return(new MapBlockClass(this.game,x,y,this.data));
     }
 }

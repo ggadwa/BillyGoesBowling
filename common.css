@@ -38,7 +38,7 @@
     background-color: #AAAAFF;
 }
 
-.editorEntityPaletteWrapper {
+.editorSpritePaletteWrapper {
     position: absolute;
     top: 35px;
     left: 0px;
@@ -73,7 +73,7 @@
     border: 1px solid #000000;
 }
 
-.editorEntityPaletteCanvas, .editorMapCanvas, .editorTilePaletteCanvas {
+.editorSpritePaletteCanvas, .editorMapCanvas, .editorTilePaletteCanvas {
     position: absolute;
     left: 0px;
     top: 0px;

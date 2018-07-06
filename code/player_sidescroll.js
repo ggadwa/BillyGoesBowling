@@ -1,8 +1,8 @@
-import EntityClass from '../engine/entity.js';
+import SpriteClass from '../engine/sprite.js';
 import BallClass from '../code/ball.js';
 import CloudBlockClass from './cloud_block.js';
 
-export default class PlayerSideScrollClass extends EntityClass
+export default class PlayerSideScrollClass extends SpriteClass
 {
     constructor(game,x,y,data)
     {
@@ -10,11 +10,11 @@ export default class PlayerSideScrollClass extends EntityClass
         
             // setup
             
-        this.addImage('billy_left');
-        this.addImage('billy_right');
+        this.addImage('sprites/billy_left');
+        this.addImage('sprites/billy_right');
         
-        this.setCurrentImage('billy_right');
-        this.setEditorImage('billy_right');
+        this.setCurrentImage('sprites/billy_right');
+        this.setEditorImage('sprites/billy_right');
         this.setFacing(this.FACING_RIGHT);
         
         this.show=true;
@@ -24,13 +24,17 @@ export default class PlayerSideScrollClass extends EntityClass
         this.canCollide=true;
         this.canStandOn=true;
         
-            // add in the ball
-            // the ball automatically sets it's position so we don't
-            // need to set one here
-            
-        this.getGame().getMap().addSprite(new BallClass(this.getGame()));
-        
         Object.seal(this);
+    }
+    
+    duplicate(x,y)
+    {
+        return(new PlayerSideScrollClass(this.game,x,y,this.data));
+    }
+    
+    mapStartup()
+    {
+        this.getGame().getMap().addSprite(new BallClass(0,0,null));
     }
     
     runAI()
@@ -43,13 +47,13 @@ export default class PlayerSideScrollClass extends EntityClass
             
         if (input.isLeft()) {
             this.moveWithCollision(-12,0);
-            this.setCurrentImage('billy_left');
+            this.setCurrentImage('sprites/billy_left');
             this.setFacing(this.FACING_LEFT);
         }
         
         if (input.isRight()) {
             this.moveWithCollision(12,0);
-            this.setCurrentImage('billy_right');
+            this.setCurrentImage('sprites/billy_right');
             this.setFacing(this.FACING_RIGHT);
         }
         

@@ -1,7 +1,7 @@
-import EntityClass from '../engine/entity.js';
+import SpriteClass from '../engine/sprite.js';
 import BallClass from './ball.js';
 
-export default class DrainPipeSnakeClass extends EntityClass
+export default class DrainPipeSnakeClass extends SpriteClass
 {
     constructor(game,x,y,data)
     {
@@ -14,10 +14,10 @@ export default class DrainPipeSnakeClass extends EntityClass
         
             // setup
         
-        this.addImage('drain_pipe_snake_cover');
-        this.addImage('drain_pipe_snake_free');
-        this.setCurrentImage('drain_pipe_snake_cover');
-        this.setEditorImage('drain_pipe_snake_cover');
+        this.addImage('sprites/drain_pipe_snake_cover');
+        this.addImage('sprites/drain_pipe_snake_free');
+        this.setCurrentImage('sprites/drain_pipe_snake_cover');
+        this.setEditorImage('sprites/drain_pipe_snake_cover');
         
         this.show=true;
         this.gravityFactor=0.12;
@@ -27,6 +27,11 @@ export default class DrainPipeSnakeClass extends EntityClass
         this.canStandOn=true;
         
         Object.seal(this);
+    }
+    
+    duplicate(x,y)
+    {
+        return(new DrainPipeSnakeClass(this.game,x,y,this.data));
     }
     
     interactWithSprite(interactSprite,dataObj)

@@ -1,14 +1,8 @@
-import ImageClass from '../resources/image.js';
-
 export default class ImageListClass
 {
     constructor()
     {
-        this.IMAGE_TILE=0;
-        this.IMAGE_SPRITE=1;
-        this.IMAGE_UI=2;
-        
-        this.images=[];
+        this.images=new Map();
         
         Object.seal(this);
     }
@@ -23,75 +17,56 @@ export default class ImageListClass
     {
     }
     
-    add(name,imgType)
+    add(name)
     {
-        this.images.push(new ImageClass(name,imgType));
+        this.images.set(name,new Image());
     }
     
-    get(name,imgType)
+    get(name)
     {
-        let image;
-        
-        for (image of this.images) {
-            if ((image.name===name) && (image.imgType===imgType)) return(image);
-        }
-        
-        return(null);
+        return(this.images.get(name));
     }
     
-    getArrayOfImageType(imgType)
+    getArrayOfImageByPrefix(prefix)
     {
-        let image;
         let typeImages=[];
         
-        for (image of this.images) {
-            if (image.imgType===imgType) typeImages.push(image);
-        }
+        this.images.forEach(function(value,key,map) {
+           if (key.startsWith(prefix)) typeImages.push(value);
+        });
         
         return(typeImages);
     }
     
-    loadProcessLoaded(index,callback)
+    loadProcessError(path)
     {
-        index++;
-        if (index>=this.images.length) {
+        console.log('Missing Image: '+path);        // this will abort the loading process
+    }
+    
+    loadProcess(keyIter,callback)
+    {
+        let rtn,name,img,path;
+        
+            // get next key
+            
+        rtn=keyIter.next();
+        if (rtn.done) {
             callback();
             return;
         }
-            
-        this.loadProcess(index,callback);
-    }
-    
-    loadProcessError(fileName)
-    {
-        console.log('Missing Image: '+fileName);        // this will abort the loading process
-    }
-    
-    loadProcess(index,callback)
-    {
-        let image=this.images[index];
-        let fileName=null;
+
+        name=rtn.value;
+        path='images/'+name+'.png';
+        img=this.images.get(name);
         
-        switch (image.imgType) {
-            case this.IMAGE_TILE:
-                fileName='images/tiles/'+image.name+'.png';
-                break;
-            case this.IMAGE_SPRITE:
-                fileName='images/sprites/'+image.name+'.png';
-                break;
-            case this.IMAGE_UI:
-                fileName='images/ui/'+image.name+'.png';
-                break;
-        }
-        
-        image.img.onload=this.loadProcessLoaded.bind(this,index,callback);
-        image.img.onerror=this.loadProcessError.bind(this,fileName);
-        image.img.src=fileName;
+        img.onload=this.loadProcess.bind(this,keyIter,callback);
+        img.onerror=this.loadProcessError.bind(this,path);
+        img.src=path;
     }
     
     load(callback)
     {
-        this.loadProcess(0,callback);
+        this.loadProcess(this.images.keys(),callback);
     }
     
 }

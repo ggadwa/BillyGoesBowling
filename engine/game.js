@@ -1,5 +1,4 @@
 import MapClass from './map.js';
-import SpriteListClass from './sprite_list.js';
 import ImageListClass from '../resources/image_list.js';
 import SoundListClass from '../resources/sound_list.js';
 import InputClass from './input.js';
@@ -16,11 +15,9 @@ export default class GameClass
         this.backCanvas=null;
         this.backCTX=null;
         
-        this.imageList=null;            // set by overriding class
-        this.tileImageList=null;        // created from the image list
-        
-        this.spriteList=new SpriteListClass(this);
-        this.soundList=new SoundListClass();
+        this.imageList=null;                    // set by overriding class
+        this.soundList=null;                    // set by overriding class
+        this.tileImageList=null;                // created from the image list
         this.input=new InputClass();
         
         this.timestamp=0;
@@ -36,11 +33,6 @@ export default class GameClass
         this.gotoMapTrigger=null;
     }
     
-        //
-        // the tiles
-        //
-        
-    
     initialize(callback)
     {
         this.canvas=document.getElementById('mainCanvas');
@@ -54,14 +46,16 @@ export default class GameClass
         this.backCanvas.height=this.canvasHeight;
         this.backCTX=this.backCanvas.getContext('2d');
         
-            // load the images
+            // initialize and load the image list
         
-        this.imageList.load(this.getPreloadImages(),this.initialize2.bind(this,callback));
+        this.imageList.initialize(this.initialize2.bind(this,callback));
     }
     
     initialize2(callback)
     {
-        this.soundList.load(this.getPreloadSounds(),this.initialize3.bind(this,callback));
+            // initialize and load the sound list
+            
+        this.soundList.initialize(this.initialize3.bind(this,callback));
     }
    
     initialize3(callback)
@@ -96,17 +90,12 @@ export default class GameClass
         return(this.timestamp);
     }
     
-    fillSpriteList()
+    /**
+     * Override and return a set of objects based on the sprite classes
+     * you want the editor to be able to place in a map.
+     */
+    getEditorSpritePaletteList()
     {
-    }
-    
-    getEditorEntityPaletteList()
-    {
-    }
-    
-    getPreloadImages()
-    {
-        return(null);
     }
     
     getPreloadSounds()

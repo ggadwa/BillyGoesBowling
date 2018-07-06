@@ -1,8 +1,8 @@
-import EntityClass from '../engine/entity.js';
+import SpriteClass from '../engine/sprite.js';
 import BallClass from './ball.js';
 import ShurikinClass from './shurikin.js';
 
-export default class NinjaBunnyClass extends EntityClass
+export default class NinjaBunnyClass extends SpriteClass
 {
     constructor(game,x,y,data)
     {
@@ -15,9 +15,9 @@ export default class NinjaBunnyClass extends EntityClass
         
             // setup
             
-        this.addImage('ninja_bunny');
-        this.setCurrentImage('ninja_bunny');
-        this.setEditorImage('ninja_bunny');
+        this.addImage('sprites/ninja_bunny');
+        this.setCurrentImage('sprites/ninja_bunny');
+        this.setEditorImage('sprites/ninja_bunny');
         
         this.show=true;
         this.gravityFactor=0.12;
@@ -27,6 +27,11 @@ export default class NinjaBunnyClass extends EntityClass
         this.canStandOn=true;
         
         Object.seal(this);
+    }
+    
+    duplicate(x,y)
+    {
+        return(new NinjaBunnyClass(this.game,x,y,this.data));
     }
     
     interactWithSprite(interactSprite,dataObj)

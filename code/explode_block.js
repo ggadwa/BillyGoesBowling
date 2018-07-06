@@ -1,7 +1,7 @@
-import EntityClass from '../engine/entity.js';
+import SpriteClass from '../engine/sprite.js';
 import BallClass from './ball.js';
 
-export default class ExplodeBlockClass extends EntityClass
+export default class ExplodeBlockClass extends SpriteClass
 {
     constructor(game,x,y,data)
     {
@@ -18,13 +18,13 @@ export default class ExplodeBlockClass extends EntityClass
          
             // setup
         
-        this.addImage('explode_block_0');
-        this.addImage('explode_block_1');
-        this.addImage('explode_block_2');
-        this.addImage('explode_block_3');
+        this.addImage('sprites/explode_block_0');
+        this.addImage('sprites/explode_block_1');
+        this.addImage('sprites/explode_block_2');
+        this.addImage('sprites/explode_block_3');
         
-        this.setCurrentImage('explode_block_0');
-        this.setEditorImage('explode_block_0');
+        this.setCurrentImage('sprites/explode_block_0');
+        this.setEditorImage('sprites/explode_block_0');
         
         this.show=true;
         this.gravityFactor=0.0;
@@ -34,6 +34,11 @@ export default class ExplodeBlockClass extends EntityClass
         this.canStandOn=true;
         
         Object.seal(this);
+    }
+    
+    duplicate(x,y)
+    {
+        return(new ExplodeBlockClass(this.game,x,y,this.data));
     }
     
     interactWithSprite(interactSprite,dataObj)
@@ -46,7 +51,7 @@ export default class ExplodeBlockClass extends EntityClass
         if ((interactSprite instanceof BallClass) || (interactSprite instanceof ExplodeBlockClass)) {
             this.countDown=2;
             this.countDownTick=this.COUNT_DOWN_TICK_WAIT;
-            this.setCurrentImage('explode_block_'+this.countDown);
+            this.setCurrentImage('sprites/explode_block_'+this.countDown);
         }
     }
     
@@ -68,7 +73,7 @@ export default class ExplodeBlockClass extends EntityClass
         this.countDownTick=this.COUNT_DOWN_TICK_WAIT;
 
         if (this.countDown>=0) {
-            this.setCurrentImage('explode_block_'+this.countDown);
+            this.setCurrentImage('sprites/explode_block_'+this.countDown);
             return;
         }
 

@@ -7,17 +7,43 @@ export default class SoundListClass
         
         if (this.ctx===null) {
             console.log('error with audio context');
-        }   // supergumba -- need error checking here
+        }   // todo -- need error checking here
             
         this.buffers=new Map();
         
         Object.seal(this);
     }
     
-    
-    loadProcessLoaded(req,soundList,index,callback)
+    initialize(callback)
     {
-        let name=soundList[index];
+        this.fillSoundList();
+        this.load(callback);
+    }
+    
+    fillSoundList()
+    {
+    }
+    
+    add(name)
+    {
+        this.buffers.set(name,null);
+    }
+    
+    play(name)
+    {
+        let source=this.ctx.createBufferSource();
+        let gain=this.ctx.createGain();
+        
+        source.buffer=this.buffers.get(name);
+        gain.gain.value=0.25;
+
+        source.connect(gain);
+        gain.connect(this.ctx.destination);
+        source.start(0);
+    }
+    
+    loadProcessLoaded(req,name,keyIter,callback)
+    {
         let buffers=this.buffers;
         
             // error
@@ -42,48 +68,36 @@ export default class SoundListClass
                 
             // next sound
             
-        index++;
-        if (index>=soundList.length) {
+        this.loadProcess(keyIter,callback);
+    }
+    
+    loadProcess(keyIter,callback)
+    {
+        let req,rtn,name,path;
+        
+            // get next key
+            
+        rtn=keyIter.next();
+        if (rtn.done) {
             callback();
             return;
         }
-            
-        this.loadProcess(soundList,index,callback);
-    }
-    
-    loadProcessError(name)
-    {
-        console.log('Missing Sound: '+name);        // this will abort the game loading process
-    }
-    
-    loadProcess(soundList,index,callback)
-    {
-        let req;
-        let name=soundList[index];
+
+        name=rtn.value;
+        path='sounds/'+name+'.wav';
         
         req=new XMLHttpRequest();
-        req.open('GET',('sounds/'+name+'.wav'),true);
+        req.open('GET',path,true);
         req.responseType='arraybuffer';
-        req.onload=this.loadProcessLoaded.bind(this,req,soundList,index,callback);
+        req.onload=this.loadProcessLoaded.bind(this,req,name,keyIter,callback);
         req.send();
     }
     
-    load(soundList,callback)
+    load(callback)
     {
-        this.loadProcess(soundList,0,callback);
+        this.loadProcess(this.images.keys(),0,callback);
     }
     
-    play(name)
-    {
-        let source=this.ctx.createBufferSource();
-        let gain=this.ctx.createGain();
-        
-        source.buffer=this.buffers.get(name);
-        gain.gain.value=0.25;
-
-        source.connect(gain);
-        gain.connect(this.ctx.destination);
-        source.start(0);
-    }
+    
 }
 

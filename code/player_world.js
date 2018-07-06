@@ -1,8 +1,8 @@
-import EntityClass from '../engine/entity.js';
+import SpriteClass from '../engine/sprite.js';
 import BallClass from '../code/ball.js';
 import CloudBlockClass from './cloud_block.js';
 
-export default class PlayerWorldClass extends EntityClass
+export default class PlayerWorldClass extends SpriteClass
 {
     constructor(game,x,y,data)
     {
@@ -10,9 +10,9 @@ export default class PlayerWorldClass extends EntityClass
         
             // setup
             
-        this.addImage('billy_world');
-        this.setCurrentImage('billy_world');
-        this.setEditorImage('billy_world');
+        this.addImage('sprites/billy_world');
+        this.setCurrentImage('sprites/billy_world');
+        this.setEditorImage('sprites/billy_world');
         
         this.show=true;
         this.gravityFactor=0.0;
@@ -22,6 +22,11 @@ export default class PlayerWorldClass extends EntityClass
         this.canStandOn=false;
         
         Object.seal(this);
+    }
+    
+    duplicate(x,y)
+    {
+        return(new PlayerWorldClass(this.game,x,y,this.data));
     }
     
     runAI()

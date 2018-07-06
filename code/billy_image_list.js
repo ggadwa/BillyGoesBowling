@@ -11,100 +11,100 @@ export default class BillyImageListClass extends ImageListClass
     {
             // tiles
             
-        this.add('ground_grass_end_left',this.IMAGE_TILE);
-        this.add('ground_grass',this.IMAGE_TILE);
-        this.add('ground_grass_end_right',this.IMAGE_TILE);
+        this.add('tiles/ground_grass_end_left');
+        this.add('tiles/ground_grass');
+        this.add('tiles/ground_grass_end_right');
         
-        this.add('ground_grass_connect_left',this.IMAGE_TILE);
-        this.add('ground_dirt_fill',this.IMAGE_TILE);
-        this.add('ground_grass_connect_right',this.IMAGE_TILE);
+        this.add('tiles/ground_grass_connect_left');
+        this.add('tiles/ground_dirt_fill');
+        this.add('tiles/ground_grass_connect_right');
         
-        this.add('ground_dirt_bottom_left',this.IMAGE_TILE);
-        this.add('ground_dirt_bottom',this.IMAGE_TILE);
-        this.add('ground_dirt_bottom_right',this.IMAGE_TILE);
+        this.add('tiles/ground_dirt_bottom_left');
+        this.add('tiles/ground_dirt_bottom');
+        this.add('tiles/ground_dirt_bottom_right');
         
-        this.add('girder_left_horizontal',this.IMAGE_TILE);
-        this.add('girder_middle_horizontal',this.IMAGE_TILE);
-        this.add('girder_right_horizontal',this.IMAGE_TILE);
+        this.add('tiles/girder_left_horizontal');
+        this.add('tiles/girder_middle_horizontal');
+        this.add('tiles/girder_right_horizontal');
         
-        this.add('girder_top_vertical',this.IMAGE_TILE);
-        this.add('girder_middle_vertical',this.IMAGE_TILE);
-        this.add('girder_bottom_vertical',this.IMAGE_TILE);
+        this.add('tiles/girder_top_vertical');
+        this.add('tiles/girder_middle_vertical');
+        this.add('tiles/girder_bottom_vertical');
         
-        this.add('girder_connect',this.IMAGE_TILE);
-        this.add('temp_1',this.IMAGE_TILE);
-        this.add('temp_2',this.IMAGE_TILE);
+        this.add('tiles/girder_connect');
+        this.add('tiles/temp_1');
+        this.add('tiles/temp_2');
         
-        this.add('world_grass_top_left',this.IMAGE_TILE);
-        this.add('world_grass_top',this.IMAGE_TILE);
-        this.add('world_grass_top_right',this.IMAGE_TILE);
+        this.add('tiles/world_grass_top_left');
+        this.add('tiles/world_grass_top');
+        this.add('tiles/world_grass_top_right');
         
-        this.add('world_grass_left',this.IMAGE_TILE);
-        this.add('world_grass',this.IMAGE_TILE);
-        this.add('world_grass_right',this.IMAGE_TILE);
+        this.add('tiles/world_grass_left');
+        this.add('tiles/world_grass');
+        this.add('tiles/world_grass_right');
         
-        this.add('world_grass_bottom_left',this.IMAGE_TILE);
-        this.add('world_grass_bottom',this.IMAGE_TILE);
-        this.add('world_grass_bottom_right',this.IMAGE_TILE);
+        this.add('tiles/world_grass_bottom_left');
+        this.add('tiles/world_grass_bottom');
+        this.add('tiles/world_grass_bottom_right');
         
-        this.add('world_grass_corner_top_left',this.IMAGE_TILE);
-        this.add('world_grass_corner_top_right',this.IMAGE_TILE);
-        this.add('world_bridge_horizontal',this.IMAGE_TILE);
+        this.add('tiles/world_grass_corner_top_left');
+        this.add('tiles/world_grass_corner_top_right');
+        this.add('tiles/world_bridge_horizontal');
         
-        this.add('world_grass_corner_bottom_left',this.IMAGE_TILE);
-        this.add('world_grass_corner_bottom_right',this.IMAGE_TILE);
-        this.add('world_bridge_vertical',this.IMAGE_TILE);
+        this.add('tiles/world_grass_corner_bottom_left');
+        this.add('tiles/world_grass_corner_bottom_right');
+        this.add('tiles/world_bridge_vertical');
         
-        this.add('world_road_curve_top_left',this.IMAGE_TILE);
-        this.add('world_road_horizontal',this.IMAGE_TILE);
-        this.add('world_road_curve_top_right',this.IMAGE_TILE);
+        this.add('tiles/world_road_curve_top_left');
+        this.add('tiles/world_road_horizontal');
+        this.add('tiles/world_road_curve_top_right');
         
-        this.add('world_road_vertical',this.IMAGE_TILE);
-        this.add('world_road_cross',this.IMAGE_TILE);
-        this.add('world_road_dot',this.IMAGE_TILE);
+        this.add('tiles/world_road_vertical');
+        this.add('tiles/world_road_cross');
+        this.add('tiles/world_road_dot');
 
-        this.add('world_road_curve_bottom_left',this.IMAGE_TILE);
-        this.add('world_mountain',this.IMAGE_TILE);
-        this.add('world_road_curve_bottom_right',this.IMAGE_TILE);
+        this.add('tiles/world_road_curve_bottom_left');
+        this.add('tiles/world_mountain');
+        this.add('tiles/world_road_curve_bottom_right');
         
-        this.add('world_water_1',this.IMAGE_TILE);
+        this.add('tiles/world_water_1');
         
             // sprites
             
-        this.add('ball',this.IMAGE_SPRITE);
-        this.add('billy_left',this.IMAGE_SPRITE);
-        this.add('billy_right',this.IMAGE_SPRITE);
-        this.add('billy_world',this.IMAGE_SPRITE);
-        this.add('pin',this.IMAGE_SPRITE);
-        this.add('block',this.IMAGE_SPRITE);
-        this.add('break_block',this.IMAGE_SPRITE);
-        this.add('break_block_strong',this.IMAGE_SPRITE);
-        this.add('explode_block_0',this.IMAGE_SPRITE);
-        this.add('explode_block_1',this.IMAGE_SPRITE);
-        this.add('explode_block_2',this.IMAGE_SPRITE);
-        this.add('explode_block_3',this.IMAGE_SPRITE);
-        this.add('cloud_block',this.IMAGE_SPRITE);
+        this.add('sprites/ball');
+        this.add('sprites/billy_left');
+        this.add('sprites/billy_right');
+        this.add('sprites/billy_world');
+        this.add('sprites/pin');
+        this.add('sprites/block');
+        this.add('sprites/break_block');
+        this.add('sprites/break_block_strong');
+        this.add('sprites/explode_block_0');
+        this.add('sprites/explode_block_1');
+        this.add('sprites/explode_block_2');
+        this.add('sprites/explode_block_3');
+        this.add('sprites/cloud_block');
         
-        this.add('platform',this.IMAGE_SPRITE);
-        this.add('door',this.IMAGE_SPRITE);
+        this.add('sprites/platform');
+        this.add('sprites/door');
         
-        this.add('ninja_bunny',this.IMAGE_SPRITE);
-        this.add('shurikin',this.IMAGE_SPRITE);
-        this.add('drain_pipe_snake_cover',this.IMAGE_SPRITE);
-        this.add('drain_pipe_snake_free',this.IMAGE_SPRITE);
-        this.add('roto_carrot',this.IMAGE_SPRITE);
+        this.add('sprites/ninja_bunny');
+        this.add('sprites/shurikin');
+        this.add('sprites/drain_pipe_snake_cover');
+        this.add('sprites/drain_pipe_snake_free');
+        this.add('sprites/roto_carrot');
         
-        this.add('particle_block',this.IMAGE_SPRITE);
-        this.add('particle_explode_block',this.IMAGE_SPRITE);
+        this.add('sprites/particle_block');
+        this.add('sprites/particle_explode_block');
         
-        this.add('world_map_spot',this.IMAGE_SPRITE);
-        this.add('world_map_castle',this.IMAGE_SPRITE);
-        this.add('world_map_block',this.IMAGE_SPRITE);
+        this.add('sprites/world_map_spot');
+        this.add('sprites/world_map_castle');
+        this.add('sprites/world_map_block');
         
             // UI
             
-        this.add('ui_pin',this.IMAGE_UI);
-        this.add('ui_banner',this.IMAGE_UI);
+        this.add('ui/pin');
+        this.add('ui/banner');
     }
     
 }
