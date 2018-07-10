@@ -102,7 +102,7 @@ export default class BillyGameClass extends GameClass
         
             // the pin readout
             
-        this.drawUIImage('ui_pin',(this.canvasWidth-110),2);
+        this.drawUIImage('ui/pin',(this.canvasWidth-110),2);
         this.setupUIText('24px Arial','#000000','left','alphabetic');
         this.drawUIText(('x '+this.getData('pins')),(this.canvasWidth-75),25);
         
@@ -125,7 +125,7 @@ export default class BillyGameClass extends GameClass
             wid=this.getImageList().get('ui_banner').width;
             mx=Math.trunc(this.canvasWidth*0.5);
             lx=mx-Math.trunc(wid*0.5);
-            this.drawUIImage('ui_banner',lx,(this.canvasHeight-70));
+            this.drawUIImage('ui/banner',lx,(this.canvasHeight-70));
             
             pinCount=this.getData('banner_pin_count');
             if (pinCount===-1) {
@@ -137,7 +137,7 @@ export default class BillyGameClass extends GameClass
                 this.drawUIText(this.getData('banner_text'),(lx+5),(this.canvasHeight-25));
                 
                 rx=lx+wid;
-                this.drawUIImage('ui_pin',(rx-95),(this.canvasHeight-55));
+                this.drawUIImage('ui/pin',(rx-95),(this.canvasHeight-55));
                 this.drawUIText(('x '+pinCount),(rx-60),(this.canvasHeight-25));
             }
             

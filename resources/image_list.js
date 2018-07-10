@@ -9,11 +9,14 @@ export default class ImageListClass
     
     initialize(callback)
     {
-        this.fillImageList();
+        this.create();
         this.load(callback);
     }
     
-    fillImageList()
+    /**
+     * Override this to build the list of images this game will need.
+     */
+    create()
     {
     }
     

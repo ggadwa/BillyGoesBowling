@@ -7,7 +7,7 @@ export default class BillySoundListClass extends SoundListClass
         super();
     }
     
-    fillSoundList()
+    create()
     {
         this.add('crack');
         this.add('explode');

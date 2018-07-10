@@ -9,9 +9,6 @@ export default class SpriteClass
         
         this.data=(data===null)?new Map():data;
         
-        this.gridSpawnX=0;
-        this.gridSpawnY=0;
-        
         this.FACING_FORWARD=0;
         this.FACING_LEFT=1;
         this.FACING_RIGHT=2;
@@ -46,18 +43,22 @@ export default class SpriteClass
         // can't seal this object as it's extended
     }
     
+    /**
+     * Override this so editor can create another object of this type
+     * at a given position.
+     */
     duplicate(x,y)
     {
     }
     
-    getGame()
+    /**
+     * Override and set to true if this sprite is a player
+     * sprite.  If there is more than one players sprite, the first
+     * one encountered becomes the player.
+     */
+    isPlayer()
     {
-        return(this.game);
-    }
-    
-    getMap()
-    {
-        return(this.game.getMap());
+        return(false);
     }
     
     /**
@@ -140,12 +141,6 @@ export default class SpriteClass
         return((this.y-this.height)<bot);
     }
     
-    setGridSpawnPoint(gridSpawnX,gridSpawnY)
-    {
-        this.gridSpawnX=gridSpawnX;
-        this.gridSpawnY=gridSpawnY;
-    }
-    
     setPosition(x,y)
     {
         this.x=x;
@@ -161,7 +156,7 @@ export default class SpriteClass
     moveWithCollision(mx,my)
     {
         this.move(mx,my);
-        if (this.game.getMap().checkCollision(this)) this.move(-mx,-my);
+        if (this.game.map.checkCollision(this)) this.move(-mx,-my);
     }
     
     addMotion(mx,my)
@@ -216,7 +211,6 @@ export default class SpriteClass
     run()
     {
         let y;
-        let map=this.game.getMap();
         
             // run any AI
             
@@ -235,7 +229,7 @@ export default class SpriteClass
             // physics
             
         if (this.gravityFactor!==0.0) {
-            y=map.checkCollisionStand(this,Math.trunc(this.gravityAdd));
+            y=this.game.map.checkCollisionStand(this,Math.trunc(this.gravityAdd));
             if (y===-1) {
                 this.y=Math.trunc(this.y+this.gravityAdd);
                 if (this.gravityAdd<=0.0) this.gravityAdd=this.gravityMinValue;
@@ -268,11 +262,11 @@ export default class SpriteClass
         
         if (this.alpha!==1.0) {
             ctx.globalAlpha=this.alpha;
-            ctx.drawImage(this.currentImage.img,x,y);
+            ctx.drawImage(this.currentImage,x,y);
             ctx.globalAlpha=1.0;
         }
         else {
-            ctx.drawImage(this.currentImage.img,x,y);
+            ctx.drawImage(this.currentImage,x,y);
         }
     }
 }

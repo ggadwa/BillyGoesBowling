@@ -1,25 +1,21 @@
 import SpriteClass from './sprite.js';
 import ParticleClass from './particle.js';
-import GridSpotClass from './grid_spot.js';
 
 export default class MapClass
 {
     constructor(game)
     {
         this.game=game;
-        this.gridPixelSize=64;
+        
+        this.MAP_TILE_WIDTH=256;        // todo -- these are here until we can have static class fields (replace with Map.X)
+        this.MAP_TILE_HEIGHT=128;
+        this.MAP_TILE_SIZE=64;
         
         this.width=0;
         this.height=0;
         
         this.tileData=null;             // tile data for map
         this.sprites=null;              // sprites in map
-        
-        this.grid=null;
-        this.gridWidth=0;
-        this.gridHeight=0;
-        this.gridSpotPerWidth=0;
-        this.gridSpotPerHeight=0;
         
         this.playerIdx=-1;
         
@@ -28,21 +24,27 @@ export default class MapClass
     
     initialize()
     {
+        let n;
         let sprite;
+        
+            // create the map
+            
+        this.create();
 
-        this.setMapFromArray();
+            // call any map startup
+            
         this.mapStartup();
         
             // call all the sprite map enter
-            
-        for (sprite of this.sprites) {
+        
+        for (n=0;n!==this.sprites.length;n++) {
+            sprite=this.sprites[n];
+
             sprite.mapStartup();
+            if ((sprite.isPlayer()) && (this.playerIdx===-1)) this.playerIdx=n;
         }
-    }
-    
-    getGame()
-    {
-        return(this.game);
+        
+        if (this.playerIdx===-1) console.log('No player in map');
     }
     
     getMapName()
@@ -50,19 +52,12 @@ export default class MapClass
         return('');
     }
     
-    getGridWidth()
+    /**
+     * Override this to fill in the map data, which is the tile list
+     * and sprites.
+     */
+    create()
     {
-        return(this.gridWidth);
-    }
-    
-    getGridHeight()
-    {
-        return(this.gridHeight);
-    }
-    
-    getGridPixelSize()
-    {
-        return(this.gridPixelSize);
     }
     
     /**
@@ -117,89 +112,12 @@ export default class MapClass
     mapStartup()
     {   
     }
-
-    setMapFromArray()
-    {
-        let x,y,row,tileRowStr,spriteRowStr,ch,tile,sprite;
-        let idx;
-        let mapTileLayou=this.getMapTileLayout();
-        let mapSpriteLayout=this.getMapSpriteLayout();
-        let rowCount=mapTileLayou.length;
-        let colCount=0;
-        
-            // find longest horizontal line
-            // and pad all lines to that size
-        
-        for (y=0;y!==rowCount;y++) {
-            if (mapTileLayou[y].length>colCount) colCount=mapTileLayou[y].length;
-            if (mapSpriteLayout[y].length>colCount) colCount=mapSpriteLayout[y].length;
-        }
-        
-        for (y=0;y!==rowCount;y++) {
-            mapTileLayou[y]=mapTileLayou[y].padEnd(colCount,' ');
-            mapSpriteLayout[y]=mapSpriteLayout[y].padEnd(colCount,' ');
-        }
-
-            // translate to grid
-            
-        this.grid=[];
-        this.playerIdx=-1;
-        
-        for (y=0;y!==rowCount;y++) {
-            row=new Array(colCount);
-            
-            tileRowStr=mapTileLayou[y];
-            spriteRowStr=mapSpriteLayout[y];
-            
-            for (x=0;x!==colCount;x++) {
-                
-                    // get the tile
-                    
-                row[x]=null;
-                    
-                ch=tileRowStr.charAt(x);
-                if (ch!==32) {
-                    tile=this.createMapTileForCharacter(ch);
-                    if (tile!==null) row[x]=tile;
-                }
-                
-                    // a sprite
-                
-                ch=spriteRowStr.charAt(x);
-                if (ch!==32) {
-                    sprite=this.createMapSpriteForCharacter(ch);
-                    if (sprite!==null) {
-                        sprite.setPosition((x*this.gridPixelSize),((y+1)*this.gridPixelSize));              // sprites Y is on the bottom
-                        idx=this.addSprite(sprite);
-                        sprite.setGridSpawnPoint(x,y);
-                        if (ch==='*') this.playerIdx=idx;
-                    }
-                }
-            }
-            
-            this.grid.push(row);
-        }
-        
-        this.gridWidth=colCount;
-        this.gridHeight=rowCount;
-        
-        this.gridSpotPerWidth=(this.game.canvasWidth/this.gridPixelSize);
-        this.gridSpotPerHeight=(this.game.canvasHeight/this.gridPixelSize);
-        
-        this.width=this.gridWidth*this.gridPixelSize;
-        this.height=this.gridHeight*this.gridPixelSize;
-        
-            // quick system out if no player
-            
-        if (this.playerIdx===-1) console.log('No player in map data');
-    }
     
     checkCollision(checkSprite)
     {
-        let sprite,gridSpot;
+        let sprite,tile;
         let lx,rx,ty,by,dx,dy,gx,gy;
         let lft,top,rgt,bot;
-        let row;
         
             // clear flags
             
@@ -225,31 +143,28 @@ export default class MapClass
         rgt=checkSprite.x+checkSprite.width;
         bot=checkSprite.y;
             
-        lx=Math.trunc(lft/this.gridPixelSize);
+        lx=Math.trunc(lft/this.MAP_TILE_SIZE);
         if (lx<0) lx=0;
-        rx=Math.trunc(rgt/this.gridPixelSize)+1;
-        if (rx>this.gridWidth) rx=gridWidth;
+        rx=Math.trunc(rgt/this.MAP_TILE_SIZE)+1;
+        if (rx>this.MAP_TILE_WIDTH) rx=this.MAP_TILE_WIDTH;
         
-        ty=Math.trunc(top/this.gridPixelSize);
+        ty=Math.trunc(top/this.MAP_TILE_SIZE);
         if (ty<0) ty=0;
         
-        by=Math.trunc(bot/this.gridPixelSize);
-        if (by>this.gridHeight) by=this.gridHeight;
+        by=Math.trunc(bot/this.MAP_TILE_SIZE);
+        if (by>this.MAP_TILE_HEIGHT) by=this.MAP_TILE_HEIGHT;
         
         for (gy=ty;gy<=by;gy++) {
-            row=this.grid[gy];
                 
-            dy=gy*this.gridPixelSize;
-            if ((bot<=dy) || (top>(dy+this.gridPixelSize))) continue;
+            dy=gy*this.MAP_TILE_SIZE;
+            if ((bot<=dy) || (top>(dy+this.MAP_TILE_SIZE))) continue;
 
             for (gx=lx;gx<=rx;gx++) {
-                if (row[gx]===null) continue;
+                tile=this.tileData[(gy*this.MAP_TILE_WIDTH)+gx];
+                if (tile===0) continue;
                 
-                gridSpot=row[gx];
-                if ((!gridSpot.show) || (!gridSpot.canCollide)) continue;
-                
-                dx=gx*this.gridPixelSize;
-                if ((rgt<=dx) || (lft>=(dx+this.gridPixelSize))) continue;
+                dx=gx*this.MAP_TILE_SIZE;
+                if ((rgt<=dx) || (lft>=(dx+this.MAP_TILE_SIZE))) continue;
                 
                 return(true);
             }
@@ -260,11 +175,10 @@ export default class MapClass
     
     checkCollisionStand(checkSprite,dist)
     {
-        let sprite,gridSpot;
+        let sprite,tile;
         let ty=-1;
         let x,y,dx,dy,gx,gy;
         let lft,top,rgt,bot;
-        let row;
         
             // always fall at least 1
             
@@ -304,28 +218,25 @@ export default class MapClass
         rgt=checkSprite.x+checkSprite.width;
         bot=checkSprite.y;
         
-        x=Math.trunc(((lft+rgt)*0.5)/this.gridPixelSize);
-        y=Math.trunc(bot/this.gridPixelSize);
+        x=Math.trunc(((lft+rgt)*0.5)/this.MAP_TILE_SIZE);
+        y=Math.trunc(bot/this.MAP_TILE_SIZE);
         
         if (x<0) x=0;
         if (y<0) y=0;
-        if ((x+2)>this.gridWidth) x=this.gridWidth-2;
-        if ((y+2)>this.gridHeight) y=this.gridHeight-2;
+        if ((x+2)>this.MAP_TILE_WIDTH) x=this.MAP_TILE_WIDTH-2;
+        if ((y+2)>this.MAP_TILE_HEIGHT) y=this.MAP_TILE_HEIGHT-2;
         
         for (gy=y;gy!==(y+2);gy++) {
-            row=this.grid[gy];
             
-            dy=gy*this.gridPixelSize;
-            if ((bot<dy) || (bot>(dy+this.gridPixelSize))) continue;              
+            dy=gy*this.MAP_TILE_SIZE;
+            if ((bot<dy) || (bot>(dy+this.MAP_TILE_SIZE))) continue;              
 
             for (gx=0;gx!==(x+2);gx++) {
-                if (row[gx]===null) continue;
+                tile=this.tileData[(gy*this.MAP_TILE_WIDTH)+gx];
+                if (tile===0) continue;
                 
-                gridSpot=row[gx];
-                if ((!gridSpot.show) || (!gridSpot.canCollide)) continue;
-                
-                dx=gx*this.gridPixelSize;
-                if ((rgt<=dx) || (lft>=(dx+this.gridPixelSize))) continue;
+                dx=gx*this.MAP_TILE_SIZE;
+                if ((rgt<=dx) || (lft>=(dx+this.MAP_TILE_SIZE))) continue;
                 
                 if ((dy<ty) || (ty===-1)) {
                     checkSprite.standSprite=null;
@@ -362,7 +273,7 @@ export default class MapClass
     {
         let sprite,x;
         let wid=this.game.canvasWidth;
-        let rgt=this.game.getMap().width-wid;
+        let rgt=this.game.map.width-wid;
 
         sprite=this.sprites[this.playerIdx];
         x=sprite.x-Math.trunc(wid*0.5);
@@ -381,7 +292,7 @@ export default class MapClass
     {
         let sprite,y;
         let high=this.game.canvasHeight;
-        let bot=this.game.getMap().height-high;
+        let bot=this.game.map.height-high;
 
         sprite=this.sprites[this.playerIdx];
         y=sprite.y-Math.trunc(high*0.5);
@@ -443,12 +354,13 @@ export default class MapClass
     draw(ctx)
     {
         let x,y;
-        let row,lx,rx,ty,by,offX,offY;
-        let sprite,particle,gridSpot;
+        let lx,rx,ty,by,offX,offY;
+        let tile,sprite,particle;
+        let tilePerWidth,tilePerHeight;
         let wid=this.game.canvasWidth;
-        let rgt=this.game.getMap().width-wid;
+        let rgt=this.game.map.width-wid;
         let high=this.game.canvasHeight;
-        let bot=this.game.getMap().height-high;
+        let bot=this.game.map.height-high;
         
             // get offset
             
@@ -460,31 +372,33 @@ export default class MapClass
         offY=sprite.y-Math.trunc(high*0.5);
         if (offY<0) offY=0;
         if (offY>bot) offY=bot;
+        
+            // draw size
+            
+        tilePerWidth=(this.game.canvasWidth/this.MAP_TILE_SIZE);
+        tilePerHeight=(this.game.canvasHeight/this.MAP_TILE_SIZE);
             
             // draw the map
             
-        lx=Math.trunc(offX/this.gridPixelSize)-1;
+        lx=Math.trunc(offX/this.MAP_TILE_SIZE)-1;
         if (lx<0) lx=0;
         
-        rx=(lx+this.gridSpotPerWidth)+2;
-        if (rx>this.gridWidth) rx=this.gridWidth;
+        rx=(lx+this.tilePerWidth)+2;
+        if (rx>this.MAP_TILE_WIDTH) rx=this.MAP_TILE_WIDTH;
         
-        ty=Math.trunc(offY/this.gridPixelSize)-1;
+        ty=Math.trunc(offY/this.MAP_TILE_SIZE)-1;
         if (ty<0) ty=0;
         
-        by=(ty+this.gridSpotPerHeight)+2;
-        if (by>this.gridHeight) by=this.gridHeight;
+        by=(ty+tilePerHeight)+2;
+        if (by>this.MAP_TILE_HEIGHT) by=this.MAP_TILE_HEIGHT;
         
         for (y=ty;y<by;y++) {
-            row=this.grid[y];
             
             for (x=lx;x<rx;x++) {
-                if (row[x]===null) continue;
+                tile=this.tileData[(gy*this.MAP_TILE_WIDTH)+gx];
+                if (tile===0) continue;
                 
-                gridSpot=row[x];
-                if (!gridSpot.show) continue;
-                    
-                ctx.drawImage(gridSpot.image,((x*this.gridPixelSize)-offX),((y*this.gridPixelSize)-offY));
+                ctx.drawImage(this.game.tileImageList[tile],((x*this.MAP_TILE_SIZE)-offX),((y*this.MAP_TILE_SIZE)-offY));
             }
         }
         

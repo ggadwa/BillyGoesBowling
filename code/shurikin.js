@@ -34,8 +34,6 @@ export default class ShurikinClass extends SpriteClass
     
     runAI()
     {
-        let game=this.getGame();
-        let map=game.getMap();
         let playerSprite=map.getSpritePlayer();
         
             // if first call, then we need to setup
@@ -50,7 +48,7 @@ export default class ShurikinClass extends SpriteClass
         this.x+=this.travelX;
         this.y+=this.travelY;
 
-        if (map.checkCollision(this)) {
+        if (this.game.map.checkCollision(this)) {
             this.delete();
         }
     }

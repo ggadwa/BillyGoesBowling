@@ -16,11 +16,14 @@ export default class SoundListClass
     
     initialize(callback)
     {
-        this.fillSoundList();
+        this.create();
         this.load(callback);
     }
     
-    fillSoundList()
+    /**
+     * Override this to fill the list of sounds this game will need.
+     */
+    create()
     {
     }
     
@@ -95,7 +98,7 @@ export default class SoundListClass
     
     load(callback)
     {
-        this.loadProcess(this.images.keys(),0,callback);
+        this.loadProcess(this.buffers.keys(),callback);
     }
     
     

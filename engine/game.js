@@ -53,6 +53,10 @@ export default class GameClass
     
     initialize2(callback)
     {
+            // get a list of tile images
+            
+        this.tileImageList=this.imageList.getArrayOfImageByPrefix('tiles/');
+        
             // initialize and load the sound list
             
         this.soundList.initialize(this.initialize3.bind(this,callback));
@@ -98,21 +102,6 @@ export default class GameClass
     {
     }
     
-    getPreloadSounds()
-    {
-        return(null);
-    }
-    
-    getSoundList()
-    {
-        return(this.soundList);
-    }
-    
-    getMap()
-    {
-        return(this.map);
-    }    
-    
     getMapOffset(offset)
     {
     }
@@ -120,11 +109,6 @@ export default class GameClass
     isCancelled()
     {
         return(this.input.isCancelled());
-    }
-    
-    getInput()
-    {
-        return(this.input);
     }
     
     getData(name)

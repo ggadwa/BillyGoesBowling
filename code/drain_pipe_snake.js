@@ -43,9 +43,7 @@ export default class DrainPipeSnakeClass extends SpriteClass
     
     runAI()
     {
-        let game=this.getGame();
-        let map=game.getMap();
-        let playerSprite=map.getSpritePlayer();
+        let playerSprite=this.game.map.getSpritePlayer();
         let sx,sy,shurikinSprite;
         
             // distance from player

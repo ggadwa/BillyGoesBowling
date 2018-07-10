@@ -43,10 +43,8 @@ export default class NinjaBunnyClass extends SpriteClass
     
     runAI()
     {
-        let game=this.getGame();
-        let map=game.getMap();
         let playerSprite=map.getSpritePlayer();
-        let sx,sy,shurikinSprite;
+        let sx,sy;
         
             // distance from player
             
@@ -88,9 +86,7 @@ export default class NinjaBunnyClass extends SpriteClass
                 sx=this.x+sx;
                 sy=this.y-Math.trunc(this.height*0.5);
                 
-                shurikinSprite=new ShurikinClass();
-                shurikinSprite.setPosition(sx,sy);
-                map.addSprite(shurikinSprite);
+                this.game.map.addSprite(new ShurikinClass(this.game,sx,sy,null));
                 */
             }
             

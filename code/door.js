@@ -30,11 +30,9 @@ export default class DoorClass extends SpriteClass
     
     runAI()
     {
-        let game=this.getGame();
-        
             // are we colliding with player?
             
-        if (!game.getMap().checkCollision(this)) return;
+        if (!this.game.map.checkCollision(this)) return;
         if (this.collideSprite===null) return;
         if (!(this.collideSprite instanceof PlayerSideScrollClass)) return;
             

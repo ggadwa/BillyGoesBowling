@@ -30,11 +30,9 @@ export default class MapCastleClass extends SpriteClass
     
     runAI()
     {
-        let game=this.getGame();
-        
             // are we colliding with player?
             
-        if (!game.getMap().getSpritePlayer().collide(this)) return;
+        if (!this.game.map.getSpritePlayer().collide(this)) return;
             
             // change UI
             

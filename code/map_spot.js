@@ -30,21 +30,18 @@ export default class MapSpotClass extends SpriteClass
 
     runAI()
     {
-        let game=this.getGame();
-        let input=game.getInput();
-        
             // are we colliding with player?
             
-        if (!game.getMap().getSpritePlayer().collide(this)) return;
+        if (!this.game.map.getSpritePlayer().collide(this)) return;
             
             // change UI
             
-        game.setBanner(this.getData('title'),-1);
+        this.game.setBanner(this.getData('title'),-1);
         
             // if action, than jump to make
             
-        if (input.isAction()) {
-            game.gotoMap(this.getData('map'));
+        if (this.game.input.isAction()) {
+            this.game.gotoMap(this.getData('map'));
         }
     }
 

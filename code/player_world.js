@@ -29,22 +29,24 @@ export default class PlayerWorldClass extends SpriteClass
         return(new PlayerWorldClass(this.game,x,y,this.data));
     }
     
+    isPlayer()
+    {
+        return(true);
+    }
+    
     runAI()
     {
         let n,moveX,moveY;
-        let game=this.getGame();
-        let map=game.getMap();
-        let input=game.getInput();
         
             // movement
             
         moveX=0;
         moveY=0;
         
-        if (input.isLeft()) moveX=-1;
-        if (input.isRight()) moveX=1;
-        if (input.isUp()) moveY=-1;
-        if (input.isDown()) moveY=1;
+        if (this.game.input.isLeft()) moveX=-1;
+        if (this.game.input.isRight()) moveX=1;
+        if (this.game.input.isUp()) moveY=-1;
+        if (this.game.input.isDown()) moveY=1;
         
         if ((moveX!==0) || (moveY!==0)) {
             for (n=0;n!==10;n++) {
@@ -53,7 +55,7 @@ export default class PlayerWorldClass extends SpriteClass
             }
         }
         
-        this.clampX(0,(map.width-this.width));
-        this.clampY(0,(map.height-this.height));
+        this.clampX(0,(this.game.map.width-this.width));
+        this.clampY(0,(this.game.map.height-this.height));
     }
 }

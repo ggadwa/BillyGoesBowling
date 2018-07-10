@@ -7,7 +7,7 @@ export default class BillyImageListClass extends ImageListClass
         super();
     }
     
-    fillImageList()
+    create()
     {
             // tiles
             

@@ -32,34 +32,35 @@ export default class PlayerSideScrollClass extends SpriteClass
         return(new PlayerSideScrollClass(this.game,x,y,this.data));
     }
     
+    isPlayer()
+    {
+        return(true);
+    }
+    
     mapStartup()
     {
-        this.getGame().getMap().addSprite(new BallClass(0,0,null));
+        this.game.map.addSprite(new BallClass(this.game,0,0,null));
     }
     
     runAI()
     {
-        let game=this.getGame();
-        let map=game.getMap();
-        let input=game.getInput();
-        
             // input
             
-        if (input.isLeft()) {
+        if (this.game.input.isLeft()) {
             this.moveWithCollision(-12,0);
             this.setCurrentImage('sprites/billy_left');
             this.setFacing(this.FACING_LEFT);
         }
         
-        if (input.isRight()) {
+        if (this.game.input.isRight()) {
             this.moveWithCollision(12,0);
             this.setCurrentImage('sprites/billy_right');
             this.setFacing(this.FACING_RIGHT);
         }
         
-        this.clampX(0,(map.width-this.width));
+        this.clampX(0,(this.game.map.width-this.width));
         
-        if ((input.isAction()) && (this.grounded)) this.addMotion(0,-35);
+        if ((this.game.input.isAction()) && (this.grounded)) this.addMotion(0,-35);
         
             // check for standing on a cloud
             

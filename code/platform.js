@@ -33,15 +33,13 @@ export default class PlatformClass extends SpriteClass
     
     runAI()
     {
-        let game=this.getGame();
-        let map=game.getMap();
-        let playerSprite=map.getSpritePlayer();
+        let playerSprite=this.game.map.getSpritePlayer();
         
             // move platform
             
         this.move(this.xAdd,0);
         
-        if (map.checkCollision(this)) {
+        if (this.game.map.checkCollision(this)) {
             this.xAdd=-this.xAdd;
             this.move(this.xAdd,0);
             return;

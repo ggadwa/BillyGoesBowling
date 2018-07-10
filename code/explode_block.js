@@ -57,7 +57,6 @@ export default class ExplodeBlockClass extends SpriteClass
     
     runAI()
     {
-        let map=this.getGame().getMap();
         let sprites,sprite;
         
         if (this.countDown===-1) return;
@@ -79,14 +78,14 @@ export default class ExplodeBlockClass extends SpriteClass
 
             // explode
         
-        sprites=map.getSurroundSprites(this,map.getGridPixelSize());
+        sprites=this.game.map.getSurroundSprites(this,this.game.map.MAP_TILE_SIZE);
         
         for (sprite of sprites) {
             sprite.interactWithSprite(this,null);
         }
         
-        this.getMap().addParticle(this.getMiddleX(),this.getMiddleY(),32,120,0.5,0.1,3,0.05,this.getGame().getImageList().get('particle_explode_block'),15,500);
-        this.getGame().getSoundList().play('explode');
+        this.game.map.addParticle(this.getMiddleX(),this.getMiddleY(),32,120,0.5,0.1,3,0.05,this.game.imageList.get('particle_explode_block'),15,500);
+        this.game.soundList.play('explode');
         this.delete();
     }
 }

@@ -5,8 +5,9 @@ export default class EditorClass
         this.game=game;
         this.map=null;
         
-        this.MAP_TILE_WIDTH=256;
+        this.MAP_TILE_WIDTH=256;        // todo -- these are here until we can have static class fields (replace with Map.X)
         this.MAP_TILE_HEIGHT=128;
+        this.MAP_TILE_SIZE=64;
         
         this.mapCanvas=null;
         this.mapCTX=null;
@@ -65,6 +66,7 @@ export default class EditorClass
             // and get the map to edit
             
         this.map=this.game.getStartMap();
+        this.map.create();
         
             // if tileData or sprites are null, then
             // start with a clear map
@@ -105,18 +107,18 @@ export default class EditorClass
                 if (tileIdx!==-1) ctx.drawImage(tiles[tileIdx],dx,dy);
                 
                 idx++;
-                dx+=64;
+                dx+=this.MAP_TILE_SIZE;
             }
             
-            dy+=64;
+            dy+=this.MAP_TILE_SIZE;
         }
         
             // entities
         
         for (sprite of this.map.sprites) {
             img=sprite.editorImage;
-            dx=sprite.x*64;
-            dy=((sprite.y+1)*64)-img.height;
+            dx=sprite.x*this.MAP_TILE_SIZE;
+            dy=((sprite.y+1)*this.MAP_TILE_SIZE)-img.height;
             ctx.drawImage(img,dx,dy);
         }
         
@@ -126,25 +128,25 @@ export default class EditorClass
         ctx.setLineDash([2,2]);
             
         dy=0;
-        rgt=this.MAP_TILE_WIDTH*64;
+        rgt=this.MAP_TILE_WIDTH*this.MAP_TILE_SIZE;
         
         for (y=0;y!==this.MAP_TILE_HEIGHT;y++) {
             ctx.beginPath();
             ctx.moveTo(0,dy);
             ctx.lineTo(rgt,dy);
             ctx.stroke();
-            dy+=64;
+            dy+=this.MAP_TILE_SIZE;
         }
             
         dx=0;
-        bot=this.MAP_TILE_HEIGHT*64;
+        bot=this.MAP_TILE_HEIGHT*this.MAP_TILE_SIZE;
             
         for (x=0;x!==this.MAP_TILE_WIDTH;x++) {
             ctx.beginPath();
             ctx.moveTo(dx,0);
             ctx.lineTo(dx,bot);
             ctx.stroke();
-            dx+=64;
+            dx+=this.MAP_TILE_SIZE;
         }
         
         ctx.strokeStyle='#000000';
@@ -171,10 +173,10 @@ export default class EditorClass
         for (tile of tiles) {
             ctx.drawImage(tile,x,y);
             
-            x+=64;
+            x+=this.MAP_TILE_SIZE;
             if (x>=wid) {
                 x=0;
-                y+=64;
+                y+=this.MAP_TILE_SIZE;
             }
         }
         
@@ -184,12 +186,12 @@ export default class EditorClass
             ctx.strokeStyle='#FF3333';
             ctx.lineWidth=4;
             
-            cnt=Math.floor(wid/64);
-            x=(this.paletteSelIndex%cnt)*64;
-            y=Math.floor(this.paletteSelIndex/cnt)*64;
+            cnt=Math.floor(wid/this.MAP_TILE_SIZE);
+            x=(this.paletteSelIndex%cnt)*this.MAP_TILE_SIZE;
+            y=Math.floor(this.paletteSelIndex/cnt)*this.MAP_TILE_SIZE;
             
             ctx.beginPath();
-            ctx.rect(x,y,64,64);
+            ctx.rect(x,y,this.MAP_TILE_SIZE,this.MAP_TILE_SIZE);
             ctx.stroke();
             
             ctx.strokeStyle='#000000';
@@ -215,12 +217,12 @@ export default class EditorClass
             
         for (sprite of this.spritePaletteList) {
             img=sprite.editorImage;
-            ctx.drawImage(img,x,y,Math.min(64,img.width),Math.min(64,img.height));      // sprites can be bigger than 64/64
+            ctx.drawImage(img,x,y,Math.min(this.MAP_TILE_SIZE,img.width),Math.min(this.MAP_TILE_SIZE,img.height));      // sprites can be bigger than map tile size
             
-            x+=64;
+            x+=this.MAP_TILE_SIZE;
             if (x>=wid) {
                 x=0;
-                y+=64;
+                y+=this.MAP_TILE_SIZE;
             }
         }
         
@@ -230,12 +232,12 @@ export default class EditorClass
             ctx.strokeStyle='#FF3333';
             ctx.lineWidth=4;
             
-            cnt=Math.floor(wid/64);
-            x=(this.paletteSelIndex%cnt)*64;
-            y=Math.floor(this.paletteSelIndex/cnt)*64;
+            cnt=Math.floor(wid/this.MAP_TILE_SIZE);
+            x=(this.paletteSelIndex%cnt)*this.MAP_TILE_SIZE;
+            y=Math.floor(this.paletteSelIndex/cnt)*this.MAP_TILE_SIZE;
             
             ctx.beginPath();
-            ctx.rect(x,y,64,64);
+            ctx.rect(x,y,this.MAP_TILE_SIZE,this.MAP_TILE_SIZE);
             ctx.stroke();
             
             ctx.strokeStyle='#000000';
@@ -315,9 +317,9 @@ export default class EditorClass
     leftClickMapCanvas(event)
     {
         let wid=this.mapCanvas.width;
-        let x=Math.floor(event.offsetX/64);
-        let y=Math.floor(event.offsetY/64);
-        let idx=x+(y*Math.floor(wid/64));
+        let x=Math.floor(event.offsetX/this.MAP_TILE_SIZE);
+        let y=Math.floor(event.offsetY/this.MAP_TILE_SIZE);
+        let idx=x+(y*Math.floor(wid/this.MAP_TILE_SIZE));
         
         event.stopPropagation();
         event.preventDefault();
@@ -335,8 +337,8 @@ export default class EditorClass
     rightClickMapCanvas(event)
     {
         let spriteIdx;
-        let x=Math.floor(event.offsetX/64);
-        let y=Math.floor(event.offsetY/64);
+        let x=Math.floor(event.offsetX/this.MAP_TILE_SIZE);
+        let y=Math.floor(event.offsetY/this.MAP_TILE_SIZE);
         
         event.stopPropagation();
         event.preventDefault();
@@ -354,7 +356,7 @@ export default class EditorClass
         let wid=this.tilePaletteCanvas.width;
         let x=event.offsetX;
         let y=event.offsetY;
-        let idx=Math.floor(x/64)+(Math.floor(y/64)*Math.floor(wid/64));
+        let idx=Math.floor(x/this.MAP_TILE_SIZE)+(Math.floor(y/this.MAP_TILE_SIZE)*Math.floor(wid/this.MAP_TILE_SIZE));
         
         if (idx>=this.game.tileImageList.length) {
             this.paletteSelIndex=-1;
@@ -373,7 +375,7 @@ export default class EditorClass
         let wid=this.spritePaletteCanvas.width;
         let x=event.offsetX;
         let y=event.offsetY;
-        let idx=Math.floor(x/64)+(Math.floor(y/64)*Math.floor(wid/64));
+        let idx=Math.floor(x/this.MAP_TILE_SIZE)+(Math.floor(y/this.MAP_TILE_SIZE)*Math.floor(wid/this.MAP_TILE_SIZE));
         
         if (idx>=this.spritePaletteList.length) {
             this.paletteSelIndex=-1;
