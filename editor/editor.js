@@ -117,8 +117,8 @@ export default class EditorClass
         
         for (sprite of this.map.sprites) {
             img=sprite.editorImage;
-            dx=sprite.x*this.MAP_TILE_SIZE;
-            dy=((sprite.y+1)*this.MAP_TILE_SIZE)-img.height;
+            dx=sprite.x;
+            dy=sprite.y-img.height;
             ctx.drawImage(img,dx,dy);
         }
         
@@ -259,6 +259,9 @@ export default class EditorClass
     findSpriteIndexForPosition(x,y)
     {
         let n,sprite;
+        
+        x=x*this.MAP_TILE_SIZE;
+        y=(y+1)*this.MAP_TILE_SIZE;
 
         for (n=0;n!=this.map.sprites.length;n++) {
             sprite=this.map.sprites[n];
@@ -305,7 +308,7 @@ export default class EditorClass
                 this.map.tileData[idx]=this.paletteSelIndex+1;
                 break;
             case this.PALETTE_SPRITE:
-                this.map.addSprite(this.spritePaletteList[this.paletteSelIndex].duplicate(x,y));
+                this.map.addSprite(this.spritePaletteList[this.paletteSelIndex].duplicate((x*this.MAP_TILE_SIZE),((y+1)*this.MAP_TILE_SIZE)));
                 break;
         }
     }
@@ -408,7 +411,9 @@ export default class EditorClass
         
             // compile
         
-        str='        this.tileData=new Uint16Array([';
+        str='    create()\r\n';
+        str+='    {\r\n';
+        str+='        this.tileData=new Uint16Array([';
         
         for (n=0;n!=this.map.tileData.length;n++) {
             if (n!==0) str+=',';
@@ -437,7 +442,8 @@ export default class EditorClass
             str+="))";
         }
         
-        str+='\r\n        ];\r\n\r\n';
+        str+='\r\n        ];\r\n';
+        str+='    }\r\n';
         
         textArea.value=str;
             

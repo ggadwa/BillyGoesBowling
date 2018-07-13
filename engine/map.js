@@ -11,8 +11,8 @@ export default class MapClass
         this.MAP_TILE_HEIGHT=128;
         this.MAP_TILE_SIZE=64;
         
-        this.width=0;
-        this.height=0;
+        this.width=this.MAP_TILE_WIDTH*this.MAP_TILE_SIZE;
+        this.height=this.MAP_TILE_HEIGHT*this.MAP_TILE_SIZE;
         
         this.tileData=null;             // tile data for map
         this.sprites=null;              // sprites in map
@@ -369,21 +369,21 @@ export default class MapClass
         if (offX<0) offX=0;
         if (offX>rgt) offX=rgt;
         
-        offY=sprite.y-Math.trunc(high*0.5);
+        offY=sprite.y-Math.trunc(high*0.75);
         if (offY<0) offY=0;
         if (offY>bot) offY=bot;
         
             // draw size
             
-        tilePerWidth=(this.game.canvasWidth/this.MAP_TILE_SIZE);
-        tilePerHeight=(this.game.canvasHeight/this.MAP_TILE_SIZE);
+        tilePerWidth=Math.floor(this.game.canvasWidth/this.MAP_TILE_SIZE);
+        tilePerHeight=Math.floor(this.game.canvasHeight/this.MAP_TILE_SIZE);
             
             // draw the map
             
         lx=Math.trunc(offX/this.MAP_TILE_SIZE)-1;
         if (lx<0) lx=0;
         
-        rx=(lx+this.tilePerWidth)+2;
+        rx=(lx+tilePerWidth)+2;
         if (rx>this.MAP_TILE_WIDTH) rx=this.MAP_TILE_WIDTH;
         
         ty=Math.trunc(offY/this.MAP_TILE_SIZE)-1;
@@ -395,10 +395,10 @@ export default class MapClass
         for (y=ty;y<by;y++) {
             
             for (x=lx;x<rx;x++) {
-                tile=this.tileData[(gy*this.MAP_TILE_WIDTH)+gx];
+                tile=this.tileData[(y*this.MAP_TILE_WIDTH)+x];
                 if (tile===0) continue;
                 
-                ctx.drawImage(this.game.tileImageList[tile],((x*this.MAP_TILE_SIZE)-offX),((y*this.MAP_TILE_SIZE)-offY));
+                ctx.drawImage(this.game.tileImageList[tile-1],((x*this.MAP_TILE_SIZE)-offX),((y*this.MAP_TILE_SIZE)-offY));
             }
         }
         

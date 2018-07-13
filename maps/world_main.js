@@ -140,10 +140,10 @@ export default class WorldMainMapClass extends MapClass
         ]);
 
         this.sprites=[
-            new PlayerWorldClass(this.game,2,6,new Map([["world","map"],["yes","no"],["1","2"]])),
-            new MapSpotClass(this.game,4,6,new Map([])),
-            new MapSpotClass(this.game,8,7,new Map([])),
-            new MapBlockClass(this.game,8,8,new Map([]))
+            new PlayerWorldClass(this.game,128,384,new Map([["world","map"],["yes","no"],["1","2"]])),
+            new MapSpotClass(this.game,256,384,new Map([])),
+            new MapSpotClass(this.game,512,448,new Map([])),
+            new MapBlockClass(this.game,512,512,new Map([]))
         ];
 
     }

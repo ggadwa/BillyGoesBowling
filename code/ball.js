@@ -167,7 +167,7 @@ export default class BallClass extends SpriteClass
                 this.travelMode=this.TRAVEL_MODE_BOWL_DOWN;
                 this.travelX=0;
                 this.travelY=0;
-                this.travelXDirection=(map.getSpritePlayer().getFacing()===this.FACING_LEFT)?-1:1;
+                this.travelXDirection=(this.game.map.getSpritePlayer().getFacing()===this.FACING_LEFT)?-1:1;
             }
             if (this.game.input.isUp()) {
                 this.travelMode=this.TRAVEL_MODE_SLAM_UP;
