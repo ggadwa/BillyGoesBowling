@@ -18,6 +18,7 @@ export default class MapClass
         this.sprites=null;              // sprites in map
         
         this.playerIdx=-1;
+        this.currentMapY=0;
         
         this.particles=[];
     }
@@ -45,6 +46,12 @@ export default class MapClass
         }
         
         if (this.playerIdx===-1) console.log('No player in map');
+        
+            // we start the current map Y based on
+            // the player position and move only
+            // if player gets too close to edge
+            
+        this.currentMapY=this.sprites[this.playerIdx].y-Math.trunc(this.game.canvasHeight*0.9);
     }
     
     getMapName()
@@ -354,7 +361,7 @@ export default class MapClass
     draw(ctx)
     {
         let x,y;
-        let lx,rx,ty,by,offX,offY;
+        let lx,rx,ty,by,offX,offY,playerY,playerDoubleHigh;
         let tile,sprite,particle;
         let tilePerWidth,tilePerHeight;
         let wid=this.game.canvasWidth;
@@ -362,14 +369,23 @@ export default class MapClass
         let high=this.game.canvasHeight;
         let bot=this.game.map.height-high;
         
-            // get offset
+            // the X offset follows the player
             
         sprite=this.sprites[this.playerIdx];
         offX=sprite.x-Math.trunc(wid*0.5);
         if (offX<0) offX=0;
         if (offX>rgt) offX=rgt;
         
-        offY=sprite.y-Math.trunc(high*0.75);
+            // we only change the current
+            // map Y if the player gets too close to edges
+          
+        playerY=sprite.y-Math.trunc(high*0.9);
+        playerDoubleHigh=sprite.height*2;
+        
+        if ((playerY-sprite.height)<(this.currentMapY-(high-playerDoubleHigh))) this.currentMapY-=10;
+        if (playerY>this.currentMapY) this.currentMapY=playerY;
+        
+        offY=this.currentMapY;
         if (offY<0) offY=0;
         if (offY>bot) offY=bot;
         
