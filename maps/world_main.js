@@ -1,10 +1,11 @@
 import MapClass from '../engine/map.js';
+import WorldBaseMapClass from '../maps/world_base.js';
 import PlayerWorldClass from '../code/player_world.js';
 import MapSpotClass from '../code/map_spot.js';
 import MapCastleClass from '../code/map_castle.js';
 import MapBlockClass from '../code/map_block.js';
 
-export default class WorldMainMapClass extends MapClass
+export default class WorldMainMapClass extends WorldBaseMapClass
 {
     create()
     {
@@ -140,12 +141,14 @@ export default class WorldMainMapClass extends MapClass
         ]);
 
         this.sprites=[
-            new PlayerWorldClass(this.game,128,384,new Map([["world","map"],["yes","no"],["1","2"]])),
-            new MapSpotClass(this.game,256,384,new Map([])),
-            new MapSpotClass(this.game,512,448,new Map([])),
-            new MapBlockClass(this.game,512,512,new Map([]))
+            new PlayerWorldClass(this.game,128,448,new Map([["world","map"],["yes","no"],["1","2"]])),
+            new MapSpotClass(this.game,256,448,new Map([])),
+            new MapSpotClass(this.game,512,512,new Map([])),
+            new MapSpotClass(this.game,384,256,new Map([])),
+            new MapSpotClass(this.game,640,320,new Map([])),
+            new MapCastleClass(this.game,960,320,new Map([])),
+            new MapSpotClass(this.game,512,768,new Map([]))
         ];
-
     }
     
     getMapName()

@@ -14,11 +14,13 @@ export default class MapClass
         this.width=this.MAP_TILE_WIDTH*this.MAP_TILE_SIZE;
         this.height=this.MAP_TILE_HEIGHT*this.MAP_TILE_SIZE;
         
+        this.offsetX=0;
+        this.offsetY=0;
+        
         this.tileData=null;             // tile data for map
         this.sprites=null;              // sprites in map
         
         this.playerIdx=-1;
-        this.currentMapY=0;
         
         this.particles=[];
     }
@@ -118,6 +120,15 @@ export default class MapClass
      */
     mapStartup()
     {   
+    }
+    
+    /**
+     * Override this to set this.offsetX and this.offsetY which set the
+     * top left coordinate of the map when drawing.  It's called every frame before
+     * drawing the map.
+     */
+    calcOffset()
+    {
     }
     
     checkCollision(checkSprite)
@@ -361,33 +372,13 @@ export default class MapClass
     draw(ctx)
     {
         let x,y;
-        let lx,rx,ty,by,offX,offY,playerY,playerDoubleHigh;
+        let lx,rx,ty,by;
         let tile,sprite,particle;
         let tilePerWidth,tilePerHeight;
-        let wid=this.game.canvasWidth;
-        let rgt=this.game.map.width-wid;
-        let high=this.game.canvasHeight;
-        let bot=this.game.map.height-high;
         
-            // the X offset follows the player
+            // get the map offsets
             
-        sprite=this.sprites[this.playerIdx];
-        offX=sprite.x-Math.trunc(wid*0.5);
-        if (offX<0) offX=0;
-        if (offX>rgt) offX=rgt;
-        
-            // we only change the current
-            // map Y if the player gets too close to edges
-          
-        playerY=sprite.y-Math.trunc(high*0.9);
-        playerDoubleHigh=sprite.height*2;
-        
-        if ((playerY-sprite.height)<(this.currentMapY-(high-playerDoubleHigh))) this.currentMapY-=10;
-        if (playerY>this.currentMapY) this.currentMapY=playerY;
-        
-        offY=this.currentMapY;
-        if (offY<0) offY=0;
-        if (offY>bot) offY=bot;
+        this.calcOffset();
         
             // draw size
             
@@ -396,13 +387,13 @@ export default class MapClass
             
             // draw the map
             
-        lx=Math.trunc(offX/this.MAP_TILE_SIZE)-1;
+        lx=Math.trunc(this.offsetX/this.MAP_TILE_SIZE)-1;
         if (lx<0) lx=0;
         
         rx=(lx+tilePerWidth)+2;
         if (rx>this.MAP_TILE_WIDTH) rx=this.MAP_TILE_WIDTH;
         
-        ty=Math.trunc(offY/this.MAP_TILE_SIZE)-1;
+        ty=Math.trunc(this.offsetY/this.MAP_TILE_SIZE)-1;
         if (ty<0) ty=0;
         
         by=(ty+tilePerHeight)+2;
@@ -414,24 +405,24 @@ export default class MapClass
                 tile=this.tileData[(y*this.MAP_TILE_WIDTH)+x];
                 if (tile===0) continue;
                 
-                ctx.drawImage(this.game.tileImageList[tile-1],((x*this.MAP_TILE_SIZE)-offX),((y*this.MAP_TILE_SIZE)-offY));
+                ctx.drawImage(this.game.tileImageList[tile-1],((x*this.MAP_TILE_SIZE)-this.offsetX),((y*this.MAP_TILE_SIZE)-this.offsetY));
             }
         }
         
             // draw the sprites
             
         for (sprite of this.sprites) {
-            if ((sprite.show) && (sprite.background)) sprite.draw(ctx,offX,offY);
+            if ((sprite.show) && (sprite.background)) sprite.draw(ctx,this.offsetX,this.offsetY);
         }
         
         for (sprite of this.sprites) {
-            if ((sprite.show) && (!sprite.background)) sprite.draw(ctx,offX,offY);
+            if ((sprite.show) && (!sprite.background)) sprite.draw(ctx,this.offsetX,this.offsetY);
         }
         
             // draw the particles
             
         for (particle of this.particles) {
-            particle.draw(ctx,offX,offY);
+            particle.draw(ctx,this.offsetX,this.offsetY);
         }
     }
     

@@ -64,7 +64,8 @@ export default class BillyGameClass extends GameClass
    
     getStartMap()
     {
-        return(new BuffetOfBlocksMapClass(this));
+        return(new WorldMainMapClass(this));
+        //return(new BuffetOfBlocksMapClass(this));
     }
     
     setBanner(str,pinCount)

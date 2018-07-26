@@ -1,4 +1,5 @@
 import MapClass from '../engine/map.js';
+import SideScrollBaseMapClass from '../maps/side_scroll_base.js';
 import PlayerSideScrollClass from '../code/player_sidescroll.js';
 import BlockClass from '../code/block.js';
 import BreakBlockClass from '../code/break_block.js';
@@ -8,7 +9,7 @@ import ExplodeBlockClass from '../code/explode_block.js';
 import DoorClass from '../code/door.js';
 import PinClass from '../code/pin.js';
 
-export default class BuffetOfBlocksMapClass extends MapClass
+export default class BuffetOfBlocksMapClass extends SideScrollBaseMapClass
 {
     create()
     {

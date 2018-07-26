@@ -21,6 +21,9 @@ export default class SpriteClass
         this.height=0;
         this.alpha=1.0;
         
+        this.drawOffsetX=0;
+        this.drawOffsetY=0;
+        
         this.gravityFactor=0.0;
         this.gravityMinValue=0;
         this.gravityMaxValue=0;
@@ -254,8 +257,8 @@ export default class SpriteClass
     
     draw(ctx,offX,offY)
     {
-        let x=this.x-offX;
-        let y=(this.y-this.height)-offY;
+        let x=(this.x+this.drawOffsetX)-offX;
+        let y=((this.y-this.height)+this.drawOffsetY)-offY;
         
         if ((x>=this.game.canvasWidth) || ((x+this.width)<=0)) return;
         if ((y>=this.game.canvasHeight) || ((x+this.height)<=0)) return;

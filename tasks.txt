@@ -1,11 +1,7 @@
 * particles need view culling
 * tick sound effect
 
-- get rid of getgame/getmap from sprite
-
 - need water level for maps (or lava, give color and level, and can move during game)
-
-- remove sprite getMap/getGame (too slow)
 
 - MAP_TILE_WIDTH static on map when class fields exist
 
