@@ -1,6 +1,7 @@
 import GameClass from '../engine/game.js';
 import BillyImageList from '../code/billy_image_list.js';
 import BillySoundList from '../code/billy_sound_list.js';
+import BillyMapList from '../code/billy_map_list.js';
 import WorldMainMapClass from '../maps/world_main.js';
 import BuffetOfBlocksMapClass from '../maps/buffet_of_blocks.js';
 import PlayerWorldClass from '../code/player_world.js';
@@ -28,6 +29,7 @@ export default class BillyGameClass extends GameClass
         
         this.imageList=new BillyImageList();
         this.soundList=new BillySoundList();
+        this.mapList=new BillyMapList();
         
         Object.seal(this);
     }
@@ -64,8 +66,8 @@ export default class BillyGameClass extends GameClass
    
     getStartMap()
     {
-        return(new WorldMainMapClass(this));
-        //return(new BuffetOfBlocksMapClass(this));
+        return(this.mapList.get('World Main'));
+        //return(this.mapList.get('Buffet of Blocks'));
     }
     
     setBanner(str,pinCount)
@@ -123,7 +125,7 @@ export default class BillyGameClass extends GameClass
             
                 // the banner
                 
-            wid=this.getImageList().get('ui_banner').width;
+            wid=this.imageList.get('ui/banner').width;
             mx=Math.trunc(this.canvasWidth*0.5);
             lx=mx-Math.trunc(wid*0.5);
             this.drawUIImage('ui/banner',lx,(this.canvasHeight-70));

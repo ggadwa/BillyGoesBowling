@@ -36,6 +36,6 @@ export default class MapCastleClass extends SpriteClass
             
             // change UI
             
-        game.setBanner(this.getData('title'),this.getData('pin_count'));
+        this.game.setBanner(this.getData('title'),this.getData('pin'));
     }
 }

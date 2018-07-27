@@ -41,7 +41,7 @@ export default class MapSpotClass extends SpriteClass
             // if action, than jump to make
             
         if (this.game.input.isAction()) {
-            this.game.gotoMap(this.getData('map'));
+            this.game.gotoMap(this.game.mapList.get(this.getData('map')));
         }
     }
 

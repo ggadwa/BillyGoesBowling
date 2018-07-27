@@ -29,11 +29,16 @@ export default class PlayerWorldClass extends SpriteClass
         this.canCollide=false;
         this.canStandOn=false;
         
-        this.drawOffsetX=Math.trunc((this.game.map.MAP_TILE_SIZE-this.width)*0.5);        // so world player draws in the center of tiles
-        
-        this.move=this.MOVE_NONE;
+        this.moving=false;
+        this.moveToX=0;
+        this.moveToY=0;
         
         Object.seal(this);
+    }
+    
+    mapStartup()
+    {
+        this.drawOffsetX=Math.trunc((this.game.map.MAP_TILE_SIZE-this.width)*0.5);        // so world player draws in the center of tiles
     }
     
     duplicate(x,y)
@@ -57,15 +62,12 @@ export default class PlayerWorldClass extends SpriteClass
         if ((tx<0) || (tx>=map.MAP_TILE_WIDTH)) return(-1);
         if ((ty<0) || (ty>=map.MAP_TILE_HEIGHT)) return(-1);
         
-        console.log(tx+','+ty+'='+map.tileData[(ty*map.MAP_TILE_WIDTH)+tx]);
-        
-        
         return(map.tileData[(ty*map.MAP_TILE_WIDTH)+tx]);
     }
     
     isTileIdxRoad(tileIdx)
     {
-        return(((tileIdx>=34) && (tileIdx<=40)) || (tileIdx===42));
+        return(((tileIdx>=34) && (tileIdx<=40)) || (tileIdx===42) || (tileIdx===30) || (tileIdx===33));
     }
     
     hasRoadLeft()
@@ -94,73 +96,113 @@ export default class PlayerWorldClass extends SpriteClass
     
     runAI()
     {
-        let tileIdx,oldTileX,oldTileY;
+        let tileIdx,xDir,yDir;
         let map=this.game.map;
         
             // input
             
-        if (this.game.input.isLeft()) {
-            if (this.hasRoadLeft()) this.move=this.MOVE_LEFT;
-        }
-        
-        if (this.game.input.isRight()) {
-            if (this.hasRoadRight()) this.move=this.MOVE_RIGHT;
-        }
-        
-        if (this.game.input.isUp()) {
-            if (this.hasRoadUp()) this.move=this.MOVE_UP;
-        }
-        
-        if (this.game.input.isDown()) {
-            if (this.hasRoadDown()) this.move=this.MOVE_DOWN;
+        if (!this.moving) {
+            this.moveToX=this.x;
+            this.moveToY=this.y;
+            
+            if (this.game.input.isLeft()) {
+                if (this.hasRoadLeft()) this.moveToX=this.x-map.MAP_TILE_SIZE;
+                this.moving=true;
+            }
+
+            if (this.game.input.isRight()) {
+                if (this.hasRoadRight()) this.moveToX=this.x+map.MAP_TILE_SIZE;
+                this.moving=true;
+            }
+
+            if (this.game.input.isUp()) {
+                if (this.hasRoadUp()) this.moveToY=this.y-map.MAP_TILE_SIZE;
+                this.moving=true;
+            }
+
+            if (this.game.input.isDown()) {
+                if (this.hasRoadDown()) this.moveToY=this.y+map.MAP_TILE_SIZE;
+                this.moving=true;
+            }
         }
         
             // movement
             
-        if (this.move===this.MOVE_NONE) return;
+        if (!this.moving) return;
         
-        oldTileX=Math.trunc((this.x+(this.width*0.5))/map.MAP_TILE_SIZE);
-        oldTileY=Math.trunc((this.y-(this.height*0.5))/map.MAP_TILE_SIZE);
-
-        switch (this.move) {
-            case this.MOVE_LEFT:
-                this.x-=4;
-                break;
-            case this.MOVE_RIGHT:
-                this.x+=4;
-                break;
-            case this.MOVE_UP:
-                this.y-=4;
-                break;
-            case this.MOVE_DOWN:
-                this.y+=4;
-                break;
-        }
+        xDir=this.moveToX-this.x;
+        yDir=this.moveToY-this.y;
         
-            // if we are on same tile, then exit
+        if (this.x!==this.moveToX) this.x+=(Math.sign(xDir)*16);
+        if (this.y!==this.moveToY) this.y+=(Math.sign(yDir)*16);
+        
+            // have we changed tiles?
             
-        if ((oldTileX===Math.trunc((this.x+(this.width*0.5))/map.MAP_TILE_SIZE)) && (oldTileY===Math.trunc((this.y-(this.height*0.5))/map.MAP_TILE_SIZE))) return;
+        if ((this.x!==this.moveToX) || (this.y!==this.moveToY)) return;
         
             // time to stop moving or change direction?
             
         tileIdx=this.getTileIdxWithOffset(0,0);
         
         switch (tileIdx) {
-            case 38:
+            
+            case 38:        // cross and dots
             case 39:
-                this.move=this.MOVE_NONE;           // cross or dot place
+                this.moving=false;
                 break;
-            case 34:
-                this.move=(this.move===this.MOVE_LEFT)?this.MOVE_DOWN:this.MOVE_RIGHT;   // top left corner
+                
+            case 35:    // horizontal
+            case 30:
+                this.moveToX=this.x+(Math.sign(xDir)*map.MAP_TILE_SIZE);
                 break;
-            case 36:
-                this.move=(this.move===this.MOVE_RIGHT)?this.MOVE_DOWN:this.MOVE_LEFT;   // top right corner
+                
+            case 37:    // vertical
+            case 33:
+                this.moveToY=this.y+(Math.sign(yDir)*map.MAP_TILE_SIZE);
                 break;
-            case 40:
-                this.move=(this.move===this.MOVE_LEFT)?this.MOVE_UP:this.MOVE_RIGHT;   // bottom left corner
+            
+            case 34:   // top left corner
+                if (Math.sign(xDir)<0) {
+                    this.moveToX=this.x;
+                    this.moveToY=this.y+map.MAP_TILE_SIZE;
+                }
+                else {
+                    this.moveToX=this.x+map.MAP_TILE_SIZE;
+                    this.moveToY=this.y;
+                }
                 break;
-            case 42:
-                this.move=(this.move===this.MOVE_RIGHT)?this.MOVE_UP:this.MOVE_LEFT;   // bottom right corner
+                
+            case 36:   // top right corner
+                if (Math.sign(xDir)>0) {
+                    this.moveToX=this.x;
+                    this.moveToY=this.y+map.MAP_TILE_SIZE;
+                }
+                else {
+                    this.moveToX=this.x-map.MAP_TILE_SIZE;
+                    this.moveToY=this.y;
+                }
+                break;
+                
+            case 40:   // bottom left corner
+                if (Math.sign(xDir)<0) {
+                    this.moveToX=this.x;
+                    this.moveToY=this.y-map.MAP_TILE_SIZE;
+                }
+                else {
+                    this.moveToX=this.x+map.MAP_TILE_SIZE;
+                    this.moveToY=this.y;
+                }
+                break;
+                
+            case 42:   // bottom right corner
+                if (Math.sign(xDir)>0) {
+                    this.moveToX=this.x;
+                    this.moveToY=this.y-map.MAP_TILE_SIZE;
+                }
+                else {
+                    this.moveToX=this.x-map.MAP_TILE_SIZE;
+                    this.moveToY=this.y;
+                }
                 break;
         }
     }

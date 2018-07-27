@@ -46,6 +46,10 @@ export default class EditorClass
         this.spritePaletteCanvas.onclick=this.clickSpritePaletteCanvas.bind(this);
         this.spritePaletteCTX=this.spritePaletteCanvas.getContext('2d');
         
+            // initialize the map list
+            
+        this.game.mapList.initialize(this.game);
+        
             // initialize the image list
             
         this.game.imageList.initialize(this.initialize2.bind(this));

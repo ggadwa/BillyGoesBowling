@@ -46,6 +46,10 @@ export default class GameClass
         this.backCanvas.height=this.canvasHeight;
         this.backCTX=this.backCanvas.getContext('2d');
         
+            // load the maps list
+            
+        this.mapList.initialize(this);
+        
             // initialize and load the image list
         
         this.imageList.initialize(this.initialize2.bind(this,callback));
