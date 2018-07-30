@@ -107,6 +107,17 @@ export default class MapClass
         return(list);
     }
     
+    getFirstSpriteWithData(name,value)
+    {
+        let sprite;
+
+        for (sprite of this.sprites) {
+            if (sprite.data.get(name)===value) return(sprite);
+        }
+        
+        return(null);
+    }
+    
     addParticle(x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,img,count,lifeTick)
     {
         let particle=new ParticleClass(this.game,x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,img,count,lifeTick);

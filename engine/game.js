@@ -30,7 +30,7 @@ export default class GameClass
         
         this.data=new Map();
         this.map=null;
-        this.gotoMapTrigger=null;
+        this.gotoMapName=null;
     }
     
     initialize(callback)
@@ -126,9 +126,9 @@ export default class GameClass
         this.data.set(name,value);
     }
     
-    gotoMap(map)
+    gotoMap(name)
     {
-        this.gotoMapTrigger=map;
+        this.gotoMapName=name;
     }
     
     /**
@@ -202,7 +202,7 @@ export default class GameClass
             
                 // no map gotos
 
-            this.gotoMapTrigger=null;
+            this.gotoMapName=null;
             
                 // run game and map AI
                 // which runs the sprite AI
@@ -212,9 +212,9 @@ export default class GameClass
             
                 // check for map goto triggers
                 
-            if (this.gotoMapTrigger!==null) {
+            if (this.gotoMapName!==null) {
                 this.input.keyClear();
-                this.map=this.gotoMapTrigger;
+                this.map=this.mapList.get(this.gotoMapName);
                 this.map.initialize();
             }
         }

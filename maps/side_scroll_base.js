@@ -43,5 +43,11 @@ export default class SideScrollBaseMapClass extends MapClass
         
         this.offsetY=offY;
     }
+    
+    resetOffsetY()
+    {
+        let sprite=this.sprites[this.playerIdx];
+        this.currentMapY=sprite.y-Math.trunc(this.game.canvasHeight*0.9);
+    }
 
 }

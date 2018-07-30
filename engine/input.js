@@ -65,6 +65,16 @@ export default class InputClass
     {
         return(this.keyFlags[32]);
     }
+    
+    isSelect()
+    {
+        return(this.keyFlags[13]);
+    }
+    
+    clearSelect()
+    {
+        this.keyFlags[13]=0;
+    }
         
         //
         // key events

@@ -27,6 +27,7 @@ export default class BallClass extends SpriteClass
         this.travelY=0;
         this.travelXDirection=1;
         this.travelYAcross=0;
+        this.travelYBottom=0;
         
             // setup
             
@@ -50,7 +51,8 @@ export default class BallClass extends SpriteClass
     
     runAI()
     {
-        let playerSprite=this.game.map.getSpritePlayer();
+        let map=this.game.map;
+        let playerSprite=map.getSpritePlayer();
         let x,y,lftEdge,rgtEdge,topEdge,botEdge;
         let xOffset=Math.trunc((playerSprite.width-this.width)*0.5);
         
@@ -63,14 +65,16 @@ export default class BallClass extends SpriteClass
             
             case this.TRAVEL_MODE_BOWL_DOWN:
                 this.travelY+=30;
-                botEdge=playerSprite.y;
-                if ((y+this.travelY)>=botEdge) {
+                if ((y+this.travelY)>=this.travelYBottom) {
                     this.travelX=0;
-                    this.travelY=botEdge-y;
-                    this.travelYAcross=botEdge;
+                    this.travelYAcross=this.travelYBottom;
                     this.travelMode=this.TRAVEL_MODE_BOWL_ACROSS;
+                    
+                    y=this.travelYBottom;
                 }
-                y+=this.travelY;
+                else {
+                    y+=this.travelY;
+                }
                 break;
                 
             case this.TRAVEL_MODE_BOWL_ACROSS:
@@ -78,19 +82,19 @@ export default class BallClass extends SpriteClass
                 
                 if (this.travelXDirection<0) {
                     this.travelX-=30;
-                    lftEdge=this.game.map.getMapViewportLeftEdge();
+                    lftEdge=map.getMapViewportLeftEdge();
                     if (((x+this.travelX)+this.width)<lftEdge) {
                         this.travelX=lftEdge-(x+this.width);
-                        this.travelY=this.game.map.getMapViewportTopEdge()-this.height;
+                        this.travelY=map.getMapViewportTopEdge()-this.height;
                         this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
                     }
                 }
                 else {
                     this.travelX+=25;
-                    rgtEdge=this.game.map.getMapViewportRightEdge();
+                    rgtEdge=map.getMapViewportRightEdge();
                     if ((x+this.travelX)>rgtEdge) {
                         this.travelX=rgtEdge-x;
-                        this.travelY=this.game.map.getMapViewportTopEdge()-this.height;
+                        this.travelY=map.getMapViewportTopEdge()-this.height;
                         this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
                     }
                 }
@@ -110,7 +114,7 @@ export default class BallClass extends SpriteClass
             case this.TRAVEL_MODE_SLAM_UP:
                 x=this.travelX;
                 this.travelY-=35;
-                topEdge=this.game.map.getMapViewportTopEdge();
+                topEdge=map.getMapViewportTopEdge();
                 if (this.travelY<=(topEdge-this.height)) {
                     this.travelMode=this.TRAVEL_MODE_SLAM_DOWN;
                 }
@@ -120,7 +124,7 @@ export default class BallClass extends SpriteClass
             case this.TRAVEL_MODE_SLAM_DOWN:
                 x=this.travelX;
                 this.travelY+=40;
-                botEdge=this.game.map.getMapViewportBottomEdge();
+                botEdge=map.getMapViewportBottomEdge();
                 if ((this.travelY-this.height)>botEdge) {
                     this.travelY=0;
                     this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
@@ -135,7 +139,7 @@ export default class BallClass extends SpriteClass
         this.setPosition(x,y);
             
         if ((this.travelMode===this.TRAVEL_MODE_BOWL_ACROSS) || (this.travelMode===this.TRAVEL_MODE_SLAM_DOWN)) {
-            if (this.game.map.checkCollision(this)) {
+            if (map.checkCollision(this)) {
                 
                     // colliding with map, return ball
                     
@@ -163,12 +167,21 @@ export default class BallClass extends SpriteClass
             // change any travel mode
         
         if (this.travelMode===this.TRAVEL_MODE_FLOATING) {
+            
+                // bowls down and across
+                // we always pick the Y right now, and it
+                // always lines up with the center of a tile line
+                
             if (this.game.input.isDown()) {
                 this.travelMode=this.TRAVEL_MODE_BOWL_DOWN;
                 this.travelX=0;
                 this.travelY=0;
-                this.travelXDirection=(this.game.map.getSpritePlayer().getFacing()===this.FACING_LEFT)?-1:1;
+                this.travelXDirection=(map.getSpritePlayer().getFacing()===this.FACING_LEFT)?-1:1;
+                this.travelYBottom=(Math.trunc(playerSprite.y/map.MAP_TILE_SIZE)*map.MAP_TILE_SIZE)-Math.trunc((map.MAP_TILE_SIZE-this.height)*0.5);
             }
+            
+                // bowls up and back down
+                
             if (this.game.input.isUp()) {
                 this.travelMode=this.TRAVEL_MODE_SLAM_UP;
                 this.travelX=playerSprite.x+xOffset;

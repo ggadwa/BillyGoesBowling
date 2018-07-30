@@ -30,14 +30,22 @@ export default class DoorClass extends SpriteClass
     
     runAI()
     {
+        let door;
+        let playerSprite=this.game.map.getSpritePlayer();
+        
+            // select jumps to other door
+            
+        if (!this.game.input.isSelect()) return;
+        
             // are we colliding with player?
             
-        if (!this.game.map.checkCollision(this)) return;
-        if (this.collideSprite===null) return;
-        if (!(this.collideSprite instanceof PlayerSideScrollClass)) return;
-            
-            // change UI
-            
+        if (!playerSprite.collide(this)) return;
+        
+        door=this.game.map.getFirstSpriteWithData('name',this.getData('map'));
+        playerSprite.setPosition(door.x,door.y);
+        
+        this.game.input.clearSelect();
+        this.game.map.resetOffsetY();
     }
     
 }

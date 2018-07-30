@@ -7,3 +7,5 @@
 
 
 
+- ball always bowls in middle of 64 Y, determine right Y when bowling based on feet
+- snakes don't go off edges, will patrol area

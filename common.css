@@ -18,8 +18,8 @@
     background-color: #EEEEEE;
 }
 
-.editorToolButton {
-    float: right;
+.editorToolButton, .editorToolButtonRight {
+    float: left;
     margin: 2px;
     width: 100px;
     height: 31px;
@@ -31,11 +31,15 @@
     box-sizing: border-box;
     border: 1px solid #000000;
     cursor: pointer;
-    background-color: #5555FF;
+    background-color: #AAAAFF;
 }
 
-.editorToolButton:hover {
-    background-color: #AAAAFF;
+.editorToolButtonRight {
+    float: right;
+}
+
+.editorToolButton:hover, .editorToolButtonRight:hover {
+    background-color: #CCCCFF;
 }
 
 .editorSpritePaletteWrapper {

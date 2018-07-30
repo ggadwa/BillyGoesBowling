@@ -397,6 +397,112 @@ export default class EditorClass
     }
     
         //
+        // map movement
+        //
+        
+    mapUp()
+    {
+        let n,byteSize,idx,sprite;
+        
+        byteSize=(this.MAP_TILE_HEIGHT*this.MAP_TILE_WIDTH)-this.MAP_TILE_WIDTH;
+        
+        for (n=0;n!==byteSize;n++) {
+            this.map.tileData[n]=this.map.tileData[n+this.MAP_TILE_WIDTH];
+        }
+        
+        idx=(this.MAP_TILE_HEIGHT-1)*this.MAP_TILE_WIDTH;
+        
+        for (n=0;n!=this.MAP_TILE_WIDTH;n++) {
+            this.map.tileData[idx++]=0;
+        }
+        
+        for (sprite of this.map.sprites) {
+            sprite.y-=this.MAP_TILE_SIZE;
+        }
+        
+        this.drawMapCanvas();
+    }
+    
+    mapDown()
+    {
+        let n,byteSize,sprite;
+        
+        byteSize=(this.MAP_TILE_HEIGHT*this.MAP_TILE_WIDTH)-this.MAP_TILE_WIDTH;
+        
+        for (n=byteSize;n!==0;n--) {
+            this.map.tileData[n+this.MAP_TILE_WIDTH]=this.map.tileData[n];
+        }
+        
+        for (n=0;n!=this.MAP_TILE_WIDTH;n++) {
+            this.map.tileData[n]=0;
+        }
+        
+        for (sprite of this.map.sprites) {
+            sprite.y+=this.MAP_TILE_SIZE;
+        }
+        
+        this.drawMapCanvas();
+    }
+    
+    mapLeft()
+    {
+        let x,y,idx,sprite;
+        
+        idx=0;
+        
+        for (y=0;y!==this.MAP_TILE_HEIGHT;y++) {
+            for (x=0;x!==(this.MAP_TILE_WIDTH-1);x++) {
+                this.map.tileData[idx+x]=this.map.tileData[idx+(x+1)];
+            }
+            this.map.tileData[idx+(this.MAP_TILE_WIDTH-1)]=0;
+            
+            idx+=this.MAP_TILE_WIDTH;
+        }
+        
+        for (sprite of this.map.sprites) {
+            sprite.x-=this.MAP_TILE_SIZE;
+        }
+        
+        this.drawMapCanvas();
+    }
+    
+    mapRight()
+    {
+        let x,y,idx,sprite;
+        
+        idx=0;
+        
+        for (y=0;y!==this.MAP_TILE_HEIGHT;y++) {
+            for (x=(this.MAP_TILE_WIDTH-1);x!=0;x--) {
+                this.map.tileData[idx+x]=this.map.tileData[idx+(x-1)];
+            }
+            this.map.tileData[idx]=0;
+            
+            idx+=this.MAP_TILE_WIDTH;
+        }
+        
+        for (sprite of this.map.sprites) {
+            sprite.x+=this.MAP_TILE_SIZE;
+        }
+        
+        this.drawMapCanvas();
+    }
+    
+    fillFromZeroZero()
+    {
+        let n,tileIdx,byteSize;
+        
+        tileIdx=this.map.tileData[0];
+        byteSize=this.MAP_TILE_HEIGHT*this.MAP_TILE_WIDTH;
+        
+        for (n=0;n!==byteSize;n++) {
+            if (this.map.tileData[n]===0) this.map.tileData[n]=tileIdx;
+        }
+        
+        this.drawMapCanvas();
+    }
+    
+        //
         // compiling
         //
         
