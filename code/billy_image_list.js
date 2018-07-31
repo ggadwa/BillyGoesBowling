@@ -90,8 +90,10 @@ export default class BillyImageListClass extends ImageListClass
         
         this.add('sprites/ninja_bunny');
         this.add('sprites/shurikin');
-        this.add('sprites/drain_pipe_snake_cover');
-        this.add('sprites/drain_pipe_snake_free');
+        this.add('sprites/drain_pipe_snake_cover_left');
+        this.add('sprites/drain_pipe_snake_free_left');
+        this.add('sprites/drain_pipe_snake_cover_right');
+        this.add('sprites/drain_pipe_snake_free_right');
         this.add('sprites/roto_carrot');
         
         this.add('sprites/particle_block');

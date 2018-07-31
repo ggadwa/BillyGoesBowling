@@ -298,6 +298,14 @@ export default class MapClass
         return(sprites);
     }
     
+    getTileUnderSprite(checkSprite)
+    {
+        let x=Math.trunc(checkSprite.getMiddleX()/this.MAP_TILE_SIZE);
+        let y=Math.trunc((checkSprite.y+1)/this.MAP_TILE_SIZE);
+        
+        return(this.tileData[(y*this.MAP_TILE_WIDTH)+x]);
+    }
+    
     getMapViewportLeftEdge()
     {
         let sprite,x;

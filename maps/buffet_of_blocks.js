@@ -259,6 +259,7 @@ export default class BuffetOfBlocksMapClass extends SideScrollBaseMapClass
             new BlockClass(this.game,11136,384,new Map([])),
             new BlockClass(this.game,11200,384,new Map([])),
             new PinClass(this.game,11392,384,new Map([])),
+            new DrainPipeSnakeClass(this.game,3072,704,new Map([])),
             new DrainPipeSnakeClass(this.game,8384,576,new Map([])),
             new DrainPipeSnakeClass(this.game,8896,512,new Map([])),
             new DrainPipeSnakeClass(this.game,9344,576,new Map([])),

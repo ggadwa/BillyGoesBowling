@@ -9,15 +9,18 @@ export default class DrainPipeSnakeClass extends SpriteClass
         
             // variables
             
-        this.bunnyActive=false;
-        this.bunnyPause=0;
+        this.snakeDirection=1;
+        this.snakeHasPipe=true;
+        this.invincibleCount=0;
         
             // setup
         
-        this.addImage('sprites/drain_pipe_snake_cover');
-        this.addImage('sprites/drain_pipe_snake_free');
-        this.setCurrentImage('sprites/drain_pipe_snake_cover');
-        this.setEditorImage('sprites/drain_pipe_snake_cover');
+        this.addImage('sprites/drain_pipe_snake_cover_left');
+        this.addImage('sprites/drain_pipe_snake_cover_right');
+        this.addImage('sprites/drain_pipe_snake_free_left');
+        this.addImage('sprites/drain_pipe_snake_free_right');
+        this.setCurrentImage('sprites/drain_pipe_snake_cover_right');
+        this.setEditorImage('sprites/drain_pipe_snake_cover_right');
         
         this.show=true;
         this.gravityFactor=0.12;
@@ -37,57 +40,58 @@ export default class DrainPipeSnakeClass extends SpriteClass
     interactWithSprite(interactSprite,dataObj)
     {
         if (interactSprite instanceof BallClass) {
-            this.delete();
+            if (this.invincibleCount>0) return;
+            
+            if (this.snakeHasPipe) {
+                this.snakeHasPipe=false;
+                this.invincibleCount=30;
+                this.setCurrentImage((this.snakeDirection===1)?'sprites/drain_pipe_snake_free_right':'sprites/drain_pipe_snake_free_left');
+            }
+            else {
+                this.delete();
+            }
         }
     }
     
     runAI()
     {
-        let playerSprite=this.game.map.getSpritePlayer();
-        let sx,sy,shurikinSprite;
+        let map=this.game.map;
+        let x,tileIdx,switchDirection;
         
-            // distance from player
+            // special count when invincible from
+            // first ball hit
             
-        let dist=playerSprite.x-this.x;
+        if (this.invincibleCount>0) this.invincibleCount--;
         
-        if (!this.bunnyActive) {
-            if (Math.abs(dist)<1000) {
-                this.bunnyActive=true;
+            // walk in direction until a collision
+            
+        switchDirection=false;
+        
+        x=((this.snakeHasPipe?5:10)*this.snakeDirection);
+        
+        this.move(x,0);
+        if (map.checkCollision(this)) {
+            this.move(-x,0);
+            switchDirection=true;
+        }
+        
+            // if we are on edge tiles, then
+            // turn around (1,3 are edge ground tiles)
+            
+        tileIdx=map.getTileUnderSprite(this);
+        if ((tileIdx===1) || (tileIdx===3)) switchDirection=true;
+        
+            // switch direction
+            
+        if (switchDirection) {
+            this.snakeDirection=-this.snakeDirection;
+            if (this.snakeHasPipe) {
+                this.setCurrentImage((this.snakeDirection===1)?'sprites/drain_pipe_snake_cover_right':'sprites/drain_pipe_snake_cover_left');
             }
-            return;
-        }
-        
-            // move towards player
-        
-        if (this.grounded) {    
-            this.moveWithCollision(((dist<0)?-6:6),0);
-        }
-        else {
-            this.moveWithCollision(((dist<0)?-8:8),0);
-        }
-        
-            // jump whenever you are grounded
-            // after a pause
-           /* 
-        if (!this.grounded) {
-            this.bunnyPause=15;
-            return;
-        }
-        
-        if (this.bunnyPause>0) {
-            this.bunnyPause--;
-            
-                // half way through pause, throw a shurikin
-                
-            if (this.bunnyPause===15) {
-
+            else {
+                this.setCurrentImage((this.snakeDirection===1)?'sprites/drain_pipe_snake_free_right':'sprites/drain_pipe_snake_free_left');
             }
-            
-            return;
         }
-        
-        this.addMotion(0,-55);
-        */
     }
     
 }

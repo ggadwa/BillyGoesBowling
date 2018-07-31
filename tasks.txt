@@ -6,6 +6,6 @@
 - MAP_TILE_WIDTH static on map when class fields exist
 
 
-
-- ball always bowls in middle of 64 Y, determine right Y when bowling based on feet
 - snakes don't go off edges, will patrol area
+- facing shouldn't be on sprite
+- need sprite flipper

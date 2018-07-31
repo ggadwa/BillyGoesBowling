@@ -24,6 +24,8 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.canCollide=true;
         this.canStandOn=true;
         
+        this.lastGroundY=0;
+        
         Object.seal(this);
     }
     
@@ -61,6 +63,12 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.clampX(0,(this.game.map.width-this.width));
         
         if ((this.game.input.isAction()) && (this.grounded)) this.addMotion(0,-35);
+        
+            // remember the last ground because
+            // we use that to tell the ball's location
+            // for bowling
+            
+        if (this.grounded) this.lastGroundY=this.y;
         
             // check for standing on a cloud
             

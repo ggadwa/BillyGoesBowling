@@ -244,6 +244,7 @@ export default class SpriteClass
                 this.y=y;
                 this.gravityAdd=0.0;
                 this.grounded=true;
+                this.motion.y=0;
             }
         }
         

@@ -169,15 +169,18 @@ export default class BallClass extends SpriteClass
         if (this.travelMode===this.TRAVEL_MODE_FLOATING) {
             
                 // bowls down and across
-                // we always pick the Y right now, and it
-                // always lines up with the center of a tile line
+                // we get the Y we will be bowling at from
+                // the last ground contact, if in the air, then fire
+                // at the tile line above, or if on ground, fire at current
+                // tile line.  If falling, you can't fire
                 
-            if (this.game.input.isDown()) {
+            if ((this.game.input.isDown()) && (playerSprite.motion.y<=0)) {
                 this.travelMode=this.TRAVEL_MODE_BOWL_DOWN;
                 this.travelX=0;
                 this.travelY=0;
-                this.travelXDirection=(map.getSpritePlayer().getFacing()===this.FACING_LEFT)?-1:1;
-                this.travelYBottom=(Math.trunc(playerSprite.y/map.MAP_TILE_SIZE)*map.MAP_TILE_SIZE)-Math.trunc((map.MAP_TILE_SIZE-this.height)*0.5);
+                this.travelXDirection=(playerSprite.getFacing()===this.FACING_LEFT)?-1:1;
+                this.travelYBottom=(Math.trunc(playerSprite.lastGroundY/map.MAP_TILE_SIZE)*map.MAP_TILE_SIZE)-Math.trunc((map.MAP_TILE_SIZE-this.height)*0.5);
+                if (!playerSprite.grounded) this.travelYBottom-=map.MAP_TILE_SIZE;
             }
             
                 // bowls up and back down
