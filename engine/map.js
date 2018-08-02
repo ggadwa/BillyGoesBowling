@@ -204,7 +204,7 @@ export default class MapClass
     
     checkCollisionStand(checkSprite,dist)
     {
-        let sprite,tile;
+        let sprite,tileIdx;
         let ty=-1;
         let x,y,dx,dy,gx,gy;
         let lft,top,rgt,bot;
@@ -216,6 +216,7 @@ export default class MapClass
             // clear flags
             
         checkSprite.standSprite=null;
+        checkSprite.standTileIdx=-1;
         
             // check sprites
             
@@ -261,14 +262,15 @@ export default class MapClass
             if ((bot<dy) || (bot>(dy+this.MAP_TILE_SIZE))) continue;              
 
             for (gx=0;gx!==(x+2);gx++) {
-                tile=this.tileData[(gy*this.MAP_TILE_WIDTH)+gx];
-                if (tile===0) continue;
+                tileIdx=this.tileData[(gy*this.MAP_TILE_WIDTH)+gx];
+                if (tileIdx===0) continue;
                 
                 dx=gx*this.MAP_TILE_SIZE;
                 if ((rgt<=dx) || (lft>=(dx+this.MAP_TILE_SIZE))) continue;
                 
                 if ((dy<ty) || (ty===-1)) {
                     checkSprite.standSprite=null;
+                    checkSprite.standTileIdx=tileIdx;
                     ty=dy;
                 }
             }

@@ -1,6 +1,9 @@
 import SpriteClass from '../engine/sprite.js';
 import BallClass from '../code/ball.js';
 import CloudBlockClass from './cloud_block.js';
+import DrainPipeSnakeClass from '../code/drain_pipe_snake.js';
+import NinjaBunnyClass from '../code/ninja_bunny.js';
+import RotoCarrotClass from '../code/roto_carrot.js';
 
 export default class PlayerSideScrollClass extends SpriteClass
 {
@@ -8,10 +11,15 @@ export default class PlayerSideScrollClass extends SpriteClass
     {
         super(game,x,y,data);
         
+            // constants
+            
+        this.TILE_IDX_WATER_TOP=21;
+        
             // setup
             
         this.addImage('sprites/billy_left');
         this.addImage('sprites/billy_right');
+        this.addImage('sprites/gravestone');
         
         this.setCurrentImage('sprites/billy_right');
         this.setEditorImage('sprites/billy_right');
@@ -25,6 +33,9 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.canStandOn=true;
         
         this.lastGroundY=0;
+        
+        this.invincibleCount=-1;
+        this.deathCount=-1;
         
         Object.seal(this);
     }
@@ -44,8 +55,69 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.game.map.addSprite(new BallClass(this.game,0,0,null));
     }
     
+    hurtPlayer()
+    {
+        let health=this.game.getData('player_health')-1;
+        
+        this.game.setData('player_health',health);
+        if (health===0) {
+            this.killPlayer();
+            return;
+        }
+        
+        this.invincibleCount=60;
+        this.alpha=0.25;
+    }
+    
+    killPlayer()
+    {
+        this.setCurrentImage('sprites/gravestone');
+        this.motion.x=0;
+        this.motion.y=0;
+        this.gravityFactor=0;
+        this.alpha=1.0;
+        this.invincibleCount=-1;
+        
+        this.game.setData('player_health',0);
+        this.deathCount=60;
+    }
+    
+    interactWithSprite(interactSprite,dataObj)
+    {
+        if (interactSprite instanceof DrainPipeSnakeClass) {
+            this.hurtPlayer();
+            return;
+        }
+        if (interactSprite instanceof NinjaBunnyClass) {
+            this.hurtPlayer();
+            return;
+        }
+        if (interactSprite instanceof RotoCarrotClass) {
+            this.hurtPlayer();
+            return;
+        }
+    }
+    
     runAI()
     {
+            // dead?
+
+        if (this.deathCount!==-1) {
+            this.deathCount--;
+            if (this.deathCount<=0) this.game.gotoMap('World Main');
+            return;
+        }
+        
+            // invincible
+         
+        if (this.invincibleCount!==-1) {
+            this.invincibleCount--;
+            if (this.invincibleCount<=0) {
+                this.invincibleCount=-1;
+                this.alpha=1.0;
+            }
+        }
+        
             // input
             
         if (this.game.input.isLeft()) {
@@ -77,5 +149,9 @@ export default class PlayerSideScrollClass extends SpriteClass
                 this.standSprite.interactWithSprite(this,null);
             }
         }
+        
+            // check for hitting water
+         
+        if (this.standTileIdx===this.TILE_IDX_WATER_TOP) this.killPlayer();
     }
 }

@@ -1,11 +1,12 @@
 * particles need view culling
 * tick sound effect
 
-- need water level for maps (or lava, give color and level, and can move during game)
 
 - MAP_TILE_WIDTH static on map when class fields exist
 
 
-- snakes don't go off edges, will patrol area
+- pin count only on world screen
+- ball return is funny
+
 - facing shouldn't be on sprite
-- need sprite flipper
+- ceilings need to block jumps

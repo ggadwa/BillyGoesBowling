@@ -35,6 +35,7 @@ export default class SpriteClass
         this.grounded=false;
         this.collideSprite=null;
         this.standSprite=null;
+        this.standTileIdx=-1;
         
         this.canCollide=true;
         this.canStandOn=true;

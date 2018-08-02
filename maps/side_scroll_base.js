@@ -50,4 +50,11 @@ export default class SideScrollBaseMapClass extends MapClass
         this.currentMapY=sprite.y-Math.trunc(this.game.canvasHeight*0.9);
     }
 
+    mapStartup()
+    {
+            // starting a side scrolling map resets the health
+            
+        this.game.setData('player_health',4);
+    }
+    
 }

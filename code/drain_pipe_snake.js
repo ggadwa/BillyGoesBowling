@@ -71,6 +71,7 @@ export default class DrainPipeSnakeClass extends SpriteClass
         
         this.move(x,0);
         if (map.checkCollision(this)) {
+            if (this.collideSprite!==null) this.collideSprite.interactWithSprite(this,null);
             this.move(-x,0);
             switchDirection=true;
         }

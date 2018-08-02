@@ -35,5 +35,19 @@ export default class WorldBaseMapClass extends MapClass
         
         this.offsetY=offY;
     }
-
+    
+    mapStartup()
+    {
+        let x,y,playerSprite;
+        
+            // spots record where the player went into a map
+            // so we can reset position coming out
+            
+        x=this.game.getData('worldXPos');
+        y=this.game.getData('worldYPos');
+        if ((x===null) || (y===null)) return;
+        
+        playerSprite=this.getSpritePlayer();
+        playerSprite.setPosition(x,y);
+    }
 }

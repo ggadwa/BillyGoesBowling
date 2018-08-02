@@ -31,12 +31,15 @@ export default class BillyGameClass extends GameClass
         this.soundList=new BillySoundList();
         this.mapList=new BillyMapList();
         
+        this.HEALTH_IMAGE_LIST=['ui/health_25','ui/health_50','ui/health_75','ui/health_100'];
+        
         Object.seal(this);
     }
     
     createData()
     {
         this.setData('pins',0);             // number of pins
+        this.setData('player_health',4);
         this.setData('banner_text','');     // banner messages
         this.setData('banner_count',-1);
     }
@@ -66,8 +69,8 @@ export default class BillyGameClass extends GameClass
    
     getStartMap()
     {
-        return(this.mapList.get('World Main'));
-        //return(this.mapList.get('Buffet of Blocks'));
+        //return(this.mapList.get('World Main'));
+        return(this.mapList.get('Snakes on a Plain'));
     }
     
     setBanner(str,pinCount)
@@ -101,13 +104,29 @@ export default class BillyGameClass extends GameClass
     
     drawUI()
     {
-        let count,mx,lx,rx,wid,pinCount;
+        let count,mx,lx,rx,wid,pinCount,health;
+        let playerSprite=this.map.getSpritePlayer();
+        
+            // the health
+            // if the player is currently a side scrolling type
+            
+        if (playerSprite instanceof PlayerSideScrollClass) {
+            health=this.getData('player_health');
+            if (health>0) this.drawUIImage(this.HEALTH_IMAGE_LIST[health-1],5,5);
+        }
         
             // the pin readout
             
-        this.drawUIImage('ui/pin',(this.canvasWidth-110),2);
+        this.drawUIImage('ui/pin',(this.canvasWidth-100),5);
+        
+        pinCount=this.getData('pins');
         this.setupUIText('24px Arial','#000000','left','alphabetic');
-        this.drawUIText(('x '+this.getData('pins')),(this.canvasWidth-75),25);
+        if (pinCount<10) {
+            this.drawUIText(('x 0'+this.getData('pins')),(this.canvasWidth-65),28);
+        }
+        else {
+            this.drawUIText(('x '+this.getData('pins')),(this.canvasWidth-65),28);
+        }
         
             // banners
             
@@ -140,8 +159,14 @@ export default class BillyGameClass extends GameClass
                 this.drawUIText(this.getData('banner_text'),(lx+5),(this.canvasHeight-25));
                 
                 rx=lx+wid;
-                this.drawUIImage('ui/pin',(rx-95),(this.canvasHeight-55));
-                this.drawUIText(('x '+pinCount),(rx-60),(this.canvasHeight-25));
+                this.drawUIImage('ui/pin',(rx-115),(this.canvasHeight-55));
+                
+                if (pinCount<10) {
+                    this.drawUIText(('x 0'+pinCount),(rx-80),(this.canvasHeight-25));
+                }
+                else {
+                    this.drawUIText(('x '+pinCount),(rx-80),(this.canvasHeight-25));
+                }
             }
             
             this.drawSetAlpha(1.0);

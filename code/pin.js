@@ -46,7 +46,7 @@ export default class PinClass extends SpriteClass
             // add pin
             
         if (this.game.getData('pin_'+this.game.map.getMapName())===null) {
-            this.game.setData(this.game.getData('pins')+1);
+            this.game.setData('pins',(this.game.getData('pins')+1));
             this.game.setData(('pin_'+this.game.map.getMapName()),true);
         }
         

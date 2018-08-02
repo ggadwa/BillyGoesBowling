@@ -78,6 +78,13 @@ export default class EditorClass
         if (this.map.tileData===null) this.map.tileData=new Uint16Array(this.MAP_TILE_WIDTH*this.MAP_TILE_HEIGHT);
         if (this.map.sprites===null) this.map.sprites=[];
         
+            // temporary, used to fix tiles if I change the tile list
+        /*
+        for (let n=0;n!=this.map.tileData.length;n++) {
+            this.map.tileData[n]+=9;
+        }
+        */
+       
         this.refresh();
     }
     

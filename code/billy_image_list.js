@@ -35,6 +35,18 @@ export default class BillyImageListClass extends ImageListClass
         this.add('tiles/temp_1');
         this.add('tiles/temp_2');
         
+        this.add('tiles/ground_dirt_left');
+        this.add('tiles/ground_dirt_right');
+        this.add('tiles/water_top');
+        
+        this.add('tiles/ground_dirt_left_water');
+        this.add('tiles/ground_dirt_right_water');
+        this.add('tiles/water_bottom');
+        
+        this.add('tiles/ground_dirt_bottom_left_water');
+        this.add('tiles/ground_dirt_bottom_water');
+        this.add('tiles/ground_dirt_bottom_right_water');
+        
         this.add('tiles/world_grass_top_left');
         this.add('tiles/world_grass_top');
         this.add('tiles/world_grass_top_right');
@@ -87,6 +99,7 @@ export default class BillyImageListClass extends ImageListClass
         
         this.add('sprites/platform');
         this.add('sprites/door');
+        this.add('sprites/gravestone');
         
         this.add('sprites/ninja_bunny');
         this.add('sprites/shurikin');
@@ -106,6 +119,10 @@ export default class BillyImageListClass extends ImageListClass
             // UI
             
         this.add('ui/pin');
+        this.add('ui/health_100');
+        this.add('ui/health_75');
+        this.add('ui/health_50');
+        this.add('ui/health_25');
         this.add('ui/banner');
     }
     

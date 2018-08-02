@@ -10,11 +10,16 @@ export default class PlayerWorldClass extends SpriteClass
         
             // constants
             
-        this.MOVE_NONE=-1;
-        this.MOVE_LEFT=0;
-        this.MOVE_RIGHT=1;
-        this.MOVE_UP=2;
-        this.MOVE_DOWN=3;
+        this.TILE_IDX_CROSS=47;
+        this.TILE_IDX_DOT=48;
+        this.TILE_IDX_ROAD_HORIZONTAL=44;
+        this.TILE_IDX_ROAD_VERTICAL=46;
+        this.TILE_IDX_ROAD_TOP_LEFT_CORNER=43;
+        this.TILE_IDX_ROAD_TOP_RIGHT_CORNER=45;
+        this.TILE_IDX_ROAD_BOTTOM_LEFT_CORNER=49;
+        this.TILE_IDX_ROAD_BOTTOM_RIGHT_CORNER=51;
+        this.TILE_IDX_BRIDGE_HORIZONTAL=39;
+        this.TILE_IDX_BRIDGE_VERTICAL=42;
         
             // setup
             
@@ -67,7 +72,16 @@ export default class PlayerWorldClass extends SpriteClass
     
     isTileIdxRoad(tileIdx)
     {
-        return(((tileIdx>=34) && (tileIdx<=40)) || (tileIdx===42) || (tileIdx===30) || (tileIdx===33));
+        if (tileIdx===this.TILE_IDX_CROSS) return(true);
+        if (tileIdx===this.TILE_IDX_DOT) return(true);
+        if (tileIdx===this.TILE_IDX_ROAD_HORIZONTAL) return(true);
+        if (tileIdx===this.TILE_IDX_ROAD_VERTICAL) return(true);
+        if (tileIdx===this.TILE_IDX_ROAD_TOP_LEFT_CORNER) return(true);
+        if (tileIdx===this.TILE_IDX_ROAD_TOP_RIGHT_CORNER) return(true);
+        if (tileIdx===this.TILE_IDX_ROAD_BOTTOM_LEFT_CORNER) return(true);
+        if (tileIdx===this.TILE_IDX_ROAD_BOTTOM_RIGHT_CORNER) return(true);
+        if (tileIdx===this.TILE_IDX_BRIDGE_HORIZONTAL) return(true);
+        return(tileIdx===this.TILE_IDX_BRIDGE_VERTICAL);
     }
     
     hasRoadLeft()
@@ -146,22 +160,22 @@ export default class PlayerWorldClass extends SpriteClass
         
         switch (tileIdx) {
             
-            case 38:        // cross and dots
-            case 39:
+            case this.TILE_IDX_CROSS:
+            case this.TILE_IDX_DOT:
                 this.moving=false;
                 break;
                 
-            case 35:    // horizontal
-            case 30:
+            case this.TILE_IDX_ROAD_HORIZONTAL:
+            case this.TILE_IDX_BRIDGE_HORIZONTAL:
                 this.moveToX=this.x+(Math.sign(xDir)*map.MAP_TILE_SIZE);
                 break;
                 
-            case 37:    // vertical
-            case 33:
+            case this.TILE_IDX_ROAD_VERTICAL:
+            case this.TILE_IDX_BRIDGE_VERTICAL:
                 this.moveToY=this.y+(Math.sign(yDir)*map.MAP_TILE_SIZE);
                 break;
             
-            case 34:   // top left corner
+            case this.TILE_IDX_ROAD_TOP_LEFT_CORNER:
                 if (Math.sign(xDir)<0) {
                     this.moveToX=this.x;
                     this.moveToY=this.y+map.MAP_TILE_SIZE;
@@ -172,7 +186,7 @@ export default class PlayerWorldClass extends SpriteClass
                 }
                 break;
                 
-            case 36:   // top right corner
+            case this.TILE_IDX_ROAD_TOP_RIGHT_CORNER:
                 if (Math.sign(xDir)>0) {
                     this.moveToX=this.x;
                     this.moveToY=this.y+map.MAP_TILE_SIZE;
@@ -183,7 +197,7 @@ export default class PlayerWorldClass extends SpriteClass
                 }
                 break;
                 
-            case 40:   // bottom left corner
+            case this.TILE_IDX_ROAD_BOTTOM_LEFT_CORNER:
                 if (Math.sign(xDir)<0) {
                     this.moveToX=this.x;
                     this.moveToY=this.y-map.MAP_TILE_SIZE;
@@ -194,7 +208,7 @@ export default class PlayerWorldClass extends SpriteClass
                 }
                 break;
                 
-            case 42:   // bottom right corner
+            case this.TILE_IDX_ROAD_BOTTOM_RIGHT_CORNER:
                 if (Math.sign(xDir)>0) {
                     this.moveToX=this.x;
                     this.moveToY=this.y-map.MAP_TILE_SIZE;
