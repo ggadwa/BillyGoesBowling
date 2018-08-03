@@ -104,7 +104,7 @@ export default class PlayerSideScrollClass extends SpriteClass
 
         if (this.deathCount!==-1) {
             this.deathCount--;
-            if (this.deathCount<=0) this.game.gotoMap('World Main');
+            if (this.deathCount<=0) this.game.gotoMap('world_main');
             return;
         }
         

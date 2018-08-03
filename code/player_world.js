@@ -20,6 +20,7 @@ export default class PlayerWorldClass extends SpriteClass
         this.TILE_IDX_ROAD_BOTTOM_RIGHT_CORNER=51;
         this.TILE_IDX_BRIDGE_HORIZONTAL=39;
         this.TILE_IDX_BRIDGE_VERTICAL=42;
+        this.TILE_IDX_GATE=53;
         
             // setup
             
@@ -37,6 +38,8 @@ export default class PlayerWorldClass extends SpriteClass
         this.moving=false;
         this.moveToX=0;
         this.moveToY=0;
+        this.lastToX=0;
+        this.lastToY=0;
         
         Object.seal(this);
     }
@@ -116,8 +119,8 @@ export default class PlayerWorldClass extends SpriteClass
             // input
             
         if (!this.moving) {
-            this.moveToX=this.x;
-            this.moveToY=this.y;
+            this.moveToX=this.lastToX=this.x;
+            this.moveToY=this.lastToY=this.y;
             
             if (this.game.input.isLeft()) {
                 if (this.hasRoadLeft()) this.moveToX=this.x-map.MAP_TILE_SIZE;
@@ -163,6 +166,11 @@ export default class PlayerWorldClass extends SpriteClass
             case this.TILE_IDX_CROSS:
             case this.TILE_IDX_DOT:
                 this.moving=false;
+                break;
+                
+            case this.TILE_IDX_GATE:        // gates bounce you back
+                this.moveToX=this.lastToX;
+                this.moveToY=this.lastToY;
                 break;
                 
             case this.TILE_IDX_ROAD_HORIZONTAL:

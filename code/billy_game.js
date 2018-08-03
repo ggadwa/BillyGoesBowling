@@ -60,7 +60,6 @@ export default class BillyGameClass extends GameClass
             new PinClass(this,0,0,null),
             new MapSpotClass(this,0,0,null),
             new MapCastleClass(this,0,0,null),
-            new MapBlockClass(this,0,0,null),
             new DrainPipeSnakeClass(this,0,0,null),
             new NinjaBunnyClass(this,0,0,null),
             new RotoCarrotClass(this,0,0,null),
@@ -69,8 +68,8 @@ export default class BillyGameClass extends GameClass
    
     getStartMap()
     {
-        //return(this.mapList.get('World Main'));
-        return(this.mapList.get('Snakes on a Plain'));
+        //return(this.mapList.get('world_main'));
+        return(this.mapList.get('hills_ninja_bunnies'));
     }
     
     setBanner(str,pinCount)

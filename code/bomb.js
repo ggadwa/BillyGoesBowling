@@ -1,6 +1,6 @@
 import SpriteClass from '../engine/sprite.js';
 
-export default class ShurikinClass extends SpriteClass
+export default class BombClass extends SpriteClass
 {
     constructor(game,x,y,data)
     {
@@ -14,8 +14,8 @@ export default class ShurikinClass extends SpriteClass
         
             // setup
             
-        this.addImage('sprites/shurikin');
-        this.setCurrentImage('sprites/shurikin');
+        this.addImage('sprites/bomb');
+        this.setCurrentImage('sprites/bomb');
         
         this.show=true;
         this.gravityFactor=0.0;
@@ -29,7 +29,7 @@ export default class ShurikinClass extends SpriteClass
     
     duplicate(x,y)
     {
-        return(new ShurikinClass(this.game,x,y,this.data));
+        return(new BonbClass(this.game,x,y,this.data));
     }
     
     runAI()

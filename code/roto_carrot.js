@@ -1,4 +1,5 @@
 import SpriteClass from '../engine/sprite.js';
+import BallClass from './ball.js';
 
 export default class RotoCarrotClass extends SpriteClass
 {
@@ -11,9 +12,9 @@ export default class RotoCarrotClass extends SpriteClass
         this.setEditorImage('sprites/roto_carrot');
         
         this.show=true;
-        this.gravityFactor=0.12;
-        this.gravityMinValue=3;
-        this.gravityMaxValue=20;
+        this.gravityFactor=0.0;
+        this.gravityMinValue=0;
+        this.gravityMaxValue=0;
         this.canCollide=true;
         this.canStandOn=true;
         
@@ -23,5 +24,27 @@ export default class RotoCarrotClass extends SpriteClass
     duplicate(x,y)
     {
         return(new RotoCarrotClass(this.game,x,y,this.data));
+    }
+    
+    interactWithSprite(interactSprite,dataObj)
+    {
+        if (interactSprite instanceof BallClass) {
+            this.delete();
+        }
+    }
+    
+    runAI()
+    {
+        let map=this.game.map;
+        let playerSprite=map.getSpritePlayer();
+        
+            // always travel left to right
+            
+        this.x-=10;
+        if (this.x<(-this.width)) this.x=map.rightEdge;
+        
+            // drop bomb if near player
+            
+        
     }
 }

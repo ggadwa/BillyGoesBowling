@@ -54,6 +54,6 @@ export default class PinClass extends SpriteClass
         
             // jump back to map
             
-        this.game.gotoMap('World Main');
+        this.game.gotoMap('world_main');
     }
 }

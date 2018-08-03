@@ -13,6 +13,7 @@ export default class MapClass
         
         this.width=this.MAP_TILE_WIDTH*this.MAP_TILE_SIZE;
         this.height=this.MAP_TILE_HEIGHT*this.MAP_TILE_SIZE;
+        this.rightEdge=0;
         
         this.offsetX=0;
         this.offsetY=0;
@@ -27,16 +28,12 @@ export default class MapClass
     
     initialize()
     {
-        let n;
+        let n,x,y,edgeX;
         let sprite;
         
             // create the map
             
         this.create();
-
-            // call any map startup
-            
-        this.mapStartup();
         
             // call all the sprite map enter
         
@@ -49,11 +46,23 @@ export default class MapClass
         
         if (this.playerIdx===-1) console.log('No player in map');
         
-            // we start the current map Y based on
-            // the player position and move only
-            // if player gets too close to edge
+            // find the right edge of map
             
-        this.currentMapY=this.sprites[this.playerIdx].y-Math.trunc(this.game.canvasHeight*0.9);
+        this.rightEdge=0;
+        
+        for (y=0;y!==this.MAP_TILE_HEIGHT;y++) {
+            for (x=(this.MAP_TILE_WIDTH-1);x>0;x--) {
+                if (this.tileData[(y*this.MAP_TILE_WIDTH)+x]!==0) {
+                    edgeX=x*this.MAP_TILE_SIZE;
+                    if (edgeX>this.rightEdge) this.rightEdge=edgeX;
+                    break;
+                }
+            }
+        }
+
+            // call any custom map startup
+            
+        this.mapStartup();
     }
     
     getMapName()

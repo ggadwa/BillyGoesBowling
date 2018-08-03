@@ -6,6 +6,8 @@ export default class SideScrollBaseMapClass extends MapClass
     constructor(game)
     {
         super(game);
+        
+        this.PLAYER_NATURAL_MAP_HEIGHT_OFFSET=0.8;
 
         this.currentMapY=0;
     }
@@ -31,7 +33,7 @@ export default class SideScrollBaseMapClass extends MapClass
             // we only change the current
             // map Y if the player gets too close to edges
           
-        playerY=sprite.y-Math.trunc(high*0.9);
+        playerY=sprite.y-Math.trunc(high*this.PLAYER_NATURAL_MAP_HEIGHT_OFFSET);
         playerDoubleHigh=sprite.height*2;
         
         if ((playerY-sprite.height)<(this.currentMapY-(high-playerDoubleHigh))) this.currentMapY-=10;
@@ -47,7 +49,7 @@ export default class SideScrollBaseMapClass extends MapClass
     resetOffsetY()
     {
         let sprite=this.sprites[this.playerIdx];
-        this.currentMapY=sprite.y-Math.trunc(this.game.canvasHeight*0.9);
+        this.currentMapY=sprite.y-Math.trunc(this.game.canvasHeight*this.PLAYER_NATURAL_MAP_HEIGHT_OFFSET);
     }
 
     mapStartup()
@@ -55,6 +57,8 @@ export default class SideScrollBaseMapClass extends MapClass
             // starting a side scrolling map resets the health
             
         this.game.setData('player_health',4);
+        
+        this.resetOffsetY();
     }
     
 }

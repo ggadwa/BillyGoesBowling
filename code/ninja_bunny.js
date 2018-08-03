@@ -43,6 +43,7 @@ export default class NinjaBunnyClass extends SpriteClass
     
     runAI()
     {
+        let map=this.game.map;
         let playerSprite=map.getSpritePlayer();
         let sx,sy;
         
