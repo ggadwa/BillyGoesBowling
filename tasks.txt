@@ -5,8 +5,9 @@
 - MAP_TILE_WIDTH static on map when class fields exist
 
 
-- pin count only on world screen
-- ball return is funny
+- bunnies clip up over tiles, need to hit head
+- ceilings need to block jumps
+- carrots throw bombs
 
 - facing shouldn't be on sprite
 - ceilings need to block jumps

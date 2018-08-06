@@ -26,6 +26,8 @@ export default class EditorClass
         this.paletteSelType=this.PALETTE_TILE;
         this.paletteSelIndex=-1;
         
+        this.canvasMouseDown=false;
+        
         Object.seal(this);
     }
     
@@ -34,16 +36,21 @@ export default class EditorClass
             // canvas and contextes
             
         this.mapCanvas=document.getElementById('editorMapCanvas');
-        this.mapCanvas.onclick=this.leftClickMapCanvas.bind(this);
+        this.mapCanvas.onmousedown=this.leftMouseDownMapCanvas.bind(this);
+        this.mapCanvas.onmousemove=this.leftMouseMoveMapCanvas.bind(this);
+        this.mapCanvas.onmouseup=this.leftMouseUpMapCanvas.bind(this);
+        
         this.mapCanvas.oncontextmenu=this.rightClickMapCanvas.bind(this);
         this.mapCTX=this.mapCanvas.getContext('2d');
         
         this.tilePaletteCanvas=document.getElementById('editorTilePaletteCanvas');
         this.tilePaletteCanvas.onclick=this.clickTilePaletteCanvas.bind(this);
+        this.tilePaletteCanvas.onmousemove=this.mouseMoveTilePaletteCanvas.bind(this);
         this.tilePaletteCTX=this.tilePaletteCanvas.getContext('2d');
         
         this.spritePaletteCanvas=document.getElementById('editorSpritePaletteCanvas');
         this.spritePaletteCanvas.onclick=this.clickSpritePaletteCanvas.bind(this);
+        this.spritePaletteCanvas.onmousemove=this.mouseMoveSpritePaletteCanvas.bind(this);
         this.spritePaletteCTX=this.spritePaletteCanvas.getContext('2d');
         
             // initialize the map list
@@ -312,6 +319,8 @@ export default class EditorClass
     
     setSpot(x,y,idx)
     {
+        let spriteIdx;
+
         if (this.paletteSelIndex===-1) return;
         
         switch (this.paletteSelType) {
@@ -319,6 +328,8 @@ export default class EditorClass
                 this.map.tileData[idx]=this.paletteSelIndex+1;
                 break;
             case this.PALETTE_SPRITE:
+                spriteIdx=this.findSpriteIndexForPosition(x,y);     // remove old sprite before putting down a new one
+                if (spriteIdx!==-1) this.map.removeSprite(spriteIdx);
                 this.map.addSprite(this.spritePaletteList[this.paletteSelIndex].duplicate((x*this.MAP_TILE_SIZE),((y+1)*this.MAP_TILE_SIZE)));
                 break;
         }
@@ -346,6 +357,42 @@ export default class EditorClass
         }
         
         this.drawMapCanvas();
+    }
+    
+    leftMouseDownMapCanvas(event)
+    {
+        this.canvasMouseDown=true;
+        this.leftMouseMoveMapCanvas(event);
+    }
+    
+    leftMouseMoveMapCanvas(event)
+    {
+        let wid=this.mapCanvas.width;
+        let x=Math.floor(event.offsetX/this.MAP_TILE_SIZE);
+        let y=Math.floor(event.offsetY/this.MAP_TILE_SIZE);
+        let idx=x+(y*Math.floor(wid/this.MAP_TILE_SIZE));
+        
+            // as long as the mouse is down, fill
+            // in grid spots
+            
+        if (!this.canvasMouseDown) return;
+        
+        event.stopPropagation();
+        event.preventDefault();
+        
+        if (event.ctrlKey) {
+            this.clearSpot(x,y,idx);
+        }
+        else {
+            this.setSpot(x,y,idx);
+        }
+        
+        this.drawMapCanvas();        
+    }
+    
+    leftMouseUpMapCanvas(event)
+    {
+        this.canvasMouseDown=false;
     }
     
     rightClickMapCanvas(event)
@@ -384,6 +431,11 @@ export default class EditorClass
         this.drawSpritePaletteCanvas();
     }
     
+    mouseMoveTilePaletteCanvas(event)
+    {
+        this.canvasMouseDown=false;
+    }
+    
     clickSpritePaletteCanvas(event)
     {
         let wid=this.spritePaletteCanvas.width;
@@ -401,6 +453,11 @@ export default class EditorClass
         
         this.drawTilePaletteCanvas();
         this.drawSpritePaletteCanvas();
+    }
+    
+    mouseMoveSpritePaletteCanvas(event)
+    {
+        this.canvasMouseDown=false;
     }
     
         //

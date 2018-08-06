@@ -1,5 +1,6 @@
 import SpriteClass from '../engine/sprite.js';
 import BallClass from './ball.js';
+import PlayerSideScrollClass from './player_sidescroll.js';
 import ShurikinClass from './shurikin.js';
 
 export default class NinjaBunnyClass extends SpriteClass
@@ -8,10 +9,18 @@ export default class NinjaBunnyClass extends SpriteClass
     {
         super(game,x,y,data);
         
+        this.BUNNY_JUMP_HEIGHT=55;
+        this.BUNNY_GROUND_SPEED=6;
+        this.BUNNY_AIR_SPEED=8;
+        this.BUNNY_ACTIVATE_DISTANCE=1000;
+        
             // variables
             
         this.bunnyActive=false;
         this.bunnyPause=0;
+        this.bunnyJumpDirection=-1;
+        this.bunnyShurikinOK=false;
+        this.lastMotionY=0;
         
             // setup
             
@@ -34,67 +43,123 @@ export default class NinjaBunnyClass extends SpriteClass
         return(new NinjaBunnyClass(this.game,x,y,this.data));
     }
     
+    jumpTowardsSprite(sprite)
+    {
+        this.bunnyJumpDirection=Math.sign(sprite.x-this.x);
+        if (this.motion.y>=0) this.addMotion(0,-this.BUNNY_JUMP_HEIGHT);
+    }
+    
+    jumpAwayFromSprite(sprite)
+    {
+        this.jumpTowardsSprite(sprite);
+        this.bunnyJumpDirection=-this.bunnyJumpDirection;
+    }
+    
     interactWithSprite(interactSprite,dataObj)
     {
+            // ball destroys bunny
+            
         if (interactSprite instanceof BallClass) {
             this.delete();
         }
+        
+            // hitting the player makes the
+            // bunny jump backwards
+            
+        if (interactSprite instanceof PlayerSideScrollClass) this.jumpAwayFromSprite(interactSprite);
+    }
+    
+    fireShurikin(dist)
+    {
+        let sx,sy;
+        
+        sx=Math.trunc(this.width*0.8)*Math.sign(dist);
+        sx=(this.x+Math.trunc(this.width*0.5))+sx;
+        sy=this.y+40;
+
+        this.game.map.addSprite(new ShurikinClass(this.game,sx,sy,null));
     }
     
     runAI()
     {
         let map=this.game.map;
         let playerSprite=map.getSpritePlayer();
-        let sx,sy;
+        let checkSprite;
         
             // distance from player
             
         let dist=playerSprite.x-this.x;
         
         if (!this.bunnyActive) {
-            if (Math.abs(dist)<1000) {
+            if (Math.abs(dist)<this.BUNNY_ACTIVATE_DISTANCE) {
                 this.bunnyActive=true;
             }
             return;
         }
         
-            // move towards player
+            // if on the ground, then always move towards player
+            // otherwise we are jumping and move jump direction
         
         if (this.grounded) {    
-            this.moveWithCollision(((dist<0)?-6:6),0);
+            this.moveWithCollision(((dist<0)?-this.BUNNY_GROUND_SPEED:this.BUNNY_GROUND_SPEED),0);
         }
         else {
-            this.moveWithCollision(((dist<0)?-8:8),0);
+            this.moveWithCollision((this.BUNNY_AIR_SPEED*this.bunnyJumpDirection),0);
         }
         
-            // jump whenever you are grounded
-            // after a pause
+            // if standing on top or colliding with
+            // another sprite, then we jump immediately
+            // away from it
+         
+        checkSprite=null;
+        
+        if (this.standSprite!==null) checkSprite=this.standSprite;
+        if (this.collideSprite!==null) checkSprite=this.collideSprite;
+        
+        if (checkSprite!==null) {
+            checkSprite.interactWithSprite(this,null);
+            if (checkSprite instanceof PlayerSideScrollClass) {
+                this.jumpAwayFromSprite(checkSprite);
+            }
+            else {
+                this.jumpTowardsSprite(checkSprite);
+            }
+        }
+        
+            // if we have started falling, than launch
+            // one shurikin
+            
+        if (this.grounded) {
+            this.bunnyShurikinOK=true;
+            this.lastMotionY=0;
+        }
+        else {
+            if (this.bunnyShurikinOK) {
+                if ((this.lastMotionY<0) && (this.motion.y>=0)) {
+                    this.fireShurikin(dist);
+                    this.bunnyShurikinOK=false;
+                }
+                this.lastMotionY=this.motion.y;
+            }
+        }
+        
+            // if on the ground, we can jump after a
+            // slight pause
             
         if (!this.grounded) {
-            this.bunnyPause=15;
+            this.bunnyPause=20;
             return;
         }
         
         if (this.bunnyPause>0) {
             this.bunnyPause--;
-            
-                // half way through pause, throw a shurikin
-                
-            if (this.bunnyPause===15) {
-                /*
-                sx=Math.trunc(this.width*0.8);
-                if (dist<0) sx=-sx;
-                sx=this.x+sx;
-                sy=this.y-Math.trunc(this.height*0.5);
-                
-                this.game.map.addSprite(new ShurikinClass(this.game,sx,sy,null));
-                */
-            }
-            
             return;
         }
         
-        this.addMotion(0,-55);
+            // we can jump, find the direction
+            // towards player and jump that way
+            
+        this.jumpTowardsSprite(playerSprite);
     }
     
 }

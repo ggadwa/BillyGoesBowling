@@ -90,7 +90,7 @@ export default class BallClass extends SpriteClass
                     }
                 }
                 else {
-                    this.travelX+=25;
+                    this.travelX+=30;
                     rgtEdge=map.getMapViewportRightEdge();
                     if ((x+this.travelX)>rgtEdge) {
                         this.travelX=rgtEdge-x;
@@ -144,7 +144,7 @@ export default class BallClass extends SpriteClass
                     // colliding with map, return ball
                     
                 if (this.collideSprite===null) {
-                    this.travelY=0;
+                    this.travelY=map.getMapViewportTopEdge()-this.height;
                     this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
                     return;
                 }
@@ -156,7 +156,7 @@ export default class BallClass extends SpriteClass
                     // stop ball for everything but breakable blocks
                     
                 if ((this.collideSprite instanceof BlockClass) || (this.collideSprite instanceof BreakBlockStrongClass) || (this.collideSprite instanceof ExplodeBlockClass)) {
-                    this.travelY=0;
+                    this.travelY=map.getMapViewportTopEdge()-this.height;
                     this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
                 }
                 

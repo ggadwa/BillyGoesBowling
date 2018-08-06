@@ -106,25 +106,26 @@ export default class BillyGameClass extends GameClass
         let count,mx,lx,rx,wid,pinCount,health;
         let playerSprite=this.map.getSpritePlayer();
         
-            // the health
-            // if the player is currently a side scrolling type
+            // side scrolling UI
             
         if (playerSprite instanceof PlayerSideScrollClass) {
             health=this.getData('player_health');
             if (health>0) this.drawUIImage(this.HEALTH_IMAGE_LIST[health-1],5,5);
         }
         
-            // the pin readout
+            // world UI
             
-        this.drawUIImage('ui/pin',(this.canvasWidth-100),5);
-        
-        pinCount=this.getData('pins');
-        this.setupUIText('24px Arial','#000000','left','alphabetic');
-        if (pinCount<10) {
-            this.drawUIText(('x 0'+this.getData('pins')),(this.canvasWidth-65),28);
-        }
         else {
-            this.drawUIText(('x '+this.getData('pins')),(this.canvasWidth-65),28);
+            this.drawUIImage('ui/pin',(this.canvasWidth-100),5);
+
+            pinCount=this.getData('pins');
+            this.setupUIText('24px Arial','#000000','left','alphabetic');
+            if (pinCount<10) {
+                this.drawUIText(('x 0'+this.getData('pins')),(this.canvasWidth-65),28);
+            }
+            else {
+                this.drawUIText(('x '+this.getData('pins')),(this.canvasWidth-65),28);
+            }
         }
         
             // banners

@@ -30,12 +30,23 @@ export default class MapCastleClass extends SpriteClass
     
     runAI()
     {
+        let playerSprite=this.game.map.getSpritePlayer();
+        
             // are we colliding with player?
             
-        if (!this.game.map.getSpritePlayer().collide(this)) return;
+        if (!playerSprite.collide(this)) return;
             
             // change UI
             
         this.game.setBanner(this.getData('title'),this.getData('pin'));
+        
+            // if action or select, than jump to map
+            // save the X/Y so we can restore when we exit
+            
+        if ((this.game.input.isAction()) || (this.game.input.isSelect())) {
+            this.game.setData('worldXPos',playerSprite.x);
+            this.game.setData('worldYPos',playerSprite.y);
+            this.game.gotoMap(this.getData('map'));
+        }
     }
 }

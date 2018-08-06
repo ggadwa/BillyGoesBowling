@@ -321,12 +321,10 @@ export default class MapClass
     {
         let sprite,x;
         let wid=this.game.canvasWidth;
-        let rgt=this.game.map.width-wid;
 
         sprite=this.sprites[this.playerIdx];
         x=sprite.x-Math.trunc(wid*0.5);
         if (x<0) x=0;
-        if (x>rgt) x=rgt;
         
         return(x);
     }
@@ -340,12 +338,10 @@ export default class MapClass
     {
         let sprite,y;
         let high=this.game.canvasHeight;
-        let bot=this.game.map.height-high;
 
         sprite=this.sprites[this.playerIdx];
         y=sprite.y-Math.trunc(high*0.5);
         if (y<0) y=0;
-        if (y>bot) y=bot;
         
         return(y);
     }

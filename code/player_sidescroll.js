@@ -3,6 +3,7 @@ import BallClass from '../code/ball.js';
 import CloudBlockClass from './cloud_block.js';
 import DrainPipeSnakeClass from '../code/drain_pipe_snake.js';
 import NinjaBunnyClass from '../code/ninja_bunny.js';
+import ShurikinClass from '../code/shurikin.js';
 import RotoCarrotClass from '../code/roto_carrot.js';
 
 export default class PlayerSideScrollClass extends SpriteClass
@@ -28,7 +29,7 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.show=true;
         this.gravityFactor=0.12;
         this.gravityMinValue=3;
-        this.gravityMaxValue=20;
+        this.gravityMaxValue=25;
         this.canCollide=true;
         this.canStandOn=true;
         
@@ -92,6 +93,11 @@ export default class PlayerSideScrollClass extends SpriteClass
             this.hurtPlayer();
             return;
         }
+        if (interactSprite instanceof ShurikinClass)
+        {
+            this.hurtPlayer();
+            return;
+        }
         if (interactSprite instanceof RotoCarrotClass) {
             this.hurtPlayer();
             return;
@@ -141,6 +147,12 @@ export default class PlayerSideScrollClass extends SpriteClass
             // for bowling
             
         if (this.grounded) this.lastGroundY=this.y;
+        
+            // interact with any colliding sprite
+            
+        if (this.collideSprite!==null) {
+            this.collideSprite.interactWithSprite(this,null);
+        }
         
             // check for standing on a cloud
             
