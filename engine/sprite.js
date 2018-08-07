@@ -230,10 +230,15 @@ export default class SpriteClass
         this.y+=this.motion.y;
         this.grounded=true;
         
-            // physics
-            
+            // falling
+
         if (this.gravityFactor!==0.0) {
-            y=this.game.map.checkCollisionStand(this,Math.trunc(this.gravityAdd));
+
+            y=-1;
+            if (this.motion.y>=0) {
+                y=this.game.map.checkCollisionStand(this,Math.trunc(this.gravityAdd));
+            }
+
             if (y===-1) {
                 this.y=Math.trunc(this.y+this.gravityAdd);
                 if (this.gravityAdd<=0.0) this.gravityAdd=this.gravityMinValue;
@@ -248,6 +253,10 @@ export default class SpriteClass
                 this.motion.y=0;
             }
         }
+             
+            // rising
+                
+
         
             // gravity slows down motion
             

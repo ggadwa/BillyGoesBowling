@@ -1,6 +1,7 @@
 import SpriteClass from '../engine/sprite.js';
 import BallClass from '../code/ball.js';
 import CloudBlockClass from './cloud_block.js';
+import ButtonClass from './button.js';
 import DrainPipeSnakeClass from '../code/drain_pipe_snake.js';
 import NinjaBunnyClass from '../code/ninja_bunny.js';
 import ShurikinClass from '../code/shurikin.js';
@@ -154,10 +155,10 @@ export default class PlayerSideScrollClass extends SpriteClass
             this.collideSprite.interactWithSprite(this,null);
         }
         
-            // check for standing on a cloud
+            // check for standing on a cloud or button
             
         if (this.standSprite!==null) {
-            if (this.standSprite instanceof CloudBlockClass) {
+            if ((this.standSprite instanceof CloudBlockClass) || (this.standSprite instanceof ButtonClass)) {
                 this.standSprite.interactWithSprite(this,null);
             }
         }

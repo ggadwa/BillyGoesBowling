@@ -39,18 +39,17 @@ export default class EditorClass
         this.mapCanvas.onmousedown=this.leftMouseDownMapCanvas.bind(this);
         this.mapCanvas.onmousemove=this.leftMouseMoveMapCanvas.bind(this);
         this.mapCanvas.onmouseup=this.leftMouseUpMapCanvas.bind(this);
+        this.mapCanvas.onmouseout=this.leftMouseUpMapCanvas.bind(this);     // mouse out forces a mouse up
         
         this.mapCanvas.oncontextmenu=this.rightClickMapCanvas.bind(this);
         this.mapCTX=this.mapCanvas.getContext('2d');
         
         this.tilePaletteCanvas=document.getElementById('editorTilePaletteCanvas');
         this.tilePaletteCanvas.onclick=this.clickTilePaletteCanvas.bind(this);
-        this.tilePaletteCanvas.onmousemove=this.mouseMoveTilePaletteCanvas.bind(this);
         this.tilePaletteCTX=this.tilePaletteCanvas.getContext('2d');
         
         this.spritePaletteCanvas=document.getElementById('editorSpritePaletteCanvas');
         this.spritePaletteCanvas.onclick=this.clickSpritePaletteCanvas.bind(this);
-        this.spritePaletteCanvas.onmousemove=this.mouseMoveSpritePaletteCanvas.bind(this);
         this.spritePaletteCTX=this.spritePaletteCanvas.getContext('2d');
         
             // initialize the map list
@@ -329,7 +328,10 @@ export default class EditorClass
                 break;
             case this.PALETTE_SPRITE:
                 spriteIdx=this.findSpriteIndexForPosition(x,y);     // remove old sprite before putting down a new one
-                if (spriteIdx!==-1) this.map.removeSprite(spriteIdx);
+                if (spriteIdx!==-1) {
+                    if (this.map.sprites[spriteIdx] instanceof this.spritePaletteList[this.paletteSelIndex].constructor) break;     // if it's the same type, just leave it
+                    this.map.removeSprite(spriteIdx);
+                }
                 this.map.addSprite(this.spritePaletteList[this.paletteSelIndex].duplicate((x*this.MAP_TILE_SIZE),((y+1)*this.MAP_TILE_SIZE)));
                 break;
         }
@@ -431,11 +433,6 @@ export default class EditorClass
         this.drawSpritePaletteCanvas();
     }
     
-    mouseMoveTilePaletteCanvas(event)
-    {
-        this.canvasMouseDown=false;
-    }
-    
     clickSpritePaletteCanvas(event)
     {
         let wid=this.spritePaletteCanvas.width;
@@ -453,11 +450,6 @@ export default class EditorClass
         
         this.drawTilePaletteCanvas();
         this.drawSpritePaletteCanvas();
-    }
-    
-    mouseMoveSpritePaletteCanvas(event)
-    {
-        this.canvasMouseDown=false;
     }
     
         //

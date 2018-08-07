@@ -34,9 +34,7 @@ export default class CloudBlockClass extends SpriteClass
     
     interactWithSprite(interactSprite,dataObj)
     {
-        if (this.countDown!==-1) return;            // already doing something
-
-        if (interactSprite instanceof PlayerSideScrollClass) this.countDown=15;
+        if (this.countDown===-1) this.countDown=15;
     }
     
     runAI()

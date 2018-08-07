@@ -101,6 +101,7 @@ export default class BillyImageListClass extends ImageListClass
         this.add('sprites/platform');
         this.add('sprites/door');
         this.add('sprites/gravestone');
+        this.add('sprites/button');
         
         this.add('sprites/ninja_bunny');
         this.add('sprites/shurikin');
@@ -110,6 +111,9 @@ export default class BillyImageListClass extends ImageListClass
         this.add('sprites/drain_pipe_snake_free_right');
         this.add('sprites/roto_carrot');
         this.add('sprites/bomb');
+        
+        this.add('sprites/executioner_axe');
+        this.add('sprites/axe');
         
         this.add('sprites/particle_block');
         this.add('sprites/particle_explode_block');

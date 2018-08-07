@@ -11,3 +11,5 @@
 
 - facing shouldn't be on sprite
 - ceilings need to block jumps
+
+- buttons with other modes

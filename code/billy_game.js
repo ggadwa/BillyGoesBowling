@@ -14,12 +14,14 @@ import ExplodeBlockClass from '../code/explode_block.js';
 import PlatformClass from '../code/platform.js';
 import DoorClass from '../code/door.js';
 import PinClass from '../code/pin.js';
+import ButtonClass from '../code/button.js';
 import MapSpotClass from '../code/map_spot.js';
 import MapCastleClass from '../code/map_castle.js';
 import MapBlockClass from '../code/map_block.js';
 import DrainPipeSnakeClass from '../code/drain_pipe_snake.js';
 import NinjaBunnyClass from '../code/ninja_bunny.js';
 import RotoCarrotClass from '../code/roto_carrot.js';
+import ExecutionerClass from '../code/executioner.js';
 
 export default class BillyGameClass extends GameClass
 {
@@ -58,18 +60,21 @@ export default class BillyGameClass extends GameClass
             new PlatformClass(this,0,0,null),
             new DoorClass(this,0,0,null),
             new PinClass(this,0,0,null),
+            new ButtonClass(this,0,0,null),
             new MapSpotClass(this,0,0,null),
             new MapCastleClass(this,0,0,null),
             new DrainPipeSnakeClass(this,0,0,null),
             new NinjaBunnyClass(this,0,0,null),
             new RotoCarrotClass(this,0,0,null),
+            new ExecutionerClass(this,0,0,null)
         ]);
     }
    
     getStartMap()
     {
         //return(this.mapList.get('world_main'));
-        return(this.mapList.get('hills_ninja_bunnies'));
+        //return(this.mapList.get('apocalypse_carrot'));
+        return(this.mapList.get('buffet_of_blocks'));
     }
     
     setBanner(str,pinCount)
