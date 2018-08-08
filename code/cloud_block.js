@@ -7,6 +7,9 @@ export default class CloudBlockClass extends SpriteClass
     {
         super(game,x,y,data);
         
+        this.POP_TICK=20;
+        this.REAPPEAR_TICK=40;
+        
             // variables
             
         this.countDown=-1;
@@ -23,6 +26,7 @@ export default class CloudBlockClass extends SpriteClass
         this.gravityMaxValue=0;
         this.canCollide=false;
         this.canStandOn=true;
+        this.canRiseBlock=false;
         
         Object.seal(this);
     }
@@ -34,7 +38,7 @@ export default class CloudBlockClass extends SpriteClass
     
     interactWithSprite(interactSprite,dataObj)
     {
-        if (this.countDown===-1) this.countDown=15;
+        if (this.countDown===-1) this.countDown=this.POP_TICK;
     }
     
     runAI()
@@ -48,7 +52,7 @@ export default class CloudBlockClass extends SpriteClass
             
         if (this.show) {
             this.show=false;
-            this.countDown=40;
+            this.countDown=this.REAPPEAR_TICK;
             return;
         }
         

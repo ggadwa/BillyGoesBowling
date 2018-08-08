@@ -74,7 +74,9 @@ export default class BillyGameClass extends GameClass
     {
         //return(this.mapList.get('world_main'));
         //return(this.mapList.get('apocalypse_carrot'));
-        return(this.mapList.get('buffet_of_blocks'));
+        //return(this.mapList.get('buffet_of_blocks'));
+        //return(this.mapList.get('hills_ninja_bunnies'));
+        return(this.mapList.get('executioners_castle'));
     }
     
     setBanner(str,pinCount)

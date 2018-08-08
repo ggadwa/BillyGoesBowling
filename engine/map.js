@@ -153,13 +153,14 @@ export default class MapClass
     
     checkCollision(checkSprite)
     {
-        let sprite,tile;
+        let sprite,tileIdx;
         let lx,rx,ty,by,dx,dy,gx,gy;
         let lft,top,rgt,bot;
         
             // clear flags
             
         checkSprite.collideSprite=null;
+        checkSprite.collideTileIdx=-1;
         
             // check sprites
             
@@ -198,11 +199,13 @@ export default class MapClass
             if ((bot<=dy) || (top>(dy+this.MAP_TILE_SIZE))) continue;
 
             for (gx=lx;gx<=rx;gx++) {
-                tile=this.tileData[(gy*this.MAP_TILE_WIDTH)+gx];
-                if (tile===0) continue;
+                tileIdx=this.tileData[(gy*this.MAP_TILE_WIDTH)+gx];
+                if (tileIdx===0) continue;
                 
                 dx=gx*this.MAP_TILE_SIZE;
                 if ((rgt<=dx) || (lft>=(dx+this.MAP_TILE_SIZE))) continue;
+                
+                checkSprite.collideTileIdx=tileIdx;
                 
                 return(true);
             }
@@ -215,7 +218,7 @@ export default class MapClass
     {
         let sprite,tileIdx;
         let ty=-1;
-        let x,y,dx,dy,gx,gy;
+        let x,y,dx,dy,gx,gy,leftTileX,rightTileX;
         let lft,top,rgt,bot;
         
             // always fall at least 1
@@ -253,24 +256,25 @@ export default class MapClass
             // check map
             
         lft=checkSprite.x;
-        top=checkSprite.y-checkSprite.height;
+        top=(checkSprite.y-checkSprite.height)+dist;
         rgt=checkSprite.x+checkSprite.width;
-        bot=checkSprite.y;
+        bot=checkSprite.y+dist;
         
-        x=Math.trunc(((lft+rgt)*0.5)/this.MAP_TILE_SIZE);
+        leftTileX=Math.trunc(lft/this.MAP_TILE_SIZE)-1;
+        rightTileX=Math.trunc(rgt/this.MAP_TILE_SIZE)+1;
         y=Math.trunc(bot/this.MAP_TILE_SIZE);
         
-        if (x<0) x=0;
+        if (leftTileX<0) leftTileX=0;
         if (y<0) y=0;
-        if ((x+2)>this.MAP_TILE_WIDTH) x=this.MAP_TILE_WIDTH-2;
+        if (rightTileX>this.MAP_TILE_WIDTH) rightTileX=this.MAP_TILE_WIDTH-1;
         if ((y+2)>this.MAP_TILE_HEIGHT) y=this.MAP_TILE_HEIGHT-2;
         
         for (gy=y;gy!==(y+2);gy++) {
             
             dy=gy*this.MAP_TILE_SIZE;
-            if ((bot<dy) || (bot>(dy+this.MAP_TILE_SIZE))) continue;              
+            if ((bot<dy) || (bot>((dy+this.MAP_TILE_SIZE)+dist))) continue;              
 
-            for (gx=0;gx!==(x+2);gx++) {
+            for (gx=leftTileX;gx<rightTileX;gx++) {
                 tileIdx=this.tileData[(gy*this.MAP_TILE_WIDTH)+gx];
                 if (tileIdx===0) continue;
                 
@@ -288,14 +292,88 @@ export default class MapClass
         return(ty);
     }
     
-    getSurroundSprites(checkSprite,radius)
+    checkCollisionRise(checkSprite,dist)
+    {
+        let sprite,tileIdx;
+        let ty=-1;
+        let x,y,dx,dy,gx,gy,leftTileX,rightTileX;
+        let lft,top,rgt,bot;
+        
+            // clear flags
+            
+        checkSprite.riseSprite=null;
+        checkSprite.riseTileIdx=-1;
+        
+            // check sprites
+            
+        for (sprite of this.sprites) {
+            if (sprite===checkSprite) continue;
+            if (!sprite.show) continue;
+            if (!sprite.canRiseBlock) continue;
+            
+            if (checkSprite.collideRise(sprite,dist)) {
+                y=sprite.y;
+                if ((y<ty) || (ty===-1)) {
+                    checkSprite.riseSprite=sprite;
+                    ty=y;
+                }
+            }
+        }
+        
+            // any collision with a sprite
+            // outweights any map collision because
+            // we expect objects to be outside of map
+            // to hit another sprite
+            
+        if (ty!==-1) return(ty);
+        
+            // check map
+            
+        lft=checkSprite.x;
+        top=(checkSprite.y-checkSprite.height)+dist;
+        rgt=checkSprite.x+checkSprite.width;
+        bot=checkSprite.y+dist;
+        
+        leftTileX=Math.trunc(lft/this.MAP_TILE_SIZE)-1;
+        rightTileX=Math.trunc(rgt/this.MAP_TILE_SIZE)+1;
+        y=Math.trunc(top/this.MAP_TILE_SIZE);
+        
+        if (leftTileX<0) leftTileX=0;
+        if (y<0) y=0;
+        rightTileX=Math.trunc(rgt/this.MAP_TILE_SIZE)+1;
+        if ((y+2)>this.MAP_TILE_HEIGHT) y=this.MAP_TILE_HEIGHT-2;
+        
+        for (gy=y;gy!==(y+2);gy++) {
+            
+            dy=gy*this.MAP_TILE_SIZE;
+            if ((top<(dy+dist)) || (top>(dy+this.MAP_TILE_SIZE))) continue;              
+
+            for (gx=leftTileX;gx<rightTileX;gx++) {
+                tileIdx=this.tileData[(gy*this.MAP_TILE_WIDTH)+gx];
+                if (tileIdx===0) continue;
+                
+                dx=gx*this.MAP_TILE_SIZE;
+                if ((rgt<=dx) || (lft>=(dx+this.MAP_TILE_SIZE))) continue;
+                
+                if ((dy<ty) || (ty===-1)) {
+                    checkSprite.riseSprite=null;
+                    checkSprite.riseTileIdx=tileIdx;
+                    ty=dy+this.MAP_TILE_SIZE;
+                }
+            }
+        }
+        
+        return(ty);
+    }
+    
+    getSurroundSprites(checkSprite,offX,offY,radius)
     {
         let sprite,lft,top,rgt,bot;
         let sprites=[];
             
-        lft=checkSprite.getMiddleX()-radius;
+        lft=(checkSprite.x+offX)-radius;
         rgt=lft+(radius*2);
-        top=checkSprite.getMiddleY()-radius;
+        top=(checkSprite.y+offY)-radius;
         bot=top+(radius*2);
         
         for (sprite of this.sprites) {
@@ -311,7 +389,7 @@ export default class MapClass
     
     getTileUnderSprite(checkSprite)
     {
-        let x=Math.trunc(checkSprite.getMiddleX()/this.MAP_TILE_SIZE);
+        let x=Math.trunc((checkSprite.x+Math.trunc(checkSprite.width*0.5))/this.MAP_TILE_SIZE);
         let y=Math.trunc((checkSprite.y+1)/this.MAP_TILE_SIZE);
         
         return(this.tileData[(y*this.MAP_TILE_WIDTH)+x]);
@@ -408,8 +486,8 @@ export default class MapClass
         
             // draw size
             
-        tilePerWidth=Math.floor(this.game.canvasWidth/this.MAP_TILE_SIZE);
-        tilePerHeight=Math.floor(this.game.canvasHeight/this.MAP_TILE_SIZE);
+        tilePerWidth=Math.trunc(this.game.canvasWidth/this.MAP_TILE_SIZE);
+        tilePerHeight=Math.trunc(this.game.canvasHeight/this.MAP_TILE_SIZE);
             
             // draw the map
             

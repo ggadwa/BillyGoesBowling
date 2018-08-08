@@ -4,12 +4,8 @@
 
 - MAP_TILE_WIDTH static on map when class fields exist
 
-
-- bunnies clip up over tiles, need to hit head
-- ceilings need to block jumps
+- executioner needs to start further to right?
 - carrots throw bombs
-
-- facing shouldn't be on sprite
-- ceilings need to block jumps
+- get rid of sprite.move()
 
 - buttons with other modes

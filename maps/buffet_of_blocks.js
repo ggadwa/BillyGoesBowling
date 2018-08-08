@@ -147,7 +147,7 @@ export default class BuffetOfBlocksMapClass extends SideScrollBaseMapClass
         ]);
 
         this.sprites=[
-            new PlayerSideScrollClass(this.game,192,832,new Map([])),
+            new PlayerSideScrollClass(this.game,192,832,new Map([["facing_dection",1]])),
             new BreakBlockClass(this.game,960,832,new Map([])),
             new BlockClass(this.game,1024,704,new Map([])),
             new BlockClass(this.game,1152,704,new Map([])),

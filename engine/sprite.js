@@ -9,10 +9,6 @@ export default class SpriteClass
         
         this.data=(data===null)?new Map():data;
         
-        this.FACING_FORWARD=0;
-        this.FACING_LEFT=1;
-        this.FACING_RIGHT=2;
-        
         this.currentImage=null;
         this.editorImage=null;
         this.images=new Map();
@@ -29,16 +25,19 @@ export default class SpriteClass
         this.gravityMaxValue=0;
         this.gravityAdd=0.0;
         this.motion={x:0,y:0};
-        this.facing=this.FACING_FORWARD;
         
         this.show=true;
         this.grounded=false;
         this.collideSprite=null;
+        this.collideTileIdx=-1;
         this.standSprite=null;
         this.standTileIdx=-1;
+        this.riseSprite=null;
+        this.riseTileIdx=-1;
         
         this.canCollide=true;
         this.canStandOn=true;
+        this.canRiseBlock=true;
         
         this.background=false;
         
@@ -107,16 +106,6 @@ export default class SpriteClass
         this.editorImage=this.images.get(name);
     }
     
-    getMiddleX()
-    {
-        return(this.x+Math.trunc(this.width*0.5));
-    }
-    
-    getMiddleY()
-    {
-        return(this.y-Math.trunc(this.height*0.5));
-    }
-    
     collide(hitSprite)
     {
         if ((this.x+this.width)<=hitSprite.x) return(false);
@@ -133,8 +122,20 @@ export default class SpriteClass
         if (this.x>=(hitSprite.x+hitSprite.width)) return(false);
         
         y=this.y+dist;                // for stand on collisions, the bottom of the standing object must intersect the top and bottom of check sprite
-        if (y<(hitSprite.y-hitSprite.height)) return(false);
-        return(y<hitSprite.y);
+        if (y<(hitSprite.y-hitSprite.height)) return(false);  
+        return(this.y<((hitSprite.y-hitSprite.height)+dist));
+    }
+    
+    collideRise(hitSprite,dist)
+    {
+        let y;
+        
+        if ((this.x+this.width)<=hitSprite.x) return(false);
+        if (this.x>=(hitSprite.x+hitSprite.width)) return(false);
+        
+        y=(this.y-this.height)+dist;                // for rise on collisions, the top of the rising object must intersect the top and bottom of check sprite
+        if (y>hitSprite.y) return(false);
+        return(y>(hitSprite.y-hitSprite.height));
     }
     
     collideRect(lft,top,rgt,bot)
@@ -179,16 +180,6 @@ export default class SpriteClass
     {
         if (this.y<min) this.y=min;
         if (this.y>max) this.y=max;
-    }
-    
-    setFacing(facing)
-    {
-        this.facing=facing;
-    }
-    
-    getFacing()
-    {
-        return(this.facing);
     }
     
     delete()
@@ -256,7 +247,13 @@ export default class SpriteClass
              
             // rising
                 
-
+        if (this.motion.y<0) {
+            y=this.game.map.checkCollisionRise(this,this.motion.y);
+            if (y!==-1) {
+                this.y=y+this.height;
+                this.motion.y=0;
+            }
+        }
         
             // gravity slows down motion
             

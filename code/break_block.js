@@ -29,8 +29,12 @@ export default class BreakBlockClass extends SpriteClass
     
     interactWithSprite(interactSprite,dataObj)
     {
+        let cx,cy;
+        
         if ((interactSprite instanceof BallClass) || (interactSprite instanceof ExplodeBlockClass)) {
-            this.game.map.addParticle(this.getMiddleX(),this.getMiddleY(),16,16,1.0,0.1,5,0.08,this.game.imageList.get('sprites/particle_block'),10,800);
+            cx=this.x+Math.trunc(this.width*0.5);
+            cy=this.y-Math.trunc(this.height*0.5);
+            this.game.map.addParticle(cx,cy,16,16,1.0,0.1,5,0.08,this.game.imageList.get('sprites/particle_block'),10,800);
             this.game.soundList.play('crack');
             this.delete();
         }

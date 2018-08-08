@@ -203,9 +203,9 @@ export default class EditorClass
             ctx.strokeStyle='#FF3333';
             ctx.lineWidth=4;
             
-            cnt=Math.floor(wid/this.MAP_TILE_SIZE);
+            cnt=Math.trunc(wid/this.MAP_TILE_SIZE);
             x=(this.paletteSelIndex%cnt)*this.MAP_TILE_SIZE;
-            y=Math.floor(this.paletteSelIndex/cnt)*this.MAP_TILE_SIZE;
+            y=Math.trunc(this.paletteSelIndex/cnt)*this.MAP_TILE_SIZE;
             
             ctx.beginPath();
             ctx.rect(x,y,this.MAP_TILE_SIZE,this.MAP_TILE_SIZE);
@@ -249,9 +249,9 @@ export default class EditorClass
             ctx.strokeStyle='#FF3333';
             ctx.lineWidth=4;
             
-            cnt=Math.floor(wid/this.MAP_TILE_SIZE);
+            cnt=Math.trunc(wid/this.MAP_TILE_SIZE);
             x=(this.paletteSelIndex%cnt)*this.MAP_TILE_SIZE;
-            y=Math.floor(this.paletteSelIndex/cnt)*this.MAP_TILE_SIZE;
+            y=Math.trunc(this.paletteSelIndex/cnt)*this.MAP_TILE_SIZE;
             
             ctx.beginPath();
             ctx.rect(x,y,this.MAP_TILE_SIZE,this.MAP_TILE_SIZE);
@@ -344,9 +344,9 @@ export default class EditorClass
     leftClickMapCanvas(event)
     {
         let wid=this.mapCanvas.width;
-        let x=Math.floor(event.offsetX/this.MAP_TILE_SIZE);
-        let y=Math.floor(event.offsetY/this.MAP_TILE_SIZE);
-        let idx=x+(y*Math.floor(wid/this.MAP_TILE_SIZE));
+        let x=Math.trunc(event.offsetX/this.MAP_TILE_SIZE);
+        let y=Math.trunc(event.offsetY/this.MAP_TILE_SIZE);
+        let idx=x+(y*Math.trunc(wid/this.MAP_TILE_SIZE));
         
         event.stopPropagation();
         event.preventDefault();
@@ -370,9 +370,9 @@ export default class EditorClass
     leftMouseMoveMapCanvas(event)
     {
         let wid=this.mapCanvas.width;
-        let x=Math.floor(event.offsetX/this.MAP_TILE_SIZE);
-        let y=Math.floor(event.offsetY/this.MAP_TILE_SIZE);
-        let idx=x+(y*Math.floor(wid/this.MAP_TILE_SIZE));
+        let x=Math.trunc(event.offsetX/this.MAP_TILE_SIZE);
+        let y=Math.trunc(event.offsetY/this.MAP_TILE_SIZE);
+        let idx=x+(y*Math.trunc(wid/this.MAP_TILE_SIZE));
         
             // as long as the mouse is down, fill
             // in grid spots
@@ -400,8 +400,8 @@ export default class EditorClass
     rightClickMapCanvas(event)
     {
         let spriteIdx;
-        let x=Math.floor(event.offsetX/this.MAP_TILE_SIZE);
-        let y=Math.floor(event.offsetY/this.MAP_TILE_SIZE);
+        let x=Math.trunc(event.offsetX/this.MAP_TILE_SIZE);
+        let y=Math.trunc(event.offsetY/this.MAP_TILE_SIZE);
         
         event.stopPropagation();
         event.preventDefault();
@@ -419,7 +419,7 @@ export default class EditorClass
         let wid=this.tilePaletteCanvas.width;
         let x=event.offsetX;
         let y=event.offsetY;
-        let idx=Math.floor(x/this.MAP_TILE_SIZE)+(Math.floor(y/this.MAP_TILE_SIZE)*Math.floor(wid/this.MAP_TILE_SIZE));
+        let idx=Math.trunc(x/this.MAP_TILE_SIZE)+(Math.trunc(y/this.MAP_TILE_SIZE)*Math.trunc(wid/this.MAP_TILE_SIZE));
         
         if (idx>=this.game.tileImageList.length) {
             this.paletteSelIndex=-1;
@@ -438,7 +438,7 @@ export default class EditorClass
         let wid=this.spritePaletteCanvas.width;
         let x=event.offsetX;
         let y=event.offsetY;
-        let idx=Math.floor(x/this.MAP_TILE_SIZE)+(Math.floor(y/this.MAP_TILE_SIZE)*Math.floor(wid/this.MAP_TILE_SIZE));
+        let idx=Math.trunc(x/this.MAP_TILE_SIZE)+(Math.trunc(y/this.MAP_TILE_SIZE)*Math.trunc(wid/this.MAP_TILE_SIZE));
         
         if (idx>=this.spritePaletteList.length) {
             this.paletteSelIndex=-1;

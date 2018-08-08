@@ -32,8 +32,8 @@ export default class BillyImageListClass extends ImageListClass
         this.add('tiles/girder_bottom_vertical');
         
         this.add('tiles/girder_connect');
-        this.add('tiles/temp_1');
-        this.add('tiles/temp_2');
+        this.add('tiles/castle_wall');
+        this.add('tiles/castle_floor');
         
         this.add('tiles/ground_dirt_left');
         this.add('tiles/ground_dirt_right');
@@ -81,6 +81,7 @@ export default class BillyImageListClass extends ImageListClass
         
         this.add('tiles/world_water_1');
         this.add('tiles/world_gate');
+        this.add('tiles/arrow_down');
         
             // sprites
             

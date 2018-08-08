@@ -16,6 +16,7 @@ export default class PlayerSideScrollClass extends SpriteClass
             // constants
             
         this.TILE_IDX_WATER_TOP=21;
+        this.JUMP_HEIGHT=-40;
         
             // setup
             
@@ -25,7 +26,8 @@ export default class PlayerSideScrollClass extends SpriteClass
         
         this.setCurrentImage('sprites/billy_right');
         this.setEditorImage('sprites/billy_right');
-        this.setFacing(this.FACING_RIGHT);
+        
+        this.data.set('facing_dection',1);          // we keep track of this so ball can use this information
         
         this.show=true;
         this.gravityFactor=0.12;
@@ -130,18 +132,18 @@ export default class PlayerSideScrollClass extends SpriteClass
         if (this.game.input.isLeft()) {
             this.moveWithCollision(-12,0);
             this.setCurrentImage('sprites/billy_left');
-            this.setFacing(this.FACING_LEFT);
+            this.data.set('facing_direction',-1);
         }
         
         if (this.game.input.isRight()) {
             this.moveWithCollision(12,0);
             this.setCurrentImage('sprites/billy_right');
-            this.setFacing(this.FACING_RIGHT);
+            this.data.set('facing_direction',1);
         }
         
         this.clampX(0,(this.game.map.width-this.width));
         
-        if ((this.game.input.isAction()) && (this.grounded)) this.addMotion(0,-35);
+        if ((this.game.input.isAction()) && (this.grounded)) this.addMotion(0,this.JUMP_HEIGHT);
         
             // remember the last ground because
             // we use that to tell the ball's location
