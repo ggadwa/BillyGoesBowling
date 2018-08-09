@@ -12,14 +12,18 @@ export default class ExecutionerClass extends SpriteClass
         
         this.TILE_IDX_BUMP=18;
         this.TILE_IDX_WATER_TOP=21;
+        this.MAX_SPEED=8;
         this.JUMP_HEIGHT=-40;
         
             // variables
             
-        this.executionerDirection=-1;
+        this.executionerSpeed=0;
         this.lastLaunchXPosition=-1;
-        this.launchXPositions=null;     // array of axe launch positions, loaded on startup
+        this.launchXPositionsLeft=null;     // array of axe launch positions, loaded on startup
+        this.launchXPositionsRight=null;
         this.isDropping=true;
+        this.isDying=false;
+        this.deathY=0;
         
             // setup
         
@@ -46,25 +50,26 @@ export default class ExecutionerClass extends SpriteClass
     
     mapStartup()
     {
-        this.launchXPositions=this.data.get('axe_x_launch');
+        this.launchXPositionsLeft=this.data.get('axe_x_launch_left');
+        this.launchXPositionsRight=this.data.get('axe_x_launch_right');
         this.lastLaunchXPosition=-1;
         this.isDropping=true;
+        this.isDying=false;
     }
     
     fireAxe()
     {
         let n,ex,launchX,sx,sy;
-        
-            // only in one direction
-            
-        if (this.executionerDirection!==1) return;
+        let launchPos;
         
             // are we at the next launch position
             
         ex=Math.trunc((this.x+Math.trunc(this.width*0.5))/this.game.map.MAP_TILE_SIZE);
         
-        for (n=0;n!=this.launchXPositions.length;n++) {
-            launchX=this.launchXPositions[n];
+        launchPos=(this.executionerSpeed<0)?this.launchXPositionsLeft:this.launchXPositionsRight;
+        
+        for (n=0;n!=launchPos.length;n++) {
+            launchX=launchPos[n];
             
             if ((ex===launchX) && (launchX!==this.lastLaunchXPosition)) {
                 
@@ -91,7 +96,8 @@ export default class ExecutionerClass extends SpriteClass
     runAI()
     {
         let map=this.game.map;
-        let mx,bumpUp;
+        let speed,bumpUp;
+        let playerSprite=map.getSpritePlayer();
         
             // we have a special check for dropping
             // out of the sky, ignore everything until
@@ -103,24 +109,51 @@ export default class ExecutionerClass extends SpriteClass
             this.isDropping=false;
         }
         
-            // walk in direction until a collision
-            // at certain sprites and tiles we bump up so
+            // if we are dying, just sink under water
+            
+        if (this.isDying) {
+            this.y++;
+            if (this.y>this.deathY) this.killExecutioner();
+            return;
+        }
+        
+            // always follow the player, but with
+            // an acceleration
+            
+        if (playerSprite.x<this.x) {
+            if (this.executionerSpeed>-this.MAX_SPEED) {
+                this.executionerSpeed-=0.5;
+            }
+            else {
+                this.executionerSpeed=-this.MAX_SPEED;
+            }
+        }
+        else {
+            if (this.executionerSpeed<this.MAX_SPEED) {
+                this.executionerSpeed+=0.5;
+            }
+            else {
+                this.executionerSpeed=this.MAX_SPEED;
+            }
+        }
+        
+            // we need to bump up at collisions to get the
             // executioner can get out of holes he's digging
-         
-        mx=8*this.executionerDirection;
-        this.x+=mx;
+        
+        speed=Math.trunc(this.executionerSpeed);
+        this.x+=speed;
 
         if (map.checkCollision(this)) {
 
-            this.x-=mx;
+            this.x-=speed;
 
                 // run collisions
 
             bumpUp=false;
 
             if (this.collideSprite!==null) {
-                 if (this.collideSprite instanceof BreakBlockStrongClass) bumpUp=true;
-                 this.collideSprite.interactWithSprite(this,null);
+                if (this.collideSprite instanceof BreakBlockStrongClass) bumpUp=true;
+                this.collideSprite.interactWithSprite(this,null);
              }
 
                 // only check for bumping if we are in the air, otherwise
@@ -128,13 +161,7 @@ export default class ExecutionerClass extends SpriteClass
 
             if (this.grounded) {
                 bumpUp=bumpUp||(this.collideTileIdx===this.TILE_IDX_BUMP);
-
-                if (bumpUp) {
-                    this.motion.y=this.JUMP_HEIGHT;
-                }
-                else {
-                    this.executionerDirection=-this.executionerDirection;       // if not bumping, turn around
-                }
+                if (bumpUp) this.motion.y=this.JUMP_HEIGHT;
             }
         }
 
@@ -151,10 +178,12 @@ export default class ExecutionerClass extends SpriteClass
         }
         
             // hit the water?
-            
-                    // check for hitting water
          
-        if (this.standTileIdx===this.TILE_IDX_WATER_TOP) this.killExecutioner();
+        if (this.y>=map.getWaterLevel()) {
+            this.isDying=true;
+            this.gravityFactor=0.0; // now falling through code
+            this.deathY=this.y+Math.trunc(this.height*0.9);
+        }
     }
     
 }

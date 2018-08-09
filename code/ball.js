@@ -2,6 +2,7 @@ import SpriteClass from '../engine/sprite.js';
 import BlockClass from './block.js';
 import BreakBlockStrongClass from './break_block_strong.js';
 import ExplodeBlockClass from './explode_block.js';
+import ExecutionerClass from './executioner.js';
 
 export default class BallClass extends SpriteClass
 {
@@ -47,6 +48,12 @@ export default class BallClass extends SpriteClass
     duplicate(x,y)
     {
         return(new BallClass(this.game,x,y,this.data));
+    }
+    
+    returnBall()
+    {
+        this.travelY=this.game.map.getMapViewportTopEdge()-this.height;
+        this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
     }
     
     runAI()
@@ -144,20 +151,18 @@ export default class BallClass extends SpriteClass
                     // colliding with map, return ball
                     
                 if (this.collideSprite===null) {
-                    this.travelY=map.getMapViewportTopEdge()-this.height;
-                    this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
+                    this.returnBall();
                     return;
                 }
                 
-                    // hit sprite
-                
+                     // collide with sprites
+                    
                 this.collideSprite.interactWithSprite(this,null);
                 
-                    // stop ball for everything but breakable blocks
+                    // stop ball for certain sprites
                     
-                if ((this.collideSprite instanceof BlockClass) || (this.collideSprite instanceof BreakBlockStrongClass) || (this.collideSprite instanceof ExplodeBlockClass)) {
-                    this.travelY=map.getMapViewportTopEdge()-this.height;
-                    this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
+                if ((this.collideSprite instanceof BlockClass) || (this.collideSprite instanceof BreakBlockStrongClass) || (this.collideSprite instanceof ExplodeBlockClass) || (this.collideSprite instanceof ExecutionerClass)) {
+                    this.returnBall();
                 }
                 
                 return;

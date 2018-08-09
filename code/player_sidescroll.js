@@ -1,11 +1,14 @@
 import SpriteClass from '../engine/sprite.js';
-import BallClass from '../code/ball.js';
+import BallClass from './ball.js';
 import CloudBlockClass from './cloud_block.js';
 import ButtonClass from './button.js';
-import DrainPipeSnakeClass from '../code/drain_pipe_snake.js';
-import NinjaBunnyClass from '../code/ninja_bunny.js';
-import ShurikinClass from '../code/shurikin.js';
-import RotoCarrotClass from '../code/roto_carrot.js';
+import SpringClass from './spring.js';
+import DrainPipeSnakeClass from './drain_pipe_snake.js';
+import NinjaBunnyClass from './ninja_bunny.js';
+import ShurikinClass from './shurikin.js';
+import RotoCarrotClass from './roto_carrot.js';
+import ExecutionerClass from './executioner.js';
+import ExecutionersAxeClass from './executioners_axe.js';
 
 export default class PlayerSideScrollClass extends SpriteClass
 {
@@ -61,8 +64,11 @@ export default class PlayerSideScrollClass extends SpriteClass
     
     hurtPlayer()
     {
-        let health=this.game.getData('player_health')-1;
+        let health;
         
+        if (this.invincibleCount>0) return;
+        
+        health=this.game.getData('player_health')-1;
         this.game.setData('player_health',health);
         if (health===0) {
             this.killPlayer();
@@ -88,20 +94,15 @@ export default class PlayerSideScrollClass extends SpriteClass
     
     interactWithSprite(interactSprite,dataObj)
     {
-        if (interactSprite instanceof DrainPipeSnakeClass) {
+        if ((interactSprite instanceof DrainPipeSnakeClass) || (interactSprite instanceof NinjaBunnyClass) || (interactSprite instanceof ShurikinClass) || (interactSprite instanceof RotoCarrotClass)) {
             this.hurtPlayer();
             return;
         }
-        if (interactSprite instanceof NinjaBunnyClass) {
-            this.hurtPlayer();
+        if (interactSprite instanceof ExecutionerClass) {
+            if (this.standSprite!==interactSprite) this.hurtPlayer();       // ok to stand on these sprites
             return;
         }
-        if (interactSprite instanceof ShurikinClass)
-        {
-            this.hurtPlayer();
-            return;
-        }
-        if (interactSprite instanceof RotoCarrotClass) {
+        if (interactSprite instanceof ExecutionersAxeClass) {
             this.hurtPlayer();
             return;
         }
@@ -160,7 +161,7 @@ export default class PlayerSideScrollClass extends SpriteClass
             // check for standing on a cloud or button
             
         if (this.standSprite!==null) {
-            if ((this.standSprite instanceof CloudBlockClass) || (this.standSprite instanceof ButtonClass)) {
+            if ((this.standSprite instanceof CloudBlockClass) || (this.standSprite instanceof ButtonClass) || (this.standSprite instanceof SpringClass)) {
                 this.standSprite.interactWithSprite(this,null);
             }
         }

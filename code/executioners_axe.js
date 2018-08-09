@@ -9,7 +9,7 @@ export default class ExecutionersAxeClass extends SpriteClass
         
             // variables
             
-        this.topY=this.y-900;
+        this.topY=this.y-800;
         this.axeDirection=-1;
         
             // setup
@@ -49,7 +49,10 @@ export default class ExecutionersAxeClass extends SpriteClass
             // switch directions at top
             
         if (this.axeDirection<0) {
-            if (this.y<this.topY) this.axeDirection=1;
+            if (this.y<this.topY) {
+                this.axeDirection=1;
+                this.y=this.topY;
+            }
             return;
         }
 

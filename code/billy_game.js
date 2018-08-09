@@ -1,27 +1,28 @@
 import GameClass from '../engine/game.js';
-import BillyImageList from '../code/billy_image_list.js';
-import BillySoundList from '../code/billy_sound_list.js';
-import BillyMapList from '../code/billy_map_list.js';
+import BillyImageList from './billy_image_list.js';
+import BillySoundList from './billy_sound_list.js';
+import BillyMapList from './billy_map_list.js';
 import WorldMainMapClass from '../maps/world_main.js';
 import BuffetOfBlocksMapClass from '../maps/buffet_of_blocks.js';
-import PlayerWorldClass from '../code/player_world.js';
-import PlayerSideScrollClass from '../code/player_sidescroll.js';
-import BlockClass from '../code/block.js';
-import BreakBlockClass from '../code/break_block.js';
-import BreakBlockStrongClass from '../code/break_block_strong.js';
-import CloudBlockClass from '../code/cloud_block.js';
-import ExplodeBlockClass from '../code/explode_block.js';
-import PlatformClass from '../code/platform.js';
-import DoorClass from '../code/door.js';
-import PinClass from '../code/pin.js';
-import ButtonClass from '../code/button.js';
-import MapSpotClass from '../code/map_spot.js';
-import MapCastleClass from '../code/map_castle.js';
-import MapBlockClass from '../code/map_block.js';
-import DrainPipeSnakeClass from '../code/drain_pipe_snake.js';
-import NinjaBunnyClass from '../code/ninja_bunny.js';
-import RotoCarrotClass from '../code/roto_carrot.js';
-import ExecutionerClass from '../code/executioner.js';
+import PlayerWorldClass from './player_world.js';
+import PlayerSideScrollClass from './player_sidescroll.js';
+import BlockClass from './block.js';
+import BreakBlockClass from './break_block.js';
+import BreakBlockStrongClass from './break_block_strong.js';
+import CloudBlockClass from './cloud_block.js';
+import ExplodeBlockClass from './explode_block.js';
+import PlatformClass from './platform.js';
+import DoorClass from './door.js';
+import PinClass from './pin.js';
+import ButtonClass from './button.js';
+import SpringClass from './spring.js';
+import MapSpotClass from './map_spot.js';
+import MapCastleClass from './map_castle.js';
+import MapBlockClass from './map_block.js';
+import DrainPipeSnakeClass from './drain_pipe_snake.js';
+import NinjaBunnyClass from './ninja_bunny.js';
+import RotoCarrotClass from './roto_carrot.js';
+import ExecutionerClass from './executioner.js';
 
 export default class BillyGameClass extends GameClass
 {
@@ -61,6 +62,7 @@ export default class BillyGameClass extends GameClass
             new DoorClass(this,0,0,null),
             new PinClass(this,0,0,null),
             new ButtonClass(this,0,0,null),
+            new SpringClass(this,0,0,null),
             new MapSpotClass(this,0,0,null),
             new MapCastleClass(this,0,0,null),
             new DrainPipeSnakeClass(this,0,0,null),
@@ -73,10 +75,11 @@ export default class BillyGameClass extends GameClass
     getStartMap()
     {
         //return(this.mapList.get('world_main'));
+        return(this.mapList.get('snakes_on_a_plain'));
         //return(this.mapList.get('apocalypse_carrot'));
         //return(this.mapList.get('buffet_of_blocks'));
         //return(this.mapList.get('hills_ninja_bunnies'));
-        return(this.mapList.get('executioners_castle'));
+        //return(this.mapList.get('executioners_castle'));
     }
     
     setBanner(str,pinCount)

@@ -65,9 +65,20 @@ export default class MapClass
         this.mapStartup();
     }
     
+    /**
+     * Override this to return the map name.
+     */
     getMapName()
     {
         return('');
+    }
+    
+    /**
+     * Override this to return the water Y level, or -1 (the default) if no water.
+     */
+    getWaterLevel()
+    {
+        return(-1);
     }
     
     /**

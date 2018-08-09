@@ -229,6 +229,10 @@ export default class SpriteClass
             if (this.motion.y>=0) {
                 y=this.game.map.checkCollisionStand(this,Math.trunc(this.gravityAdd));
             }
+            else {
+                this.standSprite=null;
+                this.standTileIdx=-1;
+            }
 
             if (y===-1) {
                 this.y=Math.trunc(this.y+this.gravityAdd);
