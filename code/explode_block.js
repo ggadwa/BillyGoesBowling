@@ -49,7 +49,7 @@ export default class ExplodeBlockClass extends SpriteClass
             // another exploding block
             
         if ((interactSprite instanceof BallClass) || (interactSprite instanceof ExplodeBlockClass)) {
-            this.countDown=2;
+            this.countDown=3;
             this.countDownTick=this.COUNT_DOWN_TICK_WAIT;
             this.setCurrentImage('sprites/explode_block_'+this.countDown);
         }

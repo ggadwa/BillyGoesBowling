@@ -152,22 +152,14 @@ export default class SpriteClass
         this.y=y;
     }
     
-    move(mx,my)
+    moveWithCollision(mx,my)
     {
         this.x+=mx;
         this.y+=my;
-    }
-    
-    moveWithCollision(mx,my)
-    {
-        this.move(mx,my);
-        if (this.game.map.checkCollision(this)) this.move(-mx,-my);
-    }
-    
-    addMotion(mx,my)
-    {
-        this.motion.x=mx;
-        this.motion.y=my;
+        if (this.game.map.checkCollision(this)) {
+            this.x-=mx;
+            this.y-=my;
+        }
     }
     
     clampX(min,max)
@@ -273,7 +265,7 @@ export default class SpriteClass
         let y=((this.y-this.height)+this.drawOffsetY)-offY;
         
         if ((x>=this.game.canvasWidth) || ((x+this.width)<=0)) return;
-        if ((y>=this.game.canvasHeight) || ((x+this.height)<=0)) return;
+        if ((y>=this.game.canvasHeight) || ((y+this.height)<=0)) return;
         
         if (this.alpha!==1.0) {
             ctx.globalAlpha=this.alpha;

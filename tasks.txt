@@ -3,13 +3,9 @@
 
 
 - MAP_TILE_WIDTH static on map when class fields exist
-- fix everything else for water level
-- get rid of extra tiles
-- changing water level for snakes
-- player dies hitting water
-- water colors (make it cycle, and make deadly water yellow to red)
 
-- carrots throw bombs
-- get rid of sprite.move()
+- platforms pause
+
+- get rid of sprite.setPosition, etc
 
 - buttons with other modes

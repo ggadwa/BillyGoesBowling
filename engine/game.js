@@ -1,5 +1,5 @@
 import MapClass from './map.js';
-import WaterClass from './water.js';
+import LiquidClass from './liquid.js';
 import ImageListClass from '../resources/image_list.js';
 import SoundListClass from '../resources/sound_list.js';
 import InputClass from './input.js';
@@ -31,7 +31,7 @@ export default class GameClass
         
         this.data=new Map();
         this.map=null;
-        this.water=null;
+        this.liquid=null;
         this.gotoMapName=null;
     }
     
@@ -81,9 +81,9 @@ export default class GameClass
         this.map=this.getStartMap();
         this.map.initialize();
         
-            // the water object
+            // the liquid object
             
-        this.water=new WaterClass(this);
+        this.liquid=new LiquidClass(this);
         
         callback();
     }
@@ -242,9 +242,9 @@ export default class GameClass
             
         this.map.draw(this.backCTX);
         
-            // draw any water
+            // draw any liquid
             
-        this.water.draw(this.backCTX);
+        this.liquid.draw(this.backCTX);
         
             // draw the UI
             

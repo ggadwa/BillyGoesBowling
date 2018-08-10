@@ -11,7 +11,6 @@ export default class ExecutionerClass extends SpriteClass
         super(game,x,y,data);
         
         this.TILE_IDX_BUMP=18;
-        this.TILE_IDX_WATER_TOP=21;
         this.MAX_SPEED=8;
         this.JUMP_HEIGHT=-40;
         
@@ -109,7 +108,7 @@ export default class ExecutionerClass extends SpriteClass
             this.isDropping=false;
         }
         
-            // if we are dying, just sink under water
+            // if we are dying, just sink under liquid
             
         if (this.isDying) {
             this.y++;
@@ -177,9 +176,9 @@ export default class ExecutionerClass extends SpriteClass
             }
         }
         
-            // hit the water?
+            // hit the liquid?
          
-        if (this.y>=map.getWaterLevel()) {
+        if (this.y>=map.liquidY) {
             this.isDying=true;
             this.gravityFactor=0.0; // now falling through code
             this.deathY=this.y+Math.trunc(this.height*0.9);

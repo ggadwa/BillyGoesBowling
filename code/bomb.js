@@ -6,11 +6,9 @@ export default class BombClass extends SpriteClass
     {
         super(game,x,y,data);
         
-            // variables
+            // constants
             
-        this.needTravelSetup=true;
-        this.travelX=0;
-        this.travelY=0;
+        this.BOMB_SPEED=5;
         
             // setup
             
@@ -35,21 +33,17 @@ export default class BombClass extends SpriteClass
     runAI()
     {
         let map=this.game.map;
-        let playerSprite=map.getSpritePlayer();
+        let cx,cy;
         
-            // if first call, then we need to setup
-            // the travel
-            
-        if (this.needTravelSetup) {
-            this.needTravelSetup=false;
-            this.travelX=(playerSprite.x<this.x)?-5:5;
-            this.travelY=(playerSprite.y<this.y)?-3:3;
-        }
-        
-        this.x+=this.travelX;
-        this.y+=this.travelY;
+        this.y+=this.BOMB_SPEED;
 
         if (map.checkCollision(this)) {
+            if (this.collideSprite!=null) this.collideSprite.interactWithSprite(this,null);
+            
+            cx=this.x+Math.trunc(this.width*0.5);
+            cy=this.y+Math.trunc(this.height*0.5);
+            this.game.map.addParticle(cx,cy,32,120,0.5,0.1,0,0,this.game.imageList.get('sprites/particle_explode_block'),1,500);
+            
             this.delete();
         }
     }

@@ -37,15 +37,15 @@ export default class BillyImageListClass extends ImageListClass
         
         this.add('tiles/ground_dirt_left');
         this.add('tiles/ground_dirt_right');
-        this.add('tiles/water_top');
+        this.add('tiles/unused_1');
         
-        this.add('tiles/ground_dirt_left_water');
-        this.add('tiles/ground_dirt_right_water');
-        this.add('tiles/water_bottom');
+        this.add('tiles/unused_2');
+        this.add('tiles/unused_3');
+        this.add('tiles/unused_4');
         
-        this.add('tiles/ground_dirt_bottom_left_water');
-        this.add('tiles/ground_dirt_bottom_water');
-        this.add('tiles/ground_dirt_bottom_right_water');
+        this.add('tiles/unused_5');
+        this.add('tiles/unused_6');
+        this.add('tiles/unused_7');
         
         this.add('tiles/world_grass_top_left');
         this.add('tiles/world_grass_top');
@@ -104,6 +104,7 @@ export default class BillyImageListClass extends ImageListClass
         this.add('sprites/gravestone');
         this.add('sprites/button');
         this.add('sprites/spring_close');
+        this.add('sprites/trophy');
         
         this.add('sprites/ninja_bunny');
         this.add('sprites/shurikin');
@@ -127,6 +128,7 @@ export default class BillyImageListClass extends ImageListClass
             // UI
             
         this.add('ui/pin');
+        this.add('ui/trophy');
         this.add('ui/health_100');
         this.add('ui/health_75');
         this.add('ui/health_50');

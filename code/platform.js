@@ -6,9 +6,15 @@ export default class PlatformClass extends SpriteClass
     {
         super(game,x,y,data);
         
+            // constants
+            
+        this.PLATFORM_SPEED=10;
+        this.PLATFORM_PAUSE_TICK=10;
+        
             // variables
             
-        this.xAdd=10;
+        this.xAdd=this.PLATFORM_SPEED;
+        this.pauseCount=0;
         
             // setup
             
@@ -35,13 +41,21 @@ export default class PlatformClass extends SpriteClass
     {
         let playerSprite=this.game.map.getSpritePlayer();
         
+            // are we paused?
+            
+        if (this.pauseCount>0) {
+            this.pauseCount--;
+            return;
+        }
+        
             // move platform
             
-        this.move(this.xAdd,0);
+        this.x+=this.xAdd;
         
         if (this.game.map.checkCollision(this)) {
             this.xAdd=-this.xAdd;
-            this.move(this.xAdd,0);
+            this.x+=this.xAdd;
+            this.pauseCount=this.PLATFORM_PAUSE_TICK;
             return;
         }
         

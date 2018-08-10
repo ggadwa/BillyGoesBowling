@@ -28,19 +28,28 @@ export default class ButtonClass extends SpriteClass
     
     interactWithSprite(interactSprite,dataObj)
     {
-        let sprite;
+        let mode,sprite;
         
             // is button pushed (only if standing on it)
             
         if (!(interactSprite instanceof PlayerSideScrollClass)) return;
         if (interactSprite.standSprite!==this) return;
         
+        mode=this.data.get('mode');
+        
             // mode = show means show the first sprite
             // that has this show_id
             
-        if (this.data.get('mode')==='show') {
+        if (mode==='show') {
             sprite=this.game.map.getFirstSpriteWithData('id',this.data.get('show_id'));
             sprite.show=true;
+        }
+        
+            // mode = liquid means move the liquid to
+            // the position by liquid_y
+            
+        if (mode==='liquid') {
+            this.game.map.moveLiquidTo(this.data.get('liquid_y'));
         }
         
             // finish by deleting the button

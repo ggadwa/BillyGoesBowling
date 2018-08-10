@@ -7,6 +7,7 @@ import DrainPipeSnakeClass from './drain_pipe_snake.js';
 import NinjaBunnyClass from './ninja_bunny.js';
 import ShurikinClass from './shurikin.js';
 import RotoCarrotClass from './roto_carrot.js';
+import BombClass from './bomb.js';
 import ExecutionerClass from './executioner.js';
 import ExecutionersAxeClass from './executioners_axe.js';
 
@@ -18,7 +19,6 @@ export default class PlayerSideScrollClass extends SpriteClass
         
             // constants
             
-        this.TILE_IDX_WATER_TOP=21;
         this.JUMP_HEIGHT=-40;
         
             // setup
@@ -94,7 +94,7 @@ export default class PlayerSideScrollClass extends SpriteClass
     
     interactWithSprite(interactSprite,dataObj)
     {
-        if ((interactSprite instanceof DrainPipeSnakeClass) || (interactSprite instanceof NinjaBunnyClass) || (interactSprite instanceof ShurikinClass) || (interactSprite instanceof RotoCarrotClass)) {
+        if ((interactSprite instanceof DrainPipeSnakeClass) || (interactSprite instanceof NinjaBunnyClass) || (interactSprite instanceof ShurikinClass) || (interactSprite instanceof RotoCarrotClass) || (interactSprite instanceof BombClass)) {
             this.hurtPlayer();
             return;
         }
@@ -110,6 +110,8 @@ export default class PlayerSideScrollClass extends SpriteClass
     
     runAI()
     {
+        let map=this.game.map;
+        
             // dead?
 
         if (this.deathCount!==-1) {
@@ -142,9 +144,9 @@ export default class PlayerSideScrollClass extends SpriteClass
             this.data.set('facing_direction',1);
         }
         
-        this.clampX(0,(this.game.map.width-this.width));
+        this.clampX(0,(map.width-this.width));
         
-        if ((this.game.input.isAction()) && (this.grounded)) this.addMotion(0,this.JUMP_HEIGHT);
+        if ((this.game.input.isAction()) && (this.grounded)) this.motion.y+=this.JUMP_HEIGHT;
         
             // remember the last ground because
             // we use that to tell the ball's location
@@ -166,8 +168,10 @@ export default class PlayerSideScrollClass extends SpriteClass
             }
         }
         
-            // check for hitting water
+            // check for hitting liquid
          
-        if (this.standTileIdx===this.TILE_IDX_WATER_TOP) this.killPlayer();
+        if (map.liquidY!==-1) {
+            if (this.y>=map.liquidY) this.killPlayer();
+        }
     }
 }

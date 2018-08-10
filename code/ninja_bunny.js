@@ -9,9 +9,9 @@ export default class NinjaBunnyClass extends SpriteClass
     {
         super(game,x,y,data);
         
-        this.BUNNY_JUMP_HEIGHT=55;
-        this.BUNNY_GROUND_SPEED=6;
+        this.BUNNY_JUMP_HEIGHT=-55;
         this.BUNNY_AIR_SPEED=8;
+        this.BUNNY_PAUSE_TICK=35;
         this.BUNNY_ACTIVATE_DISTANCE=1000;
         
             // variables
@@ -46,7 +46,7 @@ export default class NinjaBunnyClass extends SpriteClass
     jumpTowardsSprite(sprite)
     {
         this.bunnyJumpDirection=Math.sign(sprite.x-this.x);
-        if (this.motion.y>=0) this.addMotion(0,-this.BUNNY_JUMP_HEIGHT);
+        if (this.motion.y>=0) this.motion.y+=this.BUNNY_JUMP_HEIGHT;
     }
     
     jumpAwayFromSprite(sprite)
@@ -97,13 +97,9 @@ export default class NinjaBunnyClass extends SpriteClass
             return;
         }
         
-            // if on the ground, then always move towards player
-            // otherwise we are jumping and move jump direction
+            // only move if jumping
         
-        if (this.grounded) {    
-            this.moveWithCollision(((dist<0)?-this.BUNNY_GROUND_SPEED:this.BUNNY_GROUND_SPEED),0);
-        }
-        else {
+        if (!this.grounded) {    
             this.moveWithCollision((this.BUNNY_AIR_SPEED*this.bunnyJumpDirection),0);
         }
         
@@ -147,7 +143,7 @@ export default class NinjaBunnyClass extends SpriteClass
             // slight pause
             
         if (!this.grounded) {
-            this.bunnyPause=20;
+            this.bunnyPause=this.BUNNY_PAUSE_TICK;
             return;
         }
         

@@ -14,6 +14,7 @@ import ExplodeBlockClass from './explode_block.js';
 import PlatformClass from './platform.js';
 import DoorClass from './door.js';
 import PinClass from './pin.js';
+import TrophyClass from './trophy.js';
 import ButtonClass from './button.js';
 import SpringClass from './spring.js';
 import MapSpotClass from './map_spot.js';
@@ -41,12 +42,12 @@ export default class BillyGameClass extends GameClass
     
     createData()
     {
-        this.setData('pins',0);             // number of pins
+        this.setData('pins',0);                 // number of pins
+        this.setData('trophies',0);             // number of trophies
         this.setData('player_health',4);
-        this.setData('banner_text','');     // banner messages
+        this.setData('banner_text','');         // banner messages
         this.setData('banner_count',-1);
     }
-    
     
     getEditorSpritePaletteList()
     {
@@ -63,19 +64,20 @@ export default class BillyGameClass extends GameClass
             new PinClass(this,0,0,null),
             new ButtonClass(this,0,0,null),
             new SpringClass(this,0,0,null),
-            new MapSpotClass(this,0,0,null),
-            new MapCastleClass(this,0,0,null),
+            new TrophyClass(this,0,0,null),
             new DrainPipeSnakeClass(this,0,0,null),
             new NinjaBunnyClass(this,0,0,null),
             new RotoCarrotClass(this,0,0,null),
-            new ExecutionerClass(this,0,0,null)
+            new ExecutionerClass(this,0,0,null),
+            new MapSpotClass(this,0,0,null),
+            new MapCastleClass(this,0,0,null)
         ]);
     }
    
     getStartMap()
     {
-        //return(this.mapList.get('world_main'));
-        return(this.mapList.get('snakes_on_a_plain'));
+        return(this.mapList.get('world_main'));
+        //return(this.mapList.get('snakes_on_a_plain'));
         //return(this.mapList.get('apocalypse_carrot'));
         //return(this.mapList.get('buffet_of_blocks'));
         //return(this.mapList.get('hills_ninja_bunnies'));
@@ -113,7 +115,7 @@ export default class BillyGameClass extends GameClass
     
     drawUI()
     {
-        let count,mx,lx,rx,wid,pinCount,health;
+        let count,mx,lx,rx,wid,pinCount,trophyCount,health;
         let playerSprite=this.map.getSpritePlayer();
         
             // side scrolling UI
@@ -131,10 +133,21 @@ export default class BillyGameClass extends GameClass
             pinCount=this.getData('pins');
             this.setupUIText('24px Arial','#000000','left','alphabetic');
             if (pinCount<10) {
-                this.drawUIText(('x 0'+this.getData('pins')),(this.canvasWidth-65),28);
+                this.drawUIText(('x 0'+pinCount),(this.canvasWidth-65),38);
             }
             else {
-                this.drawUIText(('x '+this.getData('pins')),(this.canvasWidth-65),28);
+                this.drawUIText(('x '+pinCount),(this.canvasWidth-65),38);
+            }
+            
+            this.drawUIImage('ui/trophy',(this.canvasWidth-100),(this.canvasHeight-65));
+            
+            trophyCount=this.getData('trophies');
+            this.setupUIText('24px Arial','#000000','left','alphabetic');
+            if (trophyCount<10) {
+                this.drawUIText(('x 0'+trophyCount),(this.canvasWidth-65),(this.canvasHeight-32));
+            }
+            else {
+                this.drawUIText(('x '+trophyCount),(this.canvasWidth-65),(this.canvasHeight-32));
             }
         }
         
@@ -169,7 +182,7 @@ export default class BillyGameClass extends GameClass
                 this.drawUIText(this.getData('banner_text'),(lx+5),(this.canvasHeight-25));
                 
                 rx=lx+wid;
-                this.drawUIImage('ui/pin',(rx-115),(this.canvasHeight-55));
+                this.drawUIImage('ui/pin',(rx-120),(this.canvasHeight-65));
                 
                 if (pinCount<10) {
                     this.drawUIText(('x 0'+pinCount),(rx-80),(this.canvasHeight-25));

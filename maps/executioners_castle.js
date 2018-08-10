@@ -233,8 +233,12 @@ export default class ExecutionersCastleMapClass extends SideScrollBaseMapClass
         return('Executioner\'s Castle');
     }
     
-    getWaterLevel()
+    mapStartup()
     {
-        return(2016);
+        this.liquidY=2016;
+        this.liquidWaveHeight=10;
+        this.liquidRTintFactor=1.0;
+        this.liquidGTintFactor=0.2;
+        this.liquidBTintFactor=0.2;
     }
 }

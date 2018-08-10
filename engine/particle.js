@@ -43,7 +43,7 @@ export default class ParticleClass
     
     draw(ctx,offX,offY)
     {
-        let n,dx,dy,sz;
+        let n,dx,dy,sz,halfSize;
         let tick,movement;
        
             // are we done?
@@ -56,6 +56,8 @@ export default class ParticleClass
         sz=this.startSize+Math.trunc(((this.endSize-this.startSize)*tick)/this.lifeTick);
         ctx.globalAlpha=this.startAlpha+(((this.endAlpha-this.startAlpha)*tick)/this.lifeTick);
         
+        halfSize=Math.trunc(sz*0.5);
+        
             // calculate and draw the particles
             
         movement=tick*this.moveFactor;
@@ -64,7 +66,7 @@ export default class ParticleClass
             dx=((this.x+Math.trunc(this.xs[n]*movement))-this.middleOffsetX)-offX;
             dy=((this.y+Math.trunc(this.ys[n]*movement))-this.middleOffsetY)-offY;
             
-            ctx.drawImage(this.image,dx,dy,sz,sz);
+            ctx.drawImage(this.image,(dx-halfSize),(dy-halfSize),sz,sz);
         }
         
         ctx.globalAlpha=1.0;

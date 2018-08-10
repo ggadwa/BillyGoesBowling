@@ -7,16 +7,31 @@ export default class MapClass
     {
         this.game=game;
         
+            // constants
+            
         this.MAP_TILE_WIDTH=256;        // todo -- these are here until we can have static class fields (replace with Map.X)
         this.MAP_TILE_HEIGHT=128;
         this.MAP_TILE_SIZE=64;
         
+        this.LIQUID_MOVE_SPEED=5;
+        
+            // variables
+            
         this.width=this.MAP_TILE_WIDTH*this.MAP_TILE_SIZE;
         this.height=this.MAP_TILE_HEIGHT*this.MAP_TILE_SIZE;
         this.rightEdge=0;
         
         this.offsetX=0;
         this.offsetY=0;
+        
+        this.liquidY=-1;                 // liquid settings of map (-1 for no liquid)
+        this.liquidWaveHeight=5;
+        this.liquidRTintFactor=0.3;
+        this.liquidGTintFactor=0.3;
+        this.liquidBTintFactor=1.0;
+        this.liquidTintDarken=0.001;
+        
+        this.toLiquidY=-1;
         
         this.tileData=null;             // tile data for map
         this.sprites=null;              // sprites in map
@@ -71,14 +86,6 @@ export default class MapClass
     getMapName()
     {
         return('');
-    }
-    
-    /**
-     * Override this to return the water Y level, or -1 (the default) if no water.
-     */
-    getWaterLevel()
-    {
-        return(-1);
     }
     
     /**
@@ -160,6 +167,11 @@ export default class MapClass
      */
     calcOffset()
     {
+    }
+    
+    moveLiquidTo(toLiquidY)
+    {
+        this.toLiquidY=toLiquidY;
     }
     
     checkCollision(checkSprite)
@@ -445,6 +457,25 @@ export default class MapClass
         let n;
         let sprite;
         let playerSprite=this.getSpritePlayer();
+        
+            // move any liquid
+            
+        if (this.toLiquidY!==-1) {
+            if (this.toLiquidY<this.liquidY) {
+                this.liquidY-=this.LIQUID_MOVE_SPEED;
+                if (this.liquidY<this.toLiquidY) {
+                    this.liquidY=this.toLiquidY;
+                    this.toLiquidY=-1;
+                }
+            }
+            else {
+                this.liquidY+=this.LIQUID_MOVE_SPEED;
+                if (this.liquidY>this.toLiquidY) {
+                    this.liquidY=this.toLiquidY;
+                    this.toLiquidY=-1;
+                }
+            }
+        }
         
             // always run the player first
             

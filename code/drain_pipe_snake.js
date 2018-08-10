@@ -56,7 +56,7 @@ export default class DrainPipeSnakeClass extends SpriteClass
     runAI()
     {
         let map=this.game.map;
-        let x,tileIdx,switchDirection;
+        let mx,tileIdx,switchDirection;
         
             // special count when invincible from
             // first ball hit
@@ -67,12 +67,12 @@ export default class DrainPipeSnakeClass extends SpriteClass
             
         switchDirection=false;
         
-        x=((this.snakeHasPipe?5:10)*this.snakeDirection);
+        mx=((this.snakeHasPipe?5:10)*this.snakeDirection);
         
-        this.move(x,0);
+        this.x+=mx;
         if (map.checkCollision(this)) {
             if (this.collideSprite!==null) this.collideSprite.interactWithSprite(this,null);
-            this.move(-x,0);
+            this.x-=mx;
             switchDirection=true;
         }
         
