@@ -9,7 +9,7 @@ export default class WorldMainMapClass extends WorldBaseMapClass
 {
     create()
     {
-        this.tileData=new Uint16Array([
+        this.createTileData=new Uint16Array([
             52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,
             52,52,52,52,52,28,29,29,29,29,29,30,52,52,52,52,52,52,52,52,52,52,28,29,29,30,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,
             52,52,52,52,52,31,32,50,50,32,32,38,29,29,29,30,52,52,52,52,52,52,31,50,50,33,52,52,52,52,52,52,52,52,28,30,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,
@@ -140,32 +140,32 @@ export default class WorldMainMapClass extends WorldBaseMapClass
             52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52,52
         ]);
 
-        this.sprites=[
+        this.createSprites=[
             new PlayerWorldClass(this.game,128,384,new Map([])),
             new MapSpotClass(this.game,256,384,new Map([["title","Snakes on a Plain"],["map","snakes_on_a_plain"]])),
             new MapSpotClass(this.game,512,512,new Map([["title","Apocalypse Carrot"],["map","apocalypse_carrot"]])),
             new MapSpotClass(this.game,384,256,new Map([["title","The Hills are Alive with the Sound of Ninja Bunnies"],["map","hills_ninja_bunnies"]])),
             new MapSpotClass(this.game,640,320,new Map([["title","Buffet of Blocks"],["map","buffet_of_blocks"]])),
             new MapCastleClass(this.game,960,320,new Map([["title","Executioner's Castle"],["map","executioners_castle"],["pin",2]])),
-            new MapSpotClass(this.game,512,768,new Map([])),
-            new MapSpotClass(this.game,512,1472,new Map([])),
-            new MapSpotClass(this.game,1728,1472,new Map([])),
-            new MapSpotClass(this.game,1344,1152,new Map([])),
-            new MapSpotClass(this.game,1344,1024,new Map([])),
-            new MapSpotClass(this.game,1600,832,new Map([])),
-            new MapSpotClass(this.game,1600,512,new Map([])),
+            new MapSpotClass(this.game,512,768,new Map([["title","Platforms Over Troubled Waters"],["map","platform_troubled_waters"]])),
+            new MapSpotClass(this.game,512,1472,new Map([["title","Surf's Up"],["map","surfs_up"]])),
+            new MapSpotClass(this.game,1728,1472,new Map([["title","Surf's Down"],["map","surfs_down"]])),
+            new MapSpotClass(this.game,1344,1152,new Map([["title","d"],["map","d"]])),
+            new MapSpotClass(this.game,1344,1024,new Map([["title","e"],["map","e"]])),
+            new MapSpotClass(this.game,1600,832,new Map([["title","f"],["map","f"]])),
+            new MapSpotClass(this.game,1600,512,new Map([["title","Head's Up"],["map","heads_up"]])),
             new MapCastleClass(this.game,2304,704,new Map([["title","Sir Chicken's Castle"],["map","Castle Chicken"],["pin",6]])),
-            new MapSpotClass(this.game,2624,896,new Map([])),
-            new MapSpotClass(this.game,2624,1024,new Map([])),
-            new MapSpotClass(this.game,2560,1472,new Map([])),
+            new MapSpotClass(this.game,2624,896,new Map([["title","h"],["map","h"]])),
+            new MapSpotClass(this.game,2624,1024,new Map([["title","i"],["map","i"]])),
+            new MapSpotClass(this.game,2560,1472,new Map([["title","j"],["map","j"]])),
             new MapCastleClass(this.game,2880,1088,new Map([["title","Screaming Skull's Castle"],["map","Castle Skull"],["pin",10]])),
-            new MapSpotClass(this.game,3456,896,new Map([])),
-            new MapSpotClass(this.game,3712,832,new Map([])),
-            new MapSpotClass(this.game,3904,896,new Map([])),
-            new MapSpotClass(this.game,3328,1344,new Map([])),
-            new MapSpotClass(this.game,3456,1600,new Map([])),
-            new MapSpotClass(this.game,3776,1536,new Map([])),
-            new MapSpotClass(this.game,3968,1216,new Map([])),
+            new MapSpotClass(this.game,3456,896,new Map([["title","k"],["map","k"]])),
+            new MapSpotClass(this.game,3712,832,new Map([["title","l"],["map","l"]])),
+            new MapSpotClass(this.game,3904,896,new Map([["title","m"],["map","m"]])),
+            new MapSpotClass(this.game,3328,1344,new Map([["title","n"],["map","n"]])),
+            new MapSpotClass(this.game,3456,1600,new Map([["title","o"],["map","o"]])),
+            new MapSpotClass(this.game,3776,1536,new Map([["title","p"],["map","p"]])),
+            new MapSpotClass(this.game,3968,1216,new Map([["title","q"],["map","q"]])),
             new MapCastleClass(this.game,3648,1216,new Map([["title","King Kangeroo's Castle"],["map","Castle Kangeroo"],["pin",18]]))
         ];
     }
@@ -173,5 +173,16 @@ export default class WorldMainMapClass extends WorldBaseMapClass
     getMapName()
     {
         return('World Map');
+    }
+    
+    mapStartup()
+    {
+        super.mapStartup();
+        
+        this.changeTile(24,5,this.TILE_IDX_ROAD_VERTICAL);  // win castle 1
+        this.changeTile(8,9,this.TILE_IDX_ROAD_VERTICAL);  // win castle 2
+        this.changeTile(41,11,this.TILE_IDX_ROAD_VERTICAL);  // win castle 2
+        this.changeTile(41,20,this.TILE_IDX_ROAD_VERTICAL);  // win castle 2
+        this.changeTile(52,15,this.TILE_IDX_ROAD_VERTICAL);  // win castle 3
     }
 }

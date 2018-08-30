@@ -1,19 +1,3 @@
-* particles need view culling
-* tick sound effect
-
-- map y is screwed up when going back into a map
-- MAP_TILE_WIDTH static on map when class fields exist
-
-
-- get rid of sprite.setPosition, etc
-
-- buttons with other modes
-- particles need to clip draw
-
-
-
-///// template for new map
-
 import MapClass from '../engine/map.js';
 import SideScrollBaseMapClass from '../maps/side_scroll_base.js';
 import PlayerSideScrollClass from '../code/player_sidescroll.js';
@@ -36,9 +20,9 @@ export default class SurfsUpMapClass extends SideScrollBaseMapClass
 {
     create()
     {
-        this.tileData=null;
+        this.createTileData=null;
 
-        this.sprites=[];
+        this.createSprites=[];
     }
     
     getMapName()

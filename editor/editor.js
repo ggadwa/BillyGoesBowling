@@ -9,6 +9,7 @@ export default class EditorClass
         this.MAP_TILE_HEIGHT=128;
         this.MAP_TILE_SIZE=64;
         
+        this.mapWrapper=null;
         this.mapCanvas=null;
         this.mapCTX=null;
         
@@ -34,6 +35,9 @@ export default class EditorClass
     initialize()
     {
             // canvas and contextes
+            
+        this.mapWrapper=document.getElementById('editorMapWrapper');
+        this.mapWrapper.onscroll=this.drawMapCanvas.bind(this);         // scrolling needs to redraw the canvas as we only draw the viewport
             
         this.mapCanvas=document.getElementById('editorMapCanvas');
         this.mapCanvas.onmousedown=this.leftMouseDownMapCanvas.bind(this);
@@ -81,8 +85,13 @@ export default class EditorClass
             // if tileData or sprites are null, then
             // start with a clear map
             
-        if (this.map.tileData===null) this.map.tileData=new Uint16Array(this.MAP_TILE_WIDTH*this.MAP_TILE_HEIGHT);
-        if (this.map.sprites===null) this.map.sprites=[];
+        if (this.map.createTileData===null) this.map.createTileData=new Uint16Array(this.MAP_TILE_WIDTH*this.MAP_TILE_HEIGHT);
+        if (this.map.createSprites===null) this.map.createSprites=[];
+        
+            // and copy to the working version
+            
+        this.map.tileData=this.map.createTileData.slice();
+        this.map.sprites=this.map.createSprites.slice();
         
             // temporary, used to fix tiles if I change the tile list
         /*
@@ -100,42 +109,53 @@ export default class EditorClass
         
     drawMapCanvas()
     {
-        let x,y,dx,dy,idx,tileIdx,sprite;
+        let x,y,dx,dy,tileIdx,sprite;
+        let lx,rx,ty,by,textOffset,boundRect;
         let img,rgt,bot;
         let ctx=this.mapCTX;
         let tiles=this.game.tileImageList;
+ 
+            // get the viewport to draw into
+            
+        boundRect=this.mapWrapper.getBoundingClientRect();
+        
+        lx=Math.trunc(this.mapWrapper.scrollLeft/this.MAP_TILE_SIZE)-1;
+        if (lx<0) lx=0;
+        rx=Math.trunc((this.mapWrapper.scrollLeft+boundRect.width)/this.MAP_TILE_SIZE)+1;
+        if (rx>this.MAP_TILE_WIDTH) rx=this.MAP_TILE_WIDTH;
+        
+        ty=Math.trunc(this.mapWrapper.scrollTop/this.MAP_TILE_SIZE)-1;
+        if (ty<0) ty=0;
+        by=Math.trunc((this.mapWrapper.scrollTop+boundRect.height)/this.MAP_TILE_SIZE)+1;
+        if (by>this.MAP_TILE_HEIGHT) by=this.MAP_TILE_HEIGHT;
         
             // clear
             
         ctx.fillStyle='#EEEEEE';
-        ctx.fillRect(0,0,this.mapCanvas.width,this.mapCanvas.height);
+        ctx.fillRect(this.mapWrapper.scrollLeft,this.mapWrapper.scrollTop,boundRect.width,boundRect.height);
         
             // tiles
             
-        idx=0;
-        dy=0;
-        
-        for (y=0;y!==this.MAP_TILE_HEIGHT;y++) {
-            
-            dx=0;
-            
-            for (x=0;x!==this.MAP_TILE_WIDTH;x++) {
-                tileIdx=this.map.tileData[idx]-1;
-                if (tileIdx!==-1) ctx.drawImage(tiles[tileIdx],dx,dy);
-                
-                idx++;
-                dx+=this.MAP_TILE_SIZE;
+        for (y=ty;y!==by;y++) {
+            for (x=lx;x!==rx;x++) {
+                tileIdx=this.map.tileData[(y*this.MAP_TILE_WIDTH)+x]-1;
+                if (tileIdx!==-1) ctx.drawImage(tiles[tileIdx],(x*this.MAP_TILE_SIZE),(y*this.MAP_TILE_SIZE));
             }
-            
-            dy+=this.MAP_TILE_SIZE;
         }
         
             // entities
         
         for (sprite of this.map.sprites) {
             img=sprite.editorImage;
+            
             dx=sprite.x;
+            if (dx>(rx*this.MAP_TILE_SIZE)) continue;
+            if ((dx+img.width)<(lx*this.MAP_TILE_SIZE)) continue;
+            
             dy=sprite.y-img.height;
+            if (dy>(by*this.MAP_TILE_SIZE)) continue;
+            if ((dy+img.height)<(ty*this.MAP_TILE_SIZE)) continue;
+            
             ctx.drawImage(img,dx,dy);
         }
         
@@ -168,6 +188,30 @@ export default class EditorClass
         
         ctx.strokeStyle='#000000';
         ctx.setLineDash([]);
+        
+            // cell numbers
+
+        ctx.font='16px Arial';
+        ctx.fillStyle='#000000';
+        ctx.textAlign='center';
+        ctx.textBaseline='alphabetic';
+
+        textOffset=Math.trunc(this.MAP_TILE_SIZE*0.5);
+        
+        dy=this.mapWrapper.scrollTop+15;
+        
+        for (x=lx;x!==rx;x++) {
+            ctx.fillText((''+x),((x*this.MAP_TILE_SIZE)+textOffset),dy);
+        }
+        
+        ctx.textAlign='left';
+        ctx.textBaseline='middle';
+
+        dx=this.mapWrapper.scrollLeft+5;
+        
+        for (y=ty;y!==by;y++) {
+            ctx.fillText((''+y),dx,((y*this.MAP_TILE_SIZE)+textOffset));
+        }
     }
     
     drawTilePaletteCanvas()
@@ -579,7 +623,7 @@ export default class EditorClass
         
         str='    create()\r\n';
         str+='    {\r\n';
-        str+='        this.tileData=new Uint16Array([';
+        str+='        this.createTileData=new Uint16Array([';
         
         for (n=0;n!=this.map.tileData.length;n++) {
             if (n!==0) str+=',';
@@ -589,7 +633,7 @@ export default class EditorClass
         
         str+='\r\n        ]);\r\n\r\n';
         
-        str+='        this.sprites=[\r\n'
+        str+='        this.createSprites=[\r\n'
         
         first=true;
         

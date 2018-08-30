@@ -1,5 +1,6 @@
 import SpriteClass from '../engine/sprite.js';
 import BallClass from './ball.js';
+import RockClass from './rock.js';
 import ExplodeBlockClass from './explode_block.js';
 
 export default class BreakBlockClass extends SpriteClass
@@ -31,7 +32,7 @@ export default class BreakBlockClass extends SpriteClass
     {
         let cx,cy;
         
-        if ((interactSprite instanceof BallClass) || (interactSprite instanceof ExplodeBlockClass)) {
+        if ((interactSprite instanceof BallClass) || (interactSprite instanceof RockClass) || (interactSprite instanceof ExplodeBlockClass)) {
             cx=this.x+Math.trunc(this.width*0.5);
             cy=this.y-Math.trunc(this.height*0.5);
             this.game.map.addParticle(cx,cy,16,16,1.0,0.1,5,0.08,this.game.imageList.get('sprites/particle_block'),10,800);

@@ -36,6 +36,9 @@ export default class MapClass
         this.tileData=null;             // tile data for map
         this.sprites=null;              // sprites in map
         
+        this.createTileData=null;
+        this.createSpriteData=null;     // we have a creation copy (the editor makes) and a working copy, as game play changes these
+        
         this.playerIdx=-1;
         
         this.particles=[];
@@ -49,6 +52,11 @@ export default class MapClass
             // create the map
             
         this.create();
+        
+            // now copy the create arrays to the working arrays
+            
+        this.tileData=this.createTileData.slice();
+        this.sprites=this.createSprites.slice();
         
             // call all the sprite map enter
         
@@ -149,6 +157,11 @@ export default class MapClass
     {
         let particle=new ParticleClass(this.game,x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,img,count,lifeTick);
         return(this.particles.push(particle)-1);
+    }
+    
+    changeTile(x,y,tileIdx)
+    {
+        this.tileData[(y*this.MAP_TILE_WIDTH)+x]=tileIdx;
     }
     
     /**

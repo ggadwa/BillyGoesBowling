@@ -2,6 +2,7 @@ import SpriteClass from '../engine/sprite.js';
 import BlockClass from './block.js';
 import BreakBlockStrongClass from './break_block_strong.js';
 import ExplodeBlockClass from './explode_block.js';
+import EasterHeadClass from './easter_head.js';
 import ExecutionerClass from './executioner.js';
 
 export default class BallClass extends SpriteClass
@@ -161,7 +162,7 @@ export default class BallClass extends SpriteClass
                 
                     // stop ball for certain sprites
                     
-                if ((this.collideSprite instanceof BlockClass) || (this.collideSprite instanceof BreakBlockStrongClass) || (this.collideSprite instanceof ExplodeBlockClass) || (this.collideSprite instanceof ExecutionerClass)) {
+                if ((this.collideSprite instanceof BlockClass) || (this.collideSprite instanceof BreakBlockStrongClass) || (this.collideSprite instanceof ExplodeBlockClass) || (this.collideSprite instanceof EasterHeadClass) || (this.collideSprite instanceof ExecutionerClass)) {
                     this.returnBall();
                 }
                 

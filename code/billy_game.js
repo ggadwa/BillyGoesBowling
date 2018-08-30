@@ -23,6 +23,7 @@ import MapBlockClass from './map_block.js';
 import DrainPipeSnakeClass from './drain_pipe_snake.js';
 import NinjaBunnyClass from './ninja_bunny.js';
 import RotoCarrotClass from './roto_carrot.js';
+import EasterHeadClass from './easter_head.js';
 import ExecutionerClass from './executioner.js';
 
 export default class BillyGameClass extends GameClass
@@ -68,6 +69,7 @@ export default class BillyGameClass extends GameClass
             new DrainPipeSnakeClass(this,0,0,null),
             new NinjaBunnyClass(this,0,0,null),
             new RotoCarrotClass(this,0,0,null),
+            new EasterHeadClass(this,0,0,null),
             new ExecutionerClass(this,0,0,null),
             new MapSpotClass(this,0,0,null),
             new MapCastleClass(this,0,0,null)
@@ -82,6 +84,8 @@ export default class BillyGameClass extends GameClass
         //return(this.mapList.get('buffet_of_blocks'));
         //return(this.mapList.get('hills_ninja_bunnies'));
         //return(this.mapList.get('executioners_castle'));
+        //return(this.mapList.get('heads_up'));
+        //return(this.mapList.get('platform_troubled_waters'));
     }
     
     setBanner(str,pinCount)

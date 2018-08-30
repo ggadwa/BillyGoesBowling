@@ -6,6 +6,8 @@ export default class WorldBaseMapClass extends MapClass
     constructor(game)
     {
         super(game);
+        
+        this.TILE_IDX_ROAD_VERTICAL=46;
 
         this.currentMapY=0;
     }

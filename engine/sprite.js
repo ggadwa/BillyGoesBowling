@@ -174,6 +174,14 @@ export default class SpriteClass
         if (this.y>max) this.y=max;
     }
     
+    distanceToSprite(sprite)
+    {
+        let x=sprite.x-this.x;
+        let y=sprite.y-this.y;
+
+        return(Math.trunc(Math.sqrt((x*x)+(y*y))));
+    }
+    
     delete()
     {
         this.removeFlag=true;

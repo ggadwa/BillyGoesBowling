@@ -8,6 +8,7 @@ import NinjaBunnyClass from './ninja_bunny.js';
 import ShurikinClass from './shurikin.js';
 import RotoCarrotClass from './roto_carrot.js';
 import BombClass from './bomb.js';
+import RockClass from './rock.js';
 import ExecutionerClass from './executioner.js';
 import ExecutionersAxeClass from './executioners_axe.js';
 
@@ -94,7 +95,7 @@ export default class PlayerSideScrollClass extends SpriteClass
     
     interactWithSprite(interactSprite,dataObj)
     {
-        if ((interactSprite instanceof DrainPipeSnakeClass) || (interactSprite instanceof NinjaBunnyClass) || (interactSprite instanceof ShurikinClass) || (interactSprite instanceof RotoCarrotClass) || (interactSprite instanceof BombClass)) {
+        if ((interactSprite instanceof DrainPipeSnakeClass) || (interactSprite instanceof NinjaBunnyClass) || (interactSprite instanceof ShurikinClass) || (interactSprite instanceof RotoCarrotClass) || (interactSprite instanceof BombClass) || (interactSprite instanceof RockClass)) {
             this.hurtPlayer();
             return;
         }
