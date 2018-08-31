@@ -197,7 +197,7 @@ export default class HeadsUpMapClass extends SideScrollBaseMapClass
             new BreakBlockClass(this.game,3328,1216,new Map([])),
             new BreakBlockClass(this.game,3264,1216,new Map([])),
             new TrophyClass(this.game,3456,1216,new Map([])),
-            new PlayerSideScrollClass(this.game,256,896,new Map([["facing_dection",1]])),
+            new PlayerSideScrollClass(this.game,256,896,new Map()),
             new EasterHeadClass(this.game,1408,832,new Map([])),
             new EasterHeadClass(this.game,2560,896,new Map([])),
             new EasterHeadClass(this.game,3904,832,new Map([])),

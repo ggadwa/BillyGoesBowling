@@ -151,7 +151,7 @@ export default class SnakesOnAPlainMapClass extends SideScrollBaseMapClass
         ]);
 
         this.createSprites=[
-            new PlayerSideScrollClass(this.game,192,1088,new Map([["facing_dection",1]])),
+            new PlayerSideScrollClass(this.game,192,1088,new Map()),
             new DrainPipeSnakeClass(this.game,1408,960,new Map([])),
             new BreakBlockClass(this.game,2496,960,new Map([])),
             new BreakBlockClass(this.game,2560,960,new Map([])),
@@ -202,7 +202,7 @@ export default class SnakesOnAPlainMapClass extends SideScrollBaseMapClass
             new BlockClass(this.game,5312,1408,new Map([])),
             new BlockClass(this.game,5376,1408,new Map([])),
             new DoorClass(this.game,2112,1344,new Map([["name","Secret Door"],["goto","Higher Door"]])),
-            new ButtonClass(this.game,3584,1152,new Map([["mode","liquid"],["liquid_y",1632]])),
+            new ButtonClass(this.game,3584,1152,new Map([["mode","liquid"],["liquid_y",1632],["liquid_move_speed",5]])),
             new TrophyClass(this.game,1984,1344,new Map([]))
         ];
     }

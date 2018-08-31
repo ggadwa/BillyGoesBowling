@@ -221,7 +221,7 @@ export default class ExecutionersCastleMapClass extends SideScrollBaseMapClass
             new BreakBlockStrongClass(this.game,1792,2048,new Map([])),
             new BreakBlockStrongClass(this.game,832,1984,new Map([])),
             new BreakBlockStrongClass(this.game,832,2048,new Map([])),
-            new PlayerSideScrollClass(this.game,128,1088,new Map([["facing_dection",1]])),
+            new PlayerSideScrollClass(this.game,128,1088,new Map()),
             new SpringClass(this.game,320,1856,new Map([])),
             new SpringClass(this.game,2368,1856,new Map([])),
             new BreakBlockStrongClass(this.game,1088,1984,new Map([]))

@@ -71,7 +71,7 @@ export default class ExecutionersAxeClass extends SpriteClass
         sprites=map.getSurroundSprites(this,Math.trunc(this.width*0.5),0,Math.trunc(this.game.map.MAP_TILE_SIZE*0.5));
         
         for (sprite of sprites) {
-            sprite.interactWithSprite(this,null);
+            if (sprite instanceof BreakBlockStrongClass) sprite.interactWithSprite(this,null);
         }
 
         this.delete();

@@ -150,7 +150,7 @@ export default class HillsNinjaBunniesMapClass extends SideScrollBaseMapClass
         ]);
 
         this.createSprites=[
-            new PlayerSideScrollClass(this.game,256,960,new Map([["facing_dection",1]])),
+            new PlayerSideScrollClass(this.game,256,960,new Map()),
             new PinClass(this.game,9344,1536,new Map([])),
             new NinjaBunnyClass(this.game,1472,1152,new Map([])),
             new NinjaBunnyClass(this.game,1856,1408,new Map([])),

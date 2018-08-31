@@ -1,19 +1,3 @@
-* particles need view culling
-* tick sound effect
-
-- map y is screwed up when going back into a map
-- MAP_TILE_WIDTH static on map when class fields exist
-
-
-- get rid of sprite.setPosition, etc
-
-- buttons with other modes
-- particles need to clip draw
-
-
-
-///// template for new map
-
 import MapClass from '../engine/map.js';
 import SideScrollBaseMapClass from '../maps/side_scroll_base.js';
 import PlayerSideScrollClass from '../code/player_sidescroll.js';
@@ -27,13 +11,12 @@ import DoorClass from '../code/door.js';
 import PinClass from '../code/pin.js';
 import TrophyClass from '../code/trophy.js';
 import ButtonClass from '../code/button.js';
-import SpringClass from '../code/spring.js';
 import DrainPipeSnakeClass from '../code/drain_pipe_snake.js';
 import NinjaBunnyClass from '../code/ninja_bunny.js';
 import RotoCarrotClass from '../code/roto_carrot.js';
 import EasterHeadClass from '../code/easter_head.js';
 
-export default class SurfsUpMapClass extends SideScrollBaseMapClass
+export default class RainingCreepsMapClass extends SideScrollBaseMapClass
 {
     create()
     {
@@ -43,7 +26,7 @@ export default class SurfsUpMapClass extends SideScrollBaseMapClass
     
     getMapName()
     {
-        return('Head\'s Up');
+        return('It\'s Raining Creeps');
     }
     
     mapStartup()

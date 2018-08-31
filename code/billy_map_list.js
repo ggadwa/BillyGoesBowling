@@ -9,6 +9,10 @@ import PlatformTroubledWaterMapClass from '../maps/platform_troubled_water.js';
 import SurfsUpMapClass from '../maps/surfs_up.js';
 import SurfsDownMapClass from '../maps/surfs_down.js';
 import HeadsUpMapClass from '../maps/heads_up.js';
+import RainingCreepsMapClass from '../maps/raining_creeps.js';
+import PuzzlingBlocksMapClass from '../maps/puzzling_blocks.js';
+import NinjaJailMapClass from '../maps/ninja_jail.js';
+import SirBawkBawkCastleMapClass from '../maps/sir_bawk_bawk_castle.js';
 
 export default class BillyMapListClass extends MapListClass
 {
@@ -31,6 +35,10 @@ export default class BillyMapListClass extends MapListClass
         this.add('surfs_down',new SurfsDownMapClass(game));
         
         this.add('heads_up',new HeadsUpMapClass(game));
+        this.add('raining_creeps',new RainingCreepsMapClass(game));
+        this.add('puzzling_blocks',new PuzzlingBlocksMapClass(game));
+        this.add('ninja_jail',new NinjaJailMapClass(game));
+        this.add('sir_bawk_bawk_castle',new SirBawkBawkCastleMapClass(game));
     }
     
 }

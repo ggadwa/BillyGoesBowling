@@ -13,8 +13,6 @@ export default class MapClass
         this.MAP_TILE_HEIGHT=128;
         this.MAP_TILE_SIZE=64;
         
-        this.LIQUID_MOVE_SPEED=5;
-        
             // variables
             
         this.width=this.MAP_TILE_WIDTH*this.MAP_TILE_SIZE;
@@ -32,6 +30,7 @@ export default class MapClass
         this.liquidTintDarken=0.001;
         
         this.toLiquidY=-1;
+        this.liquidMoveSpeed=0;
         
         this.tileData=null;             // tile data for map
         this.sprites=null;              // sprites in map
@@ -182,9 +181,21 @@ export default class MapClass
     {
     }
     
-    moveLiquidTo(toLiquidY)
+    /**
+     * Start a liquid movement.
+     */
+    moveLiquidTo(toLiquidY,liquidMoveSpeed)
     {
         this.toLiquidY=toLiquidY;
+        this.liquidMoveSpeed=liquidMoveSpeed;
+    }
+    
+    /**
+     * Override this to detected when a liquid movement
+     * has finished.
+     */
+    liquidMoveDone()
+    {
     }
     
     checkCollision(checkSprite)
@@ -475,17 +486,19 @@ export default class MapClass
             
         if (this.toLiquidY!==-1) {
             if (this.toLiquidY<this.liquidY) {
-                this.liquidY-=this.LIQUID_MOVE_SPEED;
+                this.liquidY-=this.liquidMoveSpeed;
                 if (this.liquidY<this.toLiquidY) {
                     this.liquidY=this.toLiquidY;
                     this.toLiquidY=-1;
+                    this.liquidMoveDone();
                 }
             }
             else {
-                this.liquidY+=this.LIQUID_MOVE_SPEED;
+                this.liquidY+=this.liquidMoveSpeed;
                 if (this.liquidY>this.toLiquidY) {
                     this.liquidY=this.toLiquidY;
                     this.toLiquidY=-1;
+                    this.liquidMoveDone();
                 }
             }
         }

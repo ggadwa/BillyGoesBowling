@@ -49,7 +49,7 @@ export default class ButtonClass extends SpriteClass
             // the position by liquid_y
             
         if (mode==='liquid') {
-            this.game.map.moveLiquidTo(this.data.get('liquid_y'));
+            this.game.map.moveLiquidTo(this.data.get('liquid_y'),this.data.get('liquid_move_speed'));
         }
         
             // finish by deleting the button

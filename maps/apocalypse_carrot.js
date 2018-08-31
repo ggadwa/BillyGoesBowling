@@ -150,7 +150,7 @@ export default class ApocalypseCarrotMapClass extends SideScrollBaseMapClass
         ]);
 
         this.createSprites=[
-            new PlayerSideScrollClass(this.game,256,1792,new Map([["facing_dection",1]])),
+            new PlayerSideScrollClass(this.game,256,1792,new Map()),
             new BreakBlockClass(this.game,2816,1920,new Map([])),
             new BreakBlockClass(this.game,2880,1920,new Map([])),
             new BreakBlockClass(this.game,2944,1920,new Map([])),

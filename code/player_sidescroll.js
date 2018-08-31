@@ -31,8 +31,6 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.setCurrentImage('sprites/billy_right');
         this.setEditorImage('sprites/billy_right');
         
-        this.data.set('facing_dection',1);          // we keep track of this so ball can use this information
-        
         this.show=true;
         this.gravityFactor=0.12;
         this.gravityMinValue=3;

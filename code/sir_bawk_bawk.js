@@ -2,38 +2,33 @@ import SpriteClass from '../engine/sprite.js';
 import CloudBlockClass from './cloud_block.js';
 import BreakBlockStrongClass from '../code/break_block_strong.js';
 import BallClass from './ball.js';
-import ExecutionersAxeClass from './executioners_axe.js';
 
-export default class ExecutionerClass extends SpriteClass
+export default class SirBawkBawkClass extends SpriteClass
 {
     constructor(game,x,y,data)
     {
         super(game,x,y,data);
         
-        this.TILE_IDX_BUMP=18;
-        this.MAX_SPEED=8;
-        this.JUMP_HEIGHT=-40;
+        this.SPEED=20;
+        this.JUMP_HEIGHT=-50;
         
             // variables
             
-        this.executionerSpeed=0;
-        this.lastLaunchXPosition=-1;
-        this.launchXPositionsLeft=null;     // array of axe launch positions, loaded on startup
-        this.launchXPositionsRight=null;
+        this.direction=0;
         this.isDropping=true;
         this.isDying=false;
         this.deathY=0;
         
             // setup
         
-        this.addImage('sprites/executioner_axe');
-        this.setCurrentImage('sprites/executioner_axe');
-        this.setEditorImage('sprites/executioner_axe');
+        this.addImage('sprites/bawk_bawk');
+        this.setCurrentImage('sprites/bawk_bawk');
+        this.setEditorImage('sprites/bawk_bawk');
         
         this.show=true;
         this.gravityFactor=0.15;
-        this.gravityMinValue=3;
-        this.gravityMaxValue=30;
+        this.gravityMinValue=1;
+        this.gravityMaxValue=50;
         this.canCollide=true;
         this.canStandOn=true;
         
@@ -44,50 +39,16 @@ export default class ExecutionerClass extends SpriteClass
     
     duplicate(x,y)
     {
-        return(new ExecutionerClass(this.game,x,y,this.data));
+        return(new SirBawkBawkClass(this.game,x,y,this.data));
     }
     
     mapStartup()
     {
-        this.launchXPositionsLeft=this.data.get('axe_x_launch_left');
-        this.launchXPositionsRight=this.data.get('axe_x_launch_right');
-        this.lastLaunchXPosition=-1;
         this.isDropping=true;
         this.isDying=false;
     }
-    
-    fireAxe()
-    {
-        let n,ex,launchX,sx,sy;
-        let launchPos;
-        
-            // are we at the next launch position
-            
-        ex=Math.trunc((this.x+Math.trunc(this.width*0.5))/this.game.map.MAP_TILE_SIZE);
-        
-        launchPos=(this.executionerSpeed<0)?this.launchXPositionsLeft:this.launchXPositionsRight;
-        
-        for (n=0;n!=launchPos.length;n++) {
-            launchX=launchPos[n];
-            
-            if ((ex===launchX) && (launchX!==this.lastLaunchXPosition)) {
-                
-                    // only fire one at a time
-                    
-                this.lastLaunchXPosition=launchX;
-                
-                    // fire
-                    
-                sx=(launchX*this.game.map.MAP_TILE_SIZE)+Math.trunc(this.game.map.MAP_TILE_SIZE*0.5);
-                sy=this.y-Math.trunc(this.height*0.5);
-
-                this.game.map.addSprite(new ExecutionersAxeClass(this.game,sx,sy,null));
-                return;
-            }
-        }
-    }
-    
-    killExecutioner()
+   
+    killSirBawkBawk()
     {
         this.game.gotoMap('world_main');
     }
@@ -95,7 +56,7 @@ export default class ExecutionerClass extends SpriteClass
     runAI()
     {
         let map=this.game.map;
-        let speed,bumpUp;
+        let sprites,sprite,speed;
         let playerSprite=map.getSpritePlayer();
         
             // we have a special check for dropping
@@ -112,10 +73,37 @@ export default class ExecutionerClass extends SpriteClass
             
         if (this.isDying) {
             this.y++;
-            if (this.y>this.deathY) this.killExecutioner();
+            if (this.y>this.deathY) this.killSirBawkBawk();
             return;
         }
+             
+            // move
         
+        speed=this.SPEED*this.direction;
+        this.x+=speed;
+
+        if (map.checkCollision(this)) {
+            this.x-=speed;
+            if (this.collideSprite!=null) this.collideSprite.interactWithSprite(this,null);
+        }
+
+            // if grounded, then we need to smash
+            // the blocks on the ground
+            
+        if (!(this.standSprite instanceof BreakBlockStrongClass)) return;
+
+        sprites=map.getSurroundSprites(this,Math.trunc(this.width*0.5),0,Math.trunc(this.game.map.MAP_TILE_SIZE*1.5));
+        
+        for (sprite of sprites) {
+            if (sprite instanceof BreakBlockStrongClass) sprite.interactWithSprite(this,null);
+        }
+
+            // jump back up
+            
+        this.motion.y=this.JUMP_HEIGHT;
+        this.direction=(playerSprite.x<this.x)?-1:1;
+
+        /*
             // always follow the player, but with
             // an acceleration
             
@@ -164,18 +152,15 @@ export default class ExecutionerClass extends SpriteClass
             }
         }
 
-            // time to fire axe?
-
-        this.fireAxe();
         
-            // check for standing on a cloud
+            // check for standing on a cloud or button
             
         if (this.standSprite!==null) {
             if (this.standSprite instanceof CloudBlockClass) {
                 this.standSprite.interactWithSprite(this,null);
             }
         }
-        
+        */
             // hit the liquid?
          
         if (this.y>=map.liquidY) {

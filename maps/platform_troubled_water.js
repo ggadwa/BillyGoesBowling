@@ -152,7 +152,7 @@ export default class PlatformTroubledWatersMapClass extends SideScrollBaseMapCla
         ]);
 
         this.createSprites=[
-            new PlayerSideScrollClass(this.game,256,1792,new Map([["facing_dection",1]])),
+            new PlayerSideScrollClass(this.game,256,1792,new Map()),
             new PlatformClass(this.game,640,1920,new Map([])),
             new PlatformClass(this.game,1664,1856,new Map([])),
             new PlatformClass(this.game,2816,1728,new Map([])),
@@ -182,7 +182,7 @@ export default class PlatformTroubledWatersMapClass extends SideScrollBaseMapCla
     
     getMapName()
     {
-        return('Platforms Over Troubled Waters');
+        return('Platform Over Troubled Waters');
     }
     
     mapStartup()

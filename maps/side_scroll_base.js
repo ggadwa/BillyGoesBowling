@@ -7,7 +7,7 @@ export default class SideScrollBaseMapClass extends MapClass
     {
         super(game);
         
-        this.PLAYER_NATURAL_MAP_HEIGHT_OFFSET=0.8;
+        this.PLAYER_NATURAL_MAP_HEIGHT_OFFSET=0.7;
 
         this.currentMapY=0;
     }
