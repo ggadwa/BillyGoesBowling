@@ -1,7 +1,9 @@
 export default class SoundListClass
 {
-    constructor()
+    constructor(game)
     {
+        this.game=game;
+        
         let initAudioContext=window.AudioContext||window.webkitAudioContext;
         this.ctx=new initAudioContext();
         
@@ -45,7 +47,7 @@ export default class SoundListClass
         source.start(0);
     }
     
-    loadProcessLoaded(req,name,keyIter,callback)
+    loadProcessLoaded(req,name,keyIter,count,callback)
     {
         let buffers=this.buffers;
         
@@ -71,10 +73,10 @@ export default class SoundListClass
                 
             // next sound
             
-        this.loadProcess(keyIter,callback);
+        this.loadProcess(keyIter,(count+1),callback);
     }
     
-    loadProcess(keyIter,callback)
+    loadProcess(keyIter,count,callback)
     {
         let req,rtn,name,path;
         
@@ -85,6 +87,8 @@ export default class SoundListClass
             callback();
             return;
         }
+        
+        this.game.drawProgress('Loading Sounds',count,(this.buffers.size-1));
 
         name=rtn.value;
         path='sounds/'+name+'.wav';
@@ -92,13 +96,13 @@ export default class SoundListClass
         req=new XMLHttpRequest();
         req.open('GET',path,true);
         req.responseType='arraybuffer';
-        req.onload=this.loadProcessLoaded.bind(this,req,name,keyIter,callback);
+        req.onload=this.loadProcessLoaded.bind(this,req,name,keyIter,count,callback);
         req.send();
     }
     
     load(callback)
     {
-        this.loadProcess(this.buffers.keys(),callback);
+        this.loadProcess(this.buffers.keys(),0,callback);
     }
     
     

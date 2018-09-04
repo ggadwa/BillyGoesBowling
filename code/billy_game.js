@@ -33,9 +33,9 @@ export default class BillyGameClass extends GameClass
     {
         super();
         
-        this.imageList=new BillyImageList();
-        this.soundList=new BillySoundList();
-        this.mapList=new BillyMapList();
+        this.imageList=new BillyImageList(this);
+        this.soundList=new BillySoundList(this);
+        this.mapList=new BillyMapList(this);
         
         this.HEALTH_IMAGE_LIST=['ui/health_25','ui/health_50','ui/health_75','ui/health_100'];
         
@@ -80,7 +80,7 @@ export default class BillyGameClass extends GameClass
    
     getStartMap()
     {
-        //return(this.mapList.get('world_main'));
+        return(this.mapList.get('world_main'));
         //return(this.mapList.get('snakes_on_a_plain'));
         //return(this.mapList.get('apocalypse_carrot'));
         //return(this.mapList.get('buffet_of_blocks'));
@@ -95,7 +95,7 @@ export default class BillyGameClass extends GameClass
         //return(this.mapList.get('raining_creeps'));
         //return(this.mapList.get('puzzling_blocks'));
         //return(this.mapList.get('ninja_jail'));
-        return(this.mapList.get('sir_bawk_bawk_castle'));
+        //return(this.mapList.get('sir_bawk_bawk_castle'));
 
     }
     

@@ -2,9 +2,9 @@ import SoundListClass from '../resources/sound_list.js';
 
 export default class BillySoundListClass extends SoundListClass
 {
-    constructor()
+    constructor(game)
     {
-        super();
+        super(game);
     }
     
     create()

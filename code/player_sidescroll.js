@@ -11,6 +11,7 @@ import BombClass from './bomb.js';
 import RockClass from './rock.js';
 import ExecutionerClass from './executioner.js';
 import ExecutionersAxeClass from './executioners_axe.js';
+import SirBawkBawkClass from './sir_bawk_bawk.js';
 
 export default class PlayerSideScrollClass extends SpriteClass
 {
@@ -93,7 +94,7 @@ export default class PlayerSideScrollClass extends SpriteClass
     
     interactWithSprite(interactSprite,dataObj)
     {
-        if ((interactSprite instanceof DrainPipeSnakeClass) || (interactSprite instanceof NinjaBunnyClass) || (interactSprite instanceof ShurikinClass) || (interactSprite instanceof RotoCarrotClass) || (interactSprite instanceof BombClass) || (interactSprite instanceof RockClass)) {
+        if ((interactSprite instanceof DrainPipeSnakeClass) || (interactSprite instanceof NinjaBunnyClass) || (interactSprite instanceof ShurikinClass) || (interactSprite instanceof RotoCarrotClass) || (interactSprite instanceof BombClass) || (interactSprite instanceof RockClass) || (interactSprite instanceof SirBawkBawkClass)) {
             this.hurtPlayer();
             return;
         }

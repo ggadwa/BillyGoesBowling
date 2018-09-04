@@ -2,9 +2,9 @@ import ImageListClass from '../resources/image_list.js';
 
 export default class BillyImageListClass extends ImageListClass
 {
-    constructor()
+    constructor(game)
     {
-        super();
+        super(game);
     }
     
     create()

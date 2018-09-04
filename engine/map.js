@@ -413,20 +413,21 @@ export default class MapClass
         return(ty);
     }
     
-    getSurroundSprites(checkSprite,offX,offY,radius)
+    getSpritesWithinBox(lft,top,rgt,bot,ignoreSprite,filterClass)
     {
-        let sprite,lft,top,rgt,bot;
+        let sprite;
         let sprites=[];
             
-        lft=(checkSprite.x+offX)-radius;
-        rgt=lft+(radius*2);
-        top=(checkSprite.y+offY)-radius;
-        bot=top+(radius*2);
-        
         for (sprite of this.sprites) {
-            if (sprite===checkSprite) continue;
             if (!sprite.show) continue;
             if (!sprite.canCollide) continue;
+
+            if (ignoreSprite!==null) {
+                if (sprite===ignoreSprite) continue;
+            }
+            if (filterClass!==null) {
+                if (!(sprite instanceof filterClass)) continue;
+            }
             
             if (sprite.collideRect(lft,top,rgt,bot)) sprites.push(sprite);
         }

@@ -16,13 +16,15 @@ import SirBawkBawkCastleMapClass from '../maps/sir_bawk_bawk_castle.js';
 
 export default class BillyMapListClass extends MapListClass
 {
-    constructor()
+    constructor(game)
     {
-        super();
+        super(game);
     }
     
-    create(game)
+    create()
     {
+        let game=this.game;
+        
         this.add('world_main',new WorldMainMapClass(game));
         this.add('snakes_on_a_plain',new SnakesOnAPlainMapClass(game));
         this.add('apocalypse_carrot',new ApocalypseCarrotMapClass(game));

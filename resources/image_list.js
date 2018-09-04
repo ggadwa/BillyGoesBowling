@@ -1,7 +1,8 @@
 export default class ImageListClass
 {
-    constructor()
+    constructor(game)
     {
+        this.game=game;
         this.images=new Map();
         
         Object.seal(this);
@@ -46,7 +47,7 @@ export default class ImageListClass
         console.log('Missing Image: '+path);        // this will abort the loading process
     }
     
-    loadProcess(keyIter,callback)
+    loadProcess(keyIter,count,callback)
     {
         let rtn,name,img,path;
         
@@ -57,19 +58,21 @@ export default class ImageListClass
             callback();
             return;
         }
+        
+        this.game.drawProgress('Loading Images',count,(this.images.size-1));
 
         name=rtn.value;
         path='images/'+name+'.png';
         img=this.images.get(name);
         
-        img.onload=this.loadProcess.bind(this,keyIter,callback);
+        img.onload=this.loadProcess.bind(this,keyIter,(count+1),callback);
         img.onerror=this.loadProcessError.bind(this,path);
         img.src=path;
     }
     
     load(callback)
     {
-        this.loadProcess(this.images.keys(),callback);
+        this.loadProcess(this.images.keys(),0,callback);
     }
     
 }

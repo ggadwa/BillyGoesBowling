@@ -77,8 +77,11 @@ export default class ExplodeBlockClass extends SpriteClass
         }
 
             // explode
+            // look for any sprite that's directly surrounding this
+            // within a single tile distance (which is 64, we just need to
+            // get the collision rect within that area.)
         
-        sprites=this.game.map.getSurroundSprites(this,Math.trunc(this.width*0.5),-Math.trunc(this.height*0.5),this.game.map.MAP_TILE_SIZE);
+        sprites=this.game.map.getSpritesWithinBox((this.x-16),(this.y-80),(this.x+80),(this.y+16),this,null);
         
         for (sprite of sprites) {
             sprite.interactWithSprite(this,null);

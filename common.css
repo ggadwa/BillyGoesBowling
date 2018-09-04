@@ -2,9 +2,12 @@
 
 .mainCanvas {
     position: absolute;
-    top: 0px;
-    left: 0px;
-    box-sizing: border-box;
+    top: calc( calc(100% - 640px) / 2);
+    left: calc( calc(100% - 1280px) / 2);
+    margin: 0px;
+    padding: 0px;
+    box-sizing: content-box;
+    border: 2px solid #000099;
 }
 
 /* editor */
