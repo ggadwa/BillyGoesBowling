@@ -90,7 +90,7 @@ export default class ExplodeBlockClass extends SpriteClass
         cx=this.x+Math.trunc(this.width*0.5);
         cy=this.y-Math.trunc(this.height*0.5);
 
-        this.game.map.addParticle(cx,cy,32,120,0.5,0.1,3,0.05,this.game.imageList.get('sprites/particle_explode_block'),15,500);
+        this.game.map.addParticle(cx,cy,32,120,0.5,0.1,3,0.05,this.game.imageList.get('particles/explode_block'),15,500);
         this.game.soundList.play('explode');
         this.delete();
     }

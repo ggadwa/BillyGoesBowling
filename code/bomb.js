@@ -42,7 +42,7 @@ export default class BombClass extends SpriteClass
             
             cx=this.x+Math.trunc(this.width*0.5);
             cy=this.y+Math.trunc(this.height*0.5);
-            this.game.map.addParticle(cx,cy,32,120,0.5,0.1,0,0,this.game.imageList.get('sprites/particle_explode_block'),1,500);
+            this.game.map.addParticle(cx,cy,32,120,0.5,0.1,0,0,this.game.imageList.get('particles/explode_block'),1,500);
             
             this.delete();
         }

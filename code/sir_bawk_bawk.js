@@ -14,14 +14,13 @@ export default class SirBawkBawkClass extends SpriteClass
         this.JUMP_HEIGHT=-50;
         this.TILE_IDX_BUMP_1=17;
         this.TILE_IDX_BUMP_2=18;
-        
+       
             // variables
             
         this.speedIdx=(Date.now()%this.SPEEDS.length);  // start with random speed
         this.direction=1;
         this.isDropping=true;
-        this.isDying=false;
-        this.deathY=0;
+        this.isDead=false;
         
             // setup
         
@@ -49,7 +48,7 @@ export default class SirBawkBawkClass extends SpriteClass
     mapStartup()
     {
         this.isDropping=true;
-        this.isDying=false;
+        this.isDead=false;
     }
    
     killSirBawkBawk()
@@ -73,21 +72,17 @@ export default class SirBawkBawkClass extends SpriteClass
             this.isDropping=false;
         }
         
-            // if we are dying, just sink under liquid
+            // if we are dead, do nothing
             
-        if (this.isDying) {
-            console.log('dying='+this.y);
-            this.y++;
-            if (this.y>this.deathY) this.killSirBawkBawk();
-            return;
-        }
+        if (this.isDead) return;
         
             // hit the liquid?
          
         if (this.y>=map.liquidY) {
-            this.isDying=true;
-            this.gravityFactor=0.0; // now falling through code
-            this.deathY=this.y+Math.trunc(this.height*0.9);
+            playerSprite.warpOut();
+            this.isDead=true;
+            this.show=false;
+            this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,this.game.imageList.get('particles/skull'),30,2500);
             return;
         }
              

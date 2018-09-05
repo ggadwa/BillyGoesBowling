@@ -21,8 +21,7 @@ export default class ExecutionerClass extends SpriteClass
         this.launchXPositionsLeft=null;     // array of axe launch positions, loaded on startup
         this.launchXPositionsRight=null;
         this.isDropping=true;
-        this.isDying=false;
-        this.deathY=0;
+        this.isDead=false;
         
             // setup
         
@@ -53,7 +52,7 @@ export default class ExecutionerClass extends SpriteClass
         this.launchXPositionsRight=this.data.get('axe_x_launch_right');
         this.lastLaunchXPosition=-1;
         this.isDropping=true;
-        this.isDying=false;
+        this.isDead=false;
     }
     
     fireAxe()
@@ -87,11 +86,6 @@ export default class ExecutionerClass extends SpriteClass
         }
     }
     
-    killExecutioner()
-    {
-        this.game.gotoMap('world_main');
-    }
-   
     runAI()
     {
         let map=this.game.map;
@@ -108,13 +102,9 @@ export default class ExecutionerClass extends SpriteClass
             this.isDropping=false;
         }
         
-            // if we are dying, just sink under liquid
+            // dead, do nothig
             
-        if (this.isDying) {
-            this.y++;
-            if (this.y>this.deathY) this.killExecutioner();
-            return;
-        }
+        if (this.isDead) return;
         
             // always follow the player, but with
             // an acceleration
@@ -179,9 +169,10 @@ export default class ExecutionerClass extends SpriteClass
             // hit the liquid?
          
         if (this.y>=map.liquidY) {
-            this.isDying=true;
-            this.gravityFactor=0.0; // now falling through code
-            this.deathY=this.y+Math.trunc(this.height*0.9);
+            playerSprite.warpOut();
+            this.isDead=true;
+            this.show=false;
+            this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,this.game.imageList.get('particles/skull'),30,2500);
         }
     }
     

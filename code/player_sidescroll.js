@@ -22,6 +22,9 @@ export default class PlayerSideScrollClass extends SpriteClass
             // constants
             
         this.JUMP_HEIGHT=-40;
+        this.DEATH_TICK=60;
+        this.INVINCIBLE_TICK=60;
+        this.WARP_TICK=80;
         
             // setup
             
@@ -43,6 +46,7 @@ export default class PlayerSideScrollClass extends SpriteClass
         
         this.invincibleCount=-1;
         this.deathCount=-1;
+        this.warpCount=-1;
         
         Object.seal(this);
     }
@@ -75,7 +79,7 @@ export default class PlayerSideScrollClass extends SpriteClass
             return;
         }
         
-        this.invincibleCount=60;
+        this.invincibleCount=this.INVINCIBLE_TICK;
         this.alpha=0.25;
     }
     
@@ -89,7 +93,7 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.invincibleCount=-1;
         
         this.game.setData('player_health',0);
-        this.deathCount=60;
+        this.deathCount=this.DEATH_TICK;
     }
     
     interactWithSprite(interactSprite,dataObj)
@@ -108,9 +112,29 @@ export default class PlayerSideScrollClass extends SpriteClass
         }
     }
     
+    warpOut()
+    {
+        this.warpCount=this.WARP_TICK;
+        
+        this.gravityFactor=0.0;     // make sure we don't fall when warping
+    }
+    
     runAI()
     {
         let map=this.game.map;
+        
+            // warping?
+            
+        if (this.warpCount!==-1) {
+            this.warpCount--;
+            if (this.warpCount<=0) {
+                this.game.gotoMap('world_main');
+            }
+            else {
+                this.alpha=this.warpCount/this.WARP_TICK;
+            }
+            return;
+        }
         
             // dead?
 

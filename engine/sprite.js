@@ -19,6 +19,7 @@ export default class SpriteClass
         
         this.drawOffsetX=0;
         this.drawOffsetY=0;
+        this.drawFilter=null;
         
         this.gravityFactor=0.0;
         this.gravityMinValue=0;
@@ -272,9 +273,20 @@ export default class SpriteClass
         let x=(this.x+this.drawOffsetX)-offX;
         let y=((this.y-this.height)+this.drawOffsetY)-offY;
         
+            // clip anything offscreen
+            
         if ((x>=this.game.canvasWidth) || ((x+this.width)<=0)) return;
         if ((y>=this.game.canvasHeight) || ((y+this.height)<=0)) return;
         
+            // if there is a filter, draw with that
+            
+        if (this.drawFilter!==null) {
+            this.drawFilter.draw(ctx,this.currentImage,x,y,0.0);
+            return;
+        }
+        
+            // otherwise regular drawing
+            
         if (this.alpha!==1.0) {
             ctx.globalAlpha=this.alpha;
             ctx.drawImage(this.currentImage,x,y);

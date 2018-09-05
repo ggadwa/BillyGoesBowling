@@ -52,8 +52,8 @@ export default class PinClass extends SpriteClass
         
         this.delete();
         
-            // jump back to map
+            // warp out the player
             
-        this.game.gotoMap('world_main');
+        this.game.map.getSpritePlayer().warpOut();
     }
 }
