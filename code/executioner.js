@@ -1,4 +1,5 @@
 import SpriteClass from '../engine/sprite.js';
+import GrayFilterClass from '../filters/gray.js';
 import CloudBlockClass from './cloud_block.js';
 import BreakBlockStrongClass from '../code/break_block_strong.js';
 import BallClass from './ball.js';
@@ -29,14 +30,12 @@ export default class ExecutionerClass extends SpriteClass
         this.setCurrentImage('sprites/executioner_axe');
         this.setEditorImage('sprites/executioner_axe');
         
-        this.show=true;
+         this.show=false;            // start with it not shown, button starts it
         this.gravityFactor=0.15;
         this.gravityMinValue=3;
         this.gravityMaxValue=30;
         this.canCollide=true;
         this.canStandOn=true;
-        
-        this.show=false;            // start with it not shown, button starts it
         
         Object.seal(this);
     }
@@ -100,11 +99,15 @@ export default class ExecutionerClass extends SpriteClass
             if (!this.grounded) return;
             
             this.isDropping=false;
+            map.shake(10);
         }
         
             // dead, do nothig
             
-        if (this.isDead) return;
+        if (this.isDead) {
+            this.y+=1;
+            return;
+        }
         
             // always follow the player, but with
             // an acceleration
@@ -171,7 +174,8 @@ export default class ExecutionerClass extends SpriteClass
         if (this.y>=map.liquidY) {
             playerSprite.warpOut();
             this.isDead=true;
-            this.show=false;
+            this.gravityFactor=0.0;
+            this.drawFilter=new GrayFilterClass();
             this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,this.game.imageList.get('particles/skull'),30,2500);
         }
     }

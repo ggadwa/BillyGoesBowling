@@ -235,6 +235,8 @@ export default class ExecutionersCastleMapClass extends SideScrollBaseMapClass
     
     mapStartup()
     {
+        super.mapStartup();
+        
         this.liquidY=2016;
         this.liquidWaveHeight=10;
         this.liquidRTintFactor=1.0;

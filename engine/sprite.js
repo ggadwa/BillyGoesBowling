@@ -19,7 +19,8 @@ export default class SpriteClass
         
         this.drawOffsetX=0;
         this.drawOffsetY=0;
-        this.drawFilter=null;
+        this.drawFilter=null;                   // when the filter is non-null, it's a filter class that is used to draw the sprite instead of regular drawing
+        this.drawFilterAnimationFactor=1.0;     // this is an animation factor for any drawing, 0.0-1.0 from start to finish
         
         this.gravityFactor=0.0;
         this.gravityMinValue=0;
@@ -281,7 +282,7 @@ export default class SpriteClass
             // if there is a filter, draw with that
             
         if (this.drawFilter!==null) {
-            this.drawFilter.draw(ctx,this.currentImage,x,y,0.0);
+            this.drawFilter.draw(ctx,this.currentImage,x,y,this.drawFilterAnimationFactor);
             return;
         }
         

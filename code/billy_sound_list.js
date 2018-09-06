@@ -9,6 +9,7 @@ export default class BillySoundListClass extends SoundListClass
     
     create()
     {
+        this.add('click');
         this.add('crack');
         this.add('explode');
         this.add('pop');

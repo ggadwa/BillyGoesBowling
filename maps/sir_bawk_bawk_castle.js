@@ -262,6 +262,8 @@ export default class SirBawkBawkCastleMapClass extends SideScrollBaseMapClass
     
     mapStartup()
     {
+        super.mapStartup();
+        
         this.liquidY=1952;
         this.liquidWaveHeight=10;
         this.liquidRTintFactor=1.0;

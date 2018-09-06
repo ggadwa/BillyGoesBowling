@@ -319,8 +319,9 @@ export default class BuffetOfBlocksMapClass extends SideScrollBaseMapClass
     
     mapStartup()
     {
-        this.liquidY=928;
+        super.mapStartup();
         
+        this.liquidY=928;
         this.liquidRTintFactor=0.3;
         this.liquidGTintFactor=1.0;
         this.liquidBTintFactor=0.3;

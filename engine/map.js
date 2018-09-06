@@ -32,6 +32,8 @@ export default class MapClass
         this.toLiquidY=-1;
         this.liquidMoveSpeed=0;
         
+        this.shakeCount=-1;
+        
         this.tileData=null;             // tile data for map
         this.sprites=null;              // sprites in map
         
@@ -58,6 +60,8 @@ export default class MapClass
         this.sprites=this.createSprites.slice();
         
             // call all the sprite map enter
+        
+        this.playerIdx=-1;
         
         for (n=0;n!==this.sprites.length;n++) {
             sprite=this.sprites[n];
@@ -141,6 +145,17 @@ export default class MapClass
         return(list);
     }
     
+    getFirstSpriteOfType(typeClass)
+    {
+        let sprite;
+
+        for (sprite of this.sprites) {
+            if (sprite instanceof typeClass) return(sprite);
+        }
+        
+        return(null);
+    }
+    
     getFirstSpriteWithData(name,value)
     {
         let sprite;
@@ -161,6 +176,14 @@ export default class MapClass
     changeTile(x,y,tileIdx)
     {
         this.tileData[(y*this.MAP_TILE_WIDTH)+x]=tileIdx;
+    }
+    
+    shake(tickCount)
+    {
+        if (this.shakeCount!==-1) {
+            if (tickCount<this.shakeCount) return;
+        }
+        this.shakeCount=tickCount;
     }
     
     /**
@@ -552,6 +575,12 @@ export default class MapClass
             // get the map offsets
             
         this.calcOffset();
+        
+        if (this.shakeCount!==-1) {
+            this.shakeCount--;
+            
+            this.offsetY+=(5-(Math.random()*10));
+        }
         
             // draw size
             

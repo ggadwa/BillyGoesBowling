@@ -1,4 +1,5 @@
 import SpriteClass from '../engine/sprite.js';
+import SquishFilterClass from '../filters/squish.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
 
 export default class ButtonClass extends SpriteClass
@@ -7,9 +8,17 @@ export default class ButtonClass extends SpriteClass
     {
         super(game,x,y,data);
         
+            // constants
+            
+        this.SQUISH_TICK=5;
+        
+            // variables
+        
         this.addImage('sprites/button');
         this.setCurrentImage('sprites/button');
         this.setEditorImage('sprites/button');
+        
+        this.squishCount=-1;
         
         this.show=true;
         this.gravityFactor=0.2;
@@ -29,6 +38,10 @@ export default class ButtonClass extends SpriteClass
     interactWithSprite(interactSprite,dataObj)
     {
         let mode,sprite;
+        
+            // if squishing we can't step on again
+            
+        if (this.squishCount!==-1) return;
         
             // is button pushed (only if standing on it)
             
@@ -52,8 +65,30 @@ export default class ButtonClass extends SpriteClass
             this.game.map.moveLiquidTo(this.data.get('liquid_y'),this.data.get('liquid_move_speed'));
         }
         
-            // finish by deleting the button
+            // click sound
             
-        this.delete();
+        this.game.soundList.play('click');
+        
+            // start the squish
+            
+        this.squishCount=this.SQUISH_TICK;
+        this.drawFilter=new SquishFilterClass();
+        
+        this.canCollide=false;
+        this.canStandOn=false;
+    }
+    
+    runAI()
+    {
+            // squishing?
+            
+        if (this.squishCount===-1) return;
+        
+        this.drawFilterAnimationFactor=1.0-(this.squishCount/this.SQUISH_TICK);
+        this.squishCount--;
+        
+        if (this.squishCount<=0) {
+            this.delete();
+        }
     }
 }

@@ -187,8 +187,9 @@ export default class PlatformTroubledWatersMapClass extends SideScrollBaseMapCla
     
     mapStartup()
     {
-        this.liquidY=2032;
+        super.mapStartup();
         
+        this.liquidY=2032;
         this.liquidRTintFactor=0.3;
         this.liquidGTintFactor=1.0;
         this.liquidBTintFactor=0.3;

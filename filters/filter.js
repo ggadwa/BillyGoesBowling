@@ -1,6 +1,9 @@
-export default class FilterClass extends SideScrollBaseMapClass
+export default class FilterClass
 {
-    draw(ctx,img,x,y,animationPos)
+    /**
+     * Filters are classes that are used to create special ways to draw sprites.
+     */
+    draw(ctx,img,x,y,animationFactor)
     {
     }
 }

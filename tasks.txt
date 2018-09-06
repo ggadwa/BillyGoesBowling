@@ -1,12 +1,10 @@
 * particles need view culling
 * tick sound effect
 
-- map y is screwed up when going back into a map
+
 - MAP_TILE_WIDTH static on map when class fields exist
 
-
 - get rid of sprite.setPosition, etc
-
 - buttons with other modes
 - particles need to clip draw
 

@@ -42,6 +42,8 @@ export default class WorldBaseMapClass extends MapClass
     {
         let x,y,playerSprite;
         
+        this.game.setData('player_health',4);   // world map resets health
+        
             // spots record where the player went into a map
             // so we can reset position coming out
             

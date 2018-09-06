@@ -1,4 +1,5 @@
 import SpriteClass from '../engine/sprite.js';
+import WarpFilterClass from '../filters/warp.js';
 import BallClass from './ball.js';
 import CloudBlockClass from './cloud_block.js';
 import ButtonClass from './button.js';
@@ -24,7 +25,7 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.JUMP_HEIGHT=-40;
         this.DEATH_TICK=60;
         this.INVINCIBLE_TICK=60;
-        this.WARP_TICK=80;
+        this.WARP_TICK=60;
         
             // setup
             
@@ -115,6 +116,9 @@ export default class PlayerSideScrollClass extends SpriteClass
     warpOut()
     {
         this.warpCount=this.WARP_TICK;
+        this.drawFilter=new WarpFilterClass();
+        
+        this.game.map.getFirstSpriteOfType(BallClass).show=false;
         
         this.gravityFactor=0.0;     // make sure we don't fall when warping
     }
@@ -126,13 +130,9 @@ export default class PlayerSideScrollClass extends SpriteClass
             // warping?
             
         if (this.warpCount!==-1) {
+            this.drawFilterAnimationFactor=1.0-(this.warpCount/this.WARP_TICK);
             this.warpCount--;
-            if (this.warpCount<=0) {
-                this.game.gotoMap('world_main');
-            }
-            else {
-                this.alpha=this.warpCount/this.WARP_TICK;
-            }
+            if (this.warpCount<=0) this.game.gotoMap('world_main');
             return;
         }
         

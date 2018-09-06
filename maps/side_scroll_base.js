@@ -54,10 +54,7 @@ export default class SideScrollBaseMapClass extends MapClass
 
     mapStartup()
     {
-            // starting a side scrolling map resets the health
-            
-        this.game.setData('player_health',4);
-
+        this.game.setData('player_health',4);   // starting a side scrolling map resets the health
         this.resetOffsetY();
     }
     

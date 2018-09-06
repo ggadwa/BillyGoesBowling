@@ -155,8 +155,7 @@ export default class RainingCreepsMapClass extends SideScrollBaseMapClass
             new DoorClass(this.game,192,1664,new Map([])),
             new TrophyClass(this.game,128,1664,new Map([])),
             new PlayerSideScrollClass(this.game,576,1664,new Map([])),
-            //new PinClass(this.game,14656,1472,new Map([])),
-            new PinClass(this.game,650,1472,new Map([])),
+            new PinClass(this.game,14656,1472,new Map([])),
             new ExplodeBlockClass(this.game,1408,1536,new Map([])),
             new ExplodeBlockClass(this.game,1408,1472,new Map([])),
             new ExplodeBlockClass(this.game,1408,1408,new Map([])),
@@ -257,8 +256,9 @@ export default class RainingCreepsMapClass extends SideScrollBaseMapClass
     
     mapStartup()
     {
-        this.liquidY=1744;
+        super.mapStartup();
         
+        this.liquidY=1744;
         this.liquidRTintFactor=0.3;
         this.liquidGTintFactor=1.0;
         this.liquidBTintFactor=0.3;

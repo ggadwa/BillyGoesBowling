@@ -205,8 +205,9 @@ export default class SurfsDownMapClass extends SideScrollBaseMapClass
     
     mapStartup()
     {
-        this.liquidY=992;
+        super.mapStartup();
         
+        this.liquidY=992;
         this.liquidRTintFactor=0.3;
         this.liquidGTintFactor=1.0;
         this.liquidBTintFactor=0.3;
