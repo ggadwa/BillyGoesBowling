@@ -37,7 +37,7 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.setEditorImage('sprites/billy_right');
         
         this.show=true;
-        this.gravityFactor=0.12;
+        this.gravityFactor=0.14;
         this.gravityMinValue=3;
         this.gravityMaxValue=25;
         this.canCollide=true;
@@ -121,6 +121,7 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.game.map.getFirstSpriteOfType(BallClass).show=false;
         
         this.gravityFactor=0.0;     // make sure we don't fall when warping
+        this.motion.y=0;
     }
     
     runAI()

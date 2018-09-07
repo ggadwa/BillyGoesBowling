@@ -53,6 +53,7 @@ export default class CloudBlockClass extends SpriteClass
         if (this.show) {
             this.show=false;
             this.countDown=this.REAPPEAR_TICK;
+            this.game.soundList.play('pop');
             return;
         }
         

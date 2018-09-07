@@ -1,3 +1,4 @@
+import ParallaxBackgroundClass from './parallax_background.js';
 import SpriteClass from './sprite.js';
 import ParticleClass from './particle.js';
 
@@ -21,6 +22,8 @@ export default class MapClass
         
         this.offsetX=0;
         this.offsetY=0;
+        
+        this.parallaxBackgrounds=[];
         
         this.liquidY=-1;                 // liquid settings of map (-1 for no liquid)
         this.liquidWaveHeight=5;
@@ -85,6 +88,10 @@ export default class MapClass
                 }
             }
         }
+        
+            // clear any backgrouns
+            
+        this.parallaxBackgrounds=[];
 
             // call any custom map startup
             
@@ -184,6 +191,17 @@ export default class MapClass
             if (tickCount<this.shakeCount) return;
         }
         this.shakeCount=tickCount;
+    }
+    
+    /**
+     * Adds a single parallax background image to this map, to be drawn
+     * in add order.  Y is the y offset to draw at, and xFactor is how it moves
+     * along with the horizontal movement.  0.0 is no movement, 1.0 is movement
+     * at the same speed
+     */
+    addParallaxBackground(img,y,xFactor)
+    {
+        this.parallaxBackgrounds.push(new ParallaxBackgroundClass(img,y,xFactor));
     }
     
     /**
@@ -569,7 +587,7 @@ export default class MapClass
     {
         let x,y;
         let lx,rx,ty,by;
-        let tile,sprite,particle;
+        let parallaxBackground,tile,sprite,particle;
         let tilePerWidth,tilePerHeight;
         
             // get the map offsets
@@ -580,6 +598,12 @@ export default class MapClass
             this.shakeCount--;
             
             this.offsetY+=(5-(Math.random()*10));
+        }
+        
+            // backgrounds
+            
+        for (parallaxBackground of this.parallaxBackgrounds) {
+            parallaxBackground.draw(ctx,this.offsetX);
         }
         
             // draw size

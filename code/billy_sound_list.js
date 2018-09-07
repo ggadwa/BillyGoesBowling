@@ -13,6 +13,7 @@ export default class BillySoundListClass extends SoundListClass
         this.add('crack');
         this.add('explode');
         this.add('pop');
+        this.add('boing');
     }
     
 }

@@ -60,6 +60,7 @@ export default class NinjaBunnyClass extends SpriteClass
             // ball destroys bunny
             
         if (interactSprite instanceof BallClass) {
+            this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,128,0.8,0.01,0,0,this.game.imageList.get('particles/skull'),1,500);
             this.delete();
         }
         

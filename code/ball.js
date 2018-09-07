@@ -42,6 +42,7 @@ export default class BallClass extends SpriteClass
         this.gravityMaxValue=0;
         this.canCollide=false;
         this.canStandOn=false;
+        this.canRiseBlock=false;
         
         Object.seal(this);
     }
@@ -146,7 +147,7 @@ export default class BallClass extends SpriteClass
         
         this.setPosition(x,y);
             
-        if ((this.travelMode===this.TRAVEL_MODE_BOWL_ACROSS) || (this.travelMode===this.TRAVEL_MODE_SLAM_DOWN)) {
+        if ((this.travelMode===this.TRAVEL_MODE_BOWL_ACROSS) || (this.travelMode===this.TRAVEL_MODE_SLAM_UP) || (this.travelMode===this.TRAVEL_MODE_SLAM_DOWN)) {
             if (map.checkCollision(this)) {
                 
                     // colliding with map, return ball

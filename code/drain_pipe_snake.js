@@ -48,6 +48,7 @@ export default class DrainPipeSnakeClass extends SpriteClass
                 this.setCurrentImage((this.snakeDirection===1)?'sprites/drain_pipe_snake_free_right':'sprites/drain_pipe_snake_free_left');
             }
             else {
+                this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,128,0.8,0.01,0,0,this.game.imageList.get('particles/skull'),1,500);
                 this.delete();
             }
         }

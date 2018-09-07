@@ -41,6 +41,7 @@ export default class SpringClass extends SpriteClass
             // jump up
             
         interactSprite.motion.y=this.SPRING_HEIGHT;
+        this.game.soundList.play('boing');
     }
     
     runAI()
