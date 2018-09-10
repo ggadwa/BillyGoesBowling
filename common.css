@@ -12,6 +12,10 @@
 
 /* editor */
 
+.editorBody {
+    overflow: hidden;
+}
+
 .editorToolBar {
     position: absolute;
     top: 0px;
@@ -45,45 +49,22 @@
     background-color: #CCCCFF;
 }
 
-.editorSpritePaletteWrapper {
-    position: absolute;
-    top: 35px;
-    left: 0px;
-    width: 147px;
-    height: calc(100% - 35px);
-    overflow-x: hidden;
-    overflow-y: scroll;
-    box-sizing: border-box;
-    border: 1px solid #000000;
-}
-
-.editorMapWrapper {
-    position: absolute;
-    top: 35px;
-    left: 147px;
-    width: calc(100% - 358px);
-    height: calc(100% - 35px);
-    overflow: scroll;
-    box-sizing: border-box;
-    border: 1px solid #000000;
-}
-
-.editorTilePaletteWrapper {
-    position: absolute;
-    top: 35px;
-    left: calc(100% - 211px);
-    width: 211px;
-    height: calc(100% - 35px);
-    overflow-x: hidden;
-    overflow-y: scroll;
-    box-sizing: border-box;
-    border: 1px solid #000000;
-}
-
-.editorSpritePaletteCanvas, .editorMapCanvas, .editorTilePaletteCanvas {
+.editorSpritePaletteCanvas {
     position: absolute;
     left: 0px;
-    top: 0px;
+    top: 35px;
+}
+
+.editorMapCanvas {
+    position: absolute;
+    left: 192px;
+    top: 35px;
+}
+
+.editorTilePaletteCanvas {
+    position: absolute;
+    left: 0px;
+    top: 675px;
 }
 
 .editorCompile {

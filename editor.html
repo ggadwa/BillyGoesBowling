@@ -18,7 +18,7 @@
 
 </head>
 
-<body>
+<body class="editorBody">
 
 <div id="editorToolBar" class="editorToolBar">
     <div id="mapUpButton" class="editorToolButton">Map Up</div>
@@ -29,17 +29,9 @@
     <div id="compileButton" class="editorToolButtonRight">Compile</div>
 </div>
 
-<div id="editorSpritePaletteWrapper" class="editorSpritePaletteWrapper">
-    <canvas id="editorSpritePaletteCanvas" class="editorSpritePaletteCanvas" width="128" height="4096"></canvas>
-</div>
-
-<div id="editorMapWrapper" class="editorMapWrapper">
-    <canvas id="editorMapCanvas" class="editorMapCanvas" width="16384" height="8192"></canvas>
-</div>
-    
-<div id="editorTilePaletteWrapper" class="editorTilePaletteWrapper">
-    <canvas id="editorTilePaletteCanvas" class="editorTilePaletteCanvas" width="192" height="4096"></canvas>
-</div>
+<canvas id="editorSpritePaletteCanvas" class="editorSpritePaletteCanvas" width="192" height="640"></canvas>
+<canvas id="editorMapCanvas" class="editorMapCanvas" width="1344" height="640"></canvas>
+<canvas id="editorTilePaletteCanvas" class="editorTilePaletteCanvas" width="1536" height="192"></canvas>
 
 <div id="editorCompile" class="editorCompile" style="display:none">
     <textarea id="editorCompileText" class="editorCompileText" rows="25" cols="45" spellcheck="false" wrap="off" readonly></textarea>

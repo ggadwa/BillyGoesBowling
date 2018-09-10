@@ -1,7 +1,8 @@
 * particles need view culling
 * tick sound effect
 
-
+- fix executioner jump
+- jumping up needs to scroll faster
 - MAP_TILE_WIDTH static on map when class fields exist
 
 - get rid of sprite.setPosition, etc

@@ -9,7 +9,6 @@ export default class EditorClass
         this.MAP_TILE_HEIGHT=128;
         this.MAP_TILE_SIZE=64;
         
-        this.mapWrapper=null;
         this.mapCanvas=null;
         this.mapCTX=null;
         
@@ -27,6 +26,16 @@ export default class EditorClass
         this.paletteSelType=this.PALETTE_TILE;
         this.paletteSelIndex=-1;
         
+        this.offsetX=0;
+        this.offsetY=0;
+        
+        this.spaceDown=false;
+        this.inDrag=false;
+        this.dragOriginalOffsetX=0;
+        this.dragOriginalOffsetY=0;
+        this.dragStartX=-1;
+        this.dragStartY=-1;
+        
         this.canvasMouseDown=false;
         
         Object.seal(this);
@@ -36,14 +45,15 @@ export default class EditorClass
     {
             // canvas and contextes
             
-        this.mapWrapper=document.getElementById('editorMapWrapper');
-        this.mapWrapper.onscroll=this.drawMapCanvas.bind(this);         // scrolling needs to redraw the canvas as we only draw the viewport
-            
         this.mapCanvas=document.getElementById('editorMapCanvas');
         this.mapCanvas.onmousedown=this.leftMouseDownMapCanvas.bind(this);
         this.mapCanvas.onmousemove=this.leftMouseMoveMapCanvas.bind(this);
         this.mapCanvas.onmouseup=this.leftMouseUpMapCanvas.bind(this);
         this.mapCanvas.onmouseout=this.leftMouseUpMapCanvas.bind(this);     // mouse out forces a mouse up
+        this.mapCanvas.onwheel=this.wheelMapCanvas.bind(this);
+        
+        document.onkeydown=this.keyDownMapCanvas.bind(this);                // need to be on document
+        document.onkeyup=this.keyUpMapCanvas.bind(this);
         
         this.mapCanvas.oncontextmenu=this.rightClickMapCanvas.bind(this);
         this.mapCTX=this.mapCanvas.getContext('2d');
@@ -55,6 +65,11 @@ export default class EditorClass
         this.spritePaletteCanvas=document.getElementById('editorSpritePaletteCanvas');
         this.spritePaletteCanvas.onclick=this.clickSpritePaletteCanvas.bind(this);
         this.spritePaletteCTX=this.spritePaletteCanvas.getContext('2d');
+        
+            // current map offset
+            
+        this.offsetX=0;
+        this.offsetY=0;
         
             // initialize the map list
             
@@ -110,36 +125,30 @@ export default class EditorClass
     drawMapCanvas()
     {
         let x,y,dx,dy,tileIdx,sprite;
-        let lx,rx,ty,by,textOffset,boundRect;
-        let img,lft,rgt,top,bot;
+        let lx,rx,ty,by,textOffset;
+        let img;
         let ctx=this.mapCTX;
         let tiles=this.game.tileImageList;
         
-            // get the viewport to draw into
+            // get the tile draw viewport
             
-        boundRect=this.mapWrapper.getBoundingClientRect();
-        
-        lx=Math.trunc(this.mapWrapper.scrollLeft/this.MAP_TILE_SIZE)-1;
-        if (lx<0) lx=0;
-        rx=Math.trunc((this.mapWrapper.scrollLeft+boundRect.width)/this.MAP_TILE_SIZE)+1;
-        if (rx>this.MAP_TILE_WIDTH) rx=this.MAP_TILE_WIDTH;
-        
-        ty=Math.trunc(this.mapWrapper.scrollTop/this.MAP_TILE_SIZE)-1;
-        if (ty<0) ty=0;
-        by=Math.trunc((this.mapWrapper.scrollTop+boundRect.height)/this.MAP_TILE_SIZE)+1;
-        if (by>this.MAP_TILE_HEIGHT) by=this.MAP_TILE_HEIGHT;
+        lx=this.offsetX;
+        rx=lx+Math.trunc(this.mapCanvas.width/this.MAP_TILE_SIZE);
+            
+        ty=this.offsetY;
+        by=ty+Math.trunc(this.mapCanvas.height/this.MAP_TILE_SIZE);
         
             // clear
             
-        ctx.fillStyle='#EEEEEE';
-        ctx.fillRect(this.mapWrapper.scrollLeft,this.mapWrapper.scrollTop,boundRect.width,boundRect.height);
+        ctx.fillStyle='#FFFFFF';
+        ctx.fillRect(0,0,this.mapCanvas.width,this.mapCanvas.height);
         
             // tiles
 
         for (y=ty;y!==by;y++) {
             for (x=lx;x!==rx;x++) {
                 tileIdx=this.map.tileData[(y*this.MAP_TILE_WIDTH)+x]-1;
-                if (tileIdx!==-1) ctx.drawImage(tiles[tileIdx],(x*this.MAP_TILE_SIZE),(y*this.MAP_TILE_SIZE));
+                if (tileIdx!==-1) ctx.drawImage(tiles[tileIdx],((x-lx)*this.MAP_TILE_SIZE),((y-ty)*this.MAP_TILE_SIZE));
             }
         }
         
@@ -156,7 +165,7 @@ export default class EditorClass
             if (dy>(by*this.MAP_TILE_SIZE)) continue;
             if ((dy+img.height)<(ty*this.MAP_TILE_SIZE)) continue;
             
-            ctx.drawImage(img,dx,dy);
+            ctx.drawImage(img,(dx-(lx*this.MAP_TILE_SIZE)),(dy-(ty*this.MAP_TILE_SIZE)));
         }
 
             // grid
@@ -164,26 +173,22 @@ export default class EditorClass
         ctx.strokeStyle='#CCCCCC';
         ctx.setLineDash([2,2]);
             
-        lft=this.mapWrapper.scrollLeft;
-        rgt=lft+boundRect.width;
-        dy=ty*this.MAP_TILE_SIZE;
+        dy=0;
         
         for (y=ty;y!==by;y++) {
             ctx.beginPath();
-            ctx.moveTo(lft,dy);
-            ctx.lineTo(rgt,dy);
+            ctx.moveTo(0,dy);
+            ctx.lineTo(this.mapCanvas.width,dy);
             ctx.stroke();
             dy+=this.MAP_TILE_SIZE;
         }
             
-        top=this.mapWrapper.scrollTop;
-        bot=top+boundRect.height;
-        dx=lx*this.MAP_TILE_SIZE;
+        dx=0;
             
         for (x=lx;x!==rx;x++) {
             ctx.beginPath();
-            ctx.moveTo(dx,top);
-            ctx.lineTo(dx,bot);
+            ctx.moveTo(dx,0);
+            ctx.lineTo(dx,this.mapCanvas.height);
             ctx.stroke();
             dx+=this.MAP_TILE_SIZE;
         }
@@ -200,20 +205,25 @@ export default class EditorClass
 
         textOffset=Math.trunc(this.MAP_TILE_SIZE*0.5);
         
-        dy=this.mapWrapper.scrollTop+15;
+        dy=15;
         
         for (x=lx;x!==rx;x++) {
-            ctx.fillText((''+x),((x*this.MAP_TILE_SIZE)+textOffset),dy);
+            ctx.fillText((''+x),(((x-lx)*this.MAP_TILE_SIZE)+textOffset),dy);
         }
         
         ctx.textAlign='left';
         ctx.textBaseline='middle';
 
-        dx=this.mapWrapper.scrollLeft+5;
+        dx=5;
         
         for (y=ty;y!==by;y++) {
-            ctx.fillText((''+y),dx,((y*this.MAP_TILE_SIZE)+textOffset));
+            ctx.fillText((''+y),dx,(((y-ty)*this.MAP_TILE_SIZE)+textOffset));
         }
+       
+            // borders
+            
+        ctx.strokeStyle='#000000';
+        ctx.strokeRect(0,0,(this.mapCanvas.width-1),(this.mapCanvas.height-1));
     }
     
     drawTilePaletteCanvas()
@@ -365,7 +375,7 @@ export default class EditorClass
     setSpot(x,y,idx)
     {
         let spriteIdx;
-
+        
         if (this.paletteSelIndex===-1) return;
         
         switch (this.paletteSelType) {
@@ -390,8 +400,8 @@ export default class EditorClass
     leftClickMapCanvas(event)
     {
         let wid=this.mapCanvas.width;
-        let x=Math.trunc(event.offsetX/this.MAP_TILE_SIZE);
-        let y=Math.trunc(event.offsetY/this.MAP_TILE_SIZE);
+        let x=this.offsetX+Math.trunc(event.offsetX/this.MAP_TILE_SIZE);
+        let y=this.offsetY+Math.trunc(event.offsetY/this.MAP_TILE_SIZE);
         let idx=x+(y*Math.trunc(wid/this.MAP_TILE_SIZE));
         
         event.stopPropagation();
@@ -410,15 +420,58 @@ export default class EditorClass
     leftMouseDownMapCanvas(event)
     {
         this.canvasMouseDown=true;
+        
+            // if space is down, we are starting a drag
+            
+        if (this.spaceDown) {
+            this.inDrag=true;
+            this.dragStartX=-1;
+            this.dragStartY=-1;
+        }
+        
+            // otherwise we are clicking and item
+            
         this.leftMouseMoveMapCanvas(event);
     }
     
     leftMouseMoveMapCanvas(event)
     {
-        let wid=this.mapCanvas.width;
-        let x=Math.trunc(event.offsetX/this.MAP_TILE_SIZE);
-        let y=Math.trunc(event.offsetY/this.MAP_TILE_SIZE);
-        let idx=x+(y*Math.trunc(wid/this.MAP_TILE_SIZE));
+        let x,y,max,idx;
+        
+            // are we in a drag?
+            
+        if (this.inDrag) {
+                
+                // first time through
+                
+            if (this.dragStartX===-1) {
+                this.dragStartX=event.offsetX;
+                this.dragStartY=event.offsetY;
+                this.dragOriginalOffsetX=this.offsetX;
+                this.dragOriginalOffsetY=this.offsetY;
+                return;
+            }
+            
+                // otherwise start dragging
+                
+            x=this.dragOriginalOffsetX+Math.trunc((this.dragStartX-event.offsetX)/this.MAP_TILE_SIZE);
+            if (x<0) x=0;
+            max=this.MAP_TILE_WIDTH-Math.trunc(this.mapCanvas.width/this.MAP_TILE_SIZE);
+            if (x>max) x=max;
+            
+            y=this.dragOriginalOffsetY+Math.trunc((this.dragStartY-event.offsetY)/this.MAP_TILE_SIZE);
+            if (y<0) y=0;
+            max=this.MAP_TILE_HEIGHT-Math.trunc(this.mapCanvas.height/this.MAP_TILE_SIZE);
+            if (y>max) y=max;
+            
+            if ((x===this.offsetX) && (y===this.offsetY)) return;
+            
+            this.offsetX=x;
+            this.offsetY=y;
+            
+            this.drawMapCanvas();
+            return;
+        }
         
             // as long as the mouse is down, fill
             // in grid spots
@@ -428,6 +481,10 @@ export default class EditorClass
         event.stopPropagation();
         event.preventDefault();
         
+        x=this.offsetX+Math.trunc(event.offsetX/this.MAP_TILE_SIZE);
+        y=this.offsetY+Math.trunc(event.offsetY/this.MAP_TILE_SIZE);
+        idx=x+(y*this.MAP_TILE_WIDTH);
+        
         if (event.ctrlKey) {
             this.clearSpot(x,y,idx);
         }
@@ -435,19 +492,40 @@ export default class EditorClass
             this.setSpot(x,y,idx);
         }
         
-        this.drawMapCanvas();        
+        this.drawMapCanvas();
+    }
+    
+    wheelMapCanvas(event)
+    {
+        let x,y,max;
+        
+        x=this.offsetX+Math.sign(event.deltaX);
+        if (x<0) x=0;
+        max=this.MAP_TILE_WIDTH-Math.trunc(this.mapCanvas.width/this.MAP_TILE_SIZE);
+        if (x>max) x=max;
+        
+        y=this.offsetY+Math.sign(event.deltaY);
+        if (y<0) y=0;
+        max=this.MAP_TILE_HEIGHT-Math.trunc(this.mapCanvas.height/this.MAP_TILE_SIZE);
+        if (y>max) y=max;
+        
+        this.offsetX=x;
+        this.offsetY=y;
+        
+        this.drawMapCanvas();
     }
     
     leftMouseUpMapCanvas(event)
     {
         this.canvasMouseDown=false;
+        this.inDrag=false;
     }
     
     rightClickMapCanvas(event)
     {
         let spriteIdx;
-        let x=Math.trunc(event.offsetX/this.MAP_TILE_SIZE);
-        let y=Math.trunc(event.offsetY/this.MAP_TILE_SIZE);
+        let x=this.offsetX+Math.trunc(event.offsetX/this.MAP_TILE_SIZE);
+        let y=this.offsetY+Math.trunc(event.offsetY/this.MAP_TILE_SIZE);
         
         event.stopPropagation();
         event.preventDefault();
@@ -496,6 +574,26 @@ export default class EditorClass
         
         this.drawTilePaletteCanvas();
         this.drawSpritePaletteCanvas();
+    }
+    
+        //
+        // keys
+        //
+        
+    keyDownMapCanvas(event)
+    {
+        if ((event.keyCode===32) && (!this.spaceDown)) {
+            this.spaceDown=true;
+            this.mapCanvas.style.cursor='grab';
+        }
+    }
+    
+    keyUpMapCanvas(event)
+    {
+        if (event.keyCode===32) {
+            this.spaceDown=false;
+            this.mapCanvas.style.cursor='default';
+        }
     }
     
         //
