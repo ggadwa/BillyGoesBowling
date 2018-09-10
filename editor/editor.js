@@ -111,10 +111,10 @@ export default class EditorClass
     {
         let x,y,dx,dy,tileIdx,sprite;
         let lx,rx,ty,by,textOffset,boundRect;
-        let img,rgt,bot;
+        let img,lft,rgt,top,bot;
         let ctx=this.mapCTX;
         let tiles=this.game.tileImageList;
- 
+        
             // get the viewport to draw into
             
         boundRect=this.mapWrapper.getBoundingClientRect();
@@ -135,7 +135,7 @@ export default class EditorClass
         ctx.fillRect(this.mapWrapper.scrollLeft,this.mapWrapper.scrollTop,boundRect.width,boundRect.height);
         
             // tiles
-            
+
         for (y=ty;y!==by;y++) {
             for (x=lx;x!==rx;x++) {
                 tileIdx=this.map.tileData[(y*this.MAP_TILE_WIDTH)+x]-1;
@@ -158,29 +158,31 @@ export default class EditorClass
             
             ctx.drawImage(img,dx,dy);
         }
-        
+
             // grid
             
         ctx.strokeStyle='#CCCCCC';
         ctx.setLineDash([2,2]);
             
-        dy=0;
-        rgt=this.MAP_TILE_WIDTH*this.MAP_TILE_SIZE;
+        lft=this.mapWrapper.scrollLeft;
+        rgt=lft+boundRect.width;
+        dy=ty*this.MAP_TILE_SIZE;
         
-        for (y=0;y!==this.MAP_TILE_HEIGHT;y++) {
+        for (y=ty;y!==by;y++) {
             ctx.beginPath();
-            ctx.moveTo(0,dy);
+            ctx.moveTo(lft,dy);
             ctx.lineTo(rgt,dy);
             ctx.stroke();
             dy+=this.MAP_TILE_SIZE;
         }
             
-        dx=0;
-        bot=this.MAP_TILE_HEIGHT*this.MAP_TILE_SIZE;
+        top=this.mapWrapper.scrollTop;
+        bot=top+boundRect.height;
+        dx=lx*this.MAP_TILE_SIZE;
             
-        for (x=0;x!==this.MAP_TILE_WIDTH;x++) {
+        for (x=lx;x!==rx;x++) {
             ctx.beginPath();
-            ctx.moveTo(dx,0);
+            ctx.moveTo(dx,top);
             ctx.lineTo(dx,bot);
             ctx.stroke();
             dx+=this.MAP_TILE_SIZE;
@@ -188,7 +190,7 @@ export default class EditorClass
         
         ctx.strokeStyle='#000000';
         ctx.setLineDash([]);
-        
+
             // cell numbers
 
         ctx.font='16px Arial';

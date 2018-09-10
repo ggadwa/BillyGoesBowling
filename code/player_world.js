@@ -21,6 +21,8 @@ export default class PlayerWorldClass extends SpriteClass
         this.TILE_IDX_BRIDGE_HORIZONTAL=39;
         this.TILE_IDX_BRIDGE_VERTICAL=42;
         this.TILE_IDX_GATE=53;
+        this.TILE_IDX_LEFT_T=55;
+        this.TILE_IDX_UP_T=56;
         
             // setup
             
@@ -76,6 +78,8 @@ export default class PlayerWorldClass extends SpriteClass
     isTileIdxRoad(tileIdx)
     {
         if (tileIdx===this.TILE_IDX_CROSS) return(true);
+        if (tileIdx===this.TILE_IDX_LEFT_T) return(true);
+        if (tileIdx===this.TILE_IDX_UP_T) return(true);
         if (tileIdx===this.TILE_IDX_DOT) return(true);
         if (tileIdx===this.TILE_IDX_ROAD_HORIZONTAL) return(true);
         if (tileIdx===this.TILE_IDX_ROAD_VERTICAL) return(true);
@@ -164,6 +168,8 @@ export default class PlayerWorldClass extends SpriteClass
         switch (tileIdx) {
             
             case this.TILE_IDX_CROSS:
+            case this.TILE_IDX_LEFT_T:
+            case this.TILE_IDX_UP_T:
             case this.TILE_IDX_DOT:
                 this.moving=false;
                 break;

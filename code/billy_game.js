@@ -26,6 +26,7 @@ import RotoCarrotClass from './roto_carrot.js';
 import EasterHeadClass from './easter_head.js';
 import ExecutionerClass from './executioner.js';
 import SirBawkBawkClass from './sir_bawk_bawk.js';
+import BoneyOneEyeClass from './boney_one_eye.js';
 
 export default class BillyGameClass extends GameClass
 {
@@ -73,6 +74,7 @@ export default class BillyGameClass extends GameClass
             new EasterHeadClass(this,0,0,null),
             new ExecutionerClass(this,0,0,null),
             new SirBawkBawkClass(this,0,0,null),
+            new BoneyOneEyeClass(this,0,0,null),
             new MapSpotClass(this,0,0,null),
             new MapCastleClass(this,0,0,null)
         ]);
@@ -80,7 +82,7 @@ export default class BillyGameClass extends GameClass
    
     getStartMap()
     {
-        return(this.mapList.get('world_main'));
+        //return(this.mapList.get('world_main'));
         //return(this.mapList.get('snakes_on_a_plain'));
         //return(this.mapList.get('apocalypse_carrot'));
         //return(this.mapList.get('buffet_of_blocks'));
@@ -96,6 +98,8 @@ export default class BillyGameClass extends GameClass
         //return(this.mapList.get('puzzling_blocks'));
         //return(this.mapList.get('ninja_jail'));
         //return(this.mapList.get('sir_bawk_bawk_castle'));
+        
+        return(this.mapList.get('boney_one_eye_castle'));
 
     }
     

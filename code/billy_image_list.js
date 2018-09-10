@@ -79,9 +79,12 @@ export default class BillyImageListClass extends ImageListClass
         this.add('tiles/world_mountain');
         this.add('tiles/world_road_curve_bottom_right');
         
-        this.add('tiles/world_water_1');
+        this.add('tiles/world_water');
         this.add('tiles/world_gate');
         this.add('tiles/arrow_down');
+        
+        this.add('tiles/world_left_t');
+        this.add('tiles/world_up_t');
         
             // sprites
             
@@ -120,8 +123,8 @@ export default class BillyImageListClass extends ImageListClass
         
         this.add('sprites/executioner_axe');
         this.add('sprites/axe');
-        
         this.add('sprites/bawk_bawk');
+        this.add('sprites/boney_one_eye');
         
         this.add('particles/block');
         this.add('particles/explode_block');
