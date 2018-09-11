@@ -1,13 +1,9 @@
-* particles need view culling
-* tick sound effect
 
-- fix executioner jump
-- jumping up needs to scroll faster
+- tick sound effect
 - MAP_TILE_WIDTH static on map when class fields exist
-
 - get rid of sprite.setPosition, etc
 - buttons with other modes
-- particles need to clip draw
+- need backgrounds for score stuff on world map
 
 
 

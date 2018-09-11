@@ -63,10 +63,17 @@ export default class ParticleClass
         movement=tick*this.moveFactor;
             
         for (n=0;n!==this.count;n++) {
-            dx=((this.x+Math.trunc(this.xs[n]*movement))-this.middleOffsetX)-offX;
-            dy=((this.y+Math.trunc(this.ys[n]*movement))-this.middleOffsetY)-offY;
+            dx=(((this.x+Math.trunc(this.xs[n]*movement))-this.middleOffsetX)-offX)-halfSize;
+            dy=(((this.y+Math.trunc(this.ys[n]*movement))-this.middleOffsetY)-offY)-halfSize;
             
-            ctx.drawImage(this.image,(dx-halfSize),(dy-halfSize),sz,sz);
+                // clip anything offscreen
+            
+            if ((dx>=this.game.canvasWidth) || ((dx+sz)<=0)) continue;
+            if ((dy>=this.game.canvasHeight) || ((dy+sz)<=0)) continue;
+
+                // draw particle
+                
+            ctx.drawImage(this.image,dx,dy,sz,sz);
         }
         
         ctx.globalAlpha=1.0;

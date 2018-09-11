@@ -15,7 +15,7 @@ export default class SideScrollBaseMapClass extends MapClass
     calcOffset()
     {
         let sprite;
-        let offX,offY,playerY,playerDoubleHigh;
+        let offX,offY,playerY;
         let wid=this.game.canvasWidth;
         let rgt=this.game.map.width-wid;
         let high=this.game.canvasHeight;
@@ -33,10 +33,10 @@ export default class SideScrollBaseMapClass extends MapClass
             // we only change the current
             // map Y if the player gets too close to edges
           
-        playerY=sprite.y-Math.trunc(high*this.PLAYER_NATURAL_MAP_HEIGHT_OFFSET);
-        playerDoubleHigh=sprite.height*2;
+        playerY=sprite.y-(sprite.height*2);
+        if (playerY<this.currentMapY) this.currentMapY=playerY;
         
-        if ((playerY-sprite.height)<(this.currentMapY-(high-playerDoubleHigh))) this.currentMapY-=10;
+        playerY=sprite.y-Math.trunc(high*this.PLAYER_NATURAL_MAP_HEIGHT_OFFSET);
         if (playerY>this.currentMapY) this.currentMapY=playerY;
         
         offY=this.currentMapY;

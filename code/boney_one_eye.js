@@ -11,12 +11,13 @@ export default class BoneyOneEyeClass extends SpriteClass
     {
         super(game,x,y,data);
         
-        this.FIRE_TICK=40;
+        this.FIRE_TICK=55;
         
             // variables
             
         this.fireWait=0;
         this.isDropping=true;
+        this.isFalling=false;
         this.isDead=false;
         
             // setup
@@ -54,13 +55,14 @@ export default class BoneyOneEyeClass extends SpriteClass
             // are we at the next launch position
             
         x=this.x+Math.trunc(this.width*0.6);
-        y=this.y-Math.trunc(this.height*0.7);
+        y=this.y-Math.trunc(this.height*0.5);
         
         this.game.map.addSprite(new EyeClass(this.game,x,y,null));
     }
     
     runAI()
     {
+        let sprite,sprites;
         let map=this.game.map;
         let playerSprite=map.getSpritePlayer();
         
@@ -72,6 +74,8 @@ export default class BoneyOneEyeClass extends SpriteClass
             if (!this.grounded) return;
             
             this.isDropping=false;
+            this.isFalling=false;
+            
             map.shake(10);
         }
         
@@ -90,6 +94,34 @@ export default class BoneyOneEyeClass extends SpriteClass
             this.gravityFactor=0.0;
             this.drawFilter=new GrayFilterClass();
             this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,this.game.imageList.get('particles/skull'),30,2500);
+        }
+        
+            // special check if we are falling
+            // after breaking blocks
+            
+        if (!this.isFalling) {
+            this.isFalling=!this.grounded;
+        }
+        else {
+            if (this.grounded) {
+                this.isFalling=false;
+                map.shake(4);
+            }
+        }
+        
+            // stand on clouds?  If so break all clouds
+            // around him to fall into liquid
+            
+        //map.checkCollisionStand(this,32);
+        
+        if (this.standSprite!==null) {
+            if (this.standSprite instanceof CloudBlockClass) {
+                sprites=map.getSpritesWithinBox((this.x-32),(this.y-32),((this.x+this.width)+32),(this.y+64),this,CloudBlockClass);
+
+                for (sprite of sprites) {
+                    sprite.interactWithSprite(this,null);
+                }
+            }
         }
         
             // time to fire?

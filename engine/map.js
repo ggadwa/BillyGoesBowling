@@ -461,7 +461,6 @@ export default class MapClass
             
         for (sprite of this.sprites) {
             if (!sprite.show) continue;
-            if (!sprite.canCollide) continue;
 
             if (ignoreSprite!==null) {
                 if (sprite===ignoreSprite) continue;

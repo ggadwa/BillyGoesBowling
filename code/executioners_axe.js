@@ -23,6 +23,7 @@ export default class ExecutionersAxeClass extends SpriteClass
         this.gravityMaxValue=0;
         this.canCollide=false;
         this.canStandOn=false;
+        this.canRiseBlock=false;        // so execution doesn't hit own axe
         
         Object.seal(this);
     }

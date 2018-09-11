@@ -87,7 +87,7 @@ export default class BillyGameClass extends GameClass
         //return(this.mapList.get('apocalypse_carrot'));
         //return(this.mapList.get('buffet_of_blocks'));
         //return(this.mapList.get('hills_ninja_bunnies'));
-        //return(this.mapList.get('executioners_castle'));
+        return(this.mapList.get('executioners_castle'));
         //return(this.mapList.get('heads_up'));
         //return(this.mapList.get('platform_troubled_waters'));
         //return(this.mapList.get('surfs_up'));
@@ -99,7 +99,7 @@ export default class BillyGameClass extends GameClass
         //return(this.mapList.get('ninja_jail'));
         //return(this.mapList.get('sir_bawk_bawk_castle'));
         
-        return(this.mapList.get('boney_one_eye_castle'));
+        //return(this.mapList.get('boney_one_eye_castle'));
 
     }
     

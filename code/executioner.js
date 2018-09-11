@@ -134,9 +134,8 @@ export default class ExecutionerClass extends SpriteClass
         
         speed=Math.trunc(this.executionerSpeed);
         this.x+=speed;
-
+        
         if (map.checkCollision(this)) {
-
             this.x-=speed;
 
                 // run collisions
@@ -156,18 +155,10 @@ export default class ExecutionerClass extends SpriteClass
                 if (bumpUp) this.motion.y=this.JUMP_HEIGHT;
             }
         }
-
+        
             // time to fire axe?
 
         this.fireAxe();
-        
-            // check for standing on a cloud
-            
-        if (this.standSprite!==null) {
-            if (this.standSprite instanceof CloudBlockClass) {
-                this.standSprite.interactWithSprite(this,null);
-            }
-        }
         
             // hit the liquid?
          

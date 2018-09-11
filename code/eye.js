@@ -1,5 +1,7 @@
 import SpriteClass from '../engine/sprite.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
+import BreakBlockStrongClass from '../code/break_block_strong.js';
+import BoneyOneEyeClass from '../code/boney_one_eye.js';
 
 export default class EyeClass extends SpriteClass
 {
@@ -37,9 +39,16 @@ export default class EyeClass extends SpriteClass
         return(new EyeClass(this.game,x,y,this.data));
     }
     
+    killEye()
+    {
+        this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,128,0.8,0.01,10,0.05,this.game.imageList.get('particles/skull'),5,500);
+        this.delete();
+    }
+    
     runAI()
     {
         let x,y,f;
+        let sprite,sprites;
         let map=this.game.map;
         let playerSprite=map.getSpritePlayer();
         
@@ -67,22 +76,26 @@ export default class EyeClass extends SpriteClass
         this.x+=this.xAdd;
         this.y+=this.yAdd;
 
-            // any tile or player collision destroys eye
+            // destroy eye on any collision, and if
+            // it's a strong break block, break a couple around it
             
         if (map.checkCollision(this)) {
             
             if (this.collideSprite!=null) {
+                if (this.collideSprite instanceof BoneyOneEyeClass) return;         // never hits firing skull
+                
                 this.collideSprite.interactWithSprite(this,null);
-                if (this.collideSprite instanceof PlayerSideScrollClass) {
-                    this.delete();
-                    return;
-                }
-            }
             
-            if (this.collideTileIdx!==-1) {
-                this.delete();
-                return;
-            }
+                if (this.collideSprite instanceof BreakBlockStrongClass) {
+                    sprites=map.getSpritesWithinBox((this.x-10),((this.y-this.height)-10),((this.x+this.width)+10),(this.y+10),this,BreakBlockStrongClass);
+        
+                    for (sprite of sprites) {
+                        sprite.interactWithSprite(this,null);
+                    }
+                }
+             }
+
+            this.killEye();
         }
     }
 }
