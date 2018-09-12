@@ -174,10 +174,7 @@ export default class WorldMainMapClass extends WorldBaseMapClass
             new MapSpotClass(this.game,3456,1600,new Map([["title","o"],["map","o"]])),
             new MapSpotClass(this.game,3776,1536,new Map([["title","p"],["map","p"]])),
             new MapSpotClass(this.game,3968,1216,new Map([["title","q"],["map","q"]])),
-            
-            //new MapCastleClass(this.game,3648,1216,new Map([["title","King Kangeroo's Castle"],["map","x"],["pin",18]]))
-            
-            new MapCastleClass(this.game,3648,1216,new Map([["title","x"],["map","x"],["pin",18]]))
+            new MapCastleClass(this.game,3648,1216,new Map([["title","King Ghastly's Castle"],["map","king_ghastly_castle"],["pin",18]]))
         ];
     }
     

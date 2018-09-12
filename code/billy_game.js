@@ -27,6 +27,7 @@ import EasterHeadClass from './easter_head.js';
 import ExecutionerClass from './executioner.js';
 import SirBawkBawkClass from './sir_bawk_bawk.js';
 import BoneyOneEyeClass from './boney_one_eye.js';
+import KingGhastlyClass from './king_ghastly.js';
 
 export default class BillyGameClass extends GameClass
 {
@@ -75,6 +76,7 @@ export default class BillyGameClass extends GameClass
             new ExecutionerClass(this,0,0,null),
             new SirBawkBawkClass(this,0,0,null),
             new BoneyOneEyeClass(this,0,0,null),
+            new KingGhastlyClass(this,0,0,null),
             new MapSpotClass(this,0,0,null),
             new MapCastleClass(this,0,0,null)
         ]);
@@ -87,7 +89,7 @@ export default class BillyGameClass extends GameClass
         //return(this.mapList.get('apocalypse_carrot'));
         //return(this.mapList.get('buffet_of_blocks'));
         //return(this.mapList.get('hills_ninja_bunnies'));
-        return(this.mapList.get('executioners_castle'));
+        //return(this.mapList.get('executioners_castle'));
         //return(this.mapList.get('heads_up'));
         //return(this.mapList.get('platform_troubled_waters'));
         //return(this.mapList.get('surfs_up'));
@@ -101,6 +103,7 @@ export default class BillyGameClass extends GameClass
         
         //return(this.mapList.get('boney_one_eye_castle'));
 
+        return(this.mapList.get('king_ghastly_castle'));
     }
     
     setBanner(str,pinCount)

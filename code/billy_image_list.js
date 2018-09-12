@@ -126,6 +126,7 @@ export default class BillyImageListClass extends ImageListClass
         this.add('sprites/bawk_bawk');
         this.add('sprites/boney_one_eye');
         this.add('sprites/eye');
+        this.add('sprites/king_ghastly');
         
         this.add('particles/block');
         this.add('particles/explode_block');
