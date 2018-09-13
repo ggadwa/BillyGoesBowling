@@ -128,13 +128,16 @@ export default class BillyImageListClass extends ImageListClass
         this.add('sprites/eye');
         this.add('sprites/king_ghastly');
         
-        this.add('particles/block');
-        this.add('particles/explode_block');
-        this.add('particles/skull');
-        
         this.add('sprites/world_map_spot');
         this.add('sprites/world_map_castle');
         this.add('sprites/world_map_block');
+        
+            // particles
+            
+        this.add('particles/block');
+        this.add('particles/pipe');
+        this.add('particles/explode_block');
+        this.add('particles/skull');
         
             // backgrounds
             
@@ -146,6 +149,7 @@ export default class BillyImageListClass extends ImageListClass
             
         this.add('ui/pin');
         this.add('ui/trophy');
+        this.add('ui/score_box');
         this.add('ui/health_100');
         this.add('ui/health_75');
         this.add('ui/health_50');

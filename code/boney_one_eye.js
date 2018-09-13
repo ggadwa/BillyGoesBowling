@@ -33,6 +33,8 @@ export default class BoneyOneEyeClass extends SpriteClass
         this.canCollide=true;
         this.canStandOn=true;
         
+        this.grayDrawFilter=new GrayFilterClass();
+        
         Object.seal(this);
     }
     
@@ -92,7 +94,7 @@ export default class BoneyOneEyeClass extends SpriteClass
             playerSprite.warpOut();
             this.isDead=true;
             this.gravityFactor=0.0;
-            this.drawFilter=new GrayFilterClass();
+            this.drawFilter=this.grayDrawFilter;
             this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,this.game.imageList.get('particles/skull'),30,2500);
         }
         

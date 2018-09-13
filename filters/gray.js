@@ -7,7 +7,7 @@ export default class GrayFilterClass extends FilterClass
         super();
     }
     
-    draw(ctx,img,x,y,animationFactor)
+    draw(ctx,img,x,y,animationFactor,timeStamp)
     {
         let dx,dy,b,ctxIdx,spriteIdx;
         let imgCanvas,imgCTX;

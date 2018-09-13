@@ -1,5 +1,6 @@
 import SpriteClass from '../engine/sprite.js';
 import WarpFilterClass from '../filters/warp.js';
+import FlashFilterClass from '../filters/flash.js';
 import BallClass from './ball.js';
 import CloudBlockClass from './cloud_block.js';
 import ButtonClass from './button.js';
@@ -51,6 +52,9 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.deathCount=-1;
         this.warpCount=-1;
         
+        this.flashDrawFilter=new FlashFilterClass();
+        this.warpDrawFilter=new WarpFilterClass();
+        
         Object.seal(this);
     }
     
@@ -83,7 +87,7 @@ export default class PlayerSideScrollClass extends SpriteClass
         }
         
         this.invincibleCount=this.INVINCIBLE_TICK;
-        this.alpha=0.25;
+        this.drawFilter=this.flashDrawFilter;
     }
     
     killPlayer()
@@ -118,7 +122,7 @@ export default class PlayerSideScrollClass extends SpriteClass
     warpOut()
     {
         this.warpCount=this.WARP_TICK;
-        this.drawFilter=new WarpFilterClass();
+        this.drawFilter=this.warpDrawFilter;
         
         this.game.map.getFirstSpriteOfType(BallClass).show=false;
         
@@ -150,10 +154,11 @@ export default class PlayerSideScrollClass extends SpriteClass
             // invincible
          
         if (this.invincibleCount!==-1) {
+            this.drawFilterAnimationFactor=1.0-(this.invincibleCount/this.INVINCIBLE_TICK);
             this.invincibleCount--;
             if (this.invincibleCount<=0) {
                 this.invincibleCount=-1;
-                this.alpha=1.0;
+                this.drawFilter=null;
             }
         }
         

@@ -137,7 +137,7 @@ export default class BillyGameClass extends GameClass
     
     drawUI()
     {
-        let count,mx,lx,rx,wid,pinCount,trophyCount,health;
+        let count,mx,lx,rx,wid,pinCount,health;
         let playerSprite=this.map.getSpritePlayer();
         
             // side scrolling UI
@@ -150,27 +150,15 @@ export default class BillyGameClass extends GameClass
             // world UI
             
         else {
-            this.drawUIImage('ui/pin',(this.canvasWidth-100),5);
-
-            pinCount=this.getData('pins');
-            this.setupUIText('24px Arial','#000000','left','alphabetic');
-            if (pinCount<10) {
-                this.drawUIText(('x 0'+pinCount),(this.canvasWidth-65),38);
-            }
-            else {
-                this.drawUIText(('x '+pinCount),(this.canvasWidth-65),38);
-            }
+            this.setupUIText('24px Arial','#000000','right','alphabetic');
             
-            this.drawUIImage('ui/trophy',(this.canvasWidth-100),(this.canvasHeight-65));
+            this.drawUIImage('ui/score_box',(this.canvasWidth-120),10);
+            this.drawUIImage('ui/pin',(this.canvasWidth-110),17);
+            this.drawUIText((this.getData('pins')+'/21'),(this.canvasWidth-20),53);
             
-            trophyCount=this.getData('trophies');
-            this.setupUIText('24px Arial','#000000','left','alphabetic');
-            if (trophyCount<10) {
-                this.drawUIText(('x 0'+trophyCount),(this.canvasWidth-65),(this.canvasHeight-32));
-            }
-            else {
-                this.drawUIText(('x '+trophyCount),(this.canvasWidth-65),(this.canvasHeight-32));
-            }
+            this.drawUIImage('ui/score_box',(this.canvasWidth-120),(this.canvasHeight-74));
+            this.drawUIImage('ui/trophy',(this.canvasWidth-110),(this.canvasHeight-68));
+            this.drawUIText((this.getData('trophies')+'/21'),(this.canvasWidth-20),(this.canvasHeight-35));
         }
         
             // banners
@@ -192,26 +180,21 @@ export default class BillyGameClass extends GameClass
             wid=this.imageList.get('ui/banner').width;
             mx=Math.trunc(this.canvasWidth*0.5);
             lx=mx-Math.trunc(wid*0.5);
-            this.drawUIImage('ui/banner',lx,(this.canvasHeight-70));
+            this.drawUIImage('ui/banner',lx,(this.canvasHeight-74));
             
             pinCount=this.getData('banner_pin_count');
             if (pinCount===-1) {
                 this.setupUIText('bolder 36px Arial','#000000','center','alphabetic');
-                this.drawUIText(this.getData('banner_text'),mx,(this.canvasHeight-25));
+                this.drawUIText(this.getData('banner_text'),mx,(this.canvasHeight-29));
             }
             else {
                 this.setupUIText('bolder 36px Arial','#000000','left','alphabetic');
-                this.drawUIText(this.getData('banner_text'),(lx+5),(this.canvasHeight-25));
+                this.drawUIText(this.getData('banner_text'),(lx+10),(this.canvasHeight-29));
                 
                 rx=lx+wid;
-                this.drawUIImage('ui/pin',(rx-120),(this.canvasHeight-65));
-                
-                if (pinCount<10) {
-                    this.drawUIText(('x 0'+pinCount),(rx-80),(this.canvasHeight-25));
-                }
-                else {
-                    this.drawUIText(('x '+pinCount),(rx-80),(this.canvasHeight-25));
-                }
+                this.drawUIImage('ui/pin',(rx-36),(this.canvasHeight-67));
+                this.setupUIText('bolder 36px Arial','#000000','right','alphabetic');
+                this.drawUIText((pinCount+'/21'),(rx-41),(this.canvasHeight-29));
             }
             
             this.drawSetAlpha(1.0);

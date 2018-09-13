@@ -30,12 +30,14 @@ export default class ExecutionerClass extends SpriteClass
         this.setCurrentImage('sprites/executioner_axe');
         this.setEditorImage('sprites/executioner_axe');
         
-         this.show=false;            // start with it not shown, button starts it
+        this.show=false;            // start with it not shown, button starts it
         this.gravityFactor=0.15;
         this.gravityMinValue=3;
         this.gravityMaxValue=30;
         this.canCollide=true;
         this.canStandOn=true;
+        
+        this.grayDrawFilter=new GrayFilterClass();
         
         Object.seal(this);
     }
@@ -166,7 +168,7 @@ export default class ExecutionerClass extends SpriteClass
             playerSprite.warpOut();
             this.isDead=true;
             this.gravityFactor=0.0;
-            this.drawFilter=new GrayFilterClass();
+            this.drawFilter=this.grayDrawFilter;
             this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,this.game.imageList.get('particles/skull'),30,2500);
         }
     }

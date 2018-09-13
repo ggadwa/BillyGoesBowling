@@ -27,6 +27,8 @@ export default class ButtonClass extends SpriteClass
         this.canCollide=true;
         this.canStandOn=true;
         
+        this.squishDrawFilter=new SquishFilterClass();
+        
         Object.seal(this);
     }
     
@@ -72,7 +74,7 @@ export default class ButtonClass extends SpriteClass
             // start the squish
             
         this.squishCount=this.SQUISH_TICK;
-        this.drawFilter=new SquishFilterClass();
+        this.drawFilter=this.squishDrawFilter;
         
         this.canCollide=false;
         this.canStandOn=false;

@@ -282,7 +282,7 @@ export default class SpriteClass
             // if there is a filter, draw with that
             
         if (this.drawFilter!==null) {
-            this.drawFilter.draw(ctx,this.currentImage,x,y,this.drawFilterAnimationFactor);
+            this.drawFilter.draw(ctx,this.currentImage,x,y,this.drawFilterAnimationFactor,this.game.timestamp);
             return;
         }
         

@@ -9,7 +9,7 @@ export default class WarpFilterClass extends FilterClass
         this.FADE_SIZE=15;
     }
     
-    draw(ctx,img,x,y,animationFactor)
+    draw(ctx,img,x,y,animationFactor,timeStamp)
     {
         let dx,dy,fadeTopY,fadeBotY,ctxIdx,spriteIdx,alpha,alpha2;
         let imgCanvas,imgCTX;
