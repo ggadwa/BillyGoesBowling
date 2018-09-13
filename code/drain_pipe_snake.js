@@ -7,6 +7,8 @@ export default class DrainPipeSnakeClass extends SpriteClass
     {
         super(game,x,y,data);
         
+        this.INVINCIBLE_TICK=20;
+        
             // variables
             
         this.snakeDirection=1;
@@ -44,7 +46,8 @@ export default class DrainPipeSnakeClass extends SpriteClass
             
             if (this.snakeHasPipe) {
                 this.snakeHasPipe=false;
-                this.invincibleCount=30;
+                this.invincibleCount=this.INVINCIBLE_TICK;
+                this.alpha=0.5;
                 this.setCurrentImage((this.snakeDirection===1)?'sprites/drain_pipe_snake_free_right':'sprites/drain_pipe_snake_free_left');
             }
             else {
@@ -62,7 +65,10 @@ export default class DrainPipeSnakeClass extends SpriteClass
             // special count when invincible from
             // first ball hit
             
-        if (this.invincibleCount>0) this.invincibleCount--;
+        if (this.invincibleCount>0) {
+            this.invincibleCount--;
+            if (this.invincibleCount===0) this.alpha=1.0;
+        }
         
             // walk in direction until a collision
             

@@ -84,7 +84,7 @@ export default class BillyGameClass extends GameClass
    
     getStartMap()
     {
-        //return(this.mapList.get('world_main'));
+        return(this.mapList.get('world_main'));
         //return(this.mapList.get('snakes_on_a_plain'));
         //return(this.mapList.get('apocalypse_carrot'));
         //return(this.mapList.get('buffet_of_blocks'));
@@ -103,7 +103,7 @@ export default class BillyGameClass extends GameClass
         
         //return(this.mapList.get('boney_one_eye_castle'));
 
-        return(this.mapList.get('king_ghastly_castle'));
+        //return(this.mapList.get('king_ghastly_castle'));
     }
     
     setBanner(str,pinCount)
