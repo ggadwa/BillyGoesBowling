@@ -9,7 +9,7 @@ export default class NinjaBunnyClass extends SpriteClass
     {
         super(game,x,y,data);
         
-        this.BUNNY_JUMP_HEIGHT=-50;
+        this.BUNNY_JUMP_HEIGHT=-55;
         this.BUNNY_AIR_SPEED=8;
         this.BUNNY_PAUSE_TICK=40;
         this.BUNNY_ACTIVATE_DISTANCE=800;
