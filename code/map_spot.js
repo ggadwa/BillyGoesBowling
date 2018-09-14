@@ -7,9 +7,11 @@ export default class MapSpotClass extends SpriteClass
     {
         super(game,x,y,data);
         
-        this.addImage('sprites/world_map_spot');
-        this.setCurrentImage('sprites/world_map_spot');
-        this.setEditorImage('sprites/world_map_spot');
+        this.addImage('sprites/world_map_spot_red');
+        this.addImage('sprites/world_map_spot_yellow');
+        this.addImage('sprites/world_map_spot_green');
+        this.setCurrentImage('sprites/world_map_spot_red');
+        this.setEditorImage('sprites/world_map_spot_red');
         
         this.show=true;
         this.gravityFactor=0.0;
@@ -26,6 +28,22 @@ export default class MapSpotClass extends SpriteClass
     duplicate(x,y)
     {
         return(new MapSpotClass(this.game,x,y,this.data));
+    }
+    
+    mapStartup()
+    {
+        let hasPin=(this.game.getData('pin_'+this.getData('map'))!==null);
+        let hasTrophy=(this.game.getData('trophy_'+this.getData('map'))!==null);
+        
+            // change image based on if the player has collected the
+            // pin and/or the trophy
+            
+        if ((hasPin) && (hasTrophy)) {
+            this.setCurrentImage('sprites/world_map_spot_green');
+            return;
+        }
+        
+        if (hasPin) this.setCurrentImage('sprites/world_map_spot_yellow');
     }
 
     runAI()

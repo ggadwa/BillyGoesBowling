@@ -31,7 +31,7 @@ export default class TrophyClass extends SpriteClass
             // if trophy has been picked up once, then
             // make it transparent
             
-        if (this.game.getData('trophy_'+this.game.map.getMapName())!==null) this.alpha=0.25;
+        if (this.game.getData('trophy_'+this.game.map.name)!==null) this.alpha=0.4;
     }
     
     runAI()
@@ -44,9 +44,9 @@ export default class TrophyClass extends SpriteClass
             
             // add pin
             
-        if (this.game.getData('trophy_'+this.game.map.getMapName())===null) {
+        if (this.game.getData('trophy_'+this.game.map.name)===null) {
             this.game.setData('trophies',(this.game.getData('trophies')+1));
-            this.game.setData(('tropy_'+this.game.map.getMapName()),true);
+            this.game.setData(('trophy_'+this.game.map.name),true);
         }
         
         this.delete();

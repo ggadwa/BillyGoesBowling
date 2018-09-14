@@ -96,6 +96,9 @@ export default class BoneyOneEyeClass extends SpriteClass
             this.gravityFactor=0.0;
             this.drawFilter=this.grayDrawFilter;
             this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,this.game.imageList.get('particles/skull'),30,2500);
+            
+            this.game.setData(('boss_'+map.name),true);
+            return;
         }
         
             // special check if we are falling
@@ -114,8 +117,6 @@ export default class BoneyOneEyeClass extends SpriteClass
             // stand on clouds?  If so break all clouds
             // around him to fall into liquid
             
-        //map.checkCollisionStand(this,32);
-        
         if (this.standSprite!==null) {
             if (this.standSprite instanceof CloudBlockClass) {
                 sprites=map.getSpritesWithinBox((this.x-32),(this.y-32),((this.x+this.width)+32),(this.y+64),this,CloudBlockClass);

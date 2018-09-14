@@ -1,4 +1,11 @@
+
+
+- need other color of spot (yellow has won, green won & got trophy)
 - ninja bunnies shouldn't climb, and bounce back off walls
+- ninja bunnies pause when > start distance
+- do something more interesting with carrots
+
+
 - tick sound effect
 - MAP_TILE_WIDTH static on map when class fields exist
 - get rid of sprite.setPosition, etc
@@ -33,11 +40,6 @@ export default class SurfsUpMapClass extends SideScrollBaseMapClass
     {
         this.createTileData=null;
         this.createSprites=[];
-    }
-    
-    getMapName()
-    {
-        return('Head\'s Up');
     }
     
     mapStartup()

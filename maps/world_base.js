@@ -44,6 +44,10 @@ export default class WorldBaseMapClass extends MapClass
         
         this.game.setData('player_health',4);   // world map resets health
         
+            // background
+            
+        this.addTileBackground(this.game.imageList.get('backgrounds/water'),1.0,1.0,0.01,0.005);
+        
             // spots record where the player went into a map
             // so we can reset position coming out
             

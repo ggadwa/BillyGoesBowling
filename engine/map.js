@@ -1,4 +1,4 @@
-import ParallaxBackgroundClass from './parallax_background.js';
+import BackgroundClass from './background.js';
 import SpriteClass from './sprite.js';
 import ParticleClass from './particle.js';
 
@@ -7,6 +7,7 @@ export default class MapClass
     constructor(game)
     {
         this.game=game;
+        this.name='';
         
             // constants
             
@@ -23,7 +24,7 @@ export default class MapClass
         this.offsetX=0;
         this.offsetY=0;
         
-        this.parallaxBackgrounds=[];
+        this.backgrounds=[];
         
         this.liquidY=-1;                 // liquid settings of map (-1 for no liquid)
         this.liquidWaveHeight=5;
@@ -91,19 +92,11 @@ export default class MapClass
         
             // clear any backgrouns
             
-        this.parallaxBackgrounds=[];
+        this.backgrounds=[];
 
             // call any custom map startup
             
         this.mapStartup();
-    }
-    
-    /**
-     * Override this to return the map name.
-     */
-    getMapName()
-    {
-        return('');
     }
     
     /**
@@ -201,7 +194,16 @@ export default class MapClass
      */
     addParallaxBackground(img,y,xFactor)
     {
-        this.parallaxBackgrounds.push(new ParallaxBackgroundClass(img,y,xFactor));
+        this.backgrounds.push(new BackgroundClass(this,img,0,y,xFactor,0.0,0.0,0.0,false));
+    }
+    
+    /**
+     * Adds a single tile background image to this map.  xFactor/yFactor is how
+     * it follows the camera, and xScroll/yScroll is any automatic scrolling.
+     */
+    addTileBackground(img,xFactor,yFactor,xScroll,yScroll)
+    {
+        this.backgrounds.push(new BackgroundClass(this,img,0,0,xFactor,yFactor,xScroll,yScroll,true));
     }
     
     /**
@@ -586,7 +588,7 @@ export default class MapClass
     {
         let x,y;
         let lx,rx,ty,by;
-        let parallaxBackground,tile,sprite,particle;
+        let background,tile,sprite,particle;
         let tilePerWidth,tilePerHeight;
         
             // get the map offsets
@@ -601,8 +603,8 @@ export default class MapClass
         
             // backgrounds
             
-        for (parallaxBackground of this.parallaxBackgrounds) {
-            parallaxBackground.draw(ctx,this.offsetX);
+        for (background of this.backgrounds) {
+            background.draw(ctx);
         }
         
             // draw size

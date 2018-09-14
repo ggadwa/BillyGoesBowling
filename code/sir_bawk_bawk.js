@@ -90,6 +90,8 @@ export default class SirBawkBawkClass extends SpriteClass
             this.motion.y=0;
             this.drawFilter=this.grayDrawFilter;
             this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,this.game.imageList.get('particles/skull'),30,2500);
+            
+            this.game.setData(('boss_'+map.name),true);
             return;
         }
              

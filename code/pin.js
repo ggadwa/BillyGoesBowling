@@ -32,7 +32,7 @@ export default class PinClass extends SpriteClass
             // if pin has been picked up once, then
             // make it transparent
             
-        if (this.game.getData('pin_'+this.game.map.getMapName())!==null) this.alpha=0.25;
+        if (this.game.getData('pin_'+this.game.map.name)!==null) this.alpha=0.4;
     }
     
     runAI()
@@ -45,9 +45,9 @@ export default class PinClass extends SpriteClass
             
             // add pin
             
-        if (this.game.getData('pin_'+this.game.map.getMapName())===null) {
+        if (this.game.getData('pin_'+this.game.map.name)===null) {
             this.game.setData('pins',(this.game.getData('pins')+1));
-            this.game.setData(('pin_'+this.game.map.getMapName()),true);
+            this.game.setData(('pin_'+this.game.map.name),true);
         }
         
         this.delete();

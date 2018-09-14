@@ -128,8 +128,11 @@ export default class BillyImageListClass extends ImageListClass
         this.add('sprites/eye');
         this.add('sprites/king_ghastly');
         
-        this.add('sprites/world_map_spot');
+        this.add('sprites/world_map_spot_red');
+        this.add('sprites/world_map_spot_yellow');
+        this.add('sprites/world_map_spot_green');
         this.add('sprites/world_map_castle');
+        this.add('sprites/world_map_castle_wreck');
         this.add('sprites/world_map_block');
         
             // particles
@@ -144,6 +147,7 @@ export default class BillyImageListClass extends ImageListClass
         this.add('backgrounds/sun');
         this.add('backgrounds/clouds');
         this.add('backgrounds/mountains');
+        this.add('backgrounds/water');
         
             // UI
             

@@ -8,6 +8,7 @@ export default class MapCastleClass extends SpriteClass
         super(game,x,y,data);
         
         this.addImage('sprites/world_map_castle');
+        this.addImage('sprites/world_map_castle_wreck');
         this.setCurrentImage('sprites/world_map_castle');
         this.setEditorImage('sprites/world_map_castle');
         
@@ -26,6 +27,11 @@ export default class MapCastleClass extends SpriteClass
     duplicate(x,y)
     {
         return(new MapCastleClass(this.game,x,y,this.data));
+    }
+    
+    mapStartup()
+    {
+        if (this.game.getData('boss_'+this.getData('map'))!==null) this.setCurrentImage('sprites/world_map_castle_wreck');
     }
     
     runAI()

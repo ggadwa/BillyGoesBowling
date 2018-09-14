@@ -22,6 +22,7 @@ export default class MapListClass
     
     add(name,map)
     {
+        map.name=name;
         this.maps.set(name,map);
     }
     

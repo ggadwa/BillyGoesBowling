@@ -1,5 +1,5 @@
 import MapClass from '../engine/map.js';
-import SideScrollBaseMapClass from '../maps/side_scroll_base.js';
+import SideScrollNormalBaseMapClass from '../maps/side_scroll_normal_base.js';
 import PlayerSideScrollClass from '../code/player_sidescroll.js';
 import BlockClass from '../code/block.js';
 import BreakBlockClass from '../code/break_block.js';
@@ -13,7 +13,7 @@ import TrophyClass from '../code/trophy.js';
 import ButtonClass from '../code/button.js';
 import DrainPipeSnakeClass from '../code/drain_pipe_snake.js';
 
-export default class BuffetOfBlocksMapClass extends SideScrollBaseMapClass
+export default class BuffetOfBlocksMapClass extends SideScrollNormalBaseMapClass
 {
     create()
     {
@@ -312,18 +312,10 @@ export default class BuffetOfBlocksMapClass extends SideScrollBaseMapClass
         ];
     }
     
-    getMapName()
-    {
-        return('Buffet of Blocks');
-    }
-    
     mapStartup()
     {
         super.mapStartup();
         
         this.liquidY=928;
-        this.liquidRTintFactor=0.3;
-        this.liquidGTintFactor=1.0;
-        this.liquidBTintFactor=0.3;
     }
 }

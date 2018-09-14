@@ -1,5 +1,5 @@
 import MapClass from '../engine/map.js';
-import SideScrollBaseMapClass from '../maps/side_scroll_base.js';
+import SideScrollCastleBaseMapClass from '../maps/side_scroll_castle_base.js';
 import PlayerSideScrollClass from '../code/player_sidescroll.js';
 import BlockClass from '../code/block.js';
 import BreakBlockClass from '../code/break_block.js';
@@ -18,7 +18,7 @@ import RotoCarrotClass from '../code/roto_carrot.js';
 import EasterHeadClass from '../code/easter_head.js';
 import BoneyOneEyeClass from '../code/boney_one_eye.js';
 
-export default class BoneyOneEyeCastleMapClass extends SideScrollBaseMapClass
+export default class BoneyOneEyeCastleMapClass extends SideScrollCastleBaseMapClass
 {
     create()
     {
@@ -312,19 +312,10 @@ export default class BoneyOneEyeCastleMapClass extends SideScrollBaseMapClass
         ];
     }
     
-    getMapName()
-    {
-        return('Boney One Eye\'s Castle');
-    }
-    
     mapStartup()
     {
         super.mapStartup();
         
         this.liquidY=2848;
-        this.liquidWaveHeight=10;
-        this.liquidRTintFactor=1.0;
-        this.liquidGTintFactor=0.2;
-        this.liquidBTintFactor=0.2;
     }
 }

@@ -1,5 +1,5 @@
 import MapClass from '../engine/map.js';
-import SideScrollBaseMapClass from '../maps/side_scroll_base.js';
+import SideScrollNormalBaseMapClass from '../maps/side_scroll_normal_base.js';
 import PlayerSideScrollClass from '../code/player_sidescroll.js';
 import BlockClass from '../code/block.js';
 import BreakBlockClass from '../code/break_block.js';
@@ -14,7 +14,7 @@ import DrainPipeSnakeClass from '../code/drain_pipe_snake.js';
 import NinjaBunnyClass from '../code/ninja_bunny.js';
 import RotoCarrotClass from '../code/roto_carrot.js';
 
-export default class HillsNinjaBunniesMapClass extends SideScrollBaseMapClass
+export default class HillsNinjaBunniesMapClass extends SideScrollNormalBaseMapClass
 {
     create()
     {
@@ -262,8 +262,10 @@ export default class HillsNinjaBunniesMapClass extends SideScrollBaseMapClass
         ];
     }
     
-    getMapName()
+    mapStartup()
     {
-        return('The Hills are Alive with the Sound of Ninja Bunnies');
+        super.mapStartup();
+        
+        this.liquidY=-1;
     }
 }

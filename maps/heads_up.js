@@ -1,5 +1,5 @@
 import MapClass from '../engine/map.js';
-import SideScrollBaseMapClass from '../maps/side_scroll_base.js';
+import SideScrollNormalBaseMapClass from '../maps/side_scroll_normal_base.js';
 import PlayerSideScrollClass from '../code/player_sidescroll.js';
 import BlockClass from '../code/block.js';
 import BreakBlockClass from '../code/break_block.js';
@@ -16,7 +16,7 @@ import NinjaBunnyClass from '../code/ninja_bunny.js';
 import RotoCarrotClass from '../code/roto_carrot.js';
 import EasterHeadClass from '../code/easter_head.js';
 
-export default class HeadsUpMapClass extends SideScrollBaseMapClass
+export default class HeadsUpMapClass extends SideScrollNormalBaseMapClass
 {
     create()
     {
@@ -244,18 +244,10 @@ export default class HeadsUpMapClass extends SideScrollBaseMapClass
         ];
     }
     
-    getMapName()
-    {
-        return('Head\'s Up');
-    }
-    
     mapStartup()
     {
         super.mapStartup();
         
         this.liquidY=1248;
-        this.liquidRTintFactor=0.3;
-        this.liquidGTintFactor=1.0;
-        this.liquidBTintFactor=0.3;
     }
 }

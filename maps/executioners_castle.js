@@ -1,5 +1,5 @@
 import MapClass from '../engine/map.js';
-import SideScrollBaseMapClass from '../maps/side_scroll_base.js';
+import SideScrollCastleBaseMapClass from '../maps/side_scroll_castle_base.js';
 import PlayerSideScrollClass from '../code/player_sidescroll.js';
 import BlockClass from '../code/block.js';
 import BreakBlockClass from '../code/break_block.js';
@@ -16,7 +16,7 @@ import NinjaBunnyClass from '../code/ninja_bunny.js';
 import RotoCarrotClass from '../code/roto_carrot.js';
 import ExecutionerClass from '../code/executioner.js';
 
-export default class ExecutionersCastleMapClass extends SideScrollBaseMapClass
+export default class ExecutionersCastleMapClass extends SideScrollCastleBaseMapClass
 {
     create()
     {
@@ -228,19 +228,10 @@ export default class ExecutionersCastleMapClass extends SideScrollBaseMapClass
         ];
     }
     
-    getMapName()
-    {
-        return('Executioner\'s Castle');
-    }
-    
     mapStartup()
     {
         super.mapStartup();
         
         this.liquidY=1568;
-        this.liquidWaveHeight=10;
-        this.liquidRTintFactor=1.0;
-        this.liquidGTintFactor=0.2;
-        this.liquidBTintFactor=0.2;
     }
 }

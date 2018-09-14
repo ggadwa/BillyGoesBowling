@@ -52,19 +52,5 @@ export default class SideScrollBaseMapClass extends MapClass
         this.currentMapY=sprite.y-Math.trunc(this.game.canvasHeight*this.PLAYER_NATURAL_MAP_HEIGHT_OFFSET);
     }
 
-    mapStartup()
-    {
-            // the backgrounds
-            
-        this.addParallaxBackground(this.game.imageList.get('backgrounds/sun'),0,0.0);
-        this.addParallaxBackground(this.game.imageList.get('backgrounds/clouds'),(this.game.canvasHeight-400),0.4);
-        this.addParallaxBackground(this.game.imageList.get('backgrounds/mountains'),(this.game.canvasHeight-300),0.6);
-        
-            // reset the player health and Y position based
-            // only the player sprite
-            
-        this.game.setData('player_health',4);
-        this.resetOffsetY();
-    }
     
 }
