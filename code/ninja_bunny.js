@@ -20,6 +20,7 @@ export default class NinjaBunnyClass extends SpriteClass
         this.bunnyPause=0;
         this.bunnyJumpDirection=-1;
         this.bunnyShurikinOK=false;
+        this.bunnyBounceBack=false;
         this.lastMotionY=0;
         
             // setup
@@ -105,8 +106,9 @@ export default class NinjaBunnyClass extends SpriteClass
         }
         
             // if standing on top or colliding with
-            // another sprite, then we jump immediately
-            // away from it
+            // another sprite, then if the player we always
+            // jump away, else if any other sprite, we jump
+            // away if grounded
          
         checkSprite=null;
         
@@ -119,7 +121,7 @@ export default class NinjaBunnyClass extends SpriteClass
                 this.jumpAwayFromSprite(checkSprite);
             }
             else {
-                this.jumpTowardsSprite(checkSprite);
+                if (this.grounded) this.jumpTowardsSprite(checkSprite);
             }
         }
         

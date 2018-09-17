@@ -150,17 +150,9 @@ export default class WorldMainMapClass extends WorldBaseMapClass
             new MapSpotClass(this.game,512,768,new Map([["title","Platforms Over Troubled Waters"],["map","platform_troubled_waters"]])),
             new MapSpotClass(this.game,512,1472,new Map([["title","Surf's Up"],["map","surfs_up"]])),
             new MapSpotClass(this.game,1728,1472,new Map([["title","Surf's Down"],["map","surfs_down"]])),
-            
-            
-            //new MapSpotClass(this.game,1344,1152,new Map([["title","Puzzling Blocks"],["map","puzzling_blocks"]])),
-            //new MapSpotClass(this.game,1344,1024,new Map([["title","Ninja Jail"],["map","ninja_jail"]])),
-            //new MapSpotClass(this.game,1600,832,new Map([["title","It's Raining Creeps"],["map","raining_creeps"]])),
-            
-            new MapSpotClass(this.game,1344,1152,new Map([["title","1"],["map","1"]])),
-            new MapSpotClass(this.game,1344,1024,new Map([["title","2"],["map","2"]])),
-            new MapSpotClass(this.game,1600,832,new Map([["title","3"],["map","3"]])),
-            
-            
+            new MapSpotClass(this.game,1344,1152,new Map([["title","Puzzling Blocks"],["map","puzzling_blocks"]])),
+            new MapSpotClass(this.game,1344,1024,new Map([["title","Ninja Jail"],["map","ninja_jail"]])),
+            new MapSpotClass(this.game,1600,832,new Map([["title","It's Raining Creeps"],["map","raining_creeps"]])),
             new MapSpotClass(this.game,1600,512,new Map([["title","Head's Up"],["map","heads_up"]])),
             new MapCastleClass(this.game,2304,704,new Map([["title","Sir Bawk Bawk's Castle"],["map","sir_bawk_bawk_castle"],["pin",6]])),
             new MapSpotClass(this.game,2624,896,new Map([["title","h"],["map","h"]])),

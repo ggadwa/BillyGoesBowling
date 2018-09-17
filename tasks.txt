@@ -1,7 +1,5 @@
 
 
-- need other color of spot (yellow has won, green won & got trophy)
-- ninja bunnies shouldn't climb, and bounce back off walls
 - ninja bunnies pause when > start distance
 - do something more interesting with carrots
 
