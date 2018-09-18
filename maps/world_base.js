@@ -8,6 +8,7 @@ export default class WorldBaseMapClass extends MapClass
         super(game);
         
         this.TILE_IDX_ROAD_VERTICAL=46;
+        this.TILE_IDX_ROAD_HORIZONTAL=44;
 
         this.currentMapY=0;
     }

@@ -1,6 +1,10 @@
 
+- castle pin limits
 
-- ninja bunnies pause when > start distance
+- editor: get rid of fill 0,0
+- make last clicked square selected (start with 0,0 selected)
+- move things work on last selected
+
 - do something more interesting with carrots
 
 

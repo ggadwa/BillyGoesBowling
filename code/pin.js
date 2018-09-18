@@ -48,6 +48,7 @@ export default class PinClass extends SpriteClass
         if (this.game.getData('pin_'+this.game.map.name)===null) {
             this.game.setData('pins',(this.game.getData('pins')+1));
             this.game.setData(('pin_'+this.game.map.name),true);
+            this.game.persistData();
         }
         
         this.delete();

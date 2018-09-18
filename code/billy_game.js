@@ -46,11 +46,18 @@ export default class BillyGameClass extends GameClass
     
     createData()
     {
-        this.setData('pins',0);                 // number of pins
-        this.setData('trophies',0);             // number of trophies
-        this.setData('player_health',4);
-        this.setData('banner_text','');         // banner messages
-        this.setData('banner_count',-1);
+            // data persisted into the game objects is the
+            // state of the game.  We first look to see if there
+            // if any data in the current save slot, if so we
+            // restore that otherwise we create a default set
+        
+        if (!this.restorePersistedData()) {
+            this.setData('pins',0);                 // number of pins
+            this.setData('trophies',0);             // number of trophies
+            this.setData('player_health',4);
+            this.setData('banner_text','');         // banner messages
+            this.setData('banner_count',-1);
+        }
     }
     
     getEditorSpritePaletteList()

@@ -47,6 +47,7 @@ export default class TrophyClass extends SpriteClass
         if (this.game.getData('trophy_'+this.game.map.name)===null) {
             this.game.setData('trophies',(this.game.getData('trophies')+1));
             this.game.setData(('trophy_'+this.game.map.name),true);
+            this.game.persistData();
         }
         
         this.delete();

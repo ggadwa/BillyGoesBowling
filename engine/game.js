@@ -33,10 +33,20 @@ export default class GameClass
         this.map=null;
         this.liquid=null;
         this.gotoMapName=null;
+        
+        this.urlParams=null;
     }
     
     initialize(callback)
     {
+            // we use some parameters to setup the game
+            // so decode them here
+        
+        this.urlParams=new URLSearchParams(window.location.search);
+    
+            // get references to all the canvases
+            // we need to draw
+            
         this.canvas=document.getElementById('mainCanvas');
         this.ctx=this.canvas.getContext('2d');
         
@@ -72,7 +82,8 @@ export default class GameClass
     {
         this.input.initialize();
         
-            // create game specific data
+            // initialize any game specific
+            // data
             
         this.createData();
         
@@ -87,6 +98,63 @@ export default class GameClass
         
         callback();
     }
+    
+        //
+        // save slots
+        //
+    
+    getSaveSlotName()
+    {
+        let slotStr;
+        let slot=0;
+        
+        slotStr=this.urlParams.get('saveSlot');
+        if (slotStr!==null) {
+            try {
+                slot=parseInt(slotStr);
+            }
+            catch (e) {
+                slot=0;
+            }
+        }
+        
+        if ((slot<0) || (slot>2)) slot=0;
+
+        return('save_'+slot);
+    }
+    
+    /**
+     * Restores data persisted to the players save slot to the main
+     * data for this game.  Returns FALSE if there is no data (then you
+     * should create default data.)
+     */
+    restorePersistedData()
+    {
+        let item=window.localStorage.getItem(this.getSaveSlotName());
+        if (item===null) return(false);
+        
+            // if the clear save spot is on, never load
+            // any data and erase any save
+            
+        if (this.urlParams.get('saveErase')!==null) {
+            window.localStorage.removeItem(this.getSaveSlotName());
+            return(false);
+        }
+        
+            // otherwise reload the data
+        
+        this.data=new Map(JSON.parse(item));
+        return(true);
+    }
+
+    persistData()
+    {
+        window.localStorage.setItem(this.getSaveSlotName(),JSON.stringify([...this.data]));
+    }
+    
+        //
+        // timing
+        //
     
     initTiming(timestamp)
     {
@@ -157,12 +225,28 @@ export default class GameClass
         return(this.input.isCancelled());
     }
     
+    /**
+     * Data set on the game is the only persistant data for the
+     * game.  Anything you set here can be restored or saved into
+     * the current slot by persistData and retreived by
+     * restorePersistedData.
+     * 
+     * Use this API to get data by name.
+     */
     getData(name)
     {
         let val=this.data.get(name);
         return((val===undefined)?null:val);
     }
     
+    /**
+     * Data set on the game is the only persistant data for the
+     * game.  Anything you set here can be restored or saved into
+     * the current slot by persistData and retreived by
+     * restorePersistedData.
+     * 
+     * Use this to set data by name.
+     */
     setData(name,value)
     {
         this.data.set(name,value);

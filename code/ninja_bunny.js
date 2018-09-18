@@ -88,16 +88,13 @@ export default class NinjaBunnyClass extends SpriteClass
         let playerSprite=map.getSpritePlayer();
         let checkSprite;
         
-            // distance from player
+            // button is only active at
+            // certain distance from player
             
         let dist=playerSprite.x-this.x;
         
-        if (!this.bunnyActive) {
-            if (Math.abs(dist)<this.BUNNY_ACTIVATE_DISTANCE) {
-                this.bunnyActive=true;
-            }
-            return;
-        }
+        this.bunnyActive=(Math.abs(dist)<this.BUNNY_ACTIVATE_DISTANCE);
+        if (!this.bunnyActive) return;
         
             // only move if jumping
         
@@ -121,7 +118,7 @@ export default class NinjaBunnyClass extends SpriteClass
                 this.jumpAwayFromSprite(checkSprite);
             }
             else {
-                if (this.grounded) this.jumpTowardsSprite(checkSprite);
+                if ((this.grounded) && (checkSprite!==this.standSprite)) this.jumpTowardsSprite(checkSprite);
             }
         }
         
