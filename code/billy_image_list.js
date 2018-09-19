@@ -132,6 +132,7 @@ export default class BillyImageListClass extends ImageListClass
         this.add('sprites/world_map_spot_yellow');
         this.add('sprites/world_map_spot_green');
         this.add('sprites/world_map_castle');
+        this.add('sprites/world_map_castle_locked');
         this.add('sprites/world_map_castle_wreck');
         this.add('sprites/world_map_block');
         

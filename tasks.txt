@@ -1,5 +1,6 @@
 
 - castle pin limits
+- replace water tile with ground tile
 
 - editor: get rid of fill 0,0
 - make last clicked square selected (start with 0,0 selected)

@@ -160,9 +160,9 @@ export default class BillyGameClass extends GameClass
         else {
             this.setupUIText('24px Arial','#000000','right','alphabetic');
             
-            this.drawUIImage('ui/score_box',(this.canvasWidth-120),10);
-            this.drawUIImage('ui/pin',(this.canvasWidth-110),17);
-            this.drawUIText((this.getData('pins')+'/21'),(this.canvasWidth-20),53);
+            this.drawUIImage('ui/score_box',10,(this.canvasHeight-74));
+            this.drawUIImage('ui/pin',20,(this.canvasHeight-68));
+            this.drawUIText((this.getData('pins')+'/21'),110,(this.canvasHeight-35));
             
             this.drawUIImage('ui/score_box',(this.canvasWidth-120),(this.canvasHeight-74));
             this.drawUIImage('ui/trophy',(this.canvasWidth-110),(this.canvasHeight-68));
