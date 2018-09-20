@@ -1,10 +1,7 @@
 
-- castle pin limits
-- replace water tile with ground tile
 
-- editor: get rid of fill 0,0
-- make last clicked square selected (start with 0,0 selected)
-- move things work on last selected
+- ninja bunnies get stuck in ninja jail
+- need sound effect for not being able to enter a castle
 
 - do something more interesting with carrots
 
@@ -14,6 +11,11 @@
 - get rid of sprite.setPosition, etc
 - buttons with other modes
 
+
+///// URL params
+
+saveSlot=[0|1|2]        save slot to use
+eraseSlot=[0|1|2]       erase save slot
 
 
 ///// template for new map

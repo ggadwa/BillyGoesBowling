@@ -161,12 +161,12 @@ export default class BillyGameClass extends GameClass
             this.setupUIText('24px Arial','#000000','right','alphabetic');
             
             this.drawUIImage('ui/score_box',10,(this.canvasHeight-74));
-            this.drawUIImage('ui/pin',20,(this.canvasHeight-68));
-            this.drawUIText((this.getData('pins')+'/21'),110,(this.canvasHeight-35));
+            this.drawUIImage('ui/pin',20,(this.canvasHeight-67));
+            this.drawUIText((this.getData('pins')+'/21'),110,(this.canvasHeight-33));
             
             this.drawUIImage('ui/score_box',(this.canvasWidth-120),(this.canvasHeight-74));
             this.drawUIImage('ui/trophy',(this.canvasWidth-110),(this.canvasHeight-68));
-            this.drawUIText((this.getData('trophies')+'/21'),(this.canvasWidth-20),(this.canvasHeight-35));
+            this.drawUIText((this.getData('trophies')+'/21'),(this.canvasWidth-20),(this.canvasHeight-33));
         }
         
             // banners
@@ -202,7 +202,7 @@ export default class BillyGameClass extends GameClass
                 rx=lx+wid;
                 this.drawUIImage('ui/pin',(rx-36),(this.canvasHeight-67));
                 this.setupUIText('bolder 36px Arial','#000000','right','alphabetic');
-                this.drawUIText((pinCount+'/21'),(rx-41),(this.canvasHeight-29));
+                this.drawUIText(pinCount,(rx-41),(this.canvasHeight-29));
             }
             
             this.drawSetAlpha(1.0);

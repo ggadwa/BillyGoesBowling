@@ -30,9 +30,24 @@ export default class MapCastleClass extends SpriteClass
         return(new MapCastleClass(this.game,x,y,this.data));
     }
     
+    isUnlocked()
+    {
+        return((parseInt(this.getData('pin'))<=parseInt(this.game.getData('pins')))||(this.game.isUnlocked()));
+    }
+    
     mapStartup()
     {
-        if (this.game.getData('boss_'+this.getData('map'))!==null) this.setCurrentImage('sprites/world_map_castle_wreck');
+        if (this.game.getData('boss_'+this.getData('map'))!==null) {
+            this.setCurrentImage('sprites/world_map_castle_wreck');
+        }
+        else {
+            if (this.isUnlocked()) {
+                this.setCurrentImage('sprites/world_map_castle');
+            }
+            else {
+                this.setCurrentImage('sprites/world_map_castle_locked');
+            }
+        }
     }
     
     runAI()
@@ -51,9 +66,14 @@ export default class MapCastleClass extends SpriteClass
             // save the X/Y so we can restore when we exit
             
         if ((this.game.input.isAction()) || (this.game.input.isSelect())) {
-            this.game.setData('worldXPos',playerSprite.x);
-            this.game.setData('worldYPos',playerSprite.y);
-            this.game.gotoMap(this.getData('map'));
+            if (!this.isUnlocked()) {
+                // todo -- need sound effect here
+            }
+            else {
+                this.game.setData('worldXPos',playerSprite.x);
+                this.game.setData('worldYPos',playerSprite.y);
+                this.game.gotoMap(this.getData('map'));
+            }
         }
     }
 }

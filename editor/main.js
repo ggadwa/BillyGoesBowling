@@ -15,6 +15,5 @@ export function run(game)
     document.getElementById('mapDownButton').onclick=editor.mapDown.bind(editor);
     document.getElementById('mapLeftButton').onclick=editor.mapLeft.bind(editor);
     document.getElementById('mapRightButton').onclick=editor.mapRight.bind(editor);
-    document.getElementById('fillFromZeroZeroButton').onclick=editor.fillFromZeroZero.bind(editor);
     document.getElementById('compileButton').onclick=editor.compile.bind(editor);
 }

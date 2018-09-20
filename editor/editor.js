@@ -29,6 +29,9 @@ export default class EditorClass
         this.offsetX=0;
         this.offsetY=0;
         
+        this.selectX=0;
+        this.selectY=0;
+        
         this.spaceDown=false;
         this.inDrag=false;
         this.dragOriginalOffsetX=0;
@@ -219,6 +222,17 @@ export default class EditorClass
         for (y=ty;y!==by;y++) {
             ctx.fillText((''+y),dx,(((y-ty)*this.MAP_TILE_SIZE)+textOffset));
         }
+        
+            // selected sprite
+            
+        if ((this.selectX>=lx) && (this.selectX<rx) && (this.selectY>=ty) && (this.selectY<by)) {
+            dx=(this.selectX-lx)*this.MAP_TILE_SIZE;
+            dy=(this.selectY-ty)*this.MAP_TILE_SIZE;
+            ctx.strokeStyle='#FF0000';
+            ctx.lineWidth=2.0;
+            ctx.strokeRect(dx,dy,this.MAP_TILE_SIZE,this.MAP_TILE_SIZE);
+            ctx.lineWidth=1.0;
+        }
        
             // borders
             
@@ -404,6 +418,14 @@ export default class EditorClass
         let y=this.offsetY+Math.trunc(event.offsetY/this.MAP_TILE_SIZE);
         let idx=x+(y*Math.trunc(wid/this.MAP_TILE_SIZE));
         
+            // new selection
+            
+        this.selectX=x;
+        this.selectY=y;
+        console.log(this.selectX+'='+this.selectY);
+        
+            // run click
+        
         event.stopPropagation();
         event.preventDefault();
         
@@ -427,6 +449,13 @@ export default class EditorClass
             this.inDrag=true;
             this.dragStartX=-1;
             this.dragStartY=-1;
+        }
+        
+            // otherwise move the select
+            
+        else {
+            this.selectX=this.offsetX+Math.trunc(event.offsetX/this.MAP_TILE_SIZE);
+            this.selectY=this.offsetY+Math.trunc(event.offsetY/this.MAP_TILE_SIZE);
         }
         
             // otherwise we are clicking and item
@@ -602,22 +631,22 @@ export default class EditorClass
         
     mapUp()
     {
-        let n,byteSize,idx,sprite;
+        let x,y,my,sprite;
         
-        byteSize=(this.MAP_TILE_HEIGHT*this.MAP_TILE_WIDTH)-this.MAP_TILE_WIDTH;
-        
-        for (n=0;n!==byteSize;n++) {
-            this.map.tileData[n]=this.map.tileData[n+this.MAP_TILE_WIDTH];
+        for (y=this.selectY;(y+1)<(this.MAP_TILE_HEIGHT);y++) {
+            for (x=0;x!=this.MAP_TILE_WIDTH;x++) {
+                this.map.tileData[(y*this.MAP_TILE_WIDTH)+x]=this.map.tileData[((y+1)*this.MAP_TILE_WIDTH)+x];
+            }
+        }
+
+        for (x=0;x!=this.MAP_TILE_WIDTH;x++) {
+            this.map.tileData[((this.MAP_TILE_HEIGHT-1)*this.MAP_TILE_WIDTH)+x]=0;
         }
         
-        idx=(this.MAP_TILE_HEIGHT-1)*this.MAP_TILE_WIDTH;
-        
-        for (n=0;n!=this.MAP_TILE_WIDTH;n++) {
-            this.map.tileData[idx++]=0;
-        }
+        my=this.selectY*this.MAP_TILE_SIZE;
         
         for (sprite of this.map.sprites) {
-            sprite.y-=this.MAP_TILE_SIZE;
+            if (sprite.y>my) sprite.y-=this.MAP_TILE_SIZE;
         }
         
         this.drawMapCanvas();
@@ -625,20 +654,22 @@ export default class EditorClass
     
     mapDown()
     {
-        let n,byteSize,sprite;
+        let x,y,my,sprite;
         
-        byteSize=(this.MAP_TILE_HEIGHT*this.MAP_TILE_WIDTH)-this.MAP_TILE_WIDTH;
-        
-        for (n=byteSize;n!==0;n--) {
-            this.map.tileData[n+this.MAP_TILE_WIDTH]=this.map.tileData[n];
+        for (y=(this.MAP_TILE_HEIGHT-1);y>this.selectY;y--) {
+            for (x=0;x!=this.MAP_TILE_WIDTH;x++) {
+                this.map.tileData[(y*this.MAP_TILE_WIDTH)+x]=this.map.tileData[((y-1)*this.MAP_TILE_WIDTH)+x];
+            }
+        }
+
+        for (x=0;x!=this.MAP_TILE_WIDTH;x++) {
+            this.map.tileData[(this.selectY*this.MAP_TILE_WIDTH)+x]=0;
         }
         
-        for (n=0;n!=this.MAP_TILE_WIDTH;n++) {
-            this.map.tileData[n]=0;
-        }
+        my=this.selectY*this.MAP_TILE_SIZE;
         
         for (sprite of this.map.sprites) {
-            sprite.y+=this.MAP_TILE_SIZE;
+            if ((sprite.y>my) && (sprite.y<=((this.MAP_TILE_HEIGHT-1)*this.MAP_TILE_SIZE))) sprite.y+=this.MAP_TILE_SIZE;
         }
         
         this.drawMapCanvas();
@@ -646,21 +677,21 @@ export default class EditorClass
     
     mapLeft()
     {
-        let x,y,idx,sprite;
+        let x,y,mx,sprite;
         
-        idx=0;
+        if (this.selectX===0) return;
         
         for (y=0;y!==this.MAP_TILE_HEIGHT;y++) {
-            for (x=0;x!==(this.MAP_TILE_WIDTH-1);x++) {
-                this.map.tileData[idx+x]=this.map.tileData[idx+(x+1)];
+            for (x=this.selectX;x!==(this.MAP_TILE_WIDTH-1);x++) {
+                this.map.tileData[(y*this.MAP_TILE_WIDTH)+x]=this.map.tileData[(y*this.MAP_TILE_WIDTH)+(x+1)];
             }
-            this.map.tileData[idx+(this.MAP_TILE_WIDTH-1)]=0;
-            
-            idx+=this.MAP_TILE_WIDTH;
+            this.map.tileData[(y*this.MAP_TILE_WIDTH)+(this.MAP_TILE_WIDTH-1)]=0;
         }
         
+        mx=this.selectX*this.MAP_TILE_SIZE;
+        
         for (sprite of this.map.sprites) {
-            sprite.x-=this.MAP_TILE_SIZE;
+            if (sprite.x>mx) sprite.x-=this.MAP_TILE_SIZE;
         }
         
         this.drawMapCanvas();
@@ -668,35 +699,19 @@ export default class EditorClass
     
     mapRight()
     {
-        let x,y,idx,sprite;
-        
-        idx=0;
+        let x,y,mx,sprite;
         
         for (y=0;y!==this.MAP_TILE_HEIGHT;y++) {
-            for (x=(this.MAP_TILE_WIDTH-1);x!=0;x--) {
-                this.map.tileData[idx+x]=this.map.tileData[idx+(x-1)];
+            for (x=(this.MAP_TILE_WIDTH-1);x>this.selectX;x--) {
+                this.map.tileData[(y*this.MAP_TILE_WIDTH)+x]=this.map.tileData[(y*this.MAP_TILE_WIDTH)+(x-1)];
             }
-            this.map.tileData[idx]=0;
-            
-            idx+=this.MAP_TILE_WIDTH;
+            this.map.tileData[(y*this.MAP_TILE_WIDTH)+this.selectX]=0;
         }
+        
+        mx=this.selectX*this.MAP_TILE_SIZE;
         
         for (sprite of this.map.sprites) {
-            sprite.x+=this.MAP_TILE_SIZE;
-        }
-        
-        this.drawMapCanvas();
-    }
-    
-    fillFromZeroZero()
-    {
-        let n,tileIdx,byteSize;
-        
-        tileIdx=this.map.tileData[0];
-        byteSize=this.MAP_TILE_HEIGHT*this.MAP_TILE_WIDTH;
-        
-        for (n=0;n!==byteSize;n++) {
-            if (this.map.tileData[n]===0) this.map.tileData[n]=tileIdx;
+            if ((sprite.x>mx) && (sprite.x<=(this.MAP_TILE_WIDTH-1)*this.MAP_TILE_SIZE)) sprite.x+=this.MAP_TILE_SIZE;
         }
         
         this.drawMapCanvas();

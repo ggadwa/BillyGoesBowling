@@ -79,7 +79,7 @@ export default class BillyImageListClass extends ImageListClass
         this.add('tiles/world_mountain');
         this.add('tiles/world_road_curve_bottom_right');
         
-        this.add('tiles/world_water');
+        this.add('tiles/world_tree');
         this.add('tiles/world_gate');
         this.add('tiles/arrow_down');
         

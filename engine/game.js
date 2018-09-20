@@ -103,12 +103,12 @@ export default class GameClass
         // save slots
         //
     
-    getSaveSlotName()
+    getSaveSlotName(paramName)
     {
         let slotStr;
         let slot=0;
         
-        slotStr=this.urlParams.get('saveSlot');
+        slotStr=this.urlParams.get(paramName);
         if (slotStr!==null) {
             try {
                 slot=parseInt(slotStr);
@@ -124,20 +124,29 @@ export default class GameClass
     }
     
     /**
+     * Call to check if the unlocked URL param was included, which is a quick
+     * way to unlock any blocks in a game for testing purposes
+     */
+    isUnlocked()
+    {
+        return(this.urlParams.get('unlocked')!==null);
+    }
+    
+    /**
      * Restores data persisted to the players save slot to the main
      * data for this game.  Returns FALSE if there is no data (then you
      * should create default data.)
      */
     restorePersistedData()
     {
-        let item=window.localStorage.getItem(this.getSaveSlotName());
+        let item=window.localStorage.getItem(this.getSaveSlotName('saveSlot'));
         if (item===null) return(false);
         
             // if the clear save spot is on, never load
             // any data and erase any save
             
-        if (this.urlParams.get('saveErase')!==null) {
-            window.localStorage.removeItem(this.getSaveSlotName());
+        if (this.urlParams.get('eraseSlot')!==null) {
+            window.localStorage.removeItem(this.getSaveSlotName('eraseSlot'));
             return(false);
         }
         
@@ -147,9 +156,13 @@ export default class GameClass
         return(true);
     }
 
+    /**
+     * Call this to persist the current state of the game data
+     * to the current save slot.
+     */
     persistData()
     {
-        window.localStorage.setItem(this.getSaveSlotName(),JSON.stringify([...this.data]));
+        window.localStorage.setItem(this.getSaveSlotName('saveSlot'),JSON.stringify([...this.data]));
     }
     
         //
