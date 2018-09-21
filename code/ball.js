@@ -145,7 +145,8 @@ export default class BallClass extends SpriteClass
         
             // move ball and check for collisions
         
-        this.setPosition(x,y);
+        this.x=x;
+        this.y=y;
             
         if ((this.travelMode===this.TRAVEL_MODE_BOWL_ACROSS) || (this.travelMode===this.TRAVEL_MODE_SLAM_UP) || (this.travelMode===this.TRAVEL_MODE_SLAM_DOWN)) {
             if (map.checkCollision(this)) {

@@ -2,7 +2,7 @@ import FilterClass from './filter.js';
 
 export default class SquishFilterClass extends FilterClass
 {
-    draw(ctx,img,x,y,animationFactor,timeStamp)
+    draw(ctx,img,x,y,animationFactor,timestamp)
     {
         let high;
         

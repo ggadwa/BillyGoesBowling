@@ -9,6 +9,8 @@ export default class DrainPipeSnakeClass extends SpriteClass
         super(game,x,y,data);
         
         this.INVINCIBLE_TICK=20;
+        this.TILE_IDX_LEFT_END=1;
+        this.TILE_IDX_RIGHT_END=3;
         
             // variables
             
@@ -89,10 +91,11 @@ export default class DrainPipeSnakeClass extends SpriteClass
         }
         
             // if we are on edge tiles, then
-            // turn around (1,3 are edge ground tiles)
+            // turn around
             
         tileIdx=map.getTileUnderSprite(this);
-        if ((tileIdx===1) || (tileIdx===3)) switchDirection=true;
+        if ((tileIdx===this.TILE_IDX_LEFT_END) && (this.snakeDirection===-1)) switchDirection=true;
+        if ((tileIdx===this.TILE_IDX_RIGHT_END) && (this.snakeDirection===1)) switchDirection=true;
         
             // switch direction
             

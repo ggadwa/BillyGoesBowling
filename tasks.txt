@@ -2,13 +2,9 @@
 
 - ninja bunnies get stuck in ninja jail
 - need sound effect for not being able to enter a castle
-
-- do something more interesting with carrots
-
-
 - tick sound effect
+
 - MAP_TILE_WIDTH static on map when class fields exist
-- get rid of sprite.setPosition, etc
 - buttons with other modes
 
 
@@ -16,7 +12,7 @@
 
 saveSlot=[0|1|2]        save slot to use
 eraseSlot=[0|1|2]       erase save slot
-
+unlocked=0              unlock any locked items in game
 
 ///// template for new map
 

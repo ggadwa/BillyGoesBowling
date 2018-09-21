@@ -57,6 +57,7 @@ export default class WorldBaseMapClass extends MapClass
         if ((x===null) || (y===null)) return;
         
         playerSprite=this.getSpritePlayer();
-        playerSprite.setPosition(x,y);
+        playerSprite.x=x;
+        playerSprite.y=y;
     }
 }

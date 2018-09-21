@@ -42,7 +42,8 @@ export default class DoorClass extends SpriteClass
         if (!playerSprite.collide(this)) return;
         
         door=this.game.map.getFirstSpriteWithData('name',this.getData('goto'));
-        playerSprite.setPosition(door.x,door.y);
+        playerSprite.x=door.x;
+        playerSprite.y=door.y;
         
         this.game.input.clearSelect();
         this.game.map.resetOffsetY();

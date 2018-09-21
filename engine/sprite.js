@@ -148,12 +148,6 @@ export default class SpriteClass
         return((this.y-this.height)<bot);
     }
     
-    setPosition(x,y)
-    {
-        this.x=x;
-        this.y=y;
-    }
-    
     moveWithCollision(mx,my)
     {
         this.x+=mx;

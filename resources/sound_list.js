@@ -39,6 +39,8 @@ export default class SoundListClass
         let source=this.ctx.createBufferSource();
         let gain=this.ctx.createGain();
         
+        if (this.ctx.state==='suspended') this.ctx.resume();        // this is hacky, but current browsers suspend audio contexts if no input from user
+        
         source.buffer=this.buffers.get(name);
         gain.gain.value=0.25;
 
