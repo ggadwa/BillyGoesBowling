@@ -155,7 +155,7 @@ export default class WorldMainMapClass extends WorldBaseMapClass
             new MapSpotClass(this.game,1600,832,new Map([["title","It's Raining Creeps"],["map","raining_creeps"]])),
             new MapSpotClass(this.game,1600,512,new Map([["title","Head's Up"],["map","heads_up"]])),
             new MapCastleClass(this.game,2304,704,new Map([["title","Sir Bawk Bawk's Castle"],["map","sir_bawk_bawk_castle"],["pin",6]])),
-            new MapSpotClass(this.game,2624,896,new Map([["title","h"],["map","h"]])),
+            new MapSpotClass(this.game,2624,896,new Map([["title","Carrot Catacylism"],["map","carrot_catacylism"]])),
             new MapSpotClass(this.game,2624,1024,new Map([["title","i"],["map","i"]])),
             new MapSpotClass(this.game,2560,1472,new Map([["title","j"],["map","j"]])),
             new MapCastleClass(this.game,2880,1088,new Map([["title","Boney One Eye's Castle"],["map","boney_one_eye_castle"],["pin",10]])),

@@ -30,14 +30,21 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.INVINCIBLE_TICK=60;
         this.WARP_TICK=60;
         
+        this.WALK_ANIMATION_LEFT=['sprites/billy_left_1','sprites/billy_left_2','sprites/billy_left_3','sprites/billy_left_2'];
+        this.WALK_ANIMATION_RIGHT=['sprites/billy_right_1','sprites/billy_right_2','sprites/billy_right_3','sprites/billy_right_2'];
+        
             // setup
             
-        this.addImage('sprites/billy_left');
-        this.addImage('sprites/billy_right');
+        this.addImage('sprites/billy_left_1');
+        this.addImage('sprites/billy_left_2');
+        this.addImage('sprites/billy_left_3');
+        this.addImage('sprites/billy_right_1');
+        this.addImage('sprites/billy_right_2');
+        this.addImage('sprites/billy_right_3');
         this.addImage('sprites/gravestone');
         
-        this.setCurrentImage('sprites/billy_right');
-        this.setEditorImage('sprites/billy_right');
+        this.setCurrentImage('sprites/billy_right_1');
+        this.setEditorImage('sprites/billy_right_1');
         
         this.show=true;
         this.gravityFactor=0.14;
@@ -137,6 +144,7 @@ export default class PlayerSideScrollClass extends SpriteClass
     
     runAI()
     {
+        let walking,walkAnimationFrame;
         let map=this.game.map;
         
             // warping?
@@ -167,22 +175,38 @@ export default class PlayerSideScrollClass extends SpriteClass
             }
         }
         
-            // input
+            // walking input
             
+        walking=false;
+        walkAnimationFrame=Math.trunc(this.game.timestamp/200)%4;
+        
         if (this.game.input.isLeft()) {
             this.moveWithCollision(-12,0);
-            this.setCurrentImage('sprites/billy_left');
+            this.setCurrentImage(this.WALK_ANIMATION_LEFT[walkAnimationFrame]);
             this.data.set('facing_direction',-1);
+            walking=true;
         }
         
         if (this.game.input.isRight()) {
             this.moveWithCollision(12,0);
-            this.setCurrentImage('sprites/billy_right');
+            this.setCurrentImage(this.WALK_ANIMATION_RIGHT[walkAnimationFrame]);
             this.data.set('facing_direction',1);
+            walking=true;
+        }
+        
+        if (!walking) {
+            if (this.data.get('facing_direction')===-1) {
+                this.setCurrentImage('sprites/billy_left_1');
+            }
+            else {
+                this.setCurrentImage('sprites/billy_right_1');
+            }
         }
         
         this.clampX(0,(map.width-this.width));
         
+            // jumping
+            
         if ((this.game.input.isAction()) && (this.grounded)) this.motion.y+=this.JUMP_HEIGHT;
         
             // remember the last ground because

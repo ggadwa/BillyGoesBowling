@@ -89,8 +89,12 @@ export default class BillyImageListClass extends ImageListClass
             // sprites
             
         this.add('sprites/ball');
-        this.add('sprites/billy_left');
-        this.add('sprites/billy_right');
+        this.add('sprites/billy_left_1');
+        this.add('sprites/billy_left_2');
+        this.add('sprites/billy_left_3');
+        this.add('sprites/billy_right_1');
+        this.add('sprites/billy_right_2');
+        this.add('sprites/billy_right_3');
         this.add('sprites/billy_world');
         this.add('sprites/pin');
         this.add('sprites/block');
@@ -150,6 +154,7 @@ export default class BillyImageListClass extends ImageListClass
         this.add('backgrounds/sun');
         this.add('backgrounds/clouds');
         this.add('backgrounds/mountains');
+        this.add('backgrounds/castle');
         this.add('backgrounds/water');
         
             // UI

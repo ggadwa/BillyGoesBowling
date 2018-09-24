@@ -13,6 +13,7 @@ import RainingCreepsMapClass from '../maps/raining_creeps.js';
 import PuzzlingBlocksMapClass from '../maps/puzzling_blocks.js';
 import NinjaJailMapClass from '../maps/ninja_jail.js';
 import SirBawkBawkCastleMapClass from '../maps/sir_bawk_bawk_castle.js';
+import CarrotCatacylismMapClass from '../maps/carrot_catacylism.js';
 import BoneyOneEyeCastleMapClass from '../maps/boney_one_eye_castle.js';
 import KingGhastlyCastleMapClass from '../maps/king_ghastly_castle.js';
 
@@ -44,6 +45,7 @@ export default class BillyMapListClass extends MapListClass
         this.add('ninja_jail',new NinjaJailMapClass(game));
         this.add('sir_bawk_bawk_castle',new SirBawkBawkCastleMapClass(game));
         
+        this.add('carrot_catacylism',new CarrotCatacylismMapClass(game));
         this.add('boney_one_eye_castle',new BoneyOneEyeCastleMapClass(game));
         
         this.add('king_ghastly_castle',new KingGhastlyCastleMapClass(game));

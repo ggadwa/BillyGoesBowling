@@ -11,7 +11,7 @@ export default class SideScrollCastleBaseMapClass extends SideScrollBaseMapClass
             
         this.addParallaxBackground(this.game.imageList.get('backgrounds/sun'),0,0.0);
         this.addParallaxBackground(this.game.imageList.get('backgrounds/clouds'),(this.game.canvasHeight-400),0.4);
-        this.addParallaxBackground(this.game.imageList.get('backgrounds/mountains'),(this.game.canvasHeight-300),0.6);
+        this.addParallaxBackground(this.game.imageList.get('backgrounds/castle'),(this.game.canvasHeight-300),0.6);
         
             // default liquid color
             
