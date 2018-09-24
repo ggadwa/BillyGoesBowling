@@ -59,8 +59,6 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.deathCount=-1;
         this.warpCount=-1;
         
-        this.ballSpriteIdx=-1;
-        
         this.flashDrawFilter=new FlashFilterClass();
         this.warpDrawFilter=new WarpFilterClass();
         
@@ -79,7 +77,7 @@ export default class PlayerSideScrollClass extends SpriteClass
     
     mapStartup()
     {
-        this.ballSpriteIdx=this.game.map.addSprite(new BallClass(this.game,0,0,null));
+        this.game.map.addSprite(new BallClass(this.game,0,0,null));
     }
     
     hurtPlayer()
@@ -109,7 +107,7 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.invincibleCount=-1;
         this.drawFilter=null;
         
-        this.game.map.removeSprite(this.ballSpriteIdx);
+        this.game.map.getFirstSpriteOfType(BallClass).show=false;
         
         this.game.setData('player_health',0);
         this.deathCount=this.DEATH_TICK;
@@ -178,7 +176,7 @@ export default class PlayerSideScrollClass extends SpriteClass
             // walking input
             
         walking=false;
-        walkAnimationFrame=Math.trunc(this.game.timestamp/200)%4;
+        walkAnimationFrame=Math.trunc(this.game.timestamp/150)%4;
         
         if (this.game.input.isLeft()) {
             this.moveWithCollision(-12,0);

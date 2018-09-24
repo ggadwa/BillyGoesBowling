@@ -65,6 +65,11 @@ export default class BallClass extends SpriteClass
         let x,y,lftEdge,rgtEdge,topEdge,botEdge;
         let xOffset=Math.trunc((playerSprite.width-this.width)*0.5);
         
+            // if the ball is hidden, it means the player
+            // is dead or warping out, so do nothing here
+            
+        if (!this.show) return;
+        
             // get the position by the mode
         
         x=playerSprite.x+xOffset;

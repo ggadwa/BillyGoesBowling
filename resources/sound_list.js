@@ -22,6 +22,14 @@ export default class SoundListClass
         this.load(callback);
     }
     
+    resumeFromPause()
+    {
+            // thanks to idiots misusing the web we have to
+            // do all this funny work to get the audio to work
+            
+        if (this.ctx.state==='suspended') this.ctx.resume();
+    }
+    
     /**
      * Override this to fill the list of sounds this game will need.
      */
@@ -38,8 +46,6 @@ export default class SoundListClass
     {
         let source=this.ctx.createBufferSource();
         let gain=this.ctx.createGain();
-        
-        if (this.ctx.state==='suspended') this.ctx.resume();        // this is hacky, but current browsers suspend audio contexts if no input from user
         
         source.buffer=this.buffers.get(name);
         gain.gain.value=0.25;

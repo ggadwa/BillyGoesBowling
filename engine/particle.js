@@ -16,7 +16,7 @@ export default class ParticleClass
         this.count=count;
         this.lifeTick=lifeTick;
         
-        this.startTimestamp=game.getTimestamp();
+        this.startTimestamp=game.timestamp;
         
             // particle middle offsets
             
@@ -38,7 +38,7 @@ export default class ParticleClass
     
     isFinished()
     {
-        return(this.game.getTimestamp()>(this.startTimestamp+this.lifeTick));
+        return(this.game.timestamp>(this.startTimestamp+this.lifeTick));
     }
     
     draw(ctx,offX,offY)
@@ -48,7 +48,7 @@ export default class ParticleClass
        
             // are we done?
         
-        tick=(this.game.getTimestamp()-this.startTimestamp);
+        tick=(this.game.timestamp-this.startTimestamp);
         if (tick>this.lifeTick) return;
         
             // the setups
@@ -60,7 +60,7 @@ export default class ParticleClass
         
             // calculate and draw the particles
             
-        movement=tick*this.moveFactor;
+        movement=1+(tick*this.moveFactor);
             
         for (n=0;n!==this.count;n++) {
             dx=(((this.x+Math.trunc(this.xs[n]*movement))-this.middleOffsetX)-offX)-halfSize;

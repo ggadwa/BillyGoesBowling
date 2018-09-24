@@ -1,6 +1,7 @@
 import SpriteClass from '../engine/sprite.js';
 import FlashFilterClass from '../filters/flash.js';
 import BallClass from './ball.js';
+import PlayerSideScrollClass from './player_sidescroll.js';
 
 export default class DrainPipeSnakeClass extends SpriteClass
 {
@@ -54,10 +55,10 @@ export default class DrainPipeSnakeClass extends SpriteClass
                 this.invincibleCount=this.INVINCIBLE_TICK;
                 this.drawFilter=this.flashDrawFilter;
                 this.setCurrentImage((this.snakeDirection===1)?'sprites/drain_pipe_snake_free_right':'sprites/drain_pipe_snake_free_left');
-                this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),16,16,1.0,0.1,5,0.08,this.game.imageList.get('particles/pipe'),10,800);
+                this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),16,16,1.0,0.1,5,0.05,this.game.imageList.get('particles/pipe'),10,800);
             }
             else {
-                this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,128,0.8,0.01,0,0,this.game.imageList.get('particles/skull'),1,500);
+                this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,this.game.imageList.get('particles/smoke'),8,600);
                 this.delete();
             }
         }

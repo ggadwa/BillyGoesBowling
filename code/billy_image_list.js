@@ -147,6 +147,7 @@ export default class BillyImageListClass extends ImageListClass
         this.add('particles/explode_red');
         this.add('particles/explode_orange');
         this.add('particles/explode_yellow');
+        this.add('particles/smoke');
         this.add('particles/skull');
         
             // backgrounds

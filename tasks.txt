@@ -1,12 +1,11 @@
 
-- need pause state, resume webapi after pause ends
-
-- ninja bunnies get stuck in ninja jail
-- need sound effect for not being able to enter a castle
-- tick sound effect
-
 - MAP_TILE_WIDTH static on map when class fields exist
 - buttons with other modes
+
+//// SOUNDS NEEDED
+
+- tick for bombs
+- cancel entering castle
 
 
 ///// URL params

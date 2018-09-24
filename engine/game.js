@@ -19,15 +19,16 @@ export default class GameClass
         this.imageList=null;                    // set by overriding class
         this.soundList=null;                    // set by overriding class
         this.tileImageList=null;                // created from the image list
-        this.input=new InputClass();
-        
-        this.timestamp=0;
+        this.input=new InputClass(this);
         
         this.PHYSICS_TICK_FREQUENCY=33;
         this.DRAW_TICK_FREQUENCY=33;
 
+        this.timestamp=0;
+        this.lastTimestamp=0;
         this.physicsTimestamp=0;
         this.drawTimestamp=0;
+        this.paused=true;
         
         this.data=new Map();
         this.map=null;
@@ -37,7 +38,7 @@ export default class GameClass
         this.urlParams=null;
     }
     
-    initialize(callback)
+    initialize()
     {
             // we use some parameters to setup the game
             // so decode them here
@@ -64,10 +65,10 @@ export default class GameClass
         
             // initialize and load the image list
         
-        this.imageList.initialize(this.initialize2.bind(this,callback));
+        this.imageList.initialize(this.initialize2.bind(this));
     }
     
-    initialize2(callback)
+    initialize2()
     {
             // get a list of tile images
             
@@ -75,10 +76,10 @@ export default class GameClass
         
             // initialize and load the sound list
             
-        this.soundList.initialize(this.initialize3.bind(this,callback));
+        this.soundList.initialize(this.initialize3.bind(this));
     }
    
-    initialize3(callback)
+    initialize3()
     {
         this.input.initialize();
         
@@ -96,7 +97,39 @@ export default class GameClass
             
         this.liquid=new LiquidClass(this);
         
-        callback();
+            // we call a single animation frame
+            // loop so we can get a starting timestamp
+            
+        window.requestAnimationFrame(this.initialize4.bind(this));
+    }
+        
+    initialize4(systemTimestamp)
+    {
+            // setup the timing and
+            // game states, because of audio
+            // APIs game needs to start in
+            // paused state so click can active
+            // webaudio API
+            
+        this.timestamp=0;
+        this.physicsTimestamp=0;
+        this.drawTimestamp=0;
+        
+        this.paused=true;
+        this.lastTimestamp=Math.trunc(systemTimestamp);
+        
+            // force a first draw as game starts paused
+
+        this.draw(true);
+        
+            // now run the game loop
+        
+        window.requestAnimationFrame(this.runLoop.bind(this));
+    }
+    
+    start()
+    {
+        this.initialize()
     }
     
         //
@@ -166,24 +199,8 @@ export default class GameClass
     }
     
         //
-        // timing
+        // misc game UIs
         //
-    
-    initTiming(timestamp)
-    {
-        this.physicsTimestamp=timestamp;
-        this.drawTimestamp=timestamp;
-    }
-    
-    setTimestamp(timestamp)
-    {
-        this.timestamp=timestamp;
-    }
-    
-    getTimestamp()
-    {
-        return(this.timestamp);
-    }
     
     drawProgress(title,count,maxCount)
     {
@@ -221,6 +238,24 @@ export default class GameClass
         this.ctx.drawImage(this.backCanvas,0,0);
     }
     
+    drawPause()
+    {
+        let mx=Math.trunc(this.canvasWidth*0.5);
+        let my=Math.trunc(this.canvasHeight*0.5);
+        
+        this.backCTX.fillStyle='#000000';
+        this.backCTX.fillRect(0,(my-50),this.canvasWidth,100);
+        
+        this.backCTX.font='48px Arial';
+        this.backCTX.fillStyle='#FFFFFF';
+        this.backCTX.textAlign='center';
+        this.backCTX.textBaseline='alphabetic';
+        this.backCTX.fillText('Paused',mx,my);
+        
+        this.backCTX.font='24px Arial';
+        this.backCTX.fillText('Click to Resume',mx,(my+35));
+    }
+    
     /**
      * Override and return a set of objects based on the sprite classes
      * you want the editor to be able to place in a map.
@@ -231,11 +266,6 @@ export default class GameClass
     
     getMapOffset(offset)
     {
-    }
-    
-    isCancelled()
-    {
-        return(this.input.isCancelled());
     }
     
     /**
@@ -329,8 +359,7 @@ export default class GameClass
     run()
     {
         let physicTick;
-        
-        
+
             // continue to run physics until we've caught up
             
         while (true) {
@@ -359,17 +388,15 @@ export default class GameClass
         }
     }
     
-    draw()
+    draw(paused)
     {
             // time to draw?
+            // if paused, it's a single draw so we ignore the timing
             
-        if ((this.timestamp-this.drawTimestamp)<this.DRAW_TICK_FREQUENCY) return;
-        this.drawTimestamp=this.timestamp;
-        
-            // erase the back canvas
-            
-        this.backCTX.fillStyle='#EEEEEE';
-        this.backCTX.fillRect(0,0,this.canvasWidth,this.canvasHeight);
+        if (!paused) {
+            if ((this.timestamp-this.drawTimestamp)<this.DRAW_TICK_FREQUENCY) return;
+            this.drawTimestamp=this.timestamp;
+        }
         
             // draw the map
             
@@ -382,9 +409,63 @@ export default class GameClass
             // draw the UI
             
         this.drawUI();
+        if (paused) this.drawPause();
         
             // transfer to front canvas
             
         this.ctx.drawImage(this.backCanvas,0,0);
     }
+    
+        //
+        // main run loop
+        //
+    
+    runLoop(systemTimestamp)
+    {
+        let id;
+
+        systemTimestamp=Math.trunc(systemTimestamp);
+
+            // next frame
+
+        id=window.requestAnimationFrame(this.runLoop.bind(this));
+
+            // pausing?
+
+        if (!this.paused) {
+            if (this.input.isPause()) {
+                this.paused=true;
+                this.draw(true);
+                return;
+            }
+        }
+        else {
+            this.lastTimestamp=systemTimestamp;
+            if (this.input.isLeftMouseDown()) {
+                this.paused=false;
+            }
+
+            return;
+        }
+
+            // setup the current timestamp
+            // since game can be paused we need
+            // to track it by change in system timestamp
+
+        this.timestamp+=(systemTimestamp-this.lastTimestamp);
+        this.lastTimestamp=systemTimestamp;
+
+            // run the game (if not paused)
+            // any error exits the animation loop
+
+        try {
+            this.run();
+            this.draw(false);
+        }
+        catch (e) {
+            window.cancelAnimationFrame(id);
+            throw e;
+        }
+    }
+
 }
