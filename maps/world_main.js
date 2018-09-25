@@ -154,10 +154,10 @@ export default class WorldMainMapClass extends WorldBaseMapClass
             new MapSpotClass(this.game,1344,1024,new Map([["title","Ninja Jail"],["map","ninja_jail"]])),
             new MapSpotClass(this.game,1600,832,new Map([["title","It's Raining Creeps"],["map","raining_creeps"]])),
             new MapSpotClass(this.game,1600,512,new Map([["title","Head's Up"],["map","heads_up"]])),
-            new MapCastleClass(this.game,2304,704,new Map([["title","Sir Bawk Bawk's Castle"],["map","sir_bawk_bawk_castle"],["pin",6]])),
+            new MapCastleClass(this.game,2304,704,new Map([["title","Mr CPU's Castle"],["map","mr_cpu_castle"],["pin",6]])),
             new MapSpotClass(this.game,2624,896,new Map([["title","Carrot Catacylism"],["map","carrot_catacylism"]])),
-            new MapSpotClass(this.game,2624,1024,new Map([["title","i"],["map","i"]])),
-            new MapSpotClass(this.game,2560,1472,new Map([["title","j"],["map","j"]])),
+            new MapSpotClass(this.game,2624,1024,new Map([["title","Snake Pit"],["map","snake_pit"]])),
+            new MapSpotClass(this.game,2560,1472,new Map([["title","Ninja Machine"],["map","ninja_machine"]])),
             new MapCastleClass(this.game,2880,1088,new Map([["title","Boney One Eye's Castle"],["map","boney_one_eye_castle"],["pin",10]])),
             new MapSpotClass(this.game,3456,896,new Map([["title","k"],["map","k"]])),
             new MapSpotClass(this.game,3712,832,new Map([["title","l"],["map","l"]])),
@@ -188,7 +188,7 @@ export default class WorldMainMapClass extends WorldBaseMapClass
             // otherwise unlock based on castles won
         
         if (this.game.getData('boss_executioners_castle')!==null) this.changeTile(24,5,this.TILE_IDX_ROAD_VERTICAL);  // win castle 1
-        if (this.game.getData('boss_sir_bawk_bawk_castle')!==null) {    // win castle 2
+        if (this.game.getData('boss_mr_cpu_castle')!==null) {    // win castle 2
             this.changeTile(8,9,this.TILE_IDX_ROAD_VERTICAL);  
             this.changeTile(41,11,this.TILE_IDX_ROAD_VERTICAL);
             this.changeTile(41,20,this.TILE_IDX_ROAD_VERTICAL);

@@ -1,21 +1,3 @@
-
-- MAP_TILE_WIDTH static on map when class fields exist
-- buttons with other modes
-
-//// SOUNDS NEEDED
-
-- tick for bombs
-- cancel entering castle
-
-
-///// URL params
-
-saveSlot=[0|1|2]        save slot to use
-eraseSlot=[0|1|2]       erase save slot
-unlocked=0              unlock any locked items in game
-
-///// template for new map
-
 import MapClass from '../engine/map.js';
 import SideScrollNormalBaseMapClass from '../maps/side_scroll_normal_base.js';
 import PlayerSideScrollClass from '../code/player_sidescroll.js';
@@ -35,7 +17,7 @@ import NinjaBunnyClass from '../code/ninja_bunny.js';
 import RotoCarrotClass from '../code/roto_carrot.js';
 import EasterHeadClass from '../code/easter_head.js';
 
-export default class CarrotCatacylismMapClass extends SideScrollNormalBaseMapClass
+export default class SnakePitMapClass extends SideScrollNormalBaseMapClass
 {
     create()
     {

@@ -12,8 +12,10 @@ import HeadsUpMapClass from '../maps/heads_up.js';
 import RainingCreepsMapClass from '../maps/raining_creeps.js';
 import PuzzlingBlocksMapClass from '../maps/puzzling_blocks.js';
 import NinjaJailMapClass from '../maps/ninja_jail.js';
-import SirBawkBawkCastleMapClass from '../maps/sir_bawk_bawk_castle.js';
+import MrCPUCastleMapClass from '../maps/mr_cpu_castle.js';
 import CarrotCatacylismMapClass from '../maps/carrot_catacylism.js';
+import SnakePitMapClass from '../maps/snake_pit.js';
+import NinjaMachineMapClass from '../maps/ninja_machine.js';
 import BoneyOneEyeCastleMapClass from '../maps/boney_one_eye_castle.js';
 import KingGhastlyCastleMapClass from '../maps/king_ghastly_castle.js';
 
@@ -41,11 +43,13 @@ export default class BillyMapListClass extends MapListClass
         
         this.add('heads_up',new HeadsUpMapClass(game));
         this.add('raining_creeps',new RainingCreepsMapClass(game));
-        this.add('puzzling_blocks',new PuzzlingBlocksMapClass(game));
         this.add('ninja_jail',new NinjaJailMapClass(game));
-        this.add('sir_bawk_bawk_castle',new SirBawkBawkCastleMapClass(game));
+        this.add('puzzling_blocks',new PuzzlingBlocksMapClass(game));
+        this.add('mr_cpu_castle',new MrCPUCastleMapClass(game));
         
         this.add('carrot_catacylism',new CarrotCatacylismMapClass(game));
+        this.add('snake_pit',new SnakePitMapClass(game));
+        this.add('ninja_machine',new NinjaMachineMapClass(game));
         this.add('boney_one_eye_castle',new BoneyOneEyeCastleMapClass(game));
         
         this.add('king_ghastly_castle',new KingGhastlyCastleMapClass(game));

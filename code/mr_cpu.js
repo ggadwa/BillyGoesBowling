@@ -5,7 +5,7 @@ import BreakBlockStrongClass from '../code/break_block_strong.js';
 import BallClass from './ball.js';
 import PlayerSideScroll from './player_sidescroll.js';
 
-export default class SirBawkBawkClass extends SpriteClass
+export default class MrCPUClass extends SpriteClass
 {
     constructor(game,x,y,data)
     {
@@ -25,9 +25,9 @@ export default class SirBawkBawkClass extends SpriteClass
         
             // setup
         
-        this.addImage('sprites/bawk_bawk');
-        this.setCurrentImage('sprites/bawk_bawk');
-        this.setEditorImage('sprites/bawk_bawk');
+        this.addImage('sprites/mr_cpu');
+        this.setCurrentImage('sprites/mr_cpu');
+        this.setEditorImage('sprites/mr_cpu');
         
         this.show=false;            // start with it not shown, button starts it
         this.gravityFactor=0.15;
@@ -43,18 +43,13 @@ export default class SirBawkBawkClass extends SpriteClass
     
     duplicate(x,y)
     {
-        return(new SirBawkBawkClass(this.game,x,y,this.data));
+        return(new MrCPUClass(this.game,x,y,this.data));
     }
     
     mapStartup()
     {
         this.isDropping=true;
         this.isDead=false;
-    }
-   
-    killSirBawkBawk()
-    {
-        this.game.gotoMap('world_main');
     }
    
     runAI()

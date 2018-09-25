@@ -1,7 +1,7 @@
 import SpriteClass from '../engine/sprite.js';
 import ExplodeBlockClass from './explode_block.js';
 import ExecutionersAxeClass from './executioners_axe.js';
-import SirBawkBawkClass from './sir_bawk_bawk.js';
+import MrCPUClass from './mr_cpu.js';
 import EyeClass from './eye.js';
 
 export default class BreakBlockStrongClass extends SpriteClass
@@ -33,7 +33,7 @@ export default class BreakBlockStrongClass extends SpriteClass
     {
         let cx,cy;
         
-        if ((interactSprite instanceof ExplodeBlockClass) || (interactSprite instanceof ExecutionersAxeClass) || (interactSprite instanceof SirBawkBawkClass) || (interactSprite instanceof EyeClass)) {
+        if ((interactSprite instanceof ExplodeBlockClass) || (interactSprite instanceof ExecutionersAxeClass) || (interactSprite instanceof MrCPUClass) || (interactSprite instanceof EyeClass)) {
             cx=this.x+Math.trunc(this.width*0.5);
             cy=this.y-Math.trunc(this.height*0.5);
             this.game.map.addParticle(cx,cy,16,16,1.0,0.1,0.08,5,this.game.imageList.get('particles/block'),10,800);
