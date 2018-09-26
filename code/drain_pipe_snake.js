@@ -21,12 +21,16 @@ export default class DrainPipeSnakeClass extends SpriteClass
         
             // setup
         
-        this.addImage('sprites/drain_pipe_snake_cover_left');
-        this.addImage('sprites/drain_pipe_snake_cover_right');
-        this.addImage('sprites/drain_pipe_snake_free_left');
-        this.addImage('sprites/drain_pipe_snake_free_right');
-        this.setCurrentImage('sprites/drain_pipe_snake_cover_right');
-        this.setEditorImage('sprites/drain_pipe_snake_cover_right');
+        this.addImage('sprites/snake_left_1');
+        this.addImage('sprites/snake_left_2');
+        this.addImage('sprites/snake_left_pipe_1');
+        this.addImage('sprites/snake_left_pipe_2');
+        this.addImage('sprites/snake_right_1');
+        this.addImage('sprites/snake_right_2');
+        this.addImage('sprites/snake_right_pipe_1');
+        this.addImage('sprites/snake_right_pipe_2');
+        this.setCurrentImage('sprites/snake_right_pipe_1');
+        this.setEditorImage('sprites/snake_right_pipe_1');
         
         this.show=true;
         this.gravityFactor=0.12;
@@ -54,7 +58,6 @@ export default class DrainPipeSnakeClass extends SpriteClass
                 this.snakeHasPipe=false;
                 this.invincibleCount=this.INVINCIBLE_TICK;
                 this.drawFilter=this.flashDrawFilter;
-                this.setCurrentImage((this.snakeDirection===1)?'sprites/drain_pipe_snake_free_right':'sprites/drain_pipe_snake_free_left');
                 this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),16,16,1.0,0.1,5,0.05,this.game.imageList.get('particles/pipe'),10,800);
             }
             else {
@@ -102,11 +105,25 @@ export default class DrainPipeSnakeClass extends SpriteClass
             
         if (switchDirection) {
             this.snakeDirection=-this.snakeDirection;
-            if (this.snakeHasPipe) {
-                this.setCurrentImage((this.snakeDirection===1)?'sprites/drain_pipe_snake_cover_right':'sprites/drain_pipe_snake_cover_left');
+        }
+        
+            // image
+            
+        
+        if (this.snakeHasPipe) {
+            if ((Math.trunc(this.game.timestamp/200)&0x1)===0) {
+                this.setCurrentImage((this.snakeDirection===1)?'sprites/snake_right_pipe_1':'sprites/snake_left_pipe_1');
             }
             else {
-                this.setCurrentImage((this.snakeDirection===1)?'sprites/drain_pipe_snake_free_right':'sprites/drain_pipe_snake_free_left');
+                this.setCurrentImage((this.snakeDirection===1)?'sprites/snake_right_pipe_2':'sprites/snake_left_pipe_2');
+            }
+        }
+        else {
+            if ((Math.trunc(this.game.timestamp/100)&0x1)===0) {
+                this.setCurrentImage((this.snakeDirection===1)?'sprites/snake_right_1':'sprites/snake_left_1');
+            }
+            else {
+                this.setCurrentImage((this.snakeDirection===1)?'sprites/snake_right_2':'sprites/snake_left_2');
             }
         }
     }

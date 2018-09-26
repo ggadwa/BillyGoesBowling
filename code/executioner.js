@@ -3,7 +3,7 @@ import GrayFilterClass from '../filters/gray.js';
 import CloudBlockClass from './cloud_block.js';
 import BreakBlockStrongClass from '../code/break_block_strong.js';
 import BallClass from './ball.js';
-import ExecutionersAxeClass from './executioners_axe.js';
+import AxeClass from './axe.js';
 
 export default class ExecutionerClass extends SpriteClass
 {
@@ -26,9 +26,10 @@ export default class ExecutionerClass extends SpriteClass
         
             // setup
         
-        this.addImage('sprites/executioner_axe');
-        this.setCurrentImage('sprites/executioner_axe');
-        this.setEditorImage('sprites/executioner_axe');
+        this.addImage('sprites/executioner_1');
+        this.addImage('sprites/executioner_2');
+        this.setCurrentImage('sprites/executioner_1');
+        this.setEditorImage('sprites/executioner_1');
         
         this.show=false;            // start with it not shown, button starts it
         this.gravityFactor=0.15;
@@ -81,7 +82,7 @@ export default class ExecutionerClass extends SpriteClass
                 sx=(launchX*this.game.map.MAP_TILE_SIZE)+Math.trunc(this.game.map.MAP_TILE_SIZE*0.5);
                 sy=this.y-Math.trunc(this.height*0.5);
 
-                this.game.map.addSprite(new ExecutionersAxeClass(this.game,sx,sy,null));
+                this.game.map.addSprite(new AxeClass(this.game,sx,sy,null));
                 return;
             }
         }
@@ -109,6 +110,15 @@ export default class ExecutionerClass extends SpriteClass
         if (this.isDead) {
             this.y+=1;
             return;
+        }
+        
+            // image
+            
+        if ((Math.trunc(this.game.timestamp/200)&0x1)===0) {
+            this.setCurrentImage('sprites/executioner_1');
+        }
+        else {
+            this.setCurrentImage('sprites/executioner_2');
         }
         
             // always follow the player, but with

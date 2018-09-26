@@ -12,7 +12,7 @@ import RotoCarrotClass from './roto_carrot.js';
 import BombClass from './bomb.js';
 import RockClass from './rock.js';
 import ExecutionerClass from './executioner.js';
-import ExecutionersAxeClass from './executioners_axe.js';
+import AxeClass from './axe.js';
 import MrCPUClass from './mr_cpu.js';
 import BoneyOneEyeClass from '../code/boney_one_eye.js';
 import EyeClass from './eye.js';
@@ -123,7 +123,7 @@ export default class PlayerSideScrollClass extends SpriteClass
             if (this.standSprite!==interactSprite) this.hurtPlayer();       // ok to stand on these sprites
             return;
         }
-        if (interactSprite instanceof ExecutionersAxeClass) {
+        if (interactSprite instanceof AxeClass) {
             this.hurtPlayer();
             return;
         }

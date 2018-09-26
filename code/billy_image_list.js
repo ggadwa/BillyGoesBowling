@@ -115,18 +115,24 @@ export default class BillyImageListClass extends ImageListClass
         
         this.add('sprites/ninja_bunny');
         this.add('sprites/shurikin');
-        this.add('sprites/drain_pipe_snake_cover_left');
-        this.add('sprites/drain_pipe_snake_free_left');
-        this.add('sprites/drain_pipe_snake_cover_right');
-        this.add('sprites/drain_pipe_snake_free_right');
+        this.add('sprites/snake_left_1');
+        this.add('sprites/snake_left_2');
+        this.add('sprites/snake_left_pipe_1');
+        this.add('sprites/snake_left_pipe_2');
+        this.add('sprites/snake_right_1');
+        this.add('sprites/snake_right_2');
+        this.add('sprites/snake_right_pipe_1');
+        this.add('sprites/snake_right_pipe_2');
         this.add('sprites/roto_carrot');
         this.add('sprites/bomb');
         this.add('sprites/easter_head_left');
         this.add('sprites/easter_head_right');
         this.add('sprites/rock');
         
-        this.add('sprites/executioner_axe');
-        this.add('sprites/axe');
+        this.add('sprites/executioner_1');
+        this.add('sprites/executioner_2');
+        this.add('sprites/axe_up');
+        this.add('sprites/axe_down');
         this.add('sprites/mr_cpu');
         this.add('sprites/boney_one_eye');
         this.add('sprites/eye');

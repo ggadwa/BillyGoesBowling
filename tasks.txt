@@ -2,6 +2,14 @@
 - MAP_TILE_WIDTH static on map when class fields exist
 - buttons with other modes
 
+//// MAPS
+
+Cloud 9
+Spring-a-thon
+Return Engagement (map with executioner in space below throwing axes up and then down while you run above, need blockers that his axe breaks)
+Ninja Hoard
+boss 4: Add spring jumps (in holes that ghastly can't fall into) near end of boss 4
+
 //// SOUNDS NEEDED
 
 - tick for bombs

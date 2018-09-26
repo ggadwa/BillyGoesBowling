@@ -1,7 +1,7 @@
 import SpriteClass from '../engine/sprite.js';
 import BreakBlockStrongClass from '../code/break_block_strong.js';
 
-export default class ExecutionersAxeClass extends SpriteClass
+export default class AxeClass extends SpriteClass
 {
     constructor(game,x,y,data)
     {
@@ -14,8 +14,9 @@ export default class ExecutionersAxeClass extends SpriteClass
         
             // setup
             
-        this.addImage('sprites/axe');
-        this.setCurrentImage('sprites/axe');
+        this.addImage('sprites/axe_up');
+        this.addImage('sprites/axe_down');
+        this.setCurrentImage('sprites/axe_up');
         
         this.show=true;
         this.gravityFactor=0.0;
@@ -30,7 +31,7 @@ export default class ExecutionersAxeClass extends SpriteClass
     
     duplicate(x,y)
     {
-        return(new ExecutionersAxeClass(this.game,x,y,this.data));
+        return(new AxeClass(this.game,x,y,this.data));
     }
     
     mapStartup()
@@ -53,6 +54,7 @@ export default class ExecutionersAxeClass extends SpriteClass
             if (this.y<this.topY) {
                 this.axeDirection=1;
                 this.y=this.topY;
+                this.setCurrentImage('sprites/axe_down');
             }
             return;
         }
