@@ -54,6 +54,8 @@ export default class CloudBlockClass extends SpriteClass
             this.show=false;
             this.countDown=this.REAPPEAR_TICK;
             this.game.soundList.play('pop');
+            
+            this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,this.game.imageList.get('particles/smoke'),8,500);
             return;
         }
         

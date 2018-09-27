@@ -159,13 +159,15 @@ export default class WorldMainMapClass extends WorldBaseMapClass
             new MapSpotClass(this.game,2624,1024,new Map([["title","Snake Pit"],["map","snake_pit"]])),
             new MapSpotClass(this.game,2560,1472,new Map([["title","Ninja Machine"],["map","ninja_machine"]])),
             new MapCastleClass(this.game,2880,1088,new Map([["title","Boney One Eye's Castle"],["map","boney_one_eye_castle"],["pin",10]])),
-            new MapSpotClass(this.game,3456,896,new Map([["title","k"],["map","k"]])),
-            new MapSpotClass(this.game,3712,832,new Map([["title","l"],["map","l"]])),
-            new MapSpotClass(this.game,3904,896,new Map([["title","m"],["map","m"]])),
-            new MapSpotClass(this.game,3328,1344,new Map([["title","n"],["map","n"]])),
-            new MapSpotClass(this.game,3456,1600,new Map([["title","o"],["map","o"]])),
-            new MapSpotClass(this.game,3776,1536,new Map([["title","p"],["map","p"]])),
-            new MapSpotClass(this.game,3968,1216,new Map([["title","q"],["map","q"]])),
+            
+            new MapSpotClass(this.game,3456,896,new Map([["title","Cloud 9"],["map","cloud_9"]])),
+            new MapSpotClass(this.game,3712,832,new Map([["title","Carrot Chorus"],["map","carrot_chorus"]])),
+            new MapSpotClass(this.game,3904,896,new Map([["title","Running Ahead"],["map","running_ahead"]])),
+            new MapSpotClass(this.game,3328,1344,new Map([["title","Spring-a-thon"],["map","spring_a_thon"]])),
+            new MapSpotClass(this.game,3456,1600,new Map([["title","Platform Peril"],["map","platform_peril"]])),
+            new MapSpotClass(this.game,3776,1536,new Map([["title","Ninja Horde"],["map","ninja_horde"]])),
+            new MapSpotClass(this.game,3968,1216,new Map([["title","Return Engagement"],["map","return_engagement"]])),
+            
             new MapCastleClass(this.game,3648,1216,new Map([["title","King Ghastly's Castle"],["map","king_ghastly_castle"],["pin",18]]))
         ];
     }

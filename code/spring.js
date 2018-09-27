@@ -8,10 +8,12 @@ export default class SpringClass extends SpriteClass
         super(game,x,y,data);
         
         this.SPRING_HEIGHT=-80;
+        this.OPEN_TICK=10;
         
             // setup
             
         this.addImage('sprites/spring_close');
+        this.addImage('sprites/spring_open');
         this.setCurrentImage('sprites/spring_close');
         this.setEditorImage('sprites/spring_close');
         
@@ -22,6 +24,8 @@ export default class SpringClass extends SpriteClass
         this.canCollide=true;
         this.canStandOn=true;
         this.canRiseBlock=true;
+        
+        this.openCount=-1;
         
         Object.seal(this);
     }
@@ -42,10 +46,16 @@ export default class SpringClass extends SpriteClass
             
         interactSprite.motion.y=this.SPRING_HEIGHT;
         this.game.soundList.play('boing');
+        
+        this.openCount=this.OPEN_TICK;
+        this.setCurrentImage('sprites/spring_open');
     }
     
     runAI()
     {
-        // reset image here
+        if (this.openCount===-1) return;
+        
+        this.openCount--;
+        if (this.openCount===0) this.setCurrentImage('sprites/spring_close');
     }
 }

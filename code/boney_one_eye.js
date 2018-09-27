@@ -84,7 +84,7 @@ export default class BoneyOneEyeClass extends SpriteClass
             // dead, do nothig
             
         if (this.isDead) {
-            this.y+=1;
+            this.y+=4;
             return;
         }
         
@@ -99,6 +99,8 @@ export default class BoneyOneEyeClass extends SpriteClass
             
             this.game.setData(('boss_'+map.name),true);
             this.game.persistData();
+            
+            map.forceCameraSprite=this;
             return;
         }
         

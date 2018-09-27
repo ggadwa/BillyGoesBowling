@@ -92,9 +92,11 @@ export default class BillyImageListClass extends ImageListClass
         this.add('sprites/billy_left_1');
         this.add('sprites/billy_left_2');
         this.add('sprites/billy_left_3');
+        this.add('sprites/billy_left_jump');
         this.add('sprites/billy_right_1');
         this.add('sprites/billy_right_2');
         this.add('sprites/billy_right_3');
+        this.add('sprites/billy_right_jump');
         this.add('sprites/billy_world');
         this.add('sprites/pin');
         this.add('sprites/block');
@@ -111,6 +113,7 @@ export default class BillyImageListClass extends ImageListClass
         this.add('sprites/gravestone');
         this.add('sprites/button');
         this.add('sprites/spring_close');
+        this.add('sprites/spring_open');
         this.add('sprites/trophy');
         
         this.add('sprites/ninja_bunny');

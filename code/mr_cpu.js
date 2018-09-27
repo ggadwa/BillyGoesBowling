@@ -72,7 +72,7 @@ export default class MrCPUClass extends SpriteClass
             // if we are dead, do nothing
             
         if (this.isDead) {
-            this.y+=1;
+            this.y+=4;
             return;
         }
         
@@ -88,6 +88,8 @@ export default class MrCPUClass extends SpriteClass
             
             this.game.setData(('boss_'+map.name),true);
             this.game.persistData();
+            
+            map.forceCameraSprite=this;
             return;
         }
              

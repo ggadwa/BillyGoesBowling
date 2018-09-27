@@ -28,7 +28,7 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.JUMP_HEIGHT=-40;
         this.DEATH_TICK=60;
         this.INVINCIBLE_TICK=60;
-        this.WARP_TICK=60;
+        this.WARP_TICK=80;
         
         this.WALK_ANIMATION_LEFT=['sprites/billy_left_1','sprites/billy_left_2','sprites/billy_left_3','sprites/billy_left_2'];
         this.WALK_ANIMATION_RIGHT=['sprites/billy_right_1','sprites/billy_right_2','sprites/billy_right_3','sprites/billy_right_2'];
@@ -38,9 +38,11 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.addImage('sprites/billy_left_1');
         this.addImage('sprites/billy_left_2');
         this.addImage('sprites/billy_left_3');
+        this.addImage('sprites/billy_left_jump');
         this.addImage('sprites/billy_right_1');
         this.addImage('sprites/billy_right_2');
         this.addImage('sprites/billy_right_3');
+        this.addImage('sprites/billy_right_jump');
         this.addImage('sprites/gravestone');
         
         this.setCurrentImage('sprites/billy_right_1');
@@ -192,12 +194,12 @@ export default class PlayerSideScrollClass extends SpriteClass
             walking=true;
         }
         
-        if (!walking) {
+        if ((!walking) || (!this.grounded)) {
             if (this.data.get('facing_direction')===-1) {
-                this.setCurrentImage('sprites/billy_left_1');
+                this.setCurrentImage((this.motion.y<0)?'sprites/billy_left_jump':'sprites/billy_left_1');
             }
             else {
-                this.setCurrentImage('sprites/billy_right_1');
+                this.setCurrentImage((this.motion.y<0)?'sprites/billy_right_jump':'sprites/billy_right_1');
             }
         }
         

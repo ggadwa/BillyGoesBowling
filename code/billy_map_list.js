@@ -17,6 +17,13 @@ import CarrotCatacylismMapClass from '../maps/carrot_catacylism.js';
 import SnakePitMapClass from '../maps/snake_pit.js';
 import NinjaMachineMapClass from '../maps/ninja_machine.js';
 import BoneyOneEyeCastleMapClass from '../maps/boney_one_eye_castle.js';
+import Cloud9MapClass from '../maps/cloud_9.js';
+import CarrotChorusMapClass from '../maps/carrot_chorus.js';
+import RunningAheadMapClass from '../maps/running_ahead.js';
+import SprintAThonMapClass from '../maps/spring_a_thon.js';
+import PlatformPerilMapClass from '../maps/platform_peril.js';
+import NinjaHordeMapClass from '../maps/ninja_horde.js';
+import ReturnEngagementMapClass from '../maps/return_engagement.js';
 import KingGhastlyCastleMapClass from '../maps/king_ghastly_castle.js';
 
 export default class BillyMapListClass extends MapListClass
@@ -52,6 +59,13 @@ export default class BillyMapListClass extends MapListClass
         this.add('ninja_machine',new NinjaMachineMapClass(game));
         this.add('boney_one_eye_castle',new BoneyOneEyeCastleMapClass(game));
         
+        this.add('cloud_9',new Cloud9MapClass(game));
+        this.add('carrot_chorus',new CarrotChorusMapClass(game));
+        this.add('running_ahead',new RunningAheadMapClass(game));
+        this.add('spring_a_thon',new SprintAThonMapClass(game));
+        this.add('platform_peril',new PlatformPerilMapClass(game));
+        this.add('ninja_horde',new NinjaHordeMapClass(game));
+        this.add('return_engagement',new ReturnEngagementMapClass(game));    
         this.add('king_ghastly_castle',new KingGhastlyCastleMapClass(game));
     }
     

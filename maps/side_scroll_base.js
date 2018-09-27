@@ -10,6 +10,7 @@ export default class SideScrollBaseMapClass extends MapClass
         this.PLAYER_NATURAL_MAP_HEIGHT_OFFSET=0.7;
 
         this.currentMapY=0;
+        this.forceCameraSprite=null;
     }
     
     calcOffset()
@@ -21,9 +22,17 @@ export default class SideScrollBaseMapClass extends MapClass
         let high=this.game.canvasHeight;
         let bot=this.game.map.height-high;
         
-            // the X offset follows the player
+            // get sprite to focus camera on
+           
+        if (this.forceCameraSprite===null) {
+            sprite=this.sprites[this.playerIdx];
+        }
+        else {
+            sprite=this.forceCameraSprite;
+        }
+        
+            // the X offset follows the sprite
             
-        sprite=this.sprites[this.playerIdx];
         offX=sprite.x-Math.trunc(wid*0.5);
         if (offX<0) offX=0;
         if (offX>rgt) offX=rgt;
@@ -31,8 +40,8 @@ export default class SideScrollBaseMapClass extends MapClass
         this.offsetX=offX;
         
             // we only change the current
-            // map Y if the player gets too close to edges
-          
+            // map Y if the sprite gets too close to edges
+            
         playerY=sprite.y-(sprite.height*2);
         if (playerY<this.currentMapY) this.currentMapY=playerY;
         
@@ -50,6 +59,8 @@ export default class SideScrollBaseMapClass extends MapClass
     {
         let sprite=this.sprites[this.playerIdx];
         this.currentMapY=sprite.y-Math.trunc(this.game.canvasHeight*this.PLAYER_NATURAL_MAP_HEIGHT_OFFSET);
+        
+        this.forceCameraSprite=null;
     }
 
     

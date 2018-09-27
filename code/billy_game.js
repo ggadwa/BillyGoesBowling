@@ -113,7 +113,14 @@ export default class BillyGameClass extends GameClass
         //return(this.mapList.get('snake_pit'));
         //return(this.mapList.get('ninja_machine'));
         //return(this.mapList.get('boney_one_eye_castle'));
-
+        
+        //return(this.mapList.get('cloud_9'));
+        //return(this.mapList.get('carrot_chorus'));
+        //return(this.mapList.get('running_ahead'));
+        //return(this.mapList.get('spring_a_thon'));
+        //return(this.mapList.get('platform_peril'));
+        //return(this.mapList.get('ninja_horde'));
+        //return(this.mapList.get('return_engagement'));    
         //return(this.mapList.get('king_ghastly_castle'));
     }
     

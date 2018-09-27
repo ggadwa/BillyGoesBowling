@@ -108,7 +108,7 @@ export default class ExecutionerClass extends SpriteClass
             // dead, do nothig
             
         if (this.isDead) {
-            this.y+=1;
+            this.y+=4;
             return;
         }
         
@@ -173,7 +173,7 @@ export default class ExecutionerClass extends SpriteClass
         this.fireAxe();
         
             // hit the liquid?
-         
+            
         if (this.y>=map.liquidY) {
             playerSprite.warpOut();
             this.isDead=true;
@@ -183,6 +183,8 @@ export default class ExecutionerClass extends SpriteClass
             
             this.game.setData(('boss_'+map.name),true);
             this.game.persistData();
+            
+            map.forceCameraSprite=this;
         }
     }
     
