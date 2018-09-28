@@ -26,6 +26,7 @@ export default class NinjaBunnyClass extends SpriteClass
             // setup
             
         this.addImage('sprites/ninja_bunny');
+        this.addImage('sprites/ninja_bunny_jump');
         this.setCurrentImage('sprites/ninja_bunny');
         this.setEditorImage('sprites/ninja_bunny');
         
@@ -101,6 +102,10 @@ export default class NinjaBunnyClass extends SpriteClass
         if (!this.grounded) {    
             this.moveWithCollision((this.BUNNY_AIR_SPEED*this.bunnyJumpDirection),0);
         }
+        
+            // image
+            
+        this.setCurrentImage((this.motion.y<0)?'sprites/ninja_bunny_jump':'sprites/ninja_bunny');
         
             // if standing on top or colliding with
             // another sprite, then if the player we always

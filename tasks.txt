@@ -1,7 +1,10 @@
 
 - MAP_TILE_WIDTH static on map when class fields exist
-- buttons with other modes
 - completion times
+
+//// ART
+
+Carrot
 
 //// MAPS
 
@@ -11,12 +14,11 @@ Cloud 9
 Carrot Chorus
 Running Ahead
 Spring-a-thon
-Platform Peril
+Platform Peril (single platform released by bombs, need to hit above else get knocked off)
 Ninja Horde
-Return Engagement
+Return Engagement (executioner is back)
 
-
-//// SOUNDS NEEDED
+//// SOUNDS
 
 - tick for bombs
 - cancel entering castle
