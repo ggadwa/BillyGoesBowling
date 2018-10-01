@@ -67,7 +67,7 @@ export default class MapCastleClass extends SpriteClass
             
         if ((this.game.input.isAction()) || (this.game.input.isSelect())) {
             if (!this.isUnlocked()) {
-                // todo -- need sound effect here
+                this.game.soundList.play('locked_castle');
             }
             else {
                 this.game.setData('worldXPos',playerSprite.x);

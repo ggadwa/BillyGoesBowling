@@ -2,6 +2,7 @@ import SpriteClass from '../engine/sprite.js';
 import GrayFilterClass from '../filters/gray.js';
 import CloudBlockClass from './cloud_block.js';
 import BreakBlockStrongClass from '../code/break_block_strong.js';
+import ExplodeBlockClass from '../code/explode_block.js';
 import BallClass from './ball.js';
 import PlayerSideScroll from './player_sidescroll.js';
 
@@ -22,6 +23,7 @@ export default class MrCPUClass extends SpriteClass
         this.direction=1;
         this.isDropping=true;
         this.isDead=false;
+        this.isFirstShow=true;
         
             // setup
         
@@ -50,6 +52,7 @@ export default class MrCPUClass extends SpriteClass
     {
         this.isDropping=true;
         this.isDead=false;
+        this.isFirstShow=true;
     }
    
     runAI()
@@ -57,6 +60,16 @@ export default class MrCPUClass extends SpriteClass
         let map=this.game.map;
         let sprites,sprite,speed,mx;
         let playerSprite=map.getSpritePlayer();
+        
+            // the first time we get called is
+            // when we first appear, so play sound fx
+            
+        if (this.show) {
+            if (this.isFirstShow) {
+                this.isFirstShow=false;
+                this.game.soundList.play('boss_appear');
+            }
+        }
         
             // we have a special check for dropping
             // out of the sky, ignore everything until
@@ -67,6 +80,7 @@ export default class MrCPUClass extends SpriteClass
             
             this.isDropping=false;
             map.shake(10);
+            this.game.soundList.play('thud');
         }
         
             // if we are dead, do nothing
@@ -85,6 +99,7 @@ export default class MrCPUClass extends SpriteClass
             this.motion.y=0;
             this.drawFilter=this.grayDrawFilter;
             this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,this.game.imageList.get('particles/skull'),30,2500);
+            this.game.soundList.play('boss_dead');
             
             this.game.setData(('boss_'+map.name),true);
             this.game.persistData();
@@ -122,6 +137,18 @@ export default class MrCPUClass extends SpriteClass
             
             return;
         }
+        
+            // activate any exploding blocks
+            
+        if (this.standSprite!==null) {
+            if (this.standSprite instanceof ExplodeBlockClass) {
+                sprites=map.getSpritesWithinBox((this.x-32),(this.y-32),((this.x+this.width)+32),(this.y+64),this,ExplodeBlockClass);
+
+                for (sprite of sprites) {
+                    sprite.interactWithSprite(this,null);
+                }
+            }
+        }
 
             // if grounded, then we need to smash
             // the blocks (only 4 wide) at the bottom of the chicken
@@ -136,6 +163,7 @@ export default class MrCPUClass extends SpriteClass
         }
         
         map.shake(4);
+        this.game.soundList.play('thud');
 
             // jump back up
         

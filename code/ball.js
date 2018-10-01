@@ -177,6 +177,15 @@ export default class BallClass extends SpriteClass
             }
         }
         
+            // hitting water auto returns the ball
+            
+        if (map.liquidY!==-1) {
+            if (this.y>map.liquidY) {
+                this.returnBall();
+                return;
+            }
+        }
+        
             // change any travel mode
         
         if (this.travelMode===this.TRAVEL_MODE_FLOATING) {

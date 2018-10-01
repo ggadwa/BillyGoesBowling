@@ -18,9 +18,10 @@ export default class RotoCarrotClass extends SpriteClass
         
             // variables
             
-        this.addImage('sprites/roto_carrot');
-        this.setCurrentImage('sprites/roto_carrot');
-        this.setEditorImage('sprites/roto_carrot');
+        this.addImage('sprites/roto_carrot_1');
+        this.addImage('sprites/roto_carrot_2');
+        this.setCurrentImage('sprites/roto_carrot_1');
+        this.setEditorImage('sprites/roto_carrot_1');
         
         this.show=true;
         this.gravityFactor=0.0;
@@ -52,6 +53,7 @@ export default class RotoCarrotClass extends SpriteClass
     {
         if (interactSprite instanceof BallClass) {
             this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,this.game.imageList.get('particles/smoke'),8,600);
+            this.game.soundList.play('monster_die');
             this.delete();
         }
     }
@@ -76,7 +78,16 @@ export default class RotoCarrotClass extends SpriteClass
             
         if (this.carrotPause>0) {
             this.carrotPause--;
+            this.setCurrentImage('sprites/roto_carrot_1');
             return;
+        }
+        else {
+            if ((Math.trunc(this.game.timestamp/150)&0x1)===0) {
+                this.setCurrentImage('sprites/roto_carrot_1');
+            }
+            else {
+                this.setCurrentImage('sprites/roto_carrot_2');
+            }
         }
         
             // always travel left to right

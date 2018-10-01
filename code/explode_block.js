@@ -1,5 +1,6 @@
 import SpriteClass from '../engine/sprite.js';
 import BallClass from './ball.js';
+import MrCPUClass from '../code/mr_cpu.js';
 import KingGhastlyClass from './king_ghastly.js';
 
 export default class ExplodeBlockClass extends SpriteClass
@@ -49,10 +50,11 @@ export default class ExplodeBlockClass extends SpriteClass
             // start the countdown if ball or
             // another exploding block
             
-        if ((interactSprite instanceof BallClass) || (interactSprite instanceof ExplodeBlockClass) || (interactSprite instanceof KingGhastlyClass)) {
+        if ((interactSprite instanceof BallClass) || (interactSprite instanceof ExplodeBlockClass) || (interactSprite instanceof MrCPUClass) || (interactSprite instanceof KingGhastlyClass)) {
             this.countDown=3;
             this.countDownTick=this.COUNT_DOWN_TICK_WAIT;
             this.setCurrentImage('sprites/explode_block_'+this.countDown);
+            this.game.soundList.play('bomb_tick');
         }
     }
     
@@ -74,6 +76,7 @@ export default class ExplodeBlockClass extends SpriteClass
 
         if (this.countDown>=0) {
             this.setCurrentImage('sprites/explode_block_'+this.countDown);
+            this.game.soundList.play('bomb_tick');
             return;
         }
 

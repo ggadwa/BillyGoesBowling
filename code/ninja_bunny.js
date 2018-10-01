@@ -63,6 +63,7 @@ export default class NinjaBunnyClass extends SpriteClass
             
         if (interactSprite instanceof BallClass) {
             this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,this.game.imageList.get('particles/smoke'),8,600);
+            this.game.soundList.play('monster_die');
             this.delete();
         }
         

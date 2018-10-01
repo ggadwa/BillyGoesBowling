@@ -88,6 +88,8 @@ export default class PlayerSideScrollClass extends SpriteClass
         
         if ((this.invincibleCount>0) || (this.warpCount>0) || (this.deathCount>0)) return;
         
+        this.game.soundList.play('hurt');
+        
         health=this.game.getData('player_health')-1;
         this.game.setData('player_health',health);
         if (health===0) {
@@ -140,6 +142,8 @@ export default class PlayerSideScrollClass extends SpriteClass
         
         this.gravityFactor=0.0;     // make sure we don't fall when warping
         this.motion.y=0;
+        
+        this.game.soundList.play('teleport');
     }
     
     runAI()

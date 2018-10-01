@@ -19,6 +19,7 @@ export default class BoneyOneEyeClass extends SpriteClass
         this.isDropping=true;
         this.isFalling=false;
         this.isDead=false;
+        this.isFirstShow=true;
         
             // setup
         
@@ -48,6 +49,7 @@ export default class BoneyOneEyeClass extends SpriteClass
         this.fireWait=this.FIRE_TICK;
         this.isDropping=true;
         this.isDead=false;
+        this.isFirstShow=true;
     }
     
     fireEye()
@@ -68,6 +70,16 @@ export default class BoneyOneEyeClass extends SpriteClass
         let map=this.game.map;
         let playerSprite=map.getSpritePlayer();
         
+            // the first time we get called is
+            // when we first appear, so play sound fx
+            
+        if (this.show) {
+            if (this.isFirstShow) {
+                this.isFirstShow=false;
+                this.game.soundList.play('boss_appear');
+            }
+        }
+                
             // we have a special check for dropping
             // out of the sky, ignore everything until
             // we hit ground
@@ -79,6 +91,7 @@ export default class BoneyOneEyeClass extends SpriteClass
             this.isFalling=false;
             
             map.shake(10);
+            this.game.soundList.play('thud');
         }
         
             // dead, do nothig
@@ -96,6 +109,7 @@ export default class BoneyOneEyeClass extends SpriteClass
             this.gravityFactor=0.0;
             this.drawFilter=this.grayDrawFilter;
             this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,this.game.imageList.get('particles/skull'),30,2500);
+            this.game.soundList.play('boss_dead');
             
             this.game.setData(('boss_'+map.name),true);
             this.game.persistData();
@@ -114,6 +128,7 @@ export default class BoneyOneEyeClass extends SpriteClass
             if (this.grounded) {
                 this.isFalling=false;
                 map.shake(4);
+                this.game.soundList.play('thud');
             }
         }
         

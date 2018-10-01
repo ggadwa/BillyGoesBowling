@@ -59,9 +59,11 @@ export default class DrainPipeSnakeClass extends SpriteClass
                 this.invincibleCount=this.INVINCIBLE_TICK;
                 this.drawFilter=this.flashDrawFilter;
                 this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),16,16,1.0,0.1,5,0.05,this.game.imageList.get('particles/pipe'),10,800);
+                this.game.soundList.play('pipe_break');
             }
             else {
                 this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,this.game.imageList.get('particles/smoke'),8,600);
+                this.game.soundList.play('monster_die');
                 this.delete();
             }
         }

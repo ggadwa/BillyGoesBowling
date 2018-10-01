@@ -11,9 +11,18 @@ export default class BillySoundListClass extends SoundListClass
     {
         this.add('click');
         this.add('crack');
+        this.add('bomb_tick');
         this.add('explode');
         this.add('pop');
         this.add('boing');
+        this.add('thud');
+        this.add('boss_appear');
+        this.add('boss_dead');
+        this.add('monster_die');
+        this.add('hurt');
+        this.add('pipe_break');
+        this.add('teleport');
+        this.add('locked_castle');
     }
     
 }

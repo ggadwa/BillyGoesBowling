@@ -261,7 +261,20 @@ export default class MrCPUCastleMapClass extends SideScrollCastleBaseMapClass
             new BreakBlockStrongClass(this.game,1344,1280,new Map([])),
             new BreakBlockStrongClass(this.game,1408,1280,new Map([])),
             new BreakBlockStrongClass(this.game,1344,1024,new Map([])),
-            new BreakBlockStrongClass(this.game,1408,1024,new Map([]))
+            new BreakBlockStrongClass(this.game,1408,1024,new Map([])),
+            new ExplodeBlockClass(this.game,832,2048,new Map([])),
+            new ExplodeBlockClass(this.game,896,2048,new Map([])),
+            new ExplodeBlockClass(this.game,960,2048,new Map([])),
+            new ExplodeBlockClass(this.game,1024,2048,new Map([])),
+            new ExplodeBlockClass(this.game,1088,2048,new Map([])),
+            new ExplodeBlockClass(this.game,1152,2048,new Map([])),
+            new ExplodeBlockClass(this.game,1216,2048,new Map([])),
+            new ExplodeBlockClass(this.game,1280,2048,new Map([])),
+            new ExplodeBlockClass(this.game,1344,2048,new Map([])),
+            new ExplodeBlockClass(this.game,1408,2048,new Map([])),
+            new ExplodeBlockClass(this.game,1472,2048,new Map([])),
+            new ExplodeBlockClass(this.game,1536,2048,new Map([])),
+            new ExplodeBlockClass(this.game,1600,2048,new Map([]))
         ];
     }
     
@@ -269,6 +282,6 @@ export default class MrCPUCastleMapClass extends SideScrollCastleBaseMapClass
     {
         super.mapStartup();
         
-        this.liquidY=1952;
+        this.liquidY=2016;
     }
 }

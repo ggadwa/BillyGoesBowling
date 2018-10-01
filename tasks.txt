@@ -4,8 +4,6 @@
 
 //// ART
 
-Carrot
-
 //// MAPS
 
 Snake Pit
@@ -20,15 +18,21 @@ Return Engagement (executioner is back)
 
 //// SOUNDS
 
-- tick for bombs
-- cancel entering castle
-
+- player dead
 
 ///// URL params
 
 saveSlot=[0|1|2]        save slot to use
 eraseSlot=[0|1|2]       erase save slot
 unlocked=0              unlock any locked items in game
+
+///// Plunger
+
+Microwave like game
+dropping lines from plunger to dynamite
+push plunger without dynamite electrocutes alligators
+alligators chew up you and wires
+connect and blow up to win
 
 ///// template for new map
 
