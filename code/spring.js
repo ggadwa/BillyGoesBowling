@@ -1,5 +1,6 @@
 import SpriteClass from '../engine/sprite.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
+import DrainPipeSnakeClass from '../code/drain_pipe_snake.js';
 
 export default class SpringClass extends SpriteClass
 {
@@ -39,7 +40,7 @@ export default class SpringClass extends SpriteClass
     {
             // is player standing on spring?
             
-        if (!(interactSprite instanceof PlayerSideScrollClass)) return;
+        if (!((interactSprite instanceof PlayerSideScrollClass) || (interactSprite instanceof DrainPipeSnakeClass))) return;
         if (interactSprite.standSprite!==this) return;
         
             // jump up

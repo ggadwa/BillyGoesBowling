@@ -1,6 +1,7 @@
 import SpriteClass from '../engine/sprite.js';
 import FlashFilterClass from '../filters/flash.js';
 import BallClass from './ball.js';
+import SpringClass from './spring.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
 
 export default class DrainPipeSnakeClass extends SpriteClass
@@ -10,8 +11,10 @@ export default class DrainPipeSnakeClass extends SpriteClass
         super(game,x,y,data);
         
         this.INVINCIBLE_TICK=20;
-        this.TILE_IDX_LEFT_END=1;
-        this.TILE_IDX_RIGHT_END=3;
+        this.TILE_IDX_GROUND_LEFT_END=1;
+        this.TILE_IDX_GROUND_RIGHT_END=3;
+        this.TILE_IDX_GIRDER_LEFT_END=10;
+        this.TILE_IDX_GIRDER_RIGHT_END=12;
         
             // variables
             
@@ -100,8 +103,16 @@ export default class DrainPipeSnakeClass extends SpriteClass
             // turn around
             
         tileIdx=map.getTileUnderSprite(this);
-        if ((tileIdx===this.TILE_IDX_LEFT_END) && (this.snakeDirection===-1)) switchDirection=true;
-        if ((tileIdx===this.TILE_IDX_RIGHT_END) && (this.snakeDirection===1)) switchDirection=true;
+        if (((tileIdx===this.TILE_IDX_GROUND_LEFT_END) || (tileIdx===this.TILE_IDX_GIRDER_LEFT_END)) && (this.snakeDirection===-1)) switchDirection=true;
+        if (((tileIdx===this.TILE_IDX_GROUND_RIGHT_END) || (tileIdx===this.TILE_IDX_GIRDER_RIGHT_END)) && (this.snakeDirection===1)) switchDirection=true;
+        
+            // check for standing on a cloud or button
+            
+        if (this.standSprite!==null) {
+            if ((this.standSprite instanceof SpringClass) || (this.standSprite instanceof PlayerSideScrollClass)) {
+                this.standSprite.interactWithSprite(this,null);
+            }
+        }
         
             // switch direction
             
@@ -110,7 +121,6 @@ export default class DrainPipeSnakeClass extends SpriteClass
         }
         
             // image
-            
         
         if (this.snakeHasPipe) {
             if ((Math.trunc(this.game.timestamp/200)&0x1)===0) {

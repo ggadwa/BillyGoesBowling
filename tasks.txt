@@ -6,7 +6,6 @@
 
 //// MAPS
 
-Snake Pit
 Ninja Machine
 Cloud 9
 Carrot Chorus
