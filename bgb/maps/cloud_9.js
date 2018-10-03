@@ -1,44 +1,4 @@
-
-- stop music for funeral march
-- ghastly can't hurt you!
-
-- MAP_TILE_WIDTH static on map when class fields exist
-- completion times
-
-//// ART
-
-//// MAPS
-
-Ninja Machine
-Cloud 9
-Carrot Chorus
-Running Ahead
-Spring-a-thon
-Platform Peril (single platform released by bombs, need to hit above else get knocked off)
-Ninja Horde
-Return Engagement (executioner is back)
-
-//// SOUNDS
-
-- player dead
-
-///// URL params
-
-saveSlot=[0|1|2]        save slot to use
-eraseSlot=[0|1|2]       erase save slot
-unlocked=0              unlock any locked items in game
-
-///// Plunger
-
-Microwave like game
-dropping lines from plunger to dynamite
-push plunger without dynamite electrocutes alligators
-alligators chew up you and wires
-connect and blow up to win
-
-///// template for new map
-
-import MapClass from '../rpjs/engine/map.js';
+import MapClass from '../../rpjs/engine/map.js';
 import SideScrollNormalBaseMapClass from '../maps/side_scroll_normal_base.js';
 import PlayerSideScrollClass from '../code/player_sidescroll.js';
 import BlockClass from '../code/block.js';
@@ -57,7 +17,7 @@ import NinjaBunnyClass from '../code/ninja_bunny.js';
 import RotoCarrotClass from '../code/roto_carrot.js';
 import EasterHeadClass from '../code/easter_head.js';
 
-export default class CarrotCatacylismMapClass extends SideScrollNormalBaseMapClass
+export default class Cloud9MapClass extends SideScrollNormalBaseMapClass
 {
     create()
     {
