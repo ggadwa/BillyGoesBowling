@@ -10,6 +10,9 @@ export default class ShurikinClass extends SpriteClass
             
         this.travelX=0;
         
+        this.SHURIKIN_X_SPEED=10;
+        this.SHURIKIN_Y_SPEED=15;
+        
             // setup
             
         this.addImage('sprites/shurikin');
@@ -38,10 +41,10 @@ export default class ShurikinClass extends SpriteClass
             // if first call, then we need to setup
             // the travel
             
-        if (this.travelX===0) this.travelX=(playerSprite.x<this.x)?-15:15;
+        if (this.travelX===0) this.travelX=(playerSprite.x<this.x)?-this.SHURIKIN_X_SPEED:this.SHURIKIN_X_SPEED;
         
         this.x+=this.travelX;
-        this.y+=15;
+        this.y+=this.SHURIKIN_Y_SPEED;
 
         if (map.checkCollision(this)) {
             if (this.collideSprite!=null) this.collideSprite.interactWithSprite(this,null);

@@ -47,6 +47,8 @@ export default class DoorClass extends SpriteClass
         
         this.game.input.clearSelect();
         this.game.map.resetOffsetY();
+        
+        this.game.soundList.play('door');
     }
     
 }

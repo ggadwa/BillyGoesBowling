@@ -65,6 +65,9 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.flashDrawFilter=new FlashFilterClass();
         this.warpDrawFilter=new WarpFilterClass();
         
+        this.startTimestamp=0;
+        this.endTimestamp=0;
+        
         Object.seal(this);
     }
     
@@ -80,7 +83,18 @@ export default class PlayerSideScrollClass extends SpriteClass
     
     mapStartup()
     {
+            // the timing
+            
+        this.startTimestamp=this.endTimestamp=this.game.timestamp;
+
+            // add the ball sprite
+            
         this.game.map.addSprite(new BallClass(this.game,0,0,null));
+    }
+    
+    getPlayTimeAsString()
+    {
+        return(''+((this.endTimestamp-this.startTimestamp)/1000).toFixed(2));
     }
     
     hurtPlayer()
@@ -178,6 +192,11 @@ export default class PlayerSideScrollClass extends SpriteClass
             if (this.deathCount<=0) this.game.gotoMap('world_main');
             return;
         }
+        
+            // only update the end timestamp if we aren't
+            // dead or warping
+            
+        this.endTimestamp=this.game.timestamp;
         
             // invincible
          

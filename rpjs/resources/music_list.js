@@ -41,6 +41,7 @@ export default class MusicListClass
         let gain=ctx.createGain();
         
         this.currentSource=ctx.createBufferSource();
+        this.currentSource.loop=true;
         
         this.currentSource.buffer=this.buffers.get(name);
         gain.gain.value=this.MAIN_VOLUME;

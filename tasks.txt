@@ -1,26 +1,16 @@
 
 - stop music for funeral march
-- ghastly can't hurt you!
-
-- MAP_TILE_WIDTH static on map when class fields exist
-- completion times
 
 //// ART
 
 //// MAPS
 
-Ninja Machine
-Cloud 9
 Carrot Chorus
 Running Ahead
 Spring-a-thon
 Platform Peril (single platform released by bombs, need to hit above else get knocked off)
 Ninja Horde
 Return Engagement (executioner is back)
-
-//// SOUNDS
-
-- player dead
 
 ///// URL params
 

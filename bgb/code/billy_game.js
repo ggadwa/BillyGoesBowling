@@ -39,7 +39,7 @@ import NinjaJailMapClass from '../maps/ninja_jail.js';
 import MrCPUCastleMapClass from '../maps/mr_cpu_castle.js';
 import CarrotCatacylismMapClass from '../maps/carrot_catacylism.js';
 import SnakePitMapClass from '../maps/snake_pit.js';
-import NinjaMachineMapClass from '../maps/ninja_machine.js';
+import NinjaMountainMapClass from '../maps/ninja_mountain.js';
 import BoneyOneEyeCastleMapClass from '../maps/boney_one_eye_castle.js';
 import Cloud9MapClass from '../maps/cloud_9.js';
 import CarrotChorusMapClass from '../maps/carrot_chorus.js';
@@ -201,6 +201,7 @@ export default class BillyGameClass extends GameClass
         this.addImage('ui/pin');
         this.addImage('ui/trophy');
         this.addImage('ui/score_box');
+        this.addImage('ui/time_box');
         this.addImage('ui/health_100');
         this.addImage('ui/health_75');
         this.addImage('ui/health_50');
@@ -223,7 +224,7 @@ export default class BillyGameClass extends GameClass
         this.addSound('pipe_break');
         this.addSound('teleport');
         this.addSound('locked_castle');
-        this.addSound('locked_castle');
+        this.addSound('door');
         this.addSound('funeral_march');
         
             // maps
@@ -247,7 +248,7 @@ export default class BillyGameClass extends GameClass
         
         this.addMap('carrot_catacylism',new CarrotCatacylismMapClass(this));
         this.addMap('snake_pit',new SnakePitMapClass(this));
-        this.addMap('ninja_machine',new NinjaMachineMapClass(this));
+        this.addMap('ninja_mountain',new NinjaMountainMapClass(this));
         this.addMap('boney_one_eye_castle',new BoneyOneEyeCastleMapClass(this));
         
         this.addMap('cloud_9',new Cloud9MapClass(this));
@@ -327,7 +328,7 @@ export default class BillyGameClass extends GameClass
         
         //return(this.mapList.get('carrot_catacylism'));
         //return(this.mapList.get('snake_pit'));
-        //return(this.mapList.get('ninja_machine'));
+        //return(this.mapList.get('ninja_mountain'));
         //return(this.mapList.get('boney_one_eye_castle'));
         
         //return(this.mapList.get('cloud_9'));
@@ -379,6 +380,10 @@ export default class BillyGameClass extends GameClass
         if (playerSprite instanceof PlayerSideScrollClass) {
             health=this.getData('player_health');
             if (health>0) this.drawUIImage(this.HEALTH_IMAGE_LIST[health-1],5,5);
+            
+            this.setupUIText('18px Arial','#000000','center','alphabetic');
+            this.drawUIImage('ui/time_box',(this.canvasWidth-120),10);
+            this.drawUIText(playerSprite.getPlayTimeAsString(),(this.canvasWidth-55),33);
         }
         
             // world UI
