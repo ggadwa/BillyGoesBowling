@@ -37,10 +37,22 @@ export default class SoundListClass
     play(name)
     {
         let ctx=this.game.audioContext;
-        let source=ctx.createBufferSource();
-        let gain=ctx.createGain();
+        let source,gain;
+        let buffer=this.buffers.get(name);
         
-        source.buffer=this.buffers.get(name);
+            // just a warning if no music
+            
+        if (buffer===undefined) {
+            console.log('Unknown sound: '+name);
+            return;
+        }
+
+            // play sound
+            
+        source=ctx.createBufferSource();
+        source.buffer=buffer;
+        
+        gain=ctx.createGain();
         gain.gain.value=this.MAIN_VOLUME;
 
         source.connect(gain);
@@ -84,7 +96,8 @@ export default class SoundListClass
             // error
             
         if (req.status!==200) {
-            console.log('Missing sound: '+name);        // this will abort the game loading process
+            console.log('Missing sound wav: '+name);        // this will abort the game loading process
+            this.loadProcess(keyIter,(count+1),callback);
             return;
         }
         

@@ -25,6 +25,10 @@ export default class SideScrollCastleBaseMapClass extends SideScrollBaseMapClass
             
         this.game.setData('player_health',4);
         this.resetOffsetY();
+        
+            // music
+            
+        this.game.musicList.start('boss');
     }
 
 }

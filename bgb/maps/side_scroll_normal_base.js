@@ -24,6 +24,10 @@ export default class SideScrollNormalBaseMapClass extends SideScrollBaseMapClass
             
         this.game.setData('player_health',4);
         this.resetOffsetY();
+        
+            // music
+            
+        this.game.musicList.start('map');
     }
 
 }

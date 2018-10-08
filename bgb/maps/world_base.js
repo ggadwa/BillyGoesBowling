@@ -59,5 +59,9 @@ export default class WorldBaseMapClass extends MapClass
         playerSprite=this.getSpritePlayer();
         playerSprite.x=x;
         playerSprite.y=y;
+        
+            // music
+            
+        this.game.musicList.start('world');
     }
 }

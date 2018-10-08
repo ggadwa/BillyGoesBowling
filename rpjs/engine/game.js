@@ -111,8 +111,15 @@ export default class GameClass
             
         this.soundList.initialize(this.initialize3.bind(this));
     }
-   
+    
     initialize3()
+    {
+            // initialize and load the music list
+            
+        this.musicList.initialize(this.initialize4.bind(this));
+    }
+   
+    initialize4()
     {
         this.input.initialize();
         
@@ -133,10 +140,10 @@ export default class GameClass
             // we call a single animation frame
             // loop so we can get a starting timestamp
             
-        window.requestAnimationFrame(this.initialize4.bind(this));
+        window.requestAnimationFrame(this.initialize5.bind(this));
     }
         
-    initialize4(systemTimestamp)
+    initialize5(systemTimestamp)
     {
             // setup the timing and
             // game states, because of audio
@@ -150,6 +157,8 @@ export default class GameClass
         
         this.paused=true;
         this.lastTimestamp=Math.trunc(systemTimestamp);
+        
+        this.audioContext.suspend();
         
             // force a first draw as game starts paused
 
@@ -377,6 +386,11 @@ export default class GameClass
         this.data.set(name,value);
     }
     
+    deleteData(name)
+    {
+        this.data.delete(name);
+    }
+    
     gotoMap(name)
     {
         this.gotoMapName=name;
@@ -517,6 +531,7 @@ export default class GameClass
         if (!this.paused) {
             if (this.input.isPause()) {
                 this.paused=true;
+                this.audioContext.suspend();
                 this.draw(true);
                 return;
             }
@@ -525,6 +540,7 @@ export default class GameClass
             this.lastTimestamp=systemTimestamp;
             if (this.input.isLeftMouseDown()) {
                 this.paused=false;
+                this.audioContext.resume();
             }
 
             return;

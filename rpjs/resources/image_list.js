@@ -43,9 +43,10 @@ export default class ImageListClass
         return(typeImages);
     }
     
-    loadProcessError(path)
+    loadProcessError(path,keyIter,count,callback)
     {
-        console.log('Missing Image: '+path);        // this will abort the loading process
+        console.log('Missing image png: '+path);
+        this.loadProcess(keyIter,count,callback);
     }
     
     loadProcess(keyIter,count,callback)
@@ -67,7 +68,7 @@ export default class ImageListClass
         img=this.images.get(name);
         
         img.onload=this.loadProcess.bind(this,keyIter,(count+1),callback);
-        img.onerror=this.loadProcessError.bind(this,path);
+        img.onerror=this.loadProcessError.bind(this,path,keyIter,(count+1),callback);
         img.src=path;
     }
     

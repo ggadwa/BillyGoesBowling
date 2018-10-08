@@ -14,6 +14,7 @@ import ButtonClass from './button.js';
 import SpringClass from './spring.js';
 import MapSpotClass from './map_spot.js';
 import MapCastleClass from './map_castle.js';
+import MapCottageClass from './map_cottage.js';
 import MapBlockClass from './map_block.js';
 import DrainPipeSnakeClass from './drain_pipe_snake.js';
 import NinjaBunnyClass from './ninja_bunny.js';
@@ -182,6 +183,7 @@ export default class BillyGameClass extends GameClass
         this.addImage('sprites/world_map_castle');
         this.addImage('sprites/world_map_castle_locked');
         this.addImage('sprites/world_map_castle_wreck');
+        this.addImage('sprites/world_map_cottage');
         this.addImage('sprites/world_map_block');
         
         this.addImage('particles/block');
@@ -191,6 +193,7 @@ export default class BillyGameClass extends GameClass
         this.addImage('particles/explode_yellow');
         this.addImage('particles/smoke');
         this.addImage('particles/skull');
+        this.addImage('particles/castle');
             
         this.addImage('backgrounds/sun');
         this.addImage('backgrounds/clouds');
@@ -226,6 +229,12 @@ export default class BillyGameClass extends GameClass
         this.addSound('locked_castle');
         this.addSound('door');
         this.addSound('funeral_march');
+        
+            // music
+            
+        this.addMusic('world');
+        this.addMusic('map');
+        this.addMusic('boss');
         
             // maps
             
@@ -302,13 +311,14 @@ export default class BillyGameClass extends GameClass
             new BoneyOneEyeClass(this,0,0,null),
             new KingGhastlyClass(this,0,0,null),
             new MapSpotClass(this,0,0,null),
-            new MapCastleClass(this,0,0,null)
+            new MapCastleClass(this,0,0,null),
+            new MapCottageClass(this,0,0,null)
         ]);
     }
    
     getStartMap()
     {
-        return(this.mapList.get('world_main'));
+        //return(this.mapList.get('world_main'));
 
         //return(this.mapList.get('snakes_on_a_plain'));
         //return(this.mapList.get('apocalypse_carrot'));
@@ -332,7 +342,7 @@ export default class BillyGameClass extends GameClass
         //return(this.mapList.get('boney_one_eye_castle'));
         
         //return(this.mapList.get('cloud_9'));
-        //return(this.mapList.get('carrot_chorus'));
+        return(this.mapList.get('carrot_chorus'));
         //return(this.mapList.get('running_ahead'));
         //return(this.mapList.get('spring_a_thon'));
         //return(this.mapList.get('platform_peril'));

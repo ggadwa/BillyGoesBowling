@@ -4,7 +4,7 @@ export default class MusicListClass
     {
         this.game=game;
         
-        this.MAIN_VOLUME=0.2;
+        this.MAIN_VOLUME=0.05;
         
         this.buffers=new Map();
         this.currentSource=null;
@@ -38,12 +38,27 @@ export default class MusicListClass
     start(name)
     {
         let ctx=this.game.audioContext;
-        let gain=ctx.createGain();
+        let gain;
+        let buffer=this.buffers.get(name);
+        
+            // just a warning if no music
+            
+        if (buffer===undefined) {
+            console.log('Unknown music: '+name);
+            return;
+        }
+        
+            // stop any playing music
+            
+        this.stop();
+        
+            // now start new music
         
         this.currentSource=ctx.createBufferSource();
         this.currentSource.loop=true;
+        this.currentSource.buffer=buffer;
         
-        this.currentSource.buffer=this.buffers.get(name);
+        gain=ctx.createGain();
         gain.gain.value=this.MAIN_VOLUME;
 
         this.currentSource.connect(gain);
@@ -69,7 +84,8 @@ export default class MusicListClass
             // error
             
         if (req.status!==200) {
-            console.log('Missing music: '+name);        // this will abort the game loading process
+            console.log('Missing music mp3: '+name);        // this will abort the game loading process
+            this.loadProcess(keyIter,(count+1),callback);
             return;
         }
         

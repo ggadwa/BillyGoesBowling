@@ -127,6 +127,7 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.drawFilter=null;
         
         this.game.map.getFirstSpriteOfType(BallClass).show=false;
+        this.game.musicList.stop();
         this.game.soundList.play('funeral_march');
         
         this.game.setData('player_health',0);

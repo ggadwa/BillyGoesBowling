@@ -102,6 +102,7 @@ export default class MrCPUClass extends SpriteClass
             this.game.soundList.play('boss_dead');
             
             this.game.setData(('boss_'+map.name),true);
+            this.game.setData(('boss_explode_'+map.name),true);
             this.game.persistData();
             
             map.forceCameraSprite=this;

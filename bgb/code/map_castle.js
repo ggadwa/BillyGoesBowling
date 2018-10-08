@@ -39,6 +39,15 @@ export default class MapCastleClass extends SpriteClass
     {
         if (this.game.getData('boss_'+this.getData('map'))!==null) {
             this.setCurrentImage('sprites/world_map_castle_wreck');
+                    
+                // if just defeated, explode
+            
+            if (this.game.getData('boss_explode_'+this.getData('map'))) {
+                this.game.deleteData('boss_explode_'+this.getData('map'));      // only happens once
+                this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),10,10,1.0,0.1,5,0.04,this.game.imageList.get('particles/castle'),40,1500);
+                this.game.soundList.play('explode');
+            }
+
         }
         else {
             if (this.isUnlocked()) {

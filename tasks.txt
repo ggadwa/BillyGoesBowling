@@ -1,11 +1,13 @@
 
-- stop music for funeral march
+
+
+Congratulations!  Your cliche princess is in this
+quaint gingerbread cottage!  You've won the game!
 
 //// ART
 
 //// MAPS
 
-Carrot Chorus
 Running Ahead
 Spring-a-thon
 Platform Peril (single platform released by bombs, need to hit above else get knocked off)
