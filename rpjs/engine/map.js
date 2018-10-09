@@ -167,9 +167,17 @@ export default class MapClass
         return(null);
     }
     
-    addParticle(x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,img,count,lifeTick)
+    addParticle(x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,imageName,count,lifeTick)
     {
-        let particle=new ParticleClass(this.game,x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,img,count,lifeTick);
+        let img,particle;
+        
+        img=this.game.imageList.get(imageName);
+        if (img===undefined) {
+            console.log('Unknown particle image png: '+imageName);
+            return;
+        }
+        
+        particle=new ParticleClass(this.game,x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,img,count,lifeTick);
         return(this.particles.push(particle)-1);
     }
     

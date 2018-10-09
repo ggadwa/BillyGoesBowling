@@ -43,7 +43,7 @@ export default class MusicListClass
         
             // just a warning if no music
             
-        if (buffer===undefined) {
+        if ((buffer===undefined) || (buffer===null)) {
             console.log('Unknown music: '+name);
             return;
         }

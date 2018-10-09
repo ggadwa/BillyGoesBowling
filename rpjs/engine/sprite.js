@@ -92,15 +92,27 @@ export default class SpriteClass
         
     addImage(name)
     {
-        this.images.set(name,this.game.imageList.get(name));
+        let img=this.game.imageList.get(name);
+        if (img===undefined) {
+            console.log('Unknown image png: '+name);
+            return;
+        }
+        
+        this.images.set(name,img);
     }
     
     setCurrentImage(name)
     {
-        this.currentImage=this.images.get(name);
+        let img=this.images.get(name);
+        if (img===undefined) {
+            console.log('Unknown image name: '+name);
+            return;
+        }
         
-        this.width=this.currentImage.width;
-        this.height=this.currentImage.height;
+        this.currentImage=img;
+        
+        this.width=img.width;
+        this.height=img.height;
     }
     
     setEditorImage(name)

@@ -84,7 +84,7 @@ export default class GameClass
         this.audioContext=new initAudioContext();
         
         if (this.audioContext===null) {
-            console.log('unable to create audio context');
+            console.log('Unable to create audio context');
             return;
         }
         

@@ -188,6 +188,7 @@ export default class BillyGameClass extends GameClass
         
         this.addImage('particles/block');
         this.addImage('particles/pipe');
+        this.addImage('particles/ball');
         this.addImage('particles/explode_red');
         this.addImage('particles/explode_orange');
         this.addImage('particles/explode_yellow');
@@ -210,6 +211,7 @@ export default class BillyGameClass extends GameClass
         this.addImage('ui/health_50');
         this.addImage('ui/health_25');
         this.addImage('ui/banner');
+        this.addImage('ui/win_banner');
         
             // sounds
             
@@ -225,9 +227,11 @@ export default class BillyGameClass extends GameClass
         this.addSound('monster_die');
         this.addSound('hurt');
         this.addSound('pipe_break');
+        this.addSound('ball_break');
         this.addSound('teleport');
         this.addSound('locked_castle');
         this.addSound('door');
+        this.addSound('pickup');
         this.addSound('funeral_march');
         
             // music
@@ -318,7 +322,7 @@ export default class BillyGameClass extends GameClass
    
     getStartMap()
     {
-        //return(this.mapList.get('world_main'));
+        return(this.mapList.get('world_main'));
 
         //return(this.mapList.get('snakes_on_a_plain'));
         //return(this.mapList.get('apocalypse_carrot'));
@@ -342,7 +346,7 @@ export default class BillyGameClass extends GameClass
         //return(this.mapList.get('boney_one_eye_castle'));
         
         //return(this.mapList.get('cloud_9'));
-        return(this.mapList.get('carrot_chorus'));
+        //return(this.mapList.get('carrot_chorus'));
         //return(this.mapList.get('running_ahead'));
         //return(this.mapList.get('spring_a_thon'));
         //return(this.mapList.get('platform_peril'));
@@ -424,26 +428,37 @@ export default class BillyGameClass extends GameClass
                 if (count>10) this.drawSetAlpha(1.0-((count-10)/10));
             }
             
-                // the banner
+                // special win banner
                 
-            wid=this.imageList.get('ui/banner').width;
-            mx=Math.trunc(this.canvasWidth*0.5);
-            lx=mx-Math.trunc(wid*0.5);
-            this.drawUIImage('ui/banner',lx,(this.canvasHeight-74));
-            
-            pinCount=this.getData('banner_pin_count');
-            if (pinCount===-1) {
-                this.setupUIText('bolder 36px Arial','#000000','center','alphabetic');
-                this.drawUIText(this.getData('banner_text'),mx,(this.canvasHeight-29));
+            if (this.getData('banner_text')===null) {
+                wid=this.imageList.get('ui/win_banner').width;
+                mx=Math.trunc(this.canvasWidth*0.5);
+                lx=mx-Math.trunc(wid*0.5);
+                this.drawUIImage('ui/win_banner',lx,(this.canvasHeight-260));
             }
+            
+                // regular banner
+              
             else {
-                this.setupUIText('bolder 36px Arial','#000000','left','alphabetic');
-                this.drawUIText(this.getData('banner_text'),(lx+10),(this.canvasHeight-29));
-                
-                rx=lx+wid;
-                this.drawUIImage('ui/pin',(rx-36),(this.canvasHeight-67));
-                this.setupUIText('bolder 36px Arial','#000000','right','alphabetic');
-                this.drawUIText(pinCount,(rx-41),(this.canvasHeight-29));
+                wid=this.imageList.get('ui/banner').width;
+                mx=Math.trunc(this.canvasWidth*0.5);
+                lx=mx-Math.trunc(wid*0.5);
+                this.drawUIImage('ui/banner',lx,(this.canvasHeight-74));
+
+                pinCount=this.getData('banner_pin_count');
+                if (pinCount===-1) {
+                    this.setupUIText('bolder 36px Arial','#000000','center','alphabetic');
+                    this.drawUIText(this.getData('banner_text'),mx,(this.canvasHeight-29));
+                }
+                else {
+                    this.setupUIText('bolder 36px Arial','#000000','left','alphabetic');
+                    this.drawUIText(this.getData('banner_text'),(lx+10),(this.canvasHeight-29));
+
+                    rx=lx+wid;
+                    this.drawUIImage('ui/pin',(rx-36),(this.canvasHeight-67));
+                    this.setupUIText('bolder 36px Arial','#000000','right','alphabetic');
+                    this.drawUIText(pinCount,(rx-41),(this.canvasHeight-29));
+                }
             }
             
             this.drawSetAlpha(1.0);

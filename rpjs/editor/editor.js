@@ -426,7 +426,6 @@ export default class EditorClass
             
         this.selectX=x;
         this.selectY=y;
-        console.log(this.selectX+'='+this.selectY);
         
             // run click
         

@@ -50,6 +50,8 @@ export default class TrophyClass extends SpriteClass
             this.game.persistData();
         }
         
+        this.game.soundList.play('pickup');
+        
         this.delete();
     }
 }

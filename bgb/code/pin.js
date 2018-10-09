@@ -51,6 +51,8 @@ export default class PinClass extends SpriteClass
             this.game.persistData();
         }
         
+        this.game.soundList.play('pickup');
+        
         this.delete();
         
             // warp out the player

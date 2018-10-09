@@ -42,7 +42,7 @@ export default class SoundListClass
         
             // just a warning if no music
             
-        if (buffer===undefined) {
+        if ((buffer===undefined) || (buffer===null)) {
             console.log('Unknown sound: '+name);
             return;
         }
