@@ -254,7 +254,7 @@ export default class NinjaJailMapClass extends SideScrollNormalBaseMapClass
             new BreakBlockClass(this.game,3584,2496,new Map([])),
             new BreakBlockClass(this.game,3584,2432,new Map([])),
             new BreakBlockClass(this.game,3584,2368,new Map([])),
-            new TrophyClass(this.game,3584,2304,new Map([])),
+            new TrophyClass(this.game,2368,2624,new Map([])),
             new CloudBlockClass(this.game,960,3008,new Map([])),
             new CloudBlockClass(this.game,1024,3008,new Map([])),
             new CloudBlockClass(this.game,1024,2944,new Map([])),

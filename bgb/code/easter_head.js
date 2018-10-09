@@ -14,7 +14,7 @@ export default class EasterHeadClass extends SpriteClass
         
             // variables
             
-        this.fireCount=this.FIRE_TICK+(x%20);   // start at different firing times depending on X position
+        this.fireCount=this.FIRE_TICK+Math.trunc(Math.random()*25);   // random firing times
         
             // setup
         
@@ -53,9 +53,11 @@ export default class EasterHeadClass extends SpriteClass
             sx=(this.x+this.width)+10;
         }
 
-        sy=(this.y-this.height)+16;
+        sy=(this.y-Math.trunc(this.height*0.5))+16;
 
         this.game.map.addSprite(new RockClass(this.game,sx,sy,null));
+        
+        this.game.soundList.playAtSprite('pipe_break',this,playerSprite);       // use the same sound effect here
     }
     
     runAI()

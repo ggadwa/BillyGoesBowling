@@ -189,6 +189,7 @@ export default class BillyGameClass extends GameClass
         this.addImage('particles/block');
         this.addImage('particles/pipe');
         this.addImage('particles/ball');
+        this.addImage('particles/rock');
         this.addImage('particles/explode_red');
         this.addImage('particles/explode_orange');
         this.addImage('particles/explode_yellow');
@@ -322,7 +323,7 @@ export default class BillyGameClass extends GameClass
    
     getStartMap()
     {
-        return(this.mapList.get('world_main'));
+        //return(this.mapList.get('world_main'));
 
         //return(this.mapList.get('snakes_on_a_plain'));
         //return(this.mapList.get('apocalypse_carrot'));
@@ -336,7 +337,7 @@ export default class BillyGameClass extends GameClass
 
         //return(this.mapList.get('heads_up'));
         //return(this.mapList.get('raining_creeps'));
-        //return(this.mapList.get('ninja_jail'));
+        return(this.mapList.get('ninja_jail'));
         //return(this.mapList.get('puzzling_blocks'));
         //return(this.mapList.get('mr_cpu_castle'));
         
