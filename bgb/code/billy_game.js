@@ -324,7 +324,7 @@ export default class BillyGameClass extends GameClass
    
     getStartMap()
     {
-        //return(this.mapList.get('world_main'));
+        return(this.mapList.get('world_main'));
 
         //return(this.mapList.get('snakes_on_a_plain'));
         //return(this.mapList.get('apocalypse_carrot'));
@@ -336,7 +336,7 @@ export default class BillyGameClass extends GameClass
         //return(this.mapList.get('surfs_up'));
         //return(this.mapList.get('surfs_down'));
 
-        return(this.mapList.get('heads_up'));
+        //return(this.mapList.get('heads_up'));
         //return(this.mapList.get('raining_creeps'));
         //return(this.mapList.get('ninja_jail'));
         //return(this.mapList.get('puzzling_blocks'));

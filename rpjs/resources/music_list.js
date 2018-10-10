@@ -4,7 +4,7 @@ export default class MusicListClass
     {
         this.game=game;
         
-        this.MAIN_VOLUME=0.2;
+        this.MAIN_VOLUME=0.15;
         
         this.buffers=new Map();
         this.currentSource=null;

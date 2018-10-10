@@ -11,6 +11,7 @@ export default class RockClass extends SpriteClass
             // variables
             
         this.travelX=0;
+        this.doubleBounceCheck=false;
         
             // setup
             
@@ -79,7 +80,20 @@ export default class RockClass extends SpriteClass
             
             this.x-=this.travelX;
             
+                // if we already bounced the previous AI
+                // run, then the rock is stuck and destroy it
+                
+            if (this.doubleBounceCheck) {
+                this.removeBall();
+                return;
+            }
+            
             this.bounceBall();
+            
+            this.doubleBounceCheck=true;
+        }
+        else {
+            this.doubleBounceCheck=false;
         }
         
             // any grounding stops travel

@@ -4,7 +4,7 @@ export default class SoundListClass
     {
         this.game=game;
         
-        this.MAIN_VOLUME=0.4;
+        this.MAIN_VOLUME=0.3;
         this.DISTANCE_ATTUATION=0.0002;
         
         this.buffers=new Map();
