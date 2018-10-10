@@ -49,12 +49,16 @@ export default class NinjaBunnyClass extends SpriteClass
     {
         this.bunnyJumpDirection=Math.sign(sprite.x-this.x);
         if (this.motion.y>=0) this.motion.y+=this.BUNNY_JUMP_HEIGHT;
+        
+        this.game.soundList.playAtSprite('jump',this,this.game.map.getSpritePlayer());
     }
     
     jumpAwayFromSprite(sprite)
     {
         this.jumpTowardsSprite(sprite);
         this.bunnyJumpDirection=-this.bunnyJumpDirection;
+        
+        this.game.soundList.playAtSprite('jump',this,this.game.map.getSpritePlayer());
     }
     
     interactWithSprite(interactSprite,dataObj)

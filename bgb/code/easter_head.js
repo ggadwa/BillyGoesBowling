@@ -53,7 +53,7 @@ export default class EasterHeadClass extends SpriteClass
             sx=(this.x+this.width)+10;
         }
 
-        sy=(this.y-Math.trunc(this.height*0.5))+16;
+        sy=(this.y-this.height)+16;
 
         this.game.map.addSprite(new RockClass(this.game,sx,sy,null));
         

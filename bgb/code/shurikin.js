@@ -10,7 +10,7 @@ export default class ShurikinClass extends SpriteClass
             
         this.travelX=0;
         
-        this.SHURIKIN_X_SPEED=10;
+        this.SHURIKIN_X_SPEED=12;
         this.SHURIKIN_Y_SPEED=15;
         
             // setup

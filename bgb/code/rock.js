@@ -1,4 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import BreakBlockClass from '../code/break_block.js';
 import CloudBlockClass from './cloud_block.js';
 
 export default class RockClass extends SpriteClass
@@ -59,11 +60,11 @@ export default class RockClass extends SpriteClass
         this.x+=this.travelX;
 
             // colliding with anything but the player
-            // or cloud sprite changes direction
+            // or cloud/break block sprite changes direction
             
         if (map.checkCollision(this)) {
             if (this.collideSprite!==null) {
-                if (this.collideSprite instanceof CloudBlockClass) {
+                if ((this.collideSprite instanceof CloudBlockClass) || (this.collideSprite instanceof BreakBlockClass)) {
                     this.collideSprite.interactWithSprite(this,null);
                     this.removeBall();
                     return;

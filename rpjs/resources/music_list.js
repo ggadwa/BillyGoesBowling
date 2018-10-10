@@ -4,7 +4,7 @@ export default class MusicListClass
     {
         this.game=game;
         
-        this.MAIN_VOLUME=0.05;
+        this.MAIN_VOLUME=0.2;
         
         this.buffers=new Map();
         this.currentSource=null;
@@ -80,6 +80,7 @@ export default class MusicListClass
     loadProcessLoaded(req,name,keyIter,count,callback)
     {
         let buffers=this.buffers;
+        let thisRef=this;
         
             // error
             
@@ -96,15 +97,13 @@ export default class MusicListClass
         this.game.audioContext.decodeAudioData(req.response,
                             function(buffer) {
                                 buffers.set(name,buffer);
+                                thisRef.loadProcess(keyIter,(count+1),callback);
                             },
                             function(err) {
-                                console.log(name+': '+err);
-                            }        // supergumba -- need errors here
+                                console.log('Unable to process music: '+name+': '+err);
+                                thisRef.loadProcess(keyIter,(count+1),callback);
+                            }
                         );
-                
-            // next sound
-            
-        this.loadProcess(keyIter,(count+1),callback);
     }
     
     loadProcess(keyIter,count,callback)

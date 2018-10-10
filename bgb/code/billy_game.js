@@ -222,6 +222,7 @@ export default class BillyGameClass extends GameClass
         this.addSound('explode');
         this.addSound('pop');
         this.addSound('boing');
+        this.addSound('jump');
         this.addSound('thud');
         this.addSound('boss_appear');
         this.addSound('boss_dead');
@@ -335,9 +336,9 @@ export default class BillyGameClass extends GameClass
         //return(this.mapList.get('surfs_up'));
         //return(this.mapList.get('surfs_down'));
 
-        //return(this.mapList.get('heads_up'));
+        return(this.mapList.get('heads_up'));
         //return(this.mapList.get('raining_creeps'));
-        return(this.mapList.get('ninja_jail'));
+        //return(this.mapList.get('ninja_jail'));
         //return(this.mapList.get('puzzling_blocks'));
         //return(this.mapList.get('mr_cpu_castle'));
         

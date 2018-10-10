@@ -1,10 +1,9 @@
-- lighter bong for ninja bunnies
+
 
 //// ART
 
 //// MAPS
 
-Running Ahead
 Spring-a-thon
 Platform Peril (single platform released by bombs, need to hit above else get knocked off)
 Ninja Horde
