@@ -163,10 +163,10 @@ export default class WorldMainMapClass extends WorldBaseMapClass
             new MapSpotClass(this.game,3456,896,new Map([["title","Cloud 9"],["map","cloud_9"]])),
             new MapSpotClass(this.game,3712,832,new Map([["title","Carrot Chorus"],["map","carrot_chorus"]])),
             new MapSpotClass(this.game,3904,896,new Map([["title","Running Ahead"],["map","running_ahead"]])),
-            new MapSpotClass(this.game,3328,1344,new Map([["title","Spring-a-thon"],["map","spring_a_thon"]])),
+            new MapSpotClass(this.game,3328,1344,new Map([["title","Speedway"],["map","speedway"]])),
             new MapSpotClass(this.game,3456,1600,new Map([["title","Platform Peril"],["map","platform_peril"]])),
             new MapSpotClass(this.game,3776,1536,new Map([["title","Ninja Horde"],["map","ninja_horde"]])),
-            new MapSpotClass(this.game,3968,1216,new Map([["title","Return Engagement"],["map","return_engagement"]])),
+            new MapSpotClass(this.game,3968,1216,new Map([["title","Spring-a-thon"],["map","spring_a_thon"]])),
             new MapCastleClass(this.game,3648,1216,new Map([["title","King Ghastly's Castle"],["map","king_ghastly_castle"],["pin",18]])),
             new MapCottageClass(this.game,4544,1216,new Map([]))
         ];

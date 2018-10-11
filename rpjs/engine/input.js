@@ -5,6 +5,12 @@ export default class InputClass
         this.game=game;
         this.cancelled=false;
         
+            // determine if touch interface
+            
+        this.isTouch=/(iphone|ipad|android)/.test(window.navigator.userAgent.toLowerCase());
+        
+            // input flags
+        
         this.mouseFlags=new Uint8Array(3);
         this.keyFlags=new Uint8Array(255);
         

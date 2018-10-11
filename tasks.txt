@@ -4,8 +4,8 @@
 
 //// MAPS
 
+Speedway
 Ninja Horde
-Return Engagement (executioner is back)
 
 ///// URL params
 

@@ -45,10 +45,10 @@ import BoneyOneEyeCastleMapClass from '../maps/boney_one_eye_castle.js';
 import Cloud9MapClass from '../maps/cloud_9.js';
 import CarrotChorusMapClass from '../maps/carrot_chorus.js';
 import RunningAheadMapClass from '../maps/running_ahead.js';
-import SprintAThonMapClass from '../maps/spring_a_thon.js';
+import SpeedwayMapClass from '../maps/speedway.js';
 import PlatformPerilMapClass from '../maps/platform_peril.js';
 import NinjaHordeMapClass from '../maps/ninja_horde.js';
-import ReturnEngagementMapClass from '../maps/return_engagement.js';
+import SprintAThonMapClass from '../maps/spring_a_thon.js';
 import KingGhastlyCastleMapClass from '../maps/king_ghastly_castle.js';
 
 export default class BillyGameClass extends GameClass
@@ -269,10 +269,10 @@ export default class BillyGameClass extends GameClass
         this.addMap('cloud_9',new Cloud9MapClass(this));
         this.addMap('carrot_chorus',new CarrotChorusMapClass(this));
         this.addMap('running_ahead',new RunningAheadMapClass(this));
-        this.addMap('spring_a_thon',new SprintAThonMapClass(this));
+        this.addMap('speedway',new SpeedwayMapClass(this));
         this.addMap('platform_peril',new PlatformPerilMapClass(this));
         this.addMap('ninja_horde',new NinjaHordeMapClass(this));
-        this.addMap('return_engagement',new ReturnEngagementMapClass(this));    
+        this.addMap('spring_a_thon',new SprintAThonMapClass(this));
         this.addMap('king_ghastly_castle',new KingGhastlyCastleMapClass(this));
     }
     
@@ -350,10 +350,10 @@ export default class BillyGameClass extends GameClass
         //return(this.mapList.get('cloud_9'));
         //return(this.mapList.get('carrot_chorus'));
         //return(this.mapList.get('running_ahead'));
-        //return(this.mapList.get('spring_a_thon'));
+        //return(this.mapList.get('speedway'));
         //return(this.mapList.get('platform_peril'));
         //return(this.mapList.get('ninja_horde'));
-        //return(this.mapList.get('return_engagement'));    
+        //return(this.mapList.get('spring_a_thon'));
         //return(this.mapList.get('king_ghastly_castle'));
     }
     
