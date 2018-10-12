@@ -175,7 +175,7 @@ export default class GameClass
      
     start()
     {
-        this.initialize()
+        this.initialize();
     }
     
     resumeFromPause()
@@ -244,7 +244,7 @@ export default class GameClass
         
         if ((slot<0) || (slot>2)) slot=0;
 
-        return('save_'+slot);
+        return(this.constructor.name+'_save_'+slot);
     }
     
     /**

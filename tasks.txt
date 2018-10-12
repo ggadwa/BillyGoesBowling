@@ -4,9 +4,6 @@
 
 //// MAPS
 
-Speedway
-Ninja Horde
-
 ///// URL params
 
 saveSlot=[0|1|2]        save slot to use
