@@ -49,6 +49,10 @@ export default class WorldBaseMapClass extends MapClass
             
         this.addTileBackground(this.game.imageList.get('backgrounds/water'),1.0,1.0,0.01,0.005);
         
+            // music
+            
+        this.game.musicList.start('world');
+        
             // spots record where the player went into a map
             // so we can reset position coming out
             
@@ -59,9 +63,5 @@ export default class WorldBaseMapClass extends MapClass
         playerSprite=this.getSpritePlayer();
         playerSprite.x=x;
         playerSprite.y=y;
-        
-            // music
-            
-        this.game.musicList.start('world');
     }
 }
