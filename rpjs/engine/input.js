@@ -60,22 +60,22 @@ export default class InputClass
     
     isLeft()
     {
-        return(this.keyFlags[37]);
+        return(this.keyFlags[37]||this.keyFlags[65]);
     }
     
     isRight()
     {
-        return(this.keyFlags[39]);
+        return(this.keyFlags[39]||this.keyFlags[68]);
     }
     
     isUp()
     {
-        return(this.keyFlags[38]);
+        return(this.keyFlags[38]||this.keyFlags[87]);
     }
-    
+
     isDown()
     {
-        return(this.keyFlags[40]);
+        return(this.keyFlags[40]||this.keyFlags[83]);
     }
     
     isAction()

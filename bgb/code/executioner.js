@@ -22,8 +22,12 @@ export default class ExecutionerClass extends SpriteClass
         this.launchXPositionsLeft=null;     // array of axe launch positions, loaded on startup
         this.launchXPositionsRight=null;
         this.isDropping=true;
+        this.inAir=false;
         this.isDead=false;
         this.isFirstShow=true;
+        
+        this.launchLeft=true;
+        this.launchPos=null;
         
             // setup
         
@@ -55,29 +59,37 @@ export default class ExecutionerClass extends SpriteClass
         this.launchXPositionsRight=this.data.get('axe_x_launch_right');
         this.lastLaunchXPosition=-1;
         this.isDropping=true;
+        this.inAir=false;
         this.isDead=false;
         this.isFirstShow=true;
+        
+        this.launchLeft=true;
+        this.launchPos=this.launchXPositionsLeft.slice();
     }
     
     fireAxe()
     {
         let n,ex,launchX,sx,sy;
-        let launchPos;
+        
+            // time to switch to other list?
+            
+        if (this.launchPos.length===0) {
+            this.launchPos=this.launchLeft?this.launchXPositionsRight.slice():this.launchXPositionsLeft.slice();
+            this.launchLeft=!this.launchLeft;
+        }
         
             // are we at the next launch position
             
         ex=Math.trunc((this.x+Math.trunc(this.width*0.5))/this.game.map.MAP_TILE_SIZE);
         
-        launchPos=(this.executionerSpeed<0)?this.launchXPositionsLeft:this.launchXPositionsRight;
-        
-        for (n=0;n!=launchPos.length;n++) {
-            launchX=launchPos[n];
+        for (n=0;n!=this.launchPos.length;n++) {
+            launchX=this.launchPos[n];
             
-            if ((ex===launchX) && (launchX!==this.lastLaunchXPosition)) {
+            if (ex===launchX) {
                 
                     // only fire one at a time
                     
-                this.lastLaunchXPosition=launchX;
+                this.launchPos.splice(n,1);
                 
                     // fire
                     
@@ -85,6 +97,8 @@ export default class ExecutionerClass extends SpriteClass
                 sy=this.y-Math.trunc(this.height*0.5);
 
                 this.game.map.addSprite(new AxeClass(this.game,sx,sy,null));
+                
+                this.game.soundList.playAtSprite('jump',this,this.game.map.getSpritePlayer());
                 return;
             }
         }
@@ -117,6 +131,18 @@ export default class ExecutionerClass extends SpriteClass
             map.shake(10);
             this.game.soundList.play('thud');
         }
+        else {
+            if (!this.grounded) {
+                this.inAir=true;
+            }
+            else {
+                if (this.inAir) {
+                    this.inAir=false;
+                    map.shake(3);
+                    this.game.soundList.play('thud');
+                }
+            }
+        }
         
             // dead, do nothig
             
@@ -137,7 +163,7 @@ export default class ExecutionerClass extends SpriteClass
             // always follow the player, but with
             // an acceleration
             
-        if (playerSprite.x<this.x) {
+        if ((playerSprite.x+Math.trunc(playerSprite.width*0.5))<(this.x+Math.trunc(this.width*0.5))) {
             if (this.executionerSpeed>-this.MAX_SPEED) {
                 this.executionerSpeed-=0.5;
             }

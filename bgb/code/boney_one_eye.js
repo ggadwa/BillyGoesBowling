@@ -62,6 +62,8 @@ export default class BoneyOneEyeClass extends SpriteClass
         y=this.y-Math.trunc(this.height*0.5);
         
         this.game.map.addSprite(new EyeClass(this.game,x,y,null));
+        
+        this.game.soundList.playAtSprite('jump',this,this.game.map.getSpritePlayer());
     }
     
     runAI()

@@ -65,6 +65,7 @@ export default class BallClass extends SpriteClass
     {
         let map=this.game.map;
         let playerSprite=map.getSpritePlayer();
+        let didCollide;
         let x,y,lftEdge,rgtEdge,topEdge,botEdge;
         let xOffset=Math.trunc((playerSprite.width-this.width)*0.5);
         
@@ -157,7 +158,12 @@ export default class BallClass extends SpriteClass
         this.y=y;
             
         if ((this.travelMode===this.TRAVEL_MODE_BOWL_ACROSS) || (this.travelMode===this.TRAVEL_MODE_SLAM_UP) || (this.travelMode===this.TRAVEL_MODE_SLAM_DOWN)) {
-            if (map.checkCollision(this)) {
+            
+            playerSprite.canCollide=false;
+            didCollide=map.checkCollision(this);    // make sure player sprite is out of the way
+            playerSprite.canCollide=true;
+            
+            if (didCollide) {
                 
                     // colliding with map, return ball
                     
