@@ -233,6 +233,15 @@ export default class MapClass
     }
     
     /**
+     * Override this to return a array of tiles to ignore in any tile collisions,
+     * or null for all tiles have collision.
+     */
+    getIgnoreTiles()
+    {
+        return(null);
+    }
+    
+    /**
      * Start a liquid movement.
      */
     moveLiquidTo(toLiquidY,liquidMoveSpeed)

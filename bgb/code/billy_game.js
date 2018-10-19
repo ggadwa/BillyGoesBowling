@@ -324,37 +324,37 @@ export default class BillyGameClass extends GameClass
    
     getStartMap()
     {
-        return(this.mapList.get('world_main'));
+        return('world_main');
 
-        //return(this.mapList.get('snakes_on_a_plain'));
-        //return(this.mapList.get('apocalypse_carrot'));
-        //return(this.mapList.get('buffet_of_blocks'));
-        //return(this.mapList.get('hills_ninja_bunnies'));
-        //return(this.mapList.get('executioners_castle'));
+        //return('snakes_on_a_plain');
+        //return('apocalypse_carrot');
+        //return('buffet_of_blocks');
+        //return('hills_ninja_bunnies');
+        //return('executioners_castle');
         
-        //return(this.mapList.get('platform_troubled_waters'));
-        //return(this.mapList.get('surfs_up'));
-        //return(this.mapList.get('surfs_down'));
+        //return('platform_troubled_waters');
+        //return('surfs_up');
+        //return('surfs_down');
 
-        //return(this.mapList.get('heads_up'));
-        //return(this.mapList.get('raining_creeps'));
-        //return(this.mapList.get('ninja_jail'));
-        //return(this.mapList.get('puzzling_blocks'));
-        //return(this.mapList.get('mr_cpu_castle'));
+        //return('heads_up');
+        //return('raining_creeps');
+        //return('ninja_jail');
+        //return('puzzling_blocks');
+        //return('mr_cpu_castle');
         
-        //return(this.mapList.get('carrot_catacylism'));
-        //return(this.mapList.get('snake_pit'));
-        //return(this.mapList.get('ninja_mountain'));
-        //return(this.mapList.get('boney_one_eye_castle'));
+        //return('carrot_catacylism');
+        //return('snake_pit');
+        //return('ninja_mountain');
+        //return('boney_one_eye_castle');
         
-        //return(this.mapList.get('cloud_9'));
-        //return(this.mapList.get('carrot_chorus'));
-        //return(this.mapList.get('running_ahead'));
-        //return(this.mapList.get('speedway'));
-        //return(this.mapList.get('platform_peril'));
-        //return(this.mapList.get('ninja_horde'));
-        //return(this.mapList.get('spring_a_thon'));
-        //return(this.mapList.get('king_ghastly_castle'));
+        //return('cloud_9');
+        //return('carrot_chorus');
+        //return('running_ahead');
+        //return('speedway');
+        //return('platform_peril');
+        //return('ninja_horde');
+        //return('spring_a_thon');
+        //return('king_ghastly_castle');
     }
     
     setBanner(str,pinCount)

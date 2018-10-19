@@ -130,7 +130,11 @@ export default class GameClass
         
             // load the starting map
             
-        this.map=this.getStartMap();
+        this.map=this.mapList.get(this.getStartMap());
+        if (this.map===undefined) {
+            console.log('Unknown start map: '+this.getStartMap());
+            return;
+        }
         this.map.initialize();
         
             // the liquid object

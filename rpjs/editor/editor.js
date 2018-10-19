@@ -101,7 +101,12 @@ export default class EditorClass
         
             // and get the map to edit
             
-        this.map=this.game.getStartMap();
+        this.map=this.game.mapList.get(this.game.getStartMap());
+        if (this.map===undefined) {
+            console.log('Unknown start map: '+this.game.getStartMap());
+            return;
+        }
+        
         this.map.create();
         
             // if tileData or sprites are null, then
