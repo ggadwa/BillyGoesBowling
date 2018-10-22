@@ -21,7 +21,6 @@ export default class RotoCarrotClass extends SpriteClass
         this.addImage('sprites/roto_carrot_1');
         this.addImage('sprites/roto_carrot_2');
         this.setCurrentImage('sprites/roto_carrot_1');
-        this.setEditorImage('sprites/roto_carrot_1');
         
         this.show=true;
         this.gravityFactor=0.0;

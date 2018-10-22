@@ -9,7 +9,6 @@ export default class TrophyClass extends SpriteClass
         
         this.addImage('sprites/trophy');
         this.setCurrentImage('sprites/trophy');
-        this.setEditorImage('sprites/trophy');
         
         this.show=true;
         this.gravityFactor=0.2;

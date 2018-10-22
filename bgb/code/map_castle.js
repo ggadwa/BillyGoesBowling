@@ -11,7 +11,6 @@ export default class MapCastleClass extends SpriteClass
         this.addImage('sprites/world_map_castle_locked');
         this.addImage('sprites/world_map_castle_wreck');
         this.setCurrentImage('sprites/world_map_castle');
-        this.setEditorImage('sprites/world_map_castle');
         
         this.show=true;
         this.gravityFactor=0.0;

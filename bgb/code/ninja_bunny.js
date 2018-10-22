@@ -28,7 +28,6 @@ export default class NinjaBunnyClass extends SpriteClass
         this.addImage('sprites/ninja_bunny');
         this.addImage('sprites/ninja_bunny_jump');
         this.setCurrentImage('sprites/ninja_bunny');
-        this.setEditorImage('sprites/ninja_bunny');
         
         this.show=true;
         this.gravityFactor=0.12;

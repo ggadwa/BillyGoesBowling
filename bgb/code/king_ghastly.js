@@ -28,7 +28,6 @@ export default class KingGhastlyClass extends SpriteClass
         this.addImage('sprites/king_ghastly_1');
         this.addImage('sprites/king_ghastly_2');
         this.setCurrentImage('sprites/king_ghastly_1');
-        this.setEditorImage('sprites/king_ghastly_1');
         
         this.show=false;            // start with it not shown, button starts it
         this.gravityFactor=0.15;

@@ -16,7 +16,6 @@ export default class SpringClass extends SpriteClass
         this.addImage('sprites/spring_close');
         this.addImage('sprites/spring_open');
         this.setCurrentImage('sprites/spring_close');
-        this.setEditorImage('sprites/spring_close');
         
         this.show=true;
         this.gravityFactor=0.0;

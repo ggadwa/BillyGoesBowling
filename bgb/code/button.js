@@ -16,7 +16,6 @@ export default class ButtonClass extends SpriteClass
         
         this.addImage('sprites/button');
         this.setCurrentImage('sprites/button');
-        this.setEditorImage('sprites/button');
         
         this.squishCount=-1;
         

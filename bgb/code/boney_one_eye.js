@@ -25,7 +25,6 @@ export default class BoneyOneEyeClass extends SpriteClass
         
         this.addImage('sprites/boney_one_eye');
         this.setCurrentImage('sprites/boney_one_eye');
-        this.setEditorImage('sprites/boney_one_eye');
         
         this.show=false;            // start with it not shown, button starts it
         this.gravityFactor=0.15;

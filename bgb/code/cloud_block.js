@@ -18,7 +18,6 @@ export default class CloudBlockClass extends SpriteClass
             
         this.addImage('sprites/cloud_block');
         this.setCurrentImage('sprites/cloud_block');
-        this.setEditorImage('sprites/cloud_block');
         
         this.show=true;
         this.gravityFactor=0.0;

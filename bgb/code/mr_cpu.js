@@ -29,7 +29,6 @@ export default class MrCPUClass extends SpriteClass
         
         this.addImage('sprites/mr_cpu');
         this.setCurrentImage('sprites/mr_cpu');
-        this.setEditorImage('sprites/mr_cpu');
         
         this.show=false;            // start with it not shown, button starts it
         this.gravityFactor=0.15;

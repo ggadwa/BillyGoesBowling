@@ -28,7 +28,6 @@ export default class PlayerWorldClass extends SpriteClass
             
         this.addImage('sprites/billy_world');
         this.setCurrentImage('sprites/billy_world');
-        this.setEditorImage('sprites/billy_world');
         
         this.show=true;
         this.gravityFactor=0.0;

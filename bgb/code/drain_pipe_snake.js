@@ -33,7 +33,6 @@ export default class DrainPipeSnakeClass extends SpriteClass
         this.addImage('sprites/snake_right_pipe_1');
         this.addImage('sprites/snake_right_pipe_2');
         this.setCurrentImage('sprites/snake_right_pipe_1');
-        this.setEditorImage('sprites/snake_right_pipe_1');
         
         this.show=true;
         this.gravityFactor=0.12;

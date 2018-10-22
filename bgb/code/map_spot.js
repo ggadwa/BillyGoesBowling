@@ -11,7 +11,6 @@ export default class MapSpotClass extends SpriteClass
         this.addImage('sprites/world_map_spot_yellow');
         this.addImage('sprites/world_map_spot_green');
         this.setCurrentImage('sprites/world_map_spot_red');
-        this.setEditorImage('sprites/world_map_spot_red');
         
         this.show=true;
         this.gravityFactor=0.0;

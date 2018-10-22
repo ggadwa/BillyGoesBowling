@@ -12,7 +12,6 @@ export default class BreakBlockClass extends SpriteClass
         
         this.addImage('sprites/break_block')
         this.setCurrentImage('sprites/break_block');
-        this.setEditorImage('sprites/break_block');
         
         this.show=true;
         this.gravityFactor=0.2;

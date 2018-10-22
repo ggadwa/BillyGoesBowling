@@ -34,7 +34,6 @@ export default class ExecutionerClass extends SpriteClass
         this.addImage('sprites/executioner_1');
         this.addImage('sprites/executioner_2');
         this.setCurrentImage('sprites/executioner_1');
-        this.setEditorImage('sprites/executioner_1');
         
         this.show=false;            // start with it not shown, button starts it
         this.gravityFactor=0.15;

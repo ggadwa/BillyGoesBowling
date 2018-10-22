@@ -10,7 +10,6 @@ export default class PinClass extends SpriteClass
         
         this.addImage('sprites/pin');
         this.setCurrentImage('sprites/pin');
-        this.setEditorImage('sprites/pin');
         
         this.show=true;
         this.gravityFactor=0.2;

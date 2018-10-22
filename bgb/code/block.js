@@ -8,7 +8,6 @@ export default class BlockClass extends SpriteClass
         
         this.addImage('sprites/block');
         this.setCurrentImage('sprites/block');
-        this.setEditorImage('sprites/block');
         
         this.show=true;
         this.gravityFactor=0.2;

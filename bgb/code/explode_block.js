@@ -26,7 +26,6 @@ export default class ExplodeBlockClass extends SpriteClass
         this.addImage('sprites/explode_block_3');
         
         this.setCurrentImage('sprites/explode_block_0');
-        this.setEditorImage('sprites/explode_block_0');
         
         this.show=true;
         this.gravityFactor=0.0;     // explode blocks don't fall

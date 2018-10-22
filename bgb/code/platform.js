@@ -20,7 +20,6 @@ export default class PlatformClass extends SpriteClass
             
         this.addImage('sprites/platform');
         this.setCurrentImage('sprites/platform');
-        this.setEditorImage('sprites/platform');
         
         this.show=true;
         this.gravityFactor=0.0;

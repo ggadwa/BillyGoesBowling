@@ -9,7 +9,6 @@ export default class MapCottageClass extends SpriteClass
         
         this.addImage('sprites/world_map_cottage');
         this.setCurrentImage('sprites/world_map_cottage');
-        this.setEditorImage('sprites/world_map_cottage');
         
         this.show=true;
         this.gravityFactor=0.0;

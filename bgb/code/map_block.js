@@ -9,7 +9,6 @@ export default class MapBlockClass extends SpriteClass
         
         this.addImage('sprites/world_map_block');
         this.setCurrentImage('sprites/world_map_block');
-        this.setEditorImage('sprites/world_map_block');
         
         this.show=true;
         this.gravityFactor=0.0;

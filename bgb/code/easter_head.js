@@ -21,7 +21,6 @@ export default class EasterHeadClass extends SpriteClass
         this.addImage('sprites/easter_head_left');
         this.addImage('sprites/easter_head_right');
         this.setCurrentImage('sprites/easter_head_left');
-        this.setEditorImage('sprites/easter_head_left');
         
         this.show=true;
         this.gravityFactor=0.0;

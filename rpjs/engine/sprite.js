@@ -10,7 +10,6 @@ export default class SpriteClass
         this.data=(data===null)?new Map():data;
         
         this.currentImage=null;
-        this.editorImage=null;
         this.images=new Map();
         
         this.width=0;
@@ -113,11 +112,6 @@ export default class SpriteClass
         
         this.width=img.width;
         this.height=img.height;
-    }
-    
-    setEditorImage(name)
-    {
-        this.editorImage=this.images.get(name);
     }
     
     collide(hitSprite)

@@ -9,7 +9,6 @@ export default class DoorClass extends SpriteClass
         
         this.addImage('sprites/door');
         this.setCurrentImage('sprites/door');
-        this.setEditorImage('sprites/door');
         
         this.show=true;
         this.gravityFactor=0.0;

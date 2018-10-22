@@ -47,7 +47,6 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.addImage('sprites/gravestone');
         
         this.setCurrentImage('sprites/billy_right_1');
-        this.setEditorImage('sprites/billy_right_1');
         
         this.show=true;
         this.gravityFactor=0.14;
