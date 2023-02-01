@@ -1,10 +1,8 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
 
-export default class DoorClass extends SpriteClass
-{
-    constructor(game,x,y,data)
-    {
+export default class DoorClass extends SpriteClass {
+    constructor(game,x,y,data) {
         super(game,x,y,data);
         
         this.addImage('sprites/door');
@@ -17,34 +15,30 @@ export default class DoorClass extends SpriteClass
         this.canCollide=false;
         this.canStandOn=false;
         
-        this.background=true;           // a background sprite, draws in the same plane as the map
+        this.background=true; // a background sprite, draws in the same plane as the map
         
         Object.seal(this);
     }
     
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
         return(new DoorClass(this.game,x,y,this.data));
     }
     
-    runAI()
-    {
+    runAI() {
         let door;
         let playerSprite=this.game.map.getSpritePlayer();
         
-            // select jumps to other door
-            
-        if (!this.game.input.isSelect()) return;
+        // up jumps to other door
+        // we always clear this so you don't bounce between doors
+        if (!this.game.input.isKeyDownAndClear("KeyW")) return;
         
-            // are we colliding with player?
-            
+        // are we colliding with player?
         if (!playerSprite.collide(this)) return;
         
         door=this.game.map.getFirstSpriteWithData('name',this.getData('goto'));
         playerSprite.x=door.x;
         playerSprite.y=door.y;
         
-        this.game.input.clearSelect();
         this.game.map.resetOffsetY();
         
         this.game.soundList.play('door');

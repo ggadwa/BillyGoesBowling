@@ -1,21 +1,16 @@
-export default class InputClass
-{
-    constructor(game)
-    {
+export default class InputClass {
+    constructor(game) {
         this.game=game;
         this.cancelled=false;
         
-            // determine if touch interface
-            
+        // determine if touch interface
         this.isTouch=/(iphone|ipad|android)/.test(window.navigator.userAgent.toLowerCase());
         
-            // input flags
-        
+        // input flags
         this.mouseFlags=new Uint8Array(3);
-        this.keyFlags=new Uint8Array(255);
+        this.keyMap=new Map();
         
-            // listeners
-            
+        // listeners 
         this.mouseDownListener=this.mouseDownEvent.bind(this);
         this.mouseUpListener=this.mouseUpEvent.bind(this);
         this.keyDownListener=this.keyDownEvent.bind(this);
@@ -24,12 +19,8 @@ export default class InputClass
         Object.seal(this);
     }
   
-        //
-        // initialize/release input
-        //
-
-    initialize()
-    {
+    // initialize/release input
+    initialize() {
         this.keyClear();
         this.mouseClear();
         
@@ -40,8 +31,7 @@ export default class InputClass
         document.addEventListener('keyup',this.keyUpListener.bind(this),true);
     }
 
-    release()
-    {
+    release() {
         this.game.canvas.removeEventListener('mousedown',this.mouseDownListener,true);
         this.game.canvas.removeEventListener('mousedown',this.mouseDownListener,true);
         
@@ -49,101 +39,56 @@ export default class InputClass
         document.removeEventListener('keyup',this.keyUpListener,true);
     }
     
-        //
-        // game controls
-        //
-        
-    isPause()
-    {
-        return(this.keyFlags[27]);
-    }
-    
-    isLeft()
-    {
-        return(this.keyFlags[37]||this.keyFlags[65]);
-    }
-    
-    isRight()
-    {
-        return(this.keyFlags[39]||this.keyFlags[68]);
-    }
-    
-    isUp()
-    {
-        return(this.keyFlags[38]||this.keyFlags[87]);
-    }
-
-    isDown()
-    {
-        return(this.keyFlags[40]||this.keyFlags[83]);
-    }
-    
-    isAction()
-    {
-        return(this.keyFlags[32]);
-    }
-    
-    isSelect()
-    {
-        return(this.keyFlags[13]);
-    }
-    
-    clearSelect()
-    {
-        this.keyFlags[13]=0;
-    }
-    
-    isLeftMouseDown()
-    {
-        return(this.mouseFlags[0]);
-    }
-    
-        //
-        // click events
-        //
-        
-    mouseDownEvent(event)
-    {
+    // mouse events
+    mouseDownEvent(event) {
         this.mouseFlags[event.button]=true;
         
         this.game.resumeFromPause();      // have to do this hack because of webaudio APIs
     }
     
-    mouseUpEvent(event)
-    {
+    mouseUpEvent(event) {
         this.mouseFlags[event.button]=false;
     }
     
-    mouseClear()
-    {
+    mouseClear() {
         let n;
         
         for (n=0;n!=3;n++) {
             this.mouseFlags[n]=false;
         }
     }
+    
+    isLeftMouseDown() {
+        return(this.mouseFlags[0]);
+    }
         
-        //
-        // key events
-        //
+    // key events
+    keyDownEvent(event) {
+        this.keyMap.set(event.code,true);
+        //console.log(event.code);
+    }
+    
+    keyUpEvent(event) {
+        this.keyMap.set(event.code,false);
+    }
+    
+    keyClear() {
+        this.keyMap.clear();
+    }
+    
+    isKeyDown(keyName) {
+        let down;
+                
+        down=this.keyMap.get(keyName);
+        return((down==null)?false:down);
+    }
+    
+    isKeyDownAndClear(keyName) {
+        let down;
+                
+        down=this.isKeyDown(keyName);
+        if (down) this.keyMap.set(keyName,false);
+        return(down);
+    }
 
-    keyDownEvent(event)
-    {
-        this.keyFlags[event.keyCode]=1;
-    }
-    
-    keyUpEvent(event)
-    {
-        this.keyFlags[event.keyCode]=0;
-    }
-    
-    keyClear()
-    {
-        let n;
-            
-        for (n=0;n!==255;n++) {
-            this.keyFlags[n]=0;
-        }
-    }
- 
 }

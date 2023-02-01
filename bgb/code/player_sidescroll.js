@@ -18,15 +18,14 @@ import BoneyOneEyeClass from '../code/boney_one_eye.js';
 import EyeClass from './eye.js';
 import KingGhastlyClass from '../code/king_ghastly.js';
 
-export default class PlayerSideScrollClass extends SpriteClass
-{
-    constructor(game,x,y,data)
-    {
+export default class PlayerSideScrollClass extends SpriteClass {
+    constructor(game,x,y,data) {
         super(game,x,y,data);
         
-            // constants
-            
-        this.JUMP_HEIGHT=-40;
+        // constants
+        this.WALK_SPEED=12;
+        this.WALK_AIR_SPEED=14;
+        this.JUMP_HEIGHT=-35;
         this.DEATH_TICK=100;
         this.INVINCIBLE_TICK=60;
         this.WARP_TICK=80;
@@ -34,8 +33,7 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.WALK_ANIMATION_LEFT=['sprites/billy_left_1','sprites/billy_left_2','sprites/billy_left_3','sprites/billy_left_2'];
         this.WALK_ANIMATION_RIGHT=['sprites/billy_right_1','sprites/billy_right_2','sprites/billy_right_3','sprites/billy_right_2'];
         
-            // setup
-            
+        // setup
         this.addImage('sprites/billy_left_1');
         this.addImage('sprites/billy_left_2');
         this.addImage('sprites/billy_left_3');
@@ -49,9 +47,9 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.setCurrentImage('sprites/billy_right_1');
         
         this.show=true;
-        this.gravityFactor=0.14;
-        this.gravityMinValue=3;
-        this.gravityMaxValue=25;
+        this.gravityFactor=0.12;
+        this.gravityMinValue=2;
+        this.gravityMaxValue=20;
         this.canCollide=true;
         this.canStandOn=true;
         
@@ -70,34 +68,27 @@ export default class PlayerSideScrollClass extends SpriteClass
         Object.seal(this);
     }
     
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
         return(new PlayerSideScrollClass(this.game,x,y,this.data));
     }
     
-    isPlayer()
-    {
+    isPlayer() {
         return(true);
     }
     
-    mapStartup()
-    {
-            // the timing
-            
+    mapStartup() {
+        // the timing
         this.startTimestamp=this.endTimestamp=this.game.timestamp;
 
-            // add the ball sprite
-            
+        // add the ball sprite
         this.game.map.addSprite(new BallClass(this.game,0,0,null));
     }
     
-    getPlayTimeAsString()
-    {
+    getPlayTimeAsString() {
         return(''+((this.endTimestamp-this.startTimestamp)/1000).toFixed(2));
     }
     
-    hurtPlayer()
-    {
+    hurtPlayer() {
         let health;
         
         if ((this.invincibleCount>0) || (this.warpCount>0) || (this.deathCount>0)) return;
@@ -115,8 +106,7 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.drawFilter=this.flashDrawFilter;
     }
     
-    killPlayer()
-    {
+    killPlayer() {
         this.setCurrentImage('sprites/gravestone');
         this.motion.x=0;
         this.motion.y=0;
@@ -133,8 +123,7 @@ export default class PlayerSideScrollClass extends SpriteClass
         this.deathCount=this.DEATH_TICK;
     }
     
-    interactWithSprite(interactSprite,dataObj)
-    {
+    interactWithSprite(interactSprite,dataObj) {
         if (interactSprite instanceof KingGhastlyClass) {
             if (interactSprite.standSprite===this) {
                 this.killPlayer();    // king ghastly is a special sprite that kills instantly if you stand on him, so you can get around him
@@ -149,7 +138,7 @@ export default class PlayerSideScrollClass extends SpriteClass
             return;
         }
         if ((interactSprite instanceof ExecutionerClass) || (interactSprite instanceof BoneyOneEyeClass)) {
-            if (this.standSprite!==interactSprite) this.hurtPlayer();       // ok to stand on these sprites
+            if (this.standSprite!==interactSprite) this.hurtPlayer(); // ok to stand on these sprites
             return;
         }
         if (interactSprite instanceof AxeClass) {
@@ -158,26 +147,23 @@ export default class PlayerSideScrollClass extends SpriteClass
         }
     }
     
-    warpOut()
-    {
+    warpOut() {
         this.warpCount=this.WARP_TICK;
         this.drawFilter=this.warpDrawFilter;
         
         this.game.map.getFirstSpriteOfType(BallClass).show=false;
         
-        this.gravityFactor=0.0;     // make sure we don't fall when warping
+        this.gravityFactor=0.0; // make sure we don't fall when warping
         this.motion.y=0;
         
         this.game.soundList.play('teleport');
     }
     
-    runAI()
-    {
+    runAI() {
         let walking,walkAnimationFrame;
         let map=this.game.map;
         
-            // warping?
-            
+        // warping? 
         if (this.warpCount!==-1) {
             this.drawFilterAnimationFactor=1.0-(this.warpCount/this.WARP_TICK);
             this.warpCount--;
@@ -185,21 +171,18 @@ export default class PlayerSideScrollClass extends SpriteClass
             return;
         }
         
-            // dead?
-
+        // dead?
         if (this.deathCount!==-1) {
             this.deathCount--;
             if (this.deathCount<=0) this.game.gotoMap('world_main');
             return;
         }
         
-            // only update the end timestamp if we aren't
-            // dead or warping
-            
+        // only update the end timestamp if we aren't
+        // dead or warping
         this.endTimestamp=this.game.timestamp;
         
-            // invincible
-         
+        // invincible
         if (this.invincibleCount!==-1) {
             this.drawFilterAnimationFactor=1.0-(this.invincibleCount/this.INVINCIBLE_TICK);
             this.invincibleCount--;
@@ -209,20 +192,19 @@ export default class PlayerSideScrollClass extends SpriteClass
             }
         }
         
-            // walking input
-            
+        // walking input
         walking=false;
         walkAnimationFrame=Math.trunc(this.game.timestamp/150)%4;
         
-        if (this.game.input.isLeft()) {
-            this.moveWithCollision(-12,0);
+        if (this.game.input.isKeyDown("KeyA")) {
+            this.moveWithCollision(-(this.grounded?this.WALK_SPEED:this.WALK_AIR_SPEED),0);
             this.setCurrentImage(this.WALK_ANIMATION_LEFT[walkAnimationFrame]);
             this.data.set('facing_direction',-1);
             walking=true;
         }
         
-        if (this.game.input.isRight()) {
-            this.moveWithCollision(12,0);
+        if (this.game.input.isKeyDown("KeyD")) {
+            this.moveWithCollision((this.grounded?this.WALK_SPEED:this.WALK_AIR_SPEED),0);
             this.setCurrentImage(this.WALK_ANIMATION_RIGHT[walkAnimationFrame]);
             this.data.set('facing_direction',1);
             walking=true;
@@ -239,32 +221,27 @@ export default class PlayerSideScrollClass extends SpriteClass
         
         this.clampX(0,(map.width-this.width));
         
-            // jumping
-            
-        if ((this.game.input.isAction()) && (this.grounded)) this.motion.y+=this.JUMP_HEIGHT;
+        // jumping
+        if ((this.game.input.isKeyDown("Space")) && (this.grounded)) this.motion.y+=this.JUMP_HEIGHT;
         
-            // remember the last ground because
-            // we use that to tell the ball's location
-            // for bowling
-            
+        // remember the last ground because
+        // we use that to tell the ball's location
+        // for bowling   
         if (this.grounded) this.lastGroundY=this.y;
         
-            // interact with any colliding sprite
-            
+        // interact with any colliding sprite
         if (this.collideSprite!==null) {
             this.collideSprite.interactWithSprite(this,null);
         }
         
-            // check for standing on a cloud or button
-            
+        // check for standing on a cloud or button
         if (this.standSprite!==null) {
             if ((this.standSprite instanceof CloudBlockClass) || (this.standSprite instanceof ButtonClass) || (this.standSprite instanceof SpringClass)) {
                 this.standSprite.interactWithSprite(this,null);
             }
         }
         
-            // check for hitting liquid
-         
+        // check for hitting liquid
         if (map.liquidY!==-1) {
             if (this.y>=map.liquidY) this.killPlayer();
         }

@@ -8,8 +8,7 @@ export default class PlayerWorldClass extends SpriteClass
     {
         super(game,x,y,data);
         
-            // constants
-            
+        // constants 
         this.TILE_IDX_CROSS=47;
         this.TILE_IDX_DOT=48;
         this.TILE_IDX_ROAD_HORIZONTAL=44;
@@ -24,8 +23,7 @@ export default class PlayerWorldClass extends SpriteClass
         this.TILE_IDX_LEFT_T=55;
         this.TILE_IDX_UP_T=56;
         
-            // setup
-            
+        // setup
         this.addImage('sprites/billy_world');
         this.setCurrentImage('sprites/billy_world');
         
@@ -47,7 +45,7 @@ export default class PlayerWorldClass extends SpriteClass
     
     mapStartup()
     {
-        this.drawOffsetX=Math.trunc((this.game.map.MAP_TILE_SIZE-this.width)*0.5);        // so world player draws in the center of tiles
+        this.drawOffsetX=Math.trunc((this.game.map.MAP_TILE_SIZE-this.width)*0.5); // so world player draws in the center of tiles
     }
     
     duplicate(x,y)
@@ -119,35 +117,33 @@ export default class PlayerWorldClass extends SpriteClass
         let tileIdx,xDir,yDir;
         let map=this.game.map;
         
-            // input
-            
+        // input 
         if (!this.moving) {
             this.moveToX=this.lastToX=this.x;
             this.moveToY=this.lastToY=this.y;
             
-            if (this.game.input.isLeft()) {
+            if (this.game.input.isKeyDown("KeyA")) {
                 if (this.hasRoadLeft()) this.moveToX=this.x-map.MAP_TILE_SIZE;
                 this.moving=true;
             }
 
-            if (this.game.input.isRight()) {
+            if (this.game.input.isKeyDown("KeyD")) {
                 if (this.hasRoadRight()) this.moveToX=this.x+map.MAP_TILE_SIZE;
                 this.moving=true;
             }
 
-            if (this.game.input.isUp()) {
+            if (this.game.input.isKeyDown("KeyW")) {
                 if (this.hasRoadUp()) this.moveToY=this.y-map.MAP_TILE_SIZE;
                 this.moving=true;
             }
 
-            if (this.game.input.isDown()) {
+            if (this.game.input.isKeyDown("KeyS")) {
                 if (this.hasRoadDown()) this.moveToY=this.y+map.MAP_TILE_SIZE;
                 this.moving=true;
             }
         }
         
-            // movement
-            
+        // movement
         if (!this.moving) return;
         
         xDir=this.moveToX-this.x;
@@ -156,12 +152,10 @@ export default class PlayerWorldClass extends SpriteClass
         if (this.x!==this.moveToX) this.x+=(Math.sign(xDir)*16);
         if (this.y!==this.moveToY) this.y+=(Math.sign(yDir)*16);
         
-            // have we changed tiles?
-            
+        // have we changed tiles?   
         if ((this.x!==this.moveToX) || (this.y!==this.moveToY)) return;
         
-            // time to stop moving or change direction?
-            
+        // time to stop moving or change direction?
         tileIdx=this.getTileIdxWithOffset(0,0);
         
         switch (tileIdx) {

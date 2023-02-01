@@ -5,14 +5,11 @@ import ExplodeBlockClass from './explode_block.js';
 import EasterHeadClass from './easter_head.js';
 import ExecutionerClass from './executioner.js';
 
-export default class BallClass extends SpriteClass
-{
-    constructor(game,x,y,data)
-    {
+export default class BallClass extends SpriteClass {
+    constructor(game,x,y,data) {
         super(game,x,y,data);
         
-            // statics
-            
+        // statics
         this.TRAVEL_MODE_FLOATING=0;
         this.TRAVEL_MODE_BOWL_DOWN=1;
         this.TRAVEL_MODE_BOWL_ACROSS=2;
@@ -22,8 +19,7 @@ export default class BallClass extends SpriteClass
         
         this.HEAD_PIXEL_DISTANCE=10;
         
-            // variables
-            
+        // variables
         this.travelMode=this.TRAVEL_MODE_FLOATING;
         this.travelX=0;
         this.travelY=0;
@@ -31,8 +27,9 @@ export default class BallClass extends SpriteClass
         this.travelYAcross=0;
         this.travelYBottom=0;
         
-            // setup
-            
+        this.reformParticle=null;
+        
+        // setup
         this.addImage('sprites/ball');    
         this.setCurrentImage('sprites/ball');
         
@@ -47,37 +44,48 @@ export default class BallClass extends SpriteClass
         Object.seal(this);
     }
     
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
         return(new BallClass(this.game,x,y,this.data));
     }
     
-    returnBall()
-    {
+    returnBall(showDestroy) {
+        let map=this.game.map;
+        let playerSprite=map.getSpritePlayer();
+        let px,py;
+        
         this.travelY=this.game.map.getMapViewportTopEdge()-this.height;
         this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
         
-        this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),8,8,1.0,0.1,2,0.03,'particles/ball',8,500);
-        this.game.soundList.playAtSprite('ball_break',this,this.game.map.getSpritePlayer());
+        // ball destroyed
+        if (showDestroy) {
+            map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),8,8,1.0,0.1,4,0.03,'particles/ball',16,false,500);
+            this.game.soundList.playAtSprite('ball_break',this,playerSprite);
+        }
+        
+        // ball reforming
+        px=playerSprite.x+Math.trunc((playerSprite.width-this.width)*0.5);
+        py=(playerSprite.y-playerSprite.height)-this.HEAD_PIXEL_DISTANCE;
+        this.reformParticle=this.game.map.addParticle((px+Math.trunc(this.width*0.5)),(py-Math.trunc(this.height*0.5)),8,16,1.0,0.1,6,0.03,'particles/ball',16,true,400);
     }
     
-    runAI()
-    {
+    runAI() {
         let map=this.game.map;
         let playerSprite=map.getSpritePlayer();
         let didCollide;
         let x,y,lftEdge,rgtEdge,topEdge,botEdge;
         let xOffset=Math.trunc((playerSprite.width-this.width)*0.5);
         
-            // if the ball is hidden, it means the player
-            // is dead or warping out, so do nothing here
-            
+        // if the ball is hidden, it means the player
+        // is dead or warping out, so do nothing here
         if (!this.show) return;
         
-            // get the position by the mode
-        
+        // get the position by the mode
         x=playerSprite.x+xOffset;
         y=(playerSprite.y-playerSprite.height)-this.HEAD_PIXEL_DISTANCE;
+        
+        if (this.reformParticle!=null) {
+            this.reformParticle.resetPosition((x+Math.trunc(this.width*0.5)),(y-Math.trunc(this.height*0.5)));
+        }
             
         switch (this.travelMode) {
             
@@ -104,7 +112,7 @@ export default class BallClass extends SpriteClass
                     if (((x+this.travelX)+this.width)<lftEdge) {
                         this.travelX=lftEdge-(x+this.width);
                         this.travelY=map.getMapViewportTopEdge()-this.height;
-                        this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
+                        this.returnBall(false);
                     }
                 }
                 else {
@@ -113,7 +121,7 @@ export default class BallClass extends SpriteClass
                     if ((x+this.travelX)>rgtEdge) {
                         this.travelX=rgtEdge-x;
                         this.travelY=map.getMapViewportTopEdge()-this.height;
-                        this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
+                        this.returnBall(false);
                     }
                 }
                 
@@ -145,67 +153,60 @@ export default class BallClass extends SpriteClass
                 botEdge=map.getMapViewportBottomEdge();
                 if ((this.travelY-this.height)>botEdge) {
                     this.travelY=0;
-                    this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
+                    this.returnBall(false);
                 }
                 y=this.travelY;
                 break;
                 
         }
         
-            // move ball and check for collisions
-        
+        // move ball and check for collisions
         this.x=x;
         this.y=y;
             
         if ((this.travelMode===this.TRAVEL_MODE_BOWL_ACROSS) || (this.travelMode===this.TRAVEL_MODE_SLAM_UP) || (this.travelMode===this.TRAVEL_MODE_SLAM_DOWN)) {
             
             playerSprite.canCollide=false;
-            didCollide=map.checkCollision(this);    // make sure player sprite is out of the way
+            didCollide=map.checkCollision(this); // make sure player sprite is out of the way
             playerSprite.canCollide=true;
             
             if (didCollide) {
                 
-                    // colliding with map, return ball
-                    
+                // colliding with map, return ball  
                 if (this.collideSprite===null) {
-                    this.returnBall();
+                    this.returnBall(true);
                     return;
                 }
                 
-                     // collide with sprites
-                    
+                // collide with sprites
                 this.collideSprite.interactWithSprite(this,null);
                 
-                    // stop ball for certain sprites
-                    
+                // stop ball for certain sprites
                 if ((this.collideSprite instanceof BlockClass) || (this.collideSprite instanceof BreakBlockStrongClass) || (this.collideSprite instanceof ExplodeBlockClass) || (this.collideSprite instanceof EasterHeadClass) || (this.collideSprite instanceof ExecutionerClass)) {
-                    this.returnBall();
+                    this.returnBall(true);
                 }
                 
                 return;
             }
         }
         
-            // hitting water auto returns the ball
-            
+        // hitting water auto returns the ball
         if (map.liquidY!==-1) {
             if (this.y>map.liquidY) {
-                this.returnBall();
+                this.returnBall(true);
                 return;
             }
         }
         
-            // change any travel mode
-        
+        // change any travel mode
         if (this.travelMode===this.TRAVEL_MODE_FLOATING) {
             
-                // bowls down and across
-                // we get the Y we will be bowling at from
-                // the last ground contact, if in the air, then fire
-                // at the tile line above, or if on ground, fire at current
-                // tile line.  If falling, you can't fire
-                
-            if ((this.game.input.isDown()) && (playerSprite.motion.y<=0)) {
+            // bowls down and across
+            // we get the Y we will be bowling at from
+            // the last ground contact, if in the air, then fire
+            // at the tile line above, or if on ground, fire at current
+            // tile line.  If falling, you can't fire
+            if ((this.game.input.isKeyDown("ArrowRight")) && (playerSprite.motion.y<=0)) {
                 this.travelMode=this.TRAVEL_MODE_BOWL_DOWN;
                 this.travelX=0;
                 this.travelY=0;
@@ -214,9 +215,8 @@ export default class BallClass extends SpriteClass
                 if (!playerSprite.grounded) this.travelYBottom-=map.MAP_TILE_SIZE;
             }
             
-                // bowls up and back down
-                
-            if (this.game.input.isUp()) {
+            // bowls up and back down  
+            if (this.game.input.isKeyDown("ArrowUp")) {
                 this.travelMode=this.TRAVEL_MODE_SLAM_UP;
                 this.travelX=playerSprite.x+xOffset;
                 this.travelY=(playerSprite.y-playerSprite.height)-this.HEAD_PIXEL_DISTANCE;

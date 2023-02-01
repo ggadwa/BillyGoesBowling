@@ -1,10 +1,8 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import PlayerWorldClass from './player_world.js';
 
-export default class MapCastleClass extends SpriteClass
-{
-    constructor(game,x,y,data)
-    {
+export default class MapCastleClass extends SpriteClass {
+    constructor(game,x,y,data) {
         super(game,x,y,data);
         
         this.addImage('sprites/world_map_castle');
@@ -24,26 +22,22 @@ export default class MapCastleClass extends SpriteClass
         Object.seal(this);
     }
     
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
         return(new MapCastleClass(this.game,x,y,this.data));
     }
     
-    isUnlocked()
-    {
+    isUnlocked() {
         return((parseInt(this.getData('pin'))<=parseInt(this.game.getData('pins')))||(this.game.isUnlocked()));
     }
     
-    mapStartup()
-    {
+    mapStartup() {
         if (this.game.getData('boss_'+this.getData('map'))!==null) {
             this.setCurrentImage('sprites/world_map_castle_wreck');
                     
-                // if just defeated, explode
-            
+            // if just defeated, explode
             if (this.game.getData('boss_explode_'+this.getData('map'))) {
                 this.game.deleteData('boss_explode_'+this.getData('map'));      // only happens once
-                this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),10,10,1.0,0.1,5,0.04,'particles/castle',40,1500);
+                this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),10,10,1.0,0.1,5,0.04,'particles/castle',40,false,1500);
                 this.game.soundList.play('explode');
             }
 
@@ -58,22 +52,18 @@ export default class MapCastleClass extends SpriteClass
         }
     }
     
-    runAI()
-    {
+    runAI() {
         let playerSprite=this.game.map.getSpritePlayer();
         
-            // are we colliding with player?
-            
+        // are we colliding with player?
         if (!playerSprite.collide(this)) return;
             
-            // change UI
-            
+        // change UI
         this.game.setBanner(this.getData('title'),this.getData('pin'));
         
-            // if action or select, than jump to map
-            // save the X/Y so we can restore when we exit
-            
-        if ((this.game.input.isAction()) || (this.game.input.isSelect())) {
+        // if space than jump to map
+        // save the X/Y so we can restore when we exit
+        if (this.game.input.isKeyDown("Space")) {
             if (!this.isUnlocked()) {
                 this.game.soundList.play('locked_castle');
             }

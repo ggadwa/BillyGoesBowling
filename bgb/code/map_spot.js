@@ -1,10 +1,8 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import PlayerWorldClass from './player_world.js';
 
-export default class MapSpotClass extends SpriteClass
-{
-    constructor(game,x,y,data)
-    {
+export default class MapSpotClass extends SpriteClass {
+    constructor(game,x,y,data) {
         super(game,x,y,data);
         
         this.addImage('sprites/world_map_spot_red');
@@ -29,14 +27,12 @@ export default class MapSpotClass extends SpriteClass
         return(new MapSpotClass(this.game,x,y,this.data));
     }
     
-    mapStartup()
-    {
+    mapStartup() {
         let hasPin=(this.game.getData('pin_'+this.getData('map'))!==null);
         let hasTrophy=(this.game.getData('trophy_'+this.getData('map'))!==null);
         
-            // change image based on if the player has collected the
-            // pin and/or the trophy
-            
+        // change image based on if the player has collected the
+        // pin and/or the trophy
         if ((hasPin) && (hasTrophy)) {
             this.setCurrentImage('sprites/world_map_spot_green');
             return;
@@ -45,22 +41,18 @@ export default class MapSpotClass extends SpriteClass
         if (hasPin) this.setCurrentImage('sprites/world_map_spot_yellow');
     }
 
-    runAI()
-    {
+    runAI() {
         let playerSprite=this.game.map.getSpritePlayer();
         
-            // are we colliding with player?
-            
+        // are we colliding with player?
         if (!playerSprite.collide(this)) return;
             
-            // change UI
-            
+        // change UI
         this.game.setBanner(this.getData('title'),-1);
         
-            // if action or select, than jump to map
-            // save the X/Y so we can restore when we exit
-            
-        if ((this.game.input.isAction()) || (this.game.input.isSelect())) {
+        // if space than jump to map
+        // save the X/Y so we can restore when we exit
+        if (this.game.input.isKeyDown("Space")) {
             this.game.setData('worldXPos',playerSprite.x);
             this.game.setData('worldYPos',playerSprite.y);
             this.game.gotoMap(this.getData('map'));

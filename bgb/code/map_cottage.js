@@ -56,8 +56,8 @@ export default class MapCottageClass extends SpriteClass
             cx=this.x+((100+Math.trunc(Math.random()*150))*((Math.random()>0.5)?-1:1));
             cy=this.y+((100+Math.trunc(Math.random()*150))*((Math.random()>0.5)?-1:1));
 
-            this.game.map.addParticle(cx,cy,32,128,0.8,0.1,8,0.015,'particles/explode_red',10,550);
-            this.game.map.addParticle(cx,cy,10,10,1.0,0.1,5,0.06,'particles/block',40,1500);
+            this.game.map.addParticle(cx,cy,32,128,0.8,0.1,8,0.015,'particles/explode_red',10,false,550);
+            this.game.map.addParticle(cx,cy,10,10,1.0,0.1,5,0.06,'particles/block',40,false,1500);
         }
         
         this.game.soundList.play('pickup');

@@ -6,12 +6,9 @@ import MusicListClass from '../resources/music_list.js';
 import MapListClass from '../resources/map_list.js';
 import InputClass from './input.js';
 
-export default class GameClass
-{
-    constructor()
-    {
-            // canvas and sound contexts
-            
+export default class GameClass {
+    constructor() {
+        // canvas and sound contexts
         this.canvas=null;
         this.ctx=null;
         this.canvasWidth=0;
@@ -22,18 +19,16 @@ export default class GameClass
         
         this.audioContext=null;
         
-            // resources
-            
+        // resources
         this.resourceBasePath=null;
         this.imageList=new ImageListClass(this);
         this.soundList=new SoundListClass(this);
         this.musicList=new MusicListClass(this);
         this.mapList=new MapListClass(this);
         
-        this.tileImageList=null;                // created from the image list
+        this.tileImageList=null; // created from the image list
         
-            // input and timing
-            
+        // input and timing
         this.input=new InputClass(this);
         
         this.PHYSICS_TICK_FREQUENCY=33;
@@ -45,8 +40,7 @@ export default class GameClass
         this.drawTimestamp=0;
         this.paused=true;
         
-            // game data
-            
+        // game data
         this.data=new Map();
         this.map=null;
         this.liquid=null;
@@ -55,8 +49,7 @@ export default class GameClass
         this.urlParams=null;
     }
     
-    initialize()
-    {
+    initialize() {
         let initAudioContext;
         
             // we use some parameters to setup the game
@@ -533,7 +526,7 @@ export default class GameClass
             // pausing?
 
         if (!this.paused) {
-            if (this.input.isPause()) {
+            if (this.input.isKeyDown("Escape")) {
                 this.paused=true;
                 this.audioContext.suspend();
                 this.draw(true);

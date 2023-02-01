@@ -2,21 +2,17 @@ import BackgroundClass from './background.js';
 import SpriteClass from './sprite.js';
 import ParticleClass from './particle.js';
 
-export default class MapClass
-{
-    constructor(game)
-    {
+export default class MapClass {
+    constructor(game) {
         this.game=game;
         this.name='';
         
-            // constants
-            
-        this.MAP_TILE_WIDTH=256;        // todo -- these are here until we can have static class fields (replace with Map.X)
+        // constants
+        this.MAP_TILE_WIDTH=256; // todo -- these are here until we can have static class fields (replace with Map.X)
         this.MAP_TILE_HEIGHT=128;
         this.MAP_TILE_SIZE=64;
         
-            // variables
-            
+        // variables
         this.width=this.MAP_TILE_WIDTH*this.MAP_TILE_SIZE;
         this.height=this.MAP_TILE_HEIGHT*this.MAP_TILE_SIZE;
         this.rightEdge=0;
@@ -26,7 +22,7 @@ export default class MapClass
         
         this.backgrounds=[];
         
-        this.liquidY=-1;                 // liquid settings of map (-1 for no liquid)
+        this.liquidY=-1; // liquid settings of map (-1 for no liquid)
         this.liquidWaveHeight=5;
         this.liquidRTintFactor=0.3;
         this.liquidGTintFactor=0.3;
@@ -38,33 +34,29 @@ export default class MapClass
         
         this.shakeCount=-1;
         
-        this.tileData=null;             // tile data for map
-        this.sprites=null;              // sprites in map
+        this.tileData=null; // tile data for map
+        this.sprites=null; // sprites in map
         
         this.createTileData=null;
-        this.createSpriteData=null;     // we have a creation copy (the editor makes) and a working copy, as game play changes these
+        this.createSpriteData=null; // we have a creation copy (the editor makes) and a working copy, as game play changes these
         
         this.playerIdx=-1;
         
         this.particles=[];
     }
     
-    initialize()
-    {
+    initialize() {
         let n,x,y,edgeX;
         let sprite;
         
-            // create the map
-            
+        // create the map
         this.create();
         
-            // now copy the create arrays to the working arrays
-            
+        // now copy the create arrays to the working arrays
         this.tileData=this.createTileData.slice();
         this.sprites=this.createSprites.slice();
         
-            // call all the sprite map enter
-        
+        // call all the sprite map enter
         this.playerIdx=-1;
         
         for (n=0;n!==this.sprites.length;n++) {
@@ -76,8 +68,7 @@ export default class MapClass
         
         if (this.playerIdx===-1) console.log('No player in map');
         
-            // find the right edge of map
-            
+        // find the right edge of map
         this.rightEdge=0;
         
         for (y=0;y!==this.MAP_TILE_HEIGHT;y++) {
@@ -90,12 +81,10 @@ export default class MapClass
             }
         }
         
-            // clear any backgrouns
-            
+        // clear any backgrouns
         this.backgrounds=[];
 
-            // call any custom map startup
-            
+        // call any custom map startup
         this.mapStartup();
     }
     
@@ -103,8 +92,7 @@ export default class MapClass
      * Override this to fill in the map data, which is the tile list
      * and sprites.
      */
-    create()
-    {
+    create() {
     }
     
     /**
@@ -113,28 +101,23 @@ export default class MapClass
      * @param {SpriteClass} The sprite to add to the map
      * @returns {number} The index of the sprite (do not save, can change)
      */
-    addSprite(sprite)
-    {
+    addSprite(sprite) {
         return(this.sprites.push(sprite)-1);
     }
     
-    removeSprite(spriteIdx)
-    {
+    removeSprite(spriteIdx) {
         this.sprites.splice(spriteIdx,1);
     }
     
-    getSprite(spriteIdx)
-    {
+    getSprite(spriteIdx) {
         return(this.sprites[spriteIdx]);
     }
     
-    getSpritePlayer()
-    {
+    getSpritePlayer() {
         return(this.sprites[this.playerIdx]);
     }
     
-    getSpritesOfType(typeClass)
-    {
+    getSpritesOfType(typeClass) {
         let sprite;
         let list=[];
 
@@ -145,8 +128,7 @@ export default class MapClass
         return(list);
     }
     
-    getFirstSpriteOfType(typeClass)
-    {
+    getFirstSpriteOfType(typeClass) {
         let sprite;
 
         for (sprite of this.sprites) {
@@ -156,8 +138,7 @@ export default class MapClass
         return(null);
     }
     
-    getFirstSpriteWithData(name,value)
-    {
+    getFirstSpriteWithData(name,value) {
         let sprite;
 
         for (sprite of this.sprites) {
@@ -167,8 +148,7 @@ export default class MapClass
         return(null);
     }
     
-    addParticle(x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,imageName,count,lifeTick)
-    {
+    addParticle(x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,imageName,count,reverse,lifeTick) {
         let img,particle;
         
         img=this.game.imageList.get(imageName);
@@ -177,17 +157,17 @@ export default class MapClass
             return;
         }
         
-        particle=new ParticleClass(this.game,x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,img,count,lifeTick);
-        return(this.particles.push(particle)-1);
+        particle=new ParticleClass(this.game,x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,img,count,reverse,lifeTick);
+        this.particles.push(particle);
+        
+        return(particle);
     }
     
-    changeTile(x,y,tileIdx)
-    {
+    changeTile(x,y,tileIdx) {
         this.tileData[(y*this.MAP_TILE_WIDTH)+x]=tileIdx;
     }
     
-    shake(tickCount)
-    {
+    shake(tickCount) {
         if (this.shakeCount!==-1) {
             if (tickCount<this.shakeCount) return;
         }
@@ -200,8 +180,7 @@ export default class MapClass
      * along with the horizontal movement.  0.0 is no movement, 1.0 is movement
      * at the same speed
      */
-    addParallaxBackground(img,y,xFactor)
-    {
+    addParallaxBackground(img,y,xFactor) {
         this.backgrounds.push(new BackgroundClass(this,img,0,y,xFactor,0.0,0.0,0.0,false));
     }
     
@@ -209,8 +188,7 @@ export default class MapClass
      * Adds a single tile background image to this map.  xFactor/yFactor is how
      * it follows the camera, and xScroll/yScroll is any automatic scrolling.
      */
-    addTileBackground(img,xFactor,yFactor,xScroll,yScroll)
-    {
+    addTileBackground(img,xFactor,yFactor,xScroll,yScroll) {
         this.backgrounds.push(new BackgroundClass(this,img,0,0,xFactor,yFactor,xScroll,yScroll,true));
     }
     
@@ -219,8 +197,7 @@ export default class MapClass
      * moving sprites around for save states, etc.  All sprites in a map
      * also get this call.
      */
-    mapStartup()
-    {   
+    mapStartup() {   
     }
     
     /**
@@ -228,24 +205,21 @@ export default class MapClass
      * top left coordinate of the map when drawing.  It's called every frame before
      * drawing the map.
      */
-    calcOffset()
-    {
+    calcOffset() {
     }
     
     /**
      * Override this to return a array of tiles to ignore in any tile collisions,
      * or null for all tiles have collision.
      */
-    getIgnoreTiles()
-    {
+    getIgnoreTiles() {
         return(null);
     }
     
     /**
      * Start a liquid movement.
      */
-    moveLiquidTo(toLiquidY,liquidMoveSpeed)
-    {
+    moveLiquidTo(toLiquidY,liquidMoveSpeed) {
         this.toLiquidY=toLiquidY;
         this.liquidMoveSpeed=liquidMoveSpeed;
     }
@@ -254,23 +228,19 @@ export default class MapClass
      * Override this to detected when a liquid movement
      * has finished.
      */
-    liquidMoveDone()
-    {
+    liquidMoveDone() {
     }
     
-    checkCollision(checkSprite)
-    {
+    checkCollision(checkSprite) {
         let sprite,tileIdx;
         let lx,rx,ty,by,dx,dy,gx,gy;
         let lft,top,rgt,bot;
         
-            // clear flags
-            
+        // clear flags
         checkSprite.collideSprite=null;
         checkSprite.collideTileIdx=-1;
         
-            // check sprites
-            
+        // check sprites
         for (sprite of this.sprites) {
             if (sprite===checkSprite) continue;
             if (!sprite.show) continue;
@@ -282,8 +252,7 @@ export default class MapClass
             }
         }
         
-            // check map
-            
+        // check map
         lft=checkSprite.x;
         top=checkSprite.y-checkSprite.height;
         rgt=checkSprite.x+checkSprite.width;
@@ -321,24 +290,20 @@ export default class MapClass
         return(false);
     }
     
-    checkCollisionStand(checkSprite,dist)
-    {
+    checkCollisionStand(checkSprite,dist) {
         let sprite,tileIdx;
         let ty=-1;
         let x,y,dx,dy,gx,gy,leftTileX,rightTileX;
         let lft,top,rgt,bot;
         
-            // always fall at least 1
-            
+        // always fall at least 1
         if (dist<1) dist=1;
         
-            // clear flags
-            
+        // clear flags
         checkSprite.standSprite=null;
         checkSprite.standTileIdx=-1;
         
-            // check sprites
-            
+        // check sprites
         for (sprite of this.sprites) {
             if (sprite===checkSprite) continue;
             if (!sprite.show) continue;
@@ -353,15 +318,13 @@ export default class MapClass
             }
         }
         
-            // any collision with a sprite
-            // outweights any map collision because
-            // we expect objects to be outside of map
-            // to hit another sprite
-            
+        // any collision with a sprite
+        // outweights any map collision because
+        // we expect objects to be outside of map
+        // to hit another sprite
         if (ty!==-1) return(ty);
         
-            // check map
-            
+        // check map
         lft=checkSprite.x;
         top=(checkSprite.y-checkSprite.height)+dist;
         rgt=checkSprite.x+checkSprite.width;
@@ -399,20 +362,17 @@ export default class MapClass
         return(ty);
     }
     
-    checkCollisionRise(checkSprite,dist)
-    {
+    checkCollisionRise(checkSprite,dist) {
         let sprite,tileIdx;
         let ty=-1;
         let x,y,dx,dy,gx,gy,leftTileX,rightTileX;
         let lft,top,rgt,bot;
         
-            // clear flags
-            
+        // clear flags
         checkSprite.riseSprite=null;
         checkSprite.riseTileIdx=-1;
         
-            // check sprites
-            
+        // check sprites
         for (sprite of this.sprites) {
             if (sprite===checkSprite) continue;
             if (!sprite.show) continue;
@@ -427,15 +387,13 @@ export default class MapClass
             }
         }
         
-            // any collision with a sprite
-            // outweights any map collision because
-            // we expect objects to be outside of map
-            // to hit another sprite
-            
+        // any collision with a sprite
+        // outweights any map collision because
+        // we expect objects to be outside of map
+        // to hit another sprite  
         if (ty!==-1) return(ty);
         
-            // check map
-            
+        // check map
         lft=checkSprite.x;
         top=(checkSprite.y-checkSprite.height)+dist;
         rgt=checkSprite.x+checkSprite.width;
@@ -473,8 +431,7 @@ export default class MapClass
         return(ty);
     }
     
-    getSpritesWithinBox(lft,top,rgt,bot,ignoreSprite,filterClass)
-    {
+    getSpritesWithinBox(lft,top,rgt,bot,ignoreSprite,filterClass) {
         let sprite;
         let sprites=[];
             
@@ -494,16 +451,14 @@ export default class MapClass
         return(sprites);
     }
     
-    getTileUnderSprite(checkSprite)
-    {
+    getTileUnderSprite(checkSprite) {
         let x=Math.trunc((checkSprite.x+Math.trunc(checkSprite.width*0.5))/this.MAP_TILE_SIZE);
         let y=Math.trunc((checkSprite.y+1)/this.MAP_TILE_SIZE);
         
         return(this.tileData[(y*this.MAP_TILE_WIDTH)+x]);
     }
     
-    getMapViewportLeftEdge()
-    {
+    getMapViewportLeftEdge() {
         let sprite,x;
         let wid=this.game.canvasWidth;
 
@@ -514,13 +469,11 @@ export default class MapClass
         return(x);
     }
     
-    getMapViewportRightEdge()
-    {
+    getMapViewportRightEdge() {
         return(this.getMapViewportLeftEdge()+this.game.canvasWidth);
     }
     
-    getMapViewportTopEdge()
-    {
+    getMapViewportTopEdge() {
         let sprite,y;
         let high=this.game.canvasHeight;
 
@@ -531,19 +484,16 @@ export default class MapClass
         return(y);
     }
     
-    getMapViewportBottomEdge()
-    {
+    getMapViewportBottomEdge() {
         return(this.getMapViewportTopEdge()+this.game.canvasHeight);
     }
     
-    run()
-    {
+    run() {
         let n;
         let sprite;
         let playerSprite=this.getSpritePlayer();
         
-            // move any liquid
-            
+        // move any liquid
         if (this.toLiquidY!==-1) {
             if (this.toLiquidY<this.liquidY) {
                 this.liquidY-=this.liquidMoveSpeed;
@@ -563,20 +513,17 @@ export default class MapClass
             }
         }
         
-            // always run the player first
-            
+        // always run the player first
         playerSprite.run();
 
-            // run through all the sprites
-                
+        // run through all the sprites   
         for (sprite of this.sprites) {
             if (sprite!==playerSprite) {
                 sprite.run();
             }   
         }
         
-            // delete any finished sprites
-            
+        // delete any finished sprites
         n=0;
         while (n<this.sprites.length) {
             if (this.sprites[n].isDeleted()) {
@@ -588,8 +535,7 @@ export default class MapClass
             }
         }
         
-            // delete any finished particles
-        
+        // delete any finished particles
         n=0;
         while (n<this.particles.length) {
             if (this.particles[n].isFinished()) {
@@ -601,15 +547,13 @@ export default class MapClass
         }
     }
     
-    draw(ctx)
-    {
+    draw(ctx) {
         let x,y;
         let lx,rx,ty,by;
         let background,tile,sprite,particle;
         let tilePerWidth,tilePerHeight;
         
-            // get the map offsets
-            
+        // get the map offsets
         this.calcOffset();
         
         if (this.shakeCount!==-1) {
@@ -618,19 +562,16 @@ export default class MapClass
             this.offsetY+=(5-(Math.random()*10));
         }
         
-            // backgrounds
-            
+        // backgrounds
         for (background of this.backgrounds) {
             background.draw(ctx);
         }
         
-            // draw size
-            
+        // draw size
         tilePerWidth=Math.trunc(this.game.canvasWidth/this.MAP_TILE_SIZE);
         tilePerHeight=Math.trunc(this.game.canvasHeight/this.MAP_TILE_SIZE);
             
-            // draw the map
-            
+        // draw the map
         lx=Math.trunc(this.offsetX/this.MAP_TILE_SIZE)-1;
         if (lx<0) lx=0;
         
@@ -653,8 +594,7 @@ export default class MapClass
             }
         }
         
-            // draw the sprites
-            
+        // draw the sprites
         for (sprite of this.sprites) {
             if ((sprite.show) && (sprite.background)) sprite.draw(ctx,this.offsetX,this.offsetY);
         }
@@ -663,8 +603,7 @@ export default class MapClass
             if ((sprite.show) && (!sprite.background)) sprite.draw(ctx,this.offsetX,this.offsetY);
         }
         
-            // draw the particles
-            
+        // draw the particles
         for (particle of this.particles) {
             particle.draw(ctx,this.offsetX,this.offsetY);
         }

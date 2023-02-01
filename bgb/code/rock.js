@@ -35,7 +35,7 @@ export default class RockClass extends SpriteClass
     
     removeBall()
     {
-        this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),8,8,1.0,0.1,2,0.03,'particles/rock',8,500);
+        this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),8,8,1.0,0.1,2,0.03,'particles/rock',8,false,500);
         this.game.soundList.playAtSprite('ball_break',this,this.game.map.getSpritePlayer());       // use the same sound effect here
         this.delete();
     }
