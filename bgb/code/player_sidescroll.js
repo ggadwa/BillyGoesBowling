@@ -2,6 +2,7 @@ import SpriteClass from '../../rpjs/engine/sprite.js';
 import WarpFilterClass from '../../rpjs/filters/warp.js';
 import FlashFilterClass from '../../rpjs/filters/flash.js';
 import BallClass from './ball.js';
+import ShieldClass from './shield.js';
 import CloudBlockClass from './cloud_block.js';
 import ButtonClass from './button.js';
 import SpringClass from './spring.js';
@@ -10,7 +11,7 @@ import NinjaBunnyClass from './ninja_bunny.js';
 import ShurikinClass from './shurikin.js';
 import RotoCarrotClass from './roto_carrot.js';
 import BombClass from './bomb.js';
-import RockClass from './rock.js';
+import FishClass from './fish.js';
 import ExecutionerClass from './executioner.js';
 import AxeClass from './axe.js';
 import MrCPUClass from './mr_cpu.js';
@@ -23,9 +24,14 @@ export default class PlayerSideScrollClass extends SpriteClass {
         super(game,x,y,data);
         
         // constants
-        this.WALK_SPEED=12;
-        this.WALK_AIR_SPEED=14;
-        this.JUMP_HEIGHT=-35;
+        this.WALK_MAX_SPEED=12;
+        this.WALK_ACCEL=2.1;
+        this.WALK_DECEL=3.2;
+        this.JUMP_START_SPEED=16;
+        this.AIR_MAX_SPEED=14;
+        this.AIR_ACCEL=1.5;
+        this.AIR_DECEL=0.5;
+        this.JUMP_HEIGHT=-50;
         this.DEATH_TICK=100;
         this.INVINCIBLE_TICK=60;
         this.WARP_TICK=80;
@@ -42,20 +48,26 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.addImage('sprites/billy_right_2');
         this.addImage('sprites/billy_right_3');
         this.addImage('sprites/billy_right_jump');
+        this.addImage('sprites/billy_shield');
         this.addImage('sprites/gravestone');
         
         this.setCurrentImage('sprites/billy_right_1');
         
         this.show=true;
-        this.gravityFactor=0.12;
-        this.gravityMinValue=2;
-        this.gravityMaxValue=20;
+        this.gravityFactor=0.25;
+        this.gravityMinValue=5;
+        this.gravityMaxValue=16;
         this.canCollide=true;
         this.canStandOn=true;
+        
+        // variables
+        this.moveX=0.0;
+        this.moveY=0;
         
         this.lastGroundY=0;
         
         this.invincibleCount=-1;
+        this.shieldCount=-1;
         this.deathCount=-1;
         this.warpCount=-1;
         
@@ -64,6 +76,9 @@ export default class PlayerSideScrollClass extends SpriteClass {
         
         this.startTimestamp=0;
         this.endTimestamp=0;
+        
+        this.ballSprite=null;
+        this.shieldSprite=null;
         
         Object.seal(this);
     }
@@ -80,8 +95,12 @@ export default class PlayerSideScrollClass extends SpriteClass {
         // the timing
         this.startTimestamp=this.endTimestamp=this.game.timestamp;
 
-        // add the ball sprite
-        this.game.map.addSprite(new BallClass(this.game,0,0,null));
+        // add the ball and shield sprite
+        this.ballSprite=new BallClass(this.game,0,0,null);
+        this.game.map.addSprite(this.ballSprite);
+        
+        this.shieldSprite=new ShieldClass(this.game,0,0,null);
+        this.game.map.addSprite(this.shieldSprite);
     }
     
     getPlayTimeAsString() {
@@ -91,7 +110,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
     hurtPlayer() {
         let health;
         
-        if ((this.invincibleCount>0) || (this.warpCount>0) || (this.deathCount>0)) return;
+        if ((this.invincibleCount>0) || (this.shieldCount>0) || (this.warpCount>0) || (this.deathCount>0)) return;
         
         this.game.soundList.play('hurt');
         
@@ -113,6 +132,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.gravityFactor=0;
         this.alpha=1.0;
         this.invincibleCount=-1;
+        this.shieldCount=-1;
         this.drawFilter=null;
         
         this.game.map.getFirstSpriteOfType(BallClass).show=false;
@@ -124,6 +144,8 @@ export default class PlayerSideScrollClass extends SpriteClass {
     }
     
     interactWithSprite(interactSprite,dataObj) {
+        
+        // interactions that hurt you
         if (interactSprite instanceof KingGhastlyClass) {
             if (interactSprite.standSprite===this) {
                 this.killPlayer();    // king ghastly is a special sprite that kills instantly if you stand on him, so you can get around him
@@ -133,7 +155,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
             }
             return;
         }
-        if ((interactSprite instanceof DrainPipeSnakeClass) || (interactSprite instanceof NinjaBunnyClass) || (interactSprite instanceof ShurikinClass) || (interactSprite instanceof RotoCarrotClass) || (interactSprite instanceof BombClass) || (interactSprite instanceof RockClass) || (interactSprite instanceof MrCPUClass) || (interactSprite instanceof EyeClass)) {
+        if ((interactSprite instanceof DrainPipeSnakeClass) || (interactSprite instanceof NinjaBunnyClass) || (interactSprite instanceof ShurikinClass) || (interactSprite instanceof RotoCarrotClass) || (interactSprite instanceof BombClass) || (interactSprite instanceof FishClass) || (interactSprite instanceof MrCPUClass) || (interactSprite instanceof EyeClass)) {
             this.hurtPlayer();
             return;
         }
@@ -144,6 +166,12 @@ export default class PlayerSideScrollClass extends SpriteClass {
         if (interactSprite instanceof AxeClass) {
             this.hurtPlayer();
             return;
+        }
+        
+        // the ball interaction turns on the shield
+        if (interactSprite instanceof BallClass) {
+            this.shieldCount=this.shieldSprite.LIFE_TICK;
+            this.shieldSprite.interactWithSprite(this,null);
         }
     }
     
@@ -160,7 +188,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
     }
     
     runAI() {
-        let walking,walkAnimationFrame;
+        let walking,walkAnimationFrame,didCollide;
         let map=this.game.map;
         
         // warping? 
@@ -192,23 +220,97 @@ export default class PlayerSideScrollClass extends SpriteClass {
             }
         }
         
+        // shield
+        if (this.shieldCount!==-1) {
+            this.shieldCount--;
+            if (this.shieldCount<=0) {
+                this.shieldCount=-1;
+            }
+        }
+        
         // walking input
         walking=false;
-        walkAnimationFrame=Math.trunc(this.game.timestamp/150)%4;
+  
+        if (this.game.input.isKeyDown("KeyA")) {
+            if (this.grounded) {
+                if (this.moveX>-this.WALK_MAX_SPEED) { // can go up but not over when moving
+                    this.moveX-=this.WALK_ACCEL;
+                    if (this.moveX<-this.WALK_MAX_SPEED) this.moveX=-this.WALK_MAX_SPEED;
+                }
+                walking=true;
+            }
+            else {
+                if (this.moveX>-this.AIR_MAX_SPEED) {
+                    this.moveX-=this.AIR_ACCEL;
+                    if (this.moveX<-this.AIR_MAX_SPEED) this.moveX=-this.AIR_MAX_SPEED;
+                }
+            }
+        }
+        if (this.game.input.isKeyDown("KeyD")) {
+            if (this.grounded) {
+                if (this.moveX<this.WALK_MAX_SPEED) {
+                    this.moveX+=this.WALK_ACCEL;
+                    if (this.moveX>this.WALK_MAX_SPEED) this.moveX=this.WALK_MAX_SPEED;
+                }
+                walking=true;
+            }
+            else {
+                if (this.moveX<this.AIR_MAX_SPEED) {
+                    this.moveX+=this.AIR_ACCEL;
+                    if (this.moveX>this.AIR_MAX_SPEED) this.moveX=this.AIR_MAX_SPEED;
+                }
+            }
+            
+        }
+        
+        // automatically decelerate in air
+        if (((!walking) || (!this.grounded)) && (this.moveX!==0.0)) {
+            if (this.moveX<0.0) {
+                this.moveX+=(this.grounded?this.WALK_DECEL:this.AIR_DECEL);
+                if (this.moveX>=0.0) this.moveX=0.0;
+            }
+            else {
+                this.moveX-=(this.grounded?this.WALK_DECEL:this.AIR_DECEL);
+                if (this.moveX<=0.0) this.moveX=0.0;
+            }
+        }
+        
+        
+        if (this.moveX!==0.0) {
+            this.shieldSprite.canCollide=false;
+            didCollide=this.moveWithCollision(this.moveX,0);
+            if (didCollide) this.motion.y=0.0;
+            this.shieldSprite.canCollide=true;
+        }
+            walkAnimationFrame=Math.trunc(this.game.timestamp/150)%4;
+            this.setCurrentImage(this.WALK_ANIMATION_RIGHT[walkAnimationFrame]);
+            this.drawFilter=null;
+            
+            if (this.motion.y<5) console.info(this.motion.y+'>'+this.gravityAdd);
+        
+        /*
         
         if (this.game.input.isKeyDown("KeyA")) {
-            this.moveWithCollision(-(this.grounded?this.WALK_SPEED:this.WALK_AIR_SPEED),0);
-            this.setCurrentImage(this.WALK_ANIMATION_LEFT[walkAnimationFrame]);
+            moveX=-(this.grounded?this.WALK_SPEED:this.WALK_AIR_SPEED);
             this.data.set('facing_direction',-1);
             walking=true;
         }
-        
         if (this.game.input.isKeyDown("KeyD")) {
-            this.moveWithCollision((this.grounded?this.WALK_SPEED:this.WALK_AIR_SPEED),0);
-            this.setCurrentImage(this.WALK_ANIMATION_RIGHT[walkAnimationFrame]);
-            this.data.set('facing_direction',1);
+            moveX=this.grounded?this.WALK_SPEED:this.WALK_AIR_SPEED;
             walking=true;
         }
+        
+        if (this.shieldCount!==-1) moveX=0;
+        
+        if (moveX!==0) {
+            this.shieldSprite.canCollide=false;
+            this.moveWithCollision(moveX,0);
+            this.shieldSprite.canCollide=true;
+            walkAnimationFrame=Math.trunc(this.game.timestamp/150)%4;
+            this.setCurrentImage(this.WALK_ANIMATION_RIGHT[walkAnimationFrame]);
+        }
+        
+        */
         
         if ((!walking) || (!this.grounded)) {
             if (this.data.get('facing_direction')===-1) {
@@ -222,7 +324,15 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.clampX(0,(map.width-this.width));
         
         // jumping
-        if ((this.game.input.isKeyDown("Space")) && (this.grounded)) this.motion.y+=this.JUMP_HEIGHT;
+        if ((this.game.input.isKeyDown("Space")) && (this.grounded)) {
+            if (this.moveX<0.0) {
+                this.moveX=-this.JUMP_START_SPEED;
+            }
+            if (this.moveX>0.0) {
+                this.moveX=this.JUMP_START_SPEED;
+            }
+            this.motion.y+=this.JUMP_HEIGHT;
+        }
         
         // remember the last ground because
         // we use that to tell the ball's location

@@ -1,17 +1,14 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import BallClass from './ball.js';
 
-export default class BombClass extends SpriteClass
-{
-    constructor(game,x,y,data)
-    {
+export default class BombClass extends SpriteClass {
+    constructor(game,x,y,data) {
         super(game,x,y,data);
         
-            // constants
-            
+        // constants
         this.BOMB_SPEED=7;
         
-            // setup
-            
+        // setup
         this.addImage('sprites/bomb');
         this.setCurrentImage('sprites/bomb');
         
@@ -19,19 +16,16 @@ export default class BombClass extends SpriteClass
         this.gravityFactor=0.0;
         this.gravityMinValue=0;
         this.gravityMaxValue=0;
-        this.canCollide=false;
         this.canStandOn=false;
         
         Object.seal(this);
     }
     
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
         return(new BonbClass(this.game,x,y,this.data));
     }
     
-    explode()
-    {
+    explode() {
         let cx,cy;
         
         cx=this.x+Math.trunc(this.width*0.5);
@@ -45,8 +39,14 @@ export default class BombClass extends SpriteClass
         this.delete();
     }
     
-    runAI()
-    {
+    interactWithSprite(interactSprite,dataObj) {
+        // ball explodes bomb 
+        if (interactSprite instanceof BallClass) {
+            this.explode();
+        }
+    }
+    
+    runAI() {
         let map=this.game.map;
         
         this.y+=this.BOMB_SPEED;

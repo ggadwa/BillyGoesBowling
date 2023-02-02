@@ -9,15 +9,25 @@ export default class BallClass extends SpriteClass {
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        // statics
+        // constants
         this.TRAVEL_MODE_FLOATING=0;
         this.TRAVEL_MODE_BOWL_DOWN=1;
         this.TRAVEL_MODE_BOWL_ACROSS=2;
-        this.TRAVEL_MODE_RETURN_DOWN=3;
+        this.TRAVEL_MODE_REFORM=3;
         this.TRAVEL_MODE_SLAM_UP=4;
         this.TRAVEL_MODE_SLAM_DOWN=5;
+        this.TRAVEL_MODE_CIRCLE=6;
         
         this.HEAD_PIXEL_DISTANCE=10;
+        
+        this.REFORM_LIFE_TICK=400;
+        this.REFORM_SHOW_TICK=200;
+        
+        this.BALL_CIRCLE_SPEED=10;
+        this.BALL_CIRCLE_OFFSET_X=8;
+        this.BALL_CIRCLE_RADIUS_X=45;
+        this.BALL_CIRCLE_OFFSET_Y=50;
+        this.BALL_CIRCLE_RADIUS_Y=100;
         
         // variables
         this.travelMode=this.TRAVEL_MODE_FLOATING;
@@ -26,7 +36,9 @@ export default class BallClass extends SpriteClass {
         this.travelXDirection=1;
         this.travelYAcross=0;
         this.travelYBottom=0;
+        this.travelAngle=0;
         
+        this.travelReformStartTick=0;
         this.reformParticle=null;
         
         // setup
@@ -51,66 +63,95 @@ export default class BallClass extends SpriteClass {
     returnBall(showDestroy) {
         let map=this.game.map;
         let playerSprite=map.getSpritePlayer();
-        let px,py;
-        
-        this.travelY=this.game.map.getMapViewportTopEdge()-this.height;
-        this.travelMode=this.TRAVEL_MODE_RETURN_DOWN;
+        let halfWid=Math.trunc(this.width*0.5);
+        let halfHigh=Math.trunc(this.height*0.5);
         
         // ball destroyed
         if (showDestroy) {
-            map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),8,8,1.0,0.1,4,0.03,'particles/ball',16,false,500);
+            map.addParticle((this.x+halfWid),(this.y-halfHigh),8,8,1.0,0.1,4,0.03,'particles/ball',16,false,500);
             this.game.soundList.playAtSprite('ball_break',this,playerSprite);
         }
         
-        // ball reforming
-        px=playerSprite.x+Math.trunc((playerSprite.width-this.width)*0.5);
-        py=(playerSprite.y-playerSprite.height)-this.HEAD_PIXEL_DISTANCE;
-        this.reformParticle=this.game.map.addParticle((px+Math.trunc(this.width*0.5)),(py-Math.trunc(this.height*0.5)),8,16,1.0,0.1,6,0.03,'particles/ball',16,true,400);
+        // reset position and reform
+        this.travelMode=this.TRAVEL_MODE_REFORM;
+        this.travelReformStartTick=this.game.timestamp;
+        
+        this.x=playerSprite.x+Math.trunc((playerSprite.width-this.width)*0.5);
+        this.y=(playerSprite.y-playerSprite.height)-this.HEAD_PIXEL_DISTANCE;
+        this.reformParticle=this.game.map.addParticle((this.x+halfWid),(this.y-halfHigh),8,16,1.0,0.1,6,0.03,'particles/ball',16,true,this.REFORM_LIFE_TICK);
     }
     
     runAI() {
         let map=this.game.map;
         let playerSprite=map.getSpritePlayer();
         let didCollide;
-        let x,y,lftEdge,rgtEdge,topEdge,botEdge;
-        let xOffset=Math.trunc((playerSprite.width-this.width)*0.5);
+        let px,py,lftEdge,rgtEdge,topEdge,botEdge,tick;
+        let xOffset, yOffset, rad;
         
         // if the ball is hidden, it means the player
         // is dead or warping out, so do nothing here
         if (!this.show) return;
         
         // get the position by the mode
-        x=playerSprite.x+xOffset;
-        y=(playerSprite.y-playerSprite.height)-this.HEAD_PIXEL_DISTANCE;
+        xOffset=Math.trunc((playerSprite.width-this.width)*0.5);
+        yOffset=-(playerSprite.height+this.HEAD_PIXEL_DISTANCE);
         
-        if (this.reformParticle!=null) {
-            this.reformParticle.resetPosition((x+Math.trunc(this.width*0.5)),(y-Math.trunc(this.height*0.5)));
-        }
+        px=playerSprite.x+xOffset;
+        py=playerSprite.y+yOffset;
+        
+        // reforming is a special case
+        if (this.travelMode==this.TRAVEL_MODE_REFORM) {
             
+            // are we done reforming?
+            tick=this.game.timestamp-this.travelReformStartTick;
+            if (tick>this.REFORM_LIFE_TICK) {
+                this.alpha=1.0;
+                this.travelMode=this.TRAVEL_MODE_FLOATING;
+            }
+            // otherwise fade in with particles
+            else {
+                this.x=px;
+                this.y=py;
+                if (tick<this.REFORM_SHOW_TICK) {
+                    this.alpha=0.0;
+                }
+                else {
+                    this.alpha=(tick-this.REFORM_SHOW_TICK)/(this.REFORM_LIFE_TICK-this.REFORM_SHOW_TICK);
+                }             
+                        
+                if (this.reformParticle!=null) {
+                    this.reformParticle.resetPosition((px+Math.trunc(this.width*0.5)),(py-Math.trunc(this.height*0.5)));
+                }
+                
+                return;
+            }
+        }
+        
+        // other movement modes
         switch (this.travelMode) {
             
             case this.TRAVEL_MODE_BOWL_DOWN:
                 this.travelY+=30;
-                if ((y+this.travelY)>=this.travelYBottom) {
+                if ((py+this.travelY)>=this.travelYBottom) {
                     this.travelX=0;
                     this.travelYAcross=this.travelYBottom;
                     this.travelMode=this.TRAVEL_MODE_BOWL_ACROSS;
                     
-                    y=this.travelYBottom;
+                    py=this.travelYBottom;
                 }
                 else {
-                    y+=this.travelY;
+                    py+=this.travelY;
                 }
                 break;
                 
             case this.TRAVEL_MODE_BOWL_ACROSS:
-                y=this.travelYAcross;
+                py=this.travelYAcross;
                 
                 if (this.travelXDirection<0) {
                     this.travelX-=30;
                     lftEdge=map.getMapViewportLeftEdge();
-                    if (((x+this.travelX)+this.width)<lftEdge) {
-                        this.travelX=lftEdge-(x+this.width);
+                    if (((px+this.travelX)+this.width)<lftEdge) {
+                        this.travelX=lftEdge-(px+this.width);
                         this.travelY=map.getMapViewportTopEdge()-this.height;
                         this.returnBall(false);
                     }
@@ -118,53 +159,55 @@ export default class BallClass extends SpriteClass {
                 else {
                     this.travelX+=30;
                     rgtEdge=map.getMapViewportRightEdge();
-                    if ((x+this.travelX)>rgtEdge) {
-                        this.travelX=rgtEdge-x;
+                    if ((px+this.travelX)>rgtEdge) {
+                        this.travelX=rgtEdge-px;
                         this.travelY=map.getMapViewportTopEdge()-this.height;
                         this.returnBall(false);
                     }
                 }
                 
-                x+=this.travelX;
-                break;
-                
-            case this.TRAVEL_MODE_RETURN_DOWN:
-                this.travelY+=25;
-                if (this.travelY>=y) {
-                    this.travelY=y;
-                    this.travelMode=this.TRAVEL_MODE_FLOATING;
-                }
-                y=this.travelY;
+                px+=this.travelX;
                 break;
                 
             case this.TRAVEL_MODE_SLAM_UP:
-                x=this.travelX;
+                px=this.travelX;
                 this.travelY-=35;
                 topEdge=map.getMapViewportTopEdge();
                 if (this.travelY<=(topEdge-this.height)) {
                     this.travelMode=this.TRAVEL_MODE_SLAM_DOWN;
                 }
-                y=this.travelY;
+                py=this.travelY;
                 break;
                 
             case this.TRAVEL_MODE_SLAM_DOWN:
-                x=this.travelX;
+                px=this.travelX;
                 this.travelY+=40;
                 botEdge=map.getMapViewportBottomEdge();
                 if ((this.travelY-this.height)>botEdge) {
                     this.travelY=0;
                     this.returnBall(false);
                 }
-                y=this.travelY;
+                py=this.travelY;
                 break;
                 
+            case this.TRAVEL_MODE_CIRCLE:
+                this.travelAngle+=this.BALL_CIRCLE_SPEED;
+                if (this.travelAngle===360) {
+                    this.returnBall(false);
+                }
+                else {
+                    rad=(Math.PI/180.0)*this.travelAngle;
+                    px=(playerSprite.x+this.BALL_CIRCLE_OFFSET_X)+(Math.sin(rad)*this.BALL_CIRCLE_RADIUS_X);
+                    py=(playerSprite.y-this.BALL_CIRCLE_OFFSET_Y)-(Math.cos(rad)*this.BALL_CIRCLE_RADIUS_Y);
+                }
+                break;
         }
         
         // move ball and check for collisions
-        this.x=x;
-        this.y=y;
+        this.x=px;
+        this.y=py;
             
-        if ((this.travelMode===this.TRAVEL_MODE_BOWL_ACROSS) || (this.travelMode===this.TRAVEL_MODE_SLAM_UP) || (this.travelMode===this.TRAVEL_MODE_SLAM_DOWN)) {
+        if ((this.travelMode===this.TRAVEL_MODE_BOWL_ACROSS) || (this.travelMode===this.TRAVEL_MODE_SLAM_UP) || (this.travelMode===this.TRAVEL_MODE_SLAM_DOWN) || (this.travelMode===this.TRAVEL_MODE_CIRCLE)) {
             
             playerSprite.canCollide=false;
             didCollide=map.checkCollision(this); // make sure player sprite is out of the way
@@ -172,9 +215,10 @@ export default class BallClass extends SpriteClass {
             
             if (didCollide) {
                 
-                // colliding with map, return ball  
+                // colliding with map, return ball
+                // unless it's a defensive circle
                 if (this.collideSprite===null) {
-                    this.returnBall(true);
+                    if (this.travelMode!==this.TRAVEL_MODE_CIRCLE) this.returnBall(true);
                     return;
                 }
                 
@@ -205,8 +249,8 @@ export default class BallClass extends SpriteClass {
             // we get the Y we will be bowling at from
             // the last ground contact, if in the air, then fire
             // at the tile line above, or if on ground, fire at current
-            // tile line.  If falling, you can't fire
-            if ((this.game.input.isKeyDown("ArrowRight")) && (playerSprite.motion.y<=0)) {
+            // tile line
+            if (this.game.input.isKeyDown("ArrowRight")) {
                 this.travelMode=this.TRAVEL_MODE_BOWL_DOWN;
                 this.travelX=0;
                 this.travelY=0;
@@ -220,6 +264,13 @@ export default class BallClass extends SpriteClass {
                 this.travelMode=this.TRAVEL_MODE_SLAM_UP;
                 this.travelX=playerSprite.x+xOffset;
                 this.travelY=(playerSprite.y-playerSprite.height)-this.HEAD_PIXEL_DISTANCE;
+            }
+            
+            // bowls in a circle around player
+            if (this.game.input.isKeyDown("ArrowDown")) {
+                playerSprite.interactWithSprite(this,null); // turn on shield
+                this.travelMode=this.TRAVEL_MODE_CIRCLE;
+                this.travelAngle=0.0;
             }
         }
     }

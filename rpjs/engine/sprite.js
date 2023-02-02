@@ -205,8 +205,7 @@ export default class SpriteClass
         this.data.set(name,value);
     }
     
-    run()
-    {
+    run() {
         let y;
         
             // run any AI
@@ -221,10 +220,11 @@ export default class SpriteClass
             
         this.x+=this.motion.x;
         this.y+=this.motion.y;
+        
+        
+        // falling
         this.grounded=true;
         
-            // falling
-
         if (this.gravityFactor!==0.0) {
 
             y=-1;
@@ -247,12 +247,11 @@ export default class SpriteClass
                 this.y=y;
                 this.gravityAdd=0.0;
                 this.grounded=true;
-                this.motion.y=0;
+                this.motion.y=0.0;
             }
         }
              
-            // rising
-                
+        // rising   
         if (this.motion.y<0) {
             y=this.game.map.checkCollisionRise(this,this.motion.y);
             if (y!==-1) {
@@ -261,11 +260,14 @@ export default class SpriteClass
             }
         }
         
-            // gravity slows down motion
-            
-        if (this.motion.y<0) {
+        // gravity slows down motion
+        if (this.motion.y<0.0) {
             this.motion.y+=this.gravityAdd;
-            if (this.motion.y>=0) this.gravityAdd=this.motion.y;
+            if (this.motion.y>=0.0) {
+                this.gravityAdd=this.motion.y;
+                if (this.gravityAdd>this.gravityMaxValue) this.gravityAdd=this.gravityMaxValue;
+                this.motion.y=0.0;
+            }
         }
     }
     

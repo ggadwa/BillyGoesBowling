@@ -134,6 +134,7 @@ export default class BillyGameClass extends GameClass
         this.addImage('sprites/billy_right_2');
         this.addImage('sprites/billy_right_3');
         this.addImage('sprites/billy_right_jump');
+        this.addImage('sprites/billy_shield');
         this.addImage('sprites/billy_world');
         this.addImage('sprites/pin');
         this.addImage('sprites/block');
@@ -166,8 +167,11 @@ export default class BillyGameClass extends GameClass
         this.addImage('sprites/roto_carrot_2');
         this.addImage('sprites/bomb');
         this.addImage('sprites/easter_head_left');
+        this.addImage('sprites/easter_head_fire_left');
         this.addImage('sprites/easter_head_right');
-        this.addImage('sprites/rock');
+        this.addImage('sprites/easter_head_fire_right');
+        this.addImage('sprites/fish_left');
+        this.addImage('sprites/fish_right');
         this.addImage('sprites/executioner_1');
         this.addImage('sprites/executioner_2');
         this.addImage('sprites/axe_up');
@@ -189,7 +193,7 @@ export default class BillyGameClass extends GameClass
         this.addImage('particles/block');
         this.addImage('particles/pipe');
         this.addImage('particles/ball');
-        this.addImage('particles/rock');
+        this.addImage('particles/fish');
         this.addImage('particles/explode_red');
         this.addImage('particles/explode_orange');
         this.addImage('particles/explode_yellow');
