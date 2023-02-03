@@ -254,7 +254,7 @@ export default class BallClass extends SpriteClass {
                 this.travelMode=this.TRAVEL_MODE_BOWL_DOWN;
                 this.travelX=0;
                 this.travelY=0;
-                this.travelXDirection=playerSprite.data.get('facing_direction');
+                this.travelXDirection=playerSprite.flipX?-1:1;
                 this.travelYBottom=(Math.trunc(playerSprite.lastGroundY/map.MAP_TILE_SIZE)*map.MAP_TILE_SIZE)-Math.trunc((map.MAP_TILE_SIZE-this.height)*0.5);
                 if (!playerSprite.grounded) this.travelYBottom-=map.MAP_TILE_SIZE;
             }

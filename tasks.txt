@@ -1,44 +1,30 @@
 //// TO DO
 
-- add a gravityJumpPauseTick - gravity pauses for X ticks
-- have smaller jump value
+- randomize start angles for particles
+- finish other flipped sprites
 
 - get rid of all timestamp stuff, use ticks
 - runAI passes in game tick
 
-- automatically decelerate in air?
+- need to flip ball
+- walk animation needs to reset to 0 instead of jumping there
 
 - smoke on quick turn around (by feet)
 
-- player movement acceleration based
-- different deceleration on ground (fast) and slow (air)
-- jump accelerates player a bit more
 - three jump sprites (timed)
-- have small air control, but don't change direction of sprite
+
 
 - move motion and such to sprite????
 
 - interaction has a command variable
 
-* make bowling ball fire at any time but it always picks the middle of the closest Y block
-* give billy a defensive move with ball (rotates clockwise around player)
-* ball reforms instead of coming down
-* spin move destroys ball at end
-* shake shield randomly by 1 or 2 pixels
-- spin makes player invincible for a bit draw shield
 
+- spin makes player invincible for a bit draw shield
 - can't move with shield on
 
 
-
-* bunny weapons can be stopped by ball
-* bombs can be stopped by ball
 - ninja bunny hitting player kills ninja bunny
 
-* easter head fires fish
-* fish arc at beginning
-* fish can be stopped by ball
-* easter heads flash eyes when throwing fish
 
 - need to use controllers
 - destroyed carrots reset
@@ -58,7 +44,7 @@
 
 - world view player's hair looks wrong
 
-- do left/right by translate
+
 
 - rotate particles
     context.translate(x, y);

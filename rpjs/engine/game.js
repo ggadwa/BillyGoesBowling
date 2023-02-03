@@ -38,6 +38,7 @@ export default class GameClass {
         this.lastTimestamp=0;
         this.physicsTimestamp=0;
         this.drawTimestamp=0;
+        this.tick=0;
         this.paused=true;
         
         // game data
@@ -151,6 +152,7 @@ export default class GameClass {
         this.timestamp=0;
         this.physicsTimestamp=0;
         this.drawTimestamp=0;
+        this.tick=0;
         
         this.paused=true;
         this.lastTimestamp=Math.trunc(systemTimestamp);
@@ -449,35 +451,36 @@ export default class GameClass {
         this.backCTX.fillText(str,x,y);
     }
 
-    run()
-    {
-        let physicTick;
+    run() {
+        let physicTime;
 
-            // continue to run physics until we've caught up
-            
+        // continue to run physics until we've caught up
         while (true) {
-            physicTick=this.timestamp-this.physicsTimestamp;
-            if (physicTick<this.PHYSICS_TICK_FREQUENCY) return;
+            physicTime=this.timestamp-this.physicsTimestamp;
+            if (physicTime<this.PHYSICS_TICK_FREQUENCY) return;
             
             this.physicsTimestamp+=this.PHYSICS_TICK_FREQUENCY;
             
-                // no map gotos
-
+            // next tick
+            this.tick++;
+            
+            // no map gotos
             this.gotoMapName=null;
             
-                // run game and map AI
-                // which runs the sprite AI
-                
+            // run game and map AI
+            // which runs the sprite AI
             this.runAI();
             this.map.run();
             
-                // check for map goto triggers
-                
+            // check for map goto triggers 
             if (this.gotoMapName!==null) {
                 this.input.keyClear();
                 this.map=this.mapList.get(this.gotoMapName);
                 this.map.initialize();
             }
+            
+            // next tick
+            this.tick++;
         }
     }
     

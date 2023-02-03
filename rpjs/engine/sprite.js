@@ -1,12 +1,9 @@
-export default class SpriteClass
-{
-    constructor(game,x,y,data)
-    {
-        this.game=game;
+export default class SpriteClass {
         
+    constructor(game,x,y,data) {
+        this.game=game;
         this.x=x;
         this.y=y;
-        
         this.data=(data===null)?new Map():data;
         
         this.currentImage=null;
@@ -14,17 +11,20 @@ export default class SpriteClass
         
         this.width=0;
         this.height=0;
-        this.alpha=1.0;
         
         this.drawOffsetX=0;
         this.drawOffsetY=0;
-        this.drawFilter=null;                   // when the filter is non-null, it's a filter class that is used to draw the sprite instead of regular drawing
-        this.drawFilterAnimationFactor=1.0;     // this is an animation factor for any drawing, 0.0-1.0 from start to finish
+        this.flipX=false;
+        this.flipY=false;
+        this.alpha=1.0;
+        this.drawFilter=null; // when the filter is non-null, it's a filter class that is used to draw the sprite instead of regular drawing
+        this.drawFilterAnimationFactor=1.0; // this is an animation factor for any drawing, 0.0-1.0 from start to finish
         
         this.gravityFactor=0.0;
         this.gravityMinValue=0;
         this.gravityMaxValue=0;
         this.gravityAdd=0.0;
+        this.gravityPauseTick=-1;
         this.motion={x:0,y:0};
         
         this.show=true;
@@ -216,7 +216,7 @@ export default class SpriteClass
             
         if (!this.show) return;
         
-            // add in motion
+        // add in motion
             
         this.x+=this.motion.x;
         this.y+=this.motion.y;
@@ -237,10 +237,19 @@ export default class SpriteClass
             }
 
             if (y===-1) {
-                this.y=Math.trunc(this.y+this.gravityAdd);
-                if (this.gravityAdd<=0.0) this.gravityAdd=this.gravityMinValue;
-                this.gravityAdd+=(this.gravityAdd*this.gravityFactor);
-                if (this.gravityAdd>this.gravityMaxValue) this.gravityAdd=this.gravityMaxValue;
+                if (this.gravityPauseTick===-1) {
+                    this.y=Math.trunc(this.y+this.gravityAdd);
+                    if (this.gravityAdd<=0.0) {
+                        this.gravityAdd=this.gravityMinValue*this.gravityFactor;
+                    }
+                    else {
+                        this.gravityAdd+=(this.gravityAdd*this.gravityFactor);
+                    }
+                    if (this.gravityAdd>this.gravityMaxValue) this.gravityAdd=this.gravityMaxValue;
+                }
+                else {
+                    this.gravityPauseTick--;
+                }
                 this.grounded=false;
             }
             else {
@@ -271,32 +280,58 @@ export default class SpriteClass
         }
     }
     
-    draw(ctx,offX,offY)
-    {
+    draw(ctx,offX,offY) {
+        let hasTransform;
         let x=(this.x+this.drawOffsetX)-offX;
         let y=((this.y-this.height)+this.drawOffsetY)-offY;
         
-            // clip anything offscreen
-            
+        // clip anything offscreen
         if ((x>=this.game.canvasWidth) || ((x+this.width)<=0)) return;
         if ((y>=this.game.canvasHeight) || ((y+this.height)<=0)) return;
         
-            // if there is a filter, draw with that
-            
+        // if there is a filter, draw with that
         if (this.drawFilter!==null) {
             this.drawFilter.draw(ctx,this.currentImage,x,y,this.drawFilterAnimationFactor,this.game.timestamp);
             return;
         }
         
-            // otherwise regular drawing
+        // any transforms
+        hasTransform=(this.flipX) || (this.flipY) || (this.alpha!==1.0);
+        if (hasTransform) {
+            ctx.save();
             
-        if (this.alpha!==1.0) {
-            ctx.globalAlpha=this.alpha;
-            ctx.drawImage(this.currentImage,x,y);
-            ctx.globalAlpha=1.0;
+            if ((this.flipX) && (this.flipY)) {
+                ctx.translate((x+this.currentImage.width),(y+this.currentImage.height));
+                ctx.scale(-1.0,-1.0);
+                x=0;
+                y=0;
+            }
+            else {
+                if (this.flipX) {
+                    ctx.translate((x+this.currentImage.width),y);
+                    ctx.scale(-1.0,1.0);
+                    x=0;
+                    y=0;
+                }
+                else {
+                    if (this.flipY) {
+                        ctx.translate(x,(y+this.currentImage.height));
+                        ctx.scale(1.0,-1.0);
+                        x=0;
+                        y=0;
+                    }
+                }
+            }
+            
+            if (this.alpha!==1.0) ctx.globalAlpha=this.alpha;
         }
-        else {
-            ctx.drawImage(this.currentImage,x,y);
+
+        // otherwise regular drawing
+        ctx.drawImage(this.currentImage,x,y);
+        
+        // restore any transforms
+        if (hasTransform) {
+            ctx.restore();
         }
     }
 }

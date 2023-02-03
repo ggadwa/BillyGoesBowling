@@ -26,37 +26,34 @@ export default class PlayerSideScrollClass extends SpriteClass {
         // constants
         this.WALK_MAX_SPEED=12;
         this.WALK_ACCEL=2.1;
-        this.WALK_DECEL=3.2;
+        this.WALK_DECEL=2.5;
         this.JUMP_START_SPEED=16;
-        this.AIR_MAX_SPEED=14;
-        this.AIR_ACCEL=1.5;
-        this.AIR_DECEL=0.5;
-        this.JUMP_HEIGHT=-50;
+        this.AIR_MAX_SPEED=12;
+        this.AIR_ACCEL=2.5;
+        this.AIR_DECEL=2.0;
+        this.JUMP_HEIGHT=-20;
+        this.JUMP_GRAVITY_PAUSE=4;
         this.DEATH_TICK=100;
         this.INVINCIBLE_TICK=60;
         this.WARP_TICK=80;
         
-        this.WALK_ANIMATION_LEFT=['sprites/billy_left_1','sprites/billy_left_2','sprites/billy_left_3','sprites/billy_left_2'];
-        this.WALK_ANIMATION_RIGHT=['sprites/billy_right_1','sprites/billy_right_2','sprites/billy_right_3','sprites/billy_right_2'];
+        this.WALK_ANIMATION=['sprites/billy_walk_1','sprites/billy_walk_2','sprites/billy_walk_3','sprites/billy_walk_2'];
         
         // setup
-        this.addImage('sprites/billy_left_1');
-        this.addImage('sprites/billy_left_2');
-        this.addImage('sprites/billy_left_3');
-        this.addImage('sprites/billy_left_jump');
-        this.addImage('sprites/billy_right_1');
-        this.addImage('sprites/billy_right_2');
-        this.addImage('sprites/billy_right_3');
-        this.addImage('sprites/billy_right_jump');
+        this.addImage('sprites/billy_walk_1');
+        this.addImage('sprites/billy_walk_2');
+        this.addImage('sprites/billy_walk_3');
+        this.addImage('sprites/billy_jump_1');
         this.addImage('sprites/billy_shield');
         this.addImage('sprites/gravestone');
         
-        this.setCurrentImage('sprites/billy_right_1');
+        this.setCurrentImage('sprites/billy_walk_1');
+        this.flipX=false;
         
         this.show=true;
         this.gravityFactor=0.25;
-        this.gravityMinValue=5;
-        this.gravityMaxValue=16;
+        this.gravityMinValue=8;
+        this.gravityMaxValue=30;
         this.canCollide=true;
         this.canStandOn=true;
         
@@ -232,6 +229,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         walking=false;
   
         if (this.game.input.isKeyDown("KeyA")) {
+            this.flipX=true;
             if (this.grounded) {
                 if (this.moveX>-this.WALK_MAX_SPEED) { // can go up but not over when moving
                     this.moveX-=this.WALK_ACCEL;
@@ -247,6 +245,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
             }
         }
         if (this.game.input.isKeyDown("KeyD")) {
+            this.flipX=false;
             if (this.grounded) {
                 if (this.moveX<this.WALK_MAX_SPEED) {
                     this.moveX+=this.WALK_ACCEL;
@@ -283,10 +282,11 @@ export default class PlayerSideScrollClass extends SpriteClass {
             this.shieldSprite.canCollide=true;
         }
             walkAnimationFrame=Math.trunc(this.game.timestamp/150)%4;
-            this.setCurrentImage(this.WALK_ANIMATION_RIGHT[walkAnimationFrame]);
+            this.setCurrentImage(this.WALK_ANIMATION[walkAnimationFrame]);
             this.drawFilter=null;
+
             
-            if (this.motion.y<5) console.info(this.motion.y+'>'+this.gravityAdd);
+            //if (this.motion.y<5) console.info(this.motion.y+'>'+this.gravityAdd);
         
         /*
         
@@ -313,12 +313,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         */
         
         if ((!walking) || (!this.grounded)) {
-            if (this.data.get('facing_direction')===-1) {
-                this.setCurrentImage((this.motion.y<0)?'sprites/billy_left_jump':'sprites/billy_left_1');
-            }
-            else {
-                this.setCurrentImage((this.motion.y<0)?'sprites/billy_right_jump':'sprites/billy_right_1');
-            }
+            this.setCurrentImage((this.motion.y<0)?'sprites/billy_jump_1':'sprites/billy_walk_1');
         }
         
         this.clampX(0,(map.width-this.width));
@@ -332,6 +327,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
                 this.moveX=this.JUMP_START_SPEED;
             }
             this.motion.y+=this.JUMP_HEIGHT;
+            this.gravityPauseTick=this.JUMP_GRAVITY_PAUSE;
         }
         
         // remember the last ground because

@@ -50,6 +50,9 @@ export default class ParticleClass {
         tick=(this.game.timestamp-this.startTimestamp);
         if (tick>this.lifeTick) return;
         
+        // save any context changes
+        ctx.save();
+        
         // the setups
         if (!this.reverse) {
             sz=this.startSize+Math.trunc(((this.endSize-this.startSize)*tick)/this.lifeTick);
@@ -72,11 +75,15 @@ export default class ParticleClass {
             // clip anything offscreen
             if ((dx>=this.game.canvasWidth) || ((dx+sz)<=0)) continue;
             if ((dy>=this.game.canvasHeight) || ((dy+sz)<=0)) continue;
+            
+            // random rotation
+            ctx.setTransform(1, 0, 0, 1, dx, dy);
+            ctx.rotate((tick/5)*(Math.PI/180.0));
 
             // draw particle
-            ctx.drawImage(this.image,dx,dy,sz,sz);
+            ctx.drawImage(this.image,-halfSize,-halfSize,sz,sz);
         }
         
-        ctx.globalAlpha=1.0;
+        ctx.restore();
     }
 }
