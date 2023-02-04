@@ -17,7 +17,7 @@ export default class MapSpotClass extends SpriteClass {
         this.canCollide=false;
         this.canStandOn=false;
         
-        this.background=true;           // a background sprite, draws in the same plane as the map
+        this.layer=this.BACKGROUND_LAYER; // drawn in background
 
         Object.seal(this);
     }

@@ -15,7 +15,7 @@ export default class BreakBlockClass extends SpriteClass
         
         this.show=true;
         this.gravityFactor=0.2;
-        this.gravityMinValue=2;
+        this.gravityMinValue=4;
         this.gravityMaxValue=15;
         this.canCollide=true;
         this.canStandOn=true;
@@ -35,7 +35,7 @@ export default class BreakBlockClass extends SpriteClass
         if ((interactSprite instanceof BallClass) || (interactSprite instanceof FishClass) || (interactSprite instanceof ExplodeBlockClass) || (interactSprite instanceof KingGhastlyClass)) {
             cx=this.x+Math.trunc(this.width*0.5);
             cy=this.y-Math.trunc(this.height*0.5);
-            this.game.map.addParticle(cx,cy,16,16,1.0,0.1,5,0.08,'particles/block',10,false,800);
+            this.game.map.addParticle(cx,cy,16,16,1.0,0.1,5,0.08,'particles/block',10,0.5,false,800);
             this.game.soundList.playAtSprite('crack',this,this.game.map.getSpritePlayer());
             this.delete();
         }

@@ -17,9 +17,8 @@ export default class FishClass extends SpriteClass {
         this.doubleBounceCheck=false;
         
         // setup
-        this.addImage('sprites/fish_left');
-        this.addImage('sprites/fish_right');
-        this.setCurrentImage('sprites/fish_left');
+        this.addImage('sprites/fish');
+        this.setCurrentImage('sprites/fish');
         
         this.show=true;
         this.gravityFactor=0.1;
@@ -35,7 +34,7 @@ export default class FishClass extends SpriteClass {
     }
     
     removeFish() {
-        this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),8,8,1.0,0.1,2,0.03,'particles/fish',8,false,500);
+        this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),8,8,1.0,0.1,2,0.03,'particles/fish',8,0.5,false,500);
         this.game.soundList.playAtSprite('ball_break',this,this.game.map.getSpritePlayer()); // use the same sound effect here
         this.delete();
     }
@@ -68,7 +67,7 @@ export default class FishClass extends SpriteClass {
         
         if (this.travelY>0) this.travelY--;
         
-        this.setCurrentImage((this.travelX<0)?'sprites/fish_left':'sprites/fish_right');
+        this.flipX=(this.travelX<0);
 
         // colliding with anything but the player
         // or cloud/break block sprite changes direction

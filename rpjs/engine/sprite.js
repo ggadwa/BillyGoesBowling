@@ -6,6 +6,10 @@ export default class SpriteClass {
         this.y=y;
         this.data=(data===null)?new Map():data;
         
+        this.UNDER_MAP_TILES_LAYER=0;
+        this.BACKGROUND_LAYER=1;
+        this.FOREGROUND_LAYER=2;
+        
         this.currentImage=null;
         this.images=new Map();
         
@@ -19,6 +23,8 @@ export default class SpriteClass {
         this.alpha=1.0;
         this.drawFilter=null; // when the filter is non-null, it's a filter class that is used to draw the sprite instead of regular drawing
         this.drawFilterAnimationFactor=1.0; // this is an animation factor for any drawing, 0.0-1.0 from start to finish
+        
+        this.layer=this.FOREGROUND_LAYER;
         
         this.gravityFactor=0.0;
         this.gravityMinValue=0;
@@ -39,8 +45,6 @@ export default class SpriteClass {
         this.canCollide=true;
         this.canStandOn=true;
         this.canRiseBlock=true;
-        
-        this.background=false;
         
         this.removeFlag=false;          // make this private
         

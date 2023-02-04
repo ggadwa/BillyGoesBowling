@@ -131,6 +131,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.invincibleCount=-1;
         this.shieldCount=-1;
         this.drawFilter=null;
+        this.flipX=false;
         
         this.game.map.getFirstSpriteOfType(BallClass).show=false;
         this.game.musicList.stop();

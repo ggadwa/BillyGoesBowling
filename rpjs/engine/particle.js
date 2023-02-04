@@ -1,6 +1,6 @@
 export default class ParticleClass {
-    constructor(game,x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,image,count,reverse,lifeTick) {
-        let n;
+    constructor(game,x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,image,count,rotateFactor,reverse,lifeTick) {
+        let n,rad;
         
         this.game=game;
         this.x=x;
@@ -12,8 +12,11 @@ export default class ParticleClass {
         this.moveFactor=moveFactor;
         this.image=image;
         this.count=count;
+        this.rotateFactor=rotateFactor;
         this.reverse=reverse;
         this.lifeTick=lifeTick;
+        
+        this.ROTATE_TO_TICK_FACTOR=150.0;
         
         this.startTimestamp=game.timestamp;
         
@@ -24,10 +27,16 @@ export default class ParticleClass {
         // random particles
         this.xs=new Float32Array(count);
         this.ys=new Float32Array(count);
+        this.rot=new Float32Array(count);
+        this.rotAdd=new Float32Array(count);
+        
+        rad=Math.PI*2.0;
             
         for (n=0;n!==count;n++) {
             this.xs[n]=(((Math.random()*2.0)-1.0)*initialMoveRadius);
             this.ys[n]=(((Math.random()*2.0)-1.0)*initialMoveRadius);
+            this.rot[n]=(rotateFactor===0.0)?0.0:(Math.random()*rad);
+            this.rotAdd[n]=Math.random(rotateFactor*2.0)-rotateFactor;
         }
         
         Object.seal(this);
@@ -69,8 +78,8 @@ export default class ParticleClass {
         halfSize=Math.trunc(sz*0.5);
         
         for (n=0;n!==this.count;n++) {
-            dx=(((this.x+Math.trunc(this.xs[n]*movement))-this.middleOffsetX)-offX)-halfSize;
-            dy=(((this.y+Math.trunc(this.ys[n]*movement))-this.middleOffsetY)-offY)-halfSize;
+            dx=(((this.x+Math.trunc(this.xs[n]*movement))-this.middleOffsetX)-offX);//-halfSize;
+            dy=(((this.y+Math.trunc(this.ys[n]*movement))-this.middleOffsetY)-offY);//-halfSize;
             
             // clip anything offscreen
             if ((dx>=this.game.canvasWidth) || ((dx+sz)<=0)) continue;
@@ -78,7 +87,7 @@ export default class ParticleClass {
             
             // random rotation
             ctx.setTransform(1, 0, 0, 1, dx, dy);
-            ctx.rotate((tick/5)*(Math.PI/180.0));
+            ctx.rotate(this.rot[n]+(this.rotAdd[n]*(tick/this.ROTATE_TO_TICK_FACTOR)));
 
             // draw particle
             ctx.drawImage(this.image,-halfSize,-halfSize,sz,sz);

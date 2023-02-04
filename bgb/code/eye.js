@@ -41,7 +41,7 @@ export default class EyeClass extends SpriteClass
     
     killEye()
     {
-        this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,'particles/smoke',8,false,600);
+        this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,600);
         this.game.soundList.playAtSprite('pop',this,this.game.map.getSpritePlayer());
         this.delete();
     }

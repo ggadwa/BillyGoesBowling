@@ -14,17 +14,18 @@ export default class EasterHeadClass extends SpriteClass {
         this.THROW_MARGIN_X=-5;
         this.THROW_MARGIN_Y=32;
         this.FIRE_FRAME_TICK=300;
+        this.SINK_MAX_DISTANCE=20;
         
         // variables
         this.fireCount=this.FIRE_TICK+Math.trunc(Math.random()*this.FIRE_RANDOM_TICK_OFFSET); // random firing times
         this.fireFrameStartTick=0;
+        this.sinkY=0;
+        this.originalY=y;
         
         // setup
-        this.addImage('sprites/easter_head_left');
-        this.addImage('sprites/easter_head_fire_left');
-        this.addImage('sprites/easter_head_right');
-        this.addImage('sprites/easter_head_fire_right');
-        this.setCurrentImage('sprites/easter_head_left');
+        this.addImage('sprites/easter_head');
+        this.addImage('sprites/easter_head_fire');
+        this.setCurrentImage('sprites/easter_head');
         
         this.show=true;
         this.gravityFactor=0.0;
@@ -32,6 +33,8 @@ export default class EasterHeadClass extends SpriteClass {
         this.gravityMaxValue=0;
         this.canCollide=true;
         this.canStandOn=true;
+        
+        this.layer=this.UNDER_MAP_TILES_LAYER; // so it can sink below map tiles
         
         Object.seal(this);
     }
@@ -67,15 +70,29 @@ export default class EasterHeadClass extends SpriteClass {
         let map=this.game.map;
         let playerSprite=map.getSpritePlayer();
         
+        // if player is standing on head, then sink
+        if (playerSprite.standSprite===this) {
+            this.sinkY++;
+            if (this.sinkY>this.SINK_MAX_DISTANCE) this.sinkY=this.SINK_MAX_DISTANCE;
+        }
+        else {
+            this.sinkY--;
+            if (this.sinkY<0) this.sinkY=0;
+        }
+        
+        this.y=this.originalY+this.sinkY;
+        
         // get correct image
+        this.flipX=playerSprite.x<this.x;
+        
         if (this.fireFrameStartTick!==0) {
             if ((this.fireFrameStartTick+this.FIRE_FRAME_TICK)<this.game.timestamp) {
                 this.fireFrameStartTick=0;
             }
-            this.setCurrentImage((this.x>playerSprite.x)?'sprites/easter_head_fire_left':'sprites/easter_head_fire_right');
+            this.setCurrentImage('sprites/easter_head_fire');
         }
         else {
-            this.setCurrentImage((this.x>playerSprite.x)?'sprites/easter_head_left':'sprites/easter_head_right');
+            this.setCurrentImage('sprites/easter_head');
         }
         
         // time to fire? 

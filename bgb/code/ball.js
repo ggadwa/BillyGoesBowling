@@ -68,7 +68,7 @@ export default class BallClass extends SpriteClass {
         
         // ball destroyed
         if (showDestroy) {
-            map.addParticle((this.x+halfWid),(this.y-halfHigh),8,8,1.0,0.1,4,0.03,'particles/ball',16,false,500);
+            map.addParticle((this.x+halfWid),(this.y-halfHigh),8,8,1.0,0.1,4,0.03,'particles/ball',16,0.5,false,500);
             this.game.soundList.playAtSprite('ball_break',this,playerSprite);
         }
         
@@ -78,7 +78,7 @@ export default class BallClass extends SpriteClass {
         
         this.x=playerSprite.x+Math.trunc((playerSprite.width-this.width)*0.5);
         this.y=(playerSprite.y-playerSprite.height)-this.HEAD_PIXEL_DISTANCE;
-        this.reformParticle=this.game.map.addParticle((this.x+halfWid),(this.y-halfHigh),8,16,1.0,0.1,6,0.03,'particles/ball',16,true,this.REFORM_LIFE_TICK);
+        this.reformParticle=this.game.map.addParticle((this.x+halfWid),(this.y-halfHigh),8,16,1.0,0.1,6,0.03,'particles/ball',16,0.5,true,this.REFORM_LIFE_TICK);
     }
     
     runAI() {
@@ -99,8 +99,10 @@ export default class BallClass extends SpriteClass {
         px=playerSprite.x+xOffset;
         py=playerSprite.y+yOffset;
         
+        if (this.travelMode===this.TRAVEL_MODE_FLOATING) this.flipX=playerSprite.flipX;
+        
         // reforming is a special case
-        if (this.travelMode==this.TRAVEL_MODE_REFORM) {
+        if (this.travelMode===this.TRAVEL_MODE_REFORM) {
             
             // are we done reforming?
             tick=this.game.timestamp-this.travelReformStartTick;

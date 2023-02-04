@@ -17,7 +17,7 @@ export default class MapCastleClass extends SpriteClass {
         this.canCollide=false;
         this.canStandOn=false;
         
-        this.background=true;           // a background sprite, draws in the same plane as the map
+        this.layer=this.BACKGROUND_LAYER; // drawn in background
 
         Object.seal(this);
     }
@@ -37,7 +37,7 @@ export default class MapCastleClass extends SpriteClass {
             // if just defeated, explode
             if (this.game.getData('boss_explode_'+this.getData('map'))) {
                 this.game.deleteData('boss_explode_'+this.getData('map'));      // only happens once
-                this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),10,10,1.0,0.1,5,0.04,'particles/castle',40,false,1500);
+                this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),10,10,1.0,0.1,5,0.04,'particles/castle',40,0.5,false,1500);
                 this.game.soundList.play('explode');
             }
 

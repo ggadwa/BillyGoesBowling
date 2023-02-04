@@ -148,7 +148,7 @@ export default class MapClass {
         return(null);
     }
     
-    addParticle(x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,imageName,count,reverse,lifeTick) {
+    addParticle(x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,imageName,count,rotateFactor,reverse,lifeTick) {
         let img,particle;
         
         img=this.game.imageList.get(imageName);
@@ -157,7 +157,7 @@ export default class MapClass {
             return;
         }
         
-        particle=new ParticleClass(this.game,x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,img,count,reverse,lifeTick);
+        particle=new ParticleClass(this.game,x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,img,count,rotateFactor,reverse,lifeTick);
         this.particles.push(particle);
         
         return(particle);
@@ -567,6 +567,11 @@ export default class MapClass {
             background.draw(ctx);
         }
         
+        // draw the under the map sprites
+        for (sprite of this.sprites) {
+            if ((sprite.show) && (sprite.layer===sprite.UNDER_MAP_TILES_LAYER)) sprite.draw(ctx,this.offsetX,this.offsetY);
+        }
+        
         // draw size
         tilePerWidth=Math.trunc(this.game.canvasWidth/this.MAP_TILE_SIZE);
         tilePerHeight=Math.trunc(this.game.canvasHeight/this.MAP_TILE_SIZE);
@@ -594,13 +599,14 @@ export default class MapClass {
             }
         }
         
-        // draw the sprites
+        // draw the background sprites
         for (sprite of this.sprites) {
-            if ((sprite.show) && (sprite.background)) sprite.draw(ctx,this.offsetX,this.offsetY);
+            if ((sprite.show) && (sprite.layer===sprite.BACKGROUND_LAYER)) sprite.draw(ctx,this.offsetX,this.offsetY);
         }
         
+        // draw the foreground sprites
         for (sprite of this.sprites) {
-            if ((sprite.show) && (!sprite.background)) sprite.draw(ctx,this.offsetX,this.offsetY);
+            if ((sprite.show) && (sprite.layer===sprite.FOREGROUND_LAYER)) sprite.draw(ctx,this.offsetX,this.offsetY);
         }
         
         // draw the particles

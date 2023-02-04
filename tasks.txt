@@ -1,12 +1,13 @@
 //// TO DO
 
-- randomize start angles for particles
-- finish other flipped sprites
 
-- get rid of all timestamp stuff, use ticks
+
+- trunc all drawimage coords
+- why does snake face wrong way when hurt?
+
+- get rid of all timestamp stuff, use ticks (MAYBE???) - particle by ticks
 - runAI passes in game tick
 
-- need to flip ball
 - walk animation needs to reset to 0 instead of jumping there
 
 - smoke on quick turn around (by feet)
@@ -22,6 +23,9 @@
 - spin makes player invincible for a bit draw shield
 - can't move with shield on
 
+- mr cpu needs jumping legs
+- boney one eye faces you X wise (and fires eye from different location)
+- boney one eye forms eye by alpha before firing (maybe doesn't have eye on sprite?)
 
 - ninja bunny hitting player kills ninja bunny
 
@@ -29,7 +33,7 @@
 - need to use controllers
 - destroyed carrots reset
 - carrots fire bombs at random times
-- make executioner always jump around
+- make executioner always jump around and always throw axes
 - last boss can kill billy multiple times when grave
 - add bush, small hill, and walk cycle to world map
 - better water on world map?
