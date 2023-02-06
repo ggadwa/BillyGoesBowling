@@ -26,12 +26,12 @@ export default class SpriteClass {
         
         this.layer=this.FOREGROUND_LAYER;
         
-        this.gravityFactor=0.0;
+        this.gravityFactor=0;
         this.gravityMinValue=0;
         this.gravityMaxValue=0;
-        this.gravityAdd=0.0;
+        this.gravityAdd=0;
+        this.gravityExtraMotion=0;
         this.gravityPauseTick=-1;
-        this.motion={x:0,y:0};
         
         this.show=true;
         this.grounded=false;
@@ -46,7 +46,7 @@ export default class SpriteClass {
         this.canStandOn=true;
         this.canRiseBlock=true;
         
-        this.removeFlag=false;          // make this private
+        this.removeFlag=false; // make this private
         
         // can't seal this object as it's extended
     }
@@ -55,8 +55,7 @@ export default class SpriteClass {
      * Override this so editor can create another object of this type
      * at a given position.
      */
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
     }
     
     /**
@@ -64,8 +63,7 @@ export default class SpriteClass {
      * sprite.  If there is more than one players sprite, the first
      * one encountered becomes the player.
      */
-    isPlayer()
-    {
+    isPlayer() {
         return(false);
     }
     
@@ -73,28 +71,23 @@ export default class SpriteClass {
      * Override this to do any operations on this sprite
      * that happen when a map is started.
      */
-    mapStartup()
-    {
+    mapStartup() {
     }
     
     /**
      * Called when another sprite is interacting with this one, this
      * is up to the game developer what this means.
      */
-    interactWithSprite(interactSprite,dataObj)
-    {
+    interactWithSprite(interactSprite,dataObj) {
     }
     
     /**
-     * Override this to change the per-tick AI of object.  Will need to call
-     * super before or after.
+     * Override this to change the per-tick AI of object.
      */
-    runAI()
-    {
+    run() {
     }
         
-    addImage(name)
-    {
+    addImage(name) {
         let img=this.game.imageList.get(name);
         if (img===undefined) {
             console.log('Unknown image png: '+name);
@@ -104,8 +97,7 @@ export default class SpriteClass {
         this.images.set(name,img);
     }
     
-    setCurrentImage(name)
-    {
+    setCurrentImage(name) {
         let img=this.images.get(name);
         if (img===undefined) {
             console.log('Unknown image name: '+name);
@@ -118,16 +110,14 @@ export default class SpriteClass {
         this.height=img.height;
     }
     
-    collide(hitSprite)
-    {
+    collide(hitSprite) {
         if ((this.x+this.width)<=hitSprite.x) return(false);
         if (this.x>=(hitSprite.x+hitSprite.width)) return(false);
         if (this.y<=(hitSprite.y-hitSprite.height)) return(false);
         return((this.y-this.height)<hitSprite.y);
     }
     
-    collideStand(hitSprite,dist)
-    {
+    collideStand(hitSprite,dist) {
         let y;
         
         if ((this.x+this.width)<=hitSprite.x) return(false);
@@ -138,8 +128,7 @@ export default class SpriteClass {
         return(this.y<((hitSprite.y-hitSprite.height)+dist));
     }
     
-    collideRise(hitSprite,dist)
-    {
+    collideRise(hitSprite,dist) {
         let y;
         
         if ((this.x+this.width)<=hitSprite.x) return(false);
@@ -150,16 +139,14 @@ export default class SpriteClass {
         return(y>(hitSprite.y-hitSprite.height));
     }
     
-    collideRect(lft,top,rgt,bot)
-    {
+    collideRect(lft,top,rgt,bot) {
         if ((this.x+this.width)<=lft) return(false);
         if (this.x>=rgt) return(false);
         if (this.y<=top) return(false);
         return((this.y-this.height)<bot);
     }
     
-    moveWithCollision(mx,my)
-    {
+    moveWithCollision(mx,my) {
         this.x+=mx;
         this.y+=my;
         if (this.game.map.checkCollision(this)) {
@@ -168,71 +155,32 @@ export default class SpriteClass {
         }
     }
     
-    clampX(min,max)
-    {
+    clampX(min,max) {
         if (this.x<min) this.x=min;
         if (this.x>max) this.x=max;
     }
     
-    clampY(min,max)
-    {
+    clampY(min,max) {
         if (this.y<min) this.y=min;
         if (this.y>max) this.y=max;
     }
     
-    distanceToSprite(sprite)
-    {
+    distanceToSprite(sprite) {
         let x=sprite.x-this.x;
         let y=sprite.y-this.y;
 
         return(Math.trunc(Math.sqrt((x*x)+(y*y))));
     }
     
-    delete()
-    {
-        this.removeFlag=true;
-    }
-    
-    isDeleted()
-    {
-        return(this.removeFlag);
-    }
-    
-    getData(name)
-    {
-        let val=this.data.get(name);
-        return((val===undefined)?null:val);
-    }
-    
-    setData(name,value)
-    {
-        this.data.set(name,value);
-    }
-    
-    run() {
+    runGravity() {
         let y;
         
-            // run any AI
-            
-        this.runAI();
-        
-            // if not shown, skip the rest of this
-            
-        if (!this.show) return;
-        
-        // add in motion
-            
-        this.x+=this.motion.x;
-        this.y+=this.motion.y;
-        
-        
-        // falling
         this.grounded=true;
         
         if (this.gravityFactor!==0.0) {
 
             y=-1;
-            if (this.motion.y>=0) {
+            if (this.gravityExtraMotion>=0) {
                 y=this.game.map.checkCollisionStand(this,Math.trunc(this.gravityAdd));
             }
             else {
@@ -260,28 +208,48 @@ export default class SpriteClass {
                 this.y=y;
                 this.gravityAdd=0.0;
                 this.grounded=true;
-                this.motion.y=0.0;
+                this.gravityExtraMotion=0.0;
             }
         }
              
         // rising   
-        if (this.motion.y<0) {
-            y=this.game.map.checkCollisionRise(this,this.motion.y);
+        if (this.gravityExtraMotion<0) {
+            y=this.game.map.checkCollisionRise(this,this.gravityExtraMotion);
             if (y!==-1) {
                 this.y=y+this.height;
-                this.motion.y=0;
+                this.gravityExtraMotion=0;
+            }
+            else {
+                this.y+=this.gravityExtraMotion;
             }
         }
         
-        // gravity slows down motion
-        if (this.motion.y<0.0) {
-            this.motion.y+=this.gravityAdd;
-            if (this.motion.y>=0.0) {
-                this.gravityAdd=this.motion.y;
+        // gravity slows down extra motion
+        if (this.gravityExtraMotion<0.0) {
+            this.gravityExtraMotion+=this.gravityAdd;
+            if (this.gravityExtraMotion>=0.0) {
+                this.gravityAdd=this.gravityExtraMotion;
                 if (this.gravityAdd>this.gravityMaxValue) this.gravityAdd=this.gravityMaxValue;
-                this.motion.y=0.0;
+                this.gravityExtraMotion=0.0;
             }
         }
+    }
+    
+    delete() {
+        this.removeFlag=true;
+    }
+    
+    isDeleted() {
+        return(this.removeFlag);
+    }
+    
+    getData(name) {
+        let val=this.data.get(name);
+        return((val===undefined)?null:val);
+    }
+    
+    setData(name,value) {
+        this.data.set(name,value);
     }
     
     draw(ctx,offX,offY) {
@@ -295,7 +263,7 @@ export default class SpriteClass {
         
         // if there is a filter, draw with that
         if (this.drawFilter!==null) {
-            this.drawFilter.draw(ctx,this.currentImage,x,y,this.drawFilterAnimationFactor,this.game.timestamp);
+            this.drawFilter.draw(ctx,this.currentImage,Math.trunc(x),Math.trunc(y),this.drawFilterAnimationFactor,this.game.timestamp);
             return;
         }
         
@@ -305,22 +273,22 @@ export default class SpriteClass {
             ctx.save();
             
             if ((this.flipX) && (this.flipY)) {
-                ctx.translate((x+this.currentImage.width),(y+this.currentImage.height));
-                ctx.scale(-1.0,-1.0);
+                ctx.translate(Math.trunc(x+this.currentImage.width),Math.trunc(y+this.currentImage.height));
+                ctx.scale(-1,-1);
                 x=0;
                 y=0;
             }
             else {
                 if (this.flipX) {
-                    ctx.translate((x+this.currentImage.width),y);
-                    ctx.scale(-1.0,1.0);
+                    ctx.translate(Math.trunc(x+this.currentImage.width),Math.trunc(y));
+                    ctx.scale(-1,1);
                     x=0;
                     y=0;
                 }
                 else {
                     if (this.flipY) {
-                        ctx.translate(x,(y+this.currentImage.height));
-                        ctx.scale(1.0,-1.0);
+                        ctx.translate(Math.trunc(x),Math.trunc(y+this.currentImage.height));
+                        ctx.scale(1,-1);
                         x=0;
                         y=0;
                     }
@@ -331,7 +299,7 @@ export default class SpriteClass {
         }
 
         // otherwise regular drawing
-        ctx.drawImage(this.currentImage,x,y);
+        ctx.drawImage(this.currentImage,Math.trunc(x),Math.trunc(y));
         
         // restore any transforms
         if (hasTransform) {

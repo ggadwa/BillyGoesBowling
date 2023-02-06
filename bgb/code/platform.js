@@ -36,7 +36,7 @@ export default class PlatformClass extends SpriteClass
         return(new PlatformClass(this.game,x,y,this.data));
     }
     
-    runAI()
+    run()
     {
         let playerSprite=this.game.map.getSpritePlayer();
         

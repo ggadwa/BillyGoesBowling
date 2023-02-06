@@ -52,10 +52,13 @@ export default class MrCPUClass extends SpriteClass
         this.isDropping=true;
         this.isDead=false;
         this.isFirstShow=true;
+        
+        this.game.startCompletionTimer();
     }
    
-    runAI()
+    run()
     {
+        let time, oldTime;
         let map=this.game.map;
         let sprites,sprite,speed,mx;
         let playerSprite=map.getSpritePlayer();
@@ -100,8 +103,17 @@ export default class MrCPUClass extends SpriteClass
             this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
             this.game.soundList.play('boss_dead');
             
+            // update the state
             this.game.setData(('boss_'+map.name),true);
             this.game.setData(('boss_explode_'+map.name),true);
+            this.game.setData(('time_'+map.name),1000000);
+        
+            // update the time
+            time=this.game.stopCompletionTimer();
+            oldTime=this.game.getData('time_'+map.name);
+            if (time<oldTime) this.game.setData(('time_'+map.name),time);
+
+            // save the data
             this.game.persistData();
             
             map.forceCameraSprite=this;

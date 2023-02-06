@@ -78,8 +78,8 @@ export default class ParticleClass {
         halfSize=Math.trunc(sz*0.5);
         
         for (n=0;n!==this.count;n++) {
-            dx=(((this.x+Math.trunc(this.xs[n]*movement))-this.middleOffsetX)-offX);//-halfSize;
-            dy=(((this.y+Math.trunc(this.ys[n]*movement))-this.middleOffsetY)-offY);//-halfSize;
+            dx=(((this.x+Math.trunc(this.xs[n]*movement))-this.middleOffsetX)-offX);
+            dy=(((this.y+Math.trunc(this.ys[n]*movement))-this.middleOffsetY)-offY);
             
             // clip anything offscreen
             if ((dx>=this.game.canvasWidth) || ((dx+sz)<=0)) continue;

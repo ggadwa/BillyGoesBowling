@@ -7,6 +7,7 @@ import MapListClass from '../resources/map_list.js';
 import InputClass from './input.js';
 
 export default class GameClass {
+
     constructor() {
         // canvas and sound contexts
         this.canvas=null;
@@ -32,13 +33,17 @@ export default class GameClass {
         this.input=new InputClass(this);
         
         this.PHYSICS_TICK_FREQUENCY=33;
-        this.DRAW_TICK_FREQUENCY=33;
+        this.DRAW_TICK_FREQUENCY=16;
 
         this.timestamp=0;
         this.lastTimestamp=0;
         this.physicsTimestamp=0;
         this.drawTimestamp=0;
+        this.fpsTimestamp=0;
+        this.fpsRefreshTimestamp=0;
+        this.fps=0;
         this.tick=0;
+        this.completionTimer=0;
         this.paused=true;
         
         // game data
@@ -95,8 +100,7 @@ export default class GameClass {
         this.imageList.initialize(this.initialize2.bind(this));
     }
     
-    initialize2()
-    {
+    initialize2() {
             // get a list of tile images
             
         this.tileImageList=this.imageList.getArrayOfImageByPrefix('tiles/');
@@ -106,15 +110,13 @@ export default class GameClass {
         this.soundList.initialize(this.initialize3.bind(this));
     }
     
-    initialize3()
-    {
+    initialize3() {
             // initialize and load the music list
             
         this.musicList.initialize(this.initialize4.bind(this));
     }
    
-    initialize4()
-    {
+    initialize4() {
         this.input.initialize();
         
             // initialize any game specific
@@ -141,8 +143,7 @@ export default class GameClass {
         window.requestAnimationFrame(this.initialize5.bind(this));
     }
         
-    initialize5(systemTimestamp)
-    {
+    initialize5(systemTimestamp) {
             // setup the timing and
             // game states, because of audio
             // APIs game needs to start in
@@ -152,6 +153,9 @@ export default class GameClass {
         this.timestamp=0;
         this.physicsTimestamp=0;
         this.drawTimestamp=0;
+        this.fpsTimestamp=0;
+        this.fpsRefreshTimestamp=0;
+        this.fps=0;
         this.tick=0;
         
         this.paused=true;
@@ -172,13 +176,11 @@ export default class GameClass {
         // start and pause
         //
      
-    start()
-    {
+    start() {
         this.initialize();
     }
     
-    resumeFromPause()
-    {
+    resumeFromPause() {
             // thanks to idiots misusing the web we have to
             // do all this funny work to get the audio to work
             
@@ -193,32 +195,26 @@ export default class GameClass {
      * Override this to add in all the resources for this game
      * (images, sounds, music, maps)
      */
-    attachResources()
-    {
+    attachResources() {
     }
     
-    setResourceBasePath(resourceBasePath)
-    {
+    setResourceBasePath(resourceBasePath) {
         this.resourceBasePath=resourceBasePath;
     }
     
-    addImage(name)
-    {
+    addImage(name) {
         this.imageList.add(name);
     }
     
-    addSound(name)
-    {
+    addSound(name) {
         this.soundList.add(name);
     }
     
-    addMusic(name)
-    {
+    addMusic(name) {
         this.musicList.add(name);
     }
     
-    addMap(name,map)
-    {
+    addMap(name,map) {
         this.mapList.add(name,map);
     }
     
@@ -226,8 +222,7 @@ export default class GameClass {
         // save slots
         //
     
-    getSaveSlotName(paramName)
-    {
+    getSaveSlotName(paramName) {
         let slotStr;
         let slot=0;
         
@@ -250,8 +245,7 @@ export default class GameClass {
      * Call to check if the unlocked URL param was included, which is a quick
      * way to unlock any blocks in a game for testing purposes
      */
-    isUnlocked()
-    {
+    isUnlocked() {
         return(this.urlParams.get('unlocked')!==null);
     }
     
@@ -260,8 +254,7 @@ export default class GameClass {
      * data for this game.  Returns FALSE if there is no data (then you
      * should create default data.)
      */
-    restorePersistedData()
-    {
+    restorePersistedData() {
         let item=window.localStorage.getItem(this.getSaveSlotName('saveSlot'));
         if (item===null) return(false);
         
@@ -283,8 +276,7 @@ export default class GameClass {
      * Call this to persist the current state of the game data
      * to the current save slot.
      */
-    persistData()
-    {
+    persistData() {
         window.localStorage.setItem(this.getSaveSlotName('saveSlot'),JSON.stringify([...this.data]));
     }
     
@@ -292,8 +284,7 @@ export default class GameClass {
         // misc game UIs
         //
     
-    drawProgress(title,count,maxCount)
-    {
+    drawProgress(title,count,maxCount) {
         let lx=10;
         let rx=this.canvasWidth-10;
         let ty=this.canvasHeight-40;
@@ -328,8 +319,7 @@ export default class GameClass {
         this.ctx.drawImage(this.backCanvas,0,0);
     }
     
-    drawPause()
-    {
+    drawPause() {
         let mx=Math.trunc(this.canvasWidth*0.5);
         let my=Math.trunc(this.canvasHeight*0.5);
         
@@ -350,12 +340,10 @@ export default class GameClass {
      * Override and return a set of objects based on the sprite classes
      * you want the editor to be able to place in a map.
      */
-    getEditorSpritePaletteList()
-    {
+    getEditorSpritePaletteList() {
     }
     
-    getMapOffset(offset)
-    {
+    getMapOffset(offset) {
     }
     
     /**
@@ -366,8 +354,7 @@ export default class GameClass {
      * 
      * Use this API to get data by name.
      */
-    getData(name)
-    {
+    getData(name) {
         let val=this.data.get(name);
         return((val===undefined)?null:val);
     }
@@ -380,27 +367,31 @@ export default class GameClass {
      * 
      * Use this to set data by name.
      */
-    setData(name,value)
-    {
+    setData(name,value) {
         this.data.set(name,value);
     }
     
-    deleteData(name)
-    {
+    deleteData(name) {
         this.data.delete(name);
     }
     
-    gotoMap(name)
-    {
+    gotoMap(name) {
         this.gotoMapName=name;
+    }
+    
+    startCompletionTimer() {
+        this.completionTimer=window.performance.now();
+    }
+    
+    stopCompletionTimer() {
+        return((window.performance.now()-this.completionTimer)/1000.0);
     }
     
     /**
      * Override this to create any data that needs to be
      * persisted for game state.
      */
-    createData()
-    {
+    createData() {
     }
             
     /**
@@ -408,50 +399,52 @@ export default class GameClass {
      * 
      * @returns {MapClass}
      */
-    getStartMap()
-    {
+    getStartMap() {
     }
         
     /**
-     * Override this to run any game based AI, it is called before
-     * any sprite AI.
+     * Override this to run any game based logic, it is called before
+     * any sprite logic.
      */
-    runAI()
-    {
+    run() {
     }
     
     /**
      * Override this to draw the UI.  Use the drawUIImage, setupUIText,
      * and drawUIText methods to draw the UI.
      */
-    drawUI()
-    {
+    drawUI() {
     }
     
-    drawSetAlpha(alpha)
-    {
+    drawSetAlpha(alpha) {
         this.backCTX.globalAlpha=alpha;
     }
     
-    drawUIImage(name,x,y)
-    {
+    drawUIImage(name,x,y) {
         this.backCTX.drawImage(this.imageList.get(name),x,y);
     }
     
-    setupUIText(font,color,align,baseLine)
-    {
+    setupUIText(font,color,align,baseLine) {
         this.backCTX.font=font;
         this.backCTX.fillStyle=color;
         this.backCTX.textAlign=align;
         this.backCTX.textBaseline=baseLine;
     }
     
-    drawUIText(str,x,y)
-    {
+    drawUIText(str,x,y) {
         this.backCTX.fillText(str,x,y);
     }
+    
+    measureUITextWidth(str) {
+        return(this.backCTX.measureText(str).width);
+    }
+    
+    drawFPS() {
+        this.setupUIText('14px Monaco','#000000','right','alphabetic');
+        this.drawUIText(this.fps.toFixed(2),(this.canvasWidth-10),20);
+    }
 
-    run() {
+    runInternal() {
         let physicTime;
 
         // continue to run physics until we've caught up
@@ -461,15 +454,12 @@ export default class GameClass {
             
             this.physicsTimestamp+=this.PHYSICS_TICK_FREQUENCY;
             
-            // next tick
-            this.tick++;
-            
             // no map gotos
             this.gotoMapName=null;
             
-            // run game and map AI
-            // which runs the sprite AI
-            this.runAI();
+            // run game and map logic
+            // which runs the sprite logic
+            this.run();
             this.map.run();
             
             // check for map goto triggers 
@@ -484,50 +474,51 @@ export default class GameClass {
         }
     }
     
-    draw(paused)
-    {
-            // time to draw?
-            // if paused, it's a single draw so we ignore the timing
-            
+    draw(paused) {
+        // if paused, it's a single draw so we ignore the timing
         if (!paused) {
             if ((this.timestamp-this.drawTimestamp)<this.DRAW_TICK_FREQUENCY) return;
             this.drawTimestamp=this.timestamp;
         }
         
-            // draw the map
-            
+        // draw the map
         this.map.draw(this.backCTX);
         
-            // draw any liquid
-            
+        // draw any liquid
         this.liquid.draw(this.backCTX);
         
-            // draw the UI
-            
+        // draw the UI
         this.drawUI();
+        this.drawFPS();
         if (paused) this.drawPause();
         
-            // transfer to front canvas
-            
+        // transfer to front canvas
         this.ctx.drawImage(this.backCanvas,0,0);
+        
+        // fps
+        if (this.drawTimestamp!==this.fpsTimestamp) {
+            if (this.fpsRefreshTimestamp<this.timestamp) {
+                this.fpsRefreshTimestamp=this.timestamp+1000;
+                this.fps=1000.0/(this.drawTimestamp-this.fpsTimestamp);
+            }
+        }
+        
+        this.fpsTimestamp=this.drawTimestamp;
     }
     
         //
         // main run loop
         //
     
-    runLoop(systemTimestamp)
-    {
+    runLoop(systemTimestamp) {
         let id;
 
         systemTimestamp=Math.trunc(systemTimestamp);
 
-            // next frame
-
+        // next frame
         id=window.requestAnimationFrame(this.runLoop.bind(this));
 
-            // pausing?
-
+        // pausing?
         if (!this.paused) {
             if (this.input.isKeyDown("Escape")) {
                 this.paused=true;
@@ -546,18 +537,16 @@ export default class GameClass {
             return;
         }
 
-            // setup the current timestamp
-            // since game can be paused we need
-            // to track it by change in system timestamp
-
+        // setup the current timestamp
+        // since game can be paused we need
+        // to track it by change in system timestamp
         this.timestamp+=(systemTimestamp-this.lastTimestamp);
         this.lastTimestamp=systemTimestamp;
 
-            // run the game (if not paused)
-            // any error exits the animation loop
-
+        // run the game (if not paused)
+        // any error exits the animation loop
         try {
-            this.run();
+            this.runInternal();
             this.draw(false);
         }
         catch (e) {

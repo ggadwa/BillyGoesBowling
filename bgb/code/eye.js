@@ -46,7 +46,7 @@ export default class EyeClass extends SpriteClass
         this.delete();
     }
     
-    runAI()
+    run()
     {
         let x,y,f;
         let sprite,sprites;

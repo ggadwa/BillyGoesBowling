@@ -57,7 +57,7 @@ export default class ExplodeBlockClass extends SpriteClass
         }
     }
     
-    runAI()
+    run()
     {
         let cx,cy,sprites,sprite;
         

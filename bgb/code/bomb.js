@@ -46,7 +46,7 @@ export default class BombClass extends SpriteClass {
         }
     }
     
-    runAI() {
+    run() {
         let map=this.game.map;
         
         this.y+=this.BOMB_SPEED;

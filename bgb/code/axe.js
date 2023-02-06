@@ -33,7 +33,7 @@ export default class AxeClass extends SpriteClass {
         this.x-=Math.trunc(this.width*0.5); // recenter on axe width from launch point
     }
     
-    runAI() {
+    run() {
         let map=this.game.map;
         let sprites,sprite;
         

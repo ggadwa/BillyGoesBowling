@@ -33,7 +33,7 @@ export default class TrophyClass extends SpriteClass
         if (this.game.getData('trophy_'+this.game.map.name)!==null) this.alpha=0.4;
     }
     
-    runAI()
+    run()
     {
             // are we colliding with player?
             

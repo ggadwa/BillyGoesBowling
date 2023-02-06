@@ -51,7 +51,7 @@ export default class SpringClass extends SpriteClass
         this.setCurrentImage('sprites/spring_open');
     }
     
-    runAI()
+    run()
     {
         if (this.openCount===-1) return;
         

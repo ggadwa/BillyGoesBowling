@@ -81,7 +81,7 @@ export default class BallClass extends SpriteClass {
         this.reformParticle=this.game.map.addParticle((this.x+halfWid),(this.y-halfHigh),8,16,1.0,0.1,6,0.03,'particles/ball',16,0.5,true,this.REFORM_LIFE_TICK);
     }
     
-    runAI() {
+    run() {
         let map=this.game.map;
         let playerSprite=map.getSpritePlayer();
         let didCollide;

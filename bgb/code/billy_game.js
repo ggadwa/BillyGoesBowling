@@ -62,12 +62,10 @@ export default class BillyGameClass extends GameClass
         Object.seal(this);
     }
     
-    attachResources()
-    {
+    attachResources() {
         this.setResourceBasePath('bgb/');
         
-            // image tiles
-            
+        // image tiles
         this.addImage('tiles/ground_grass_end_left');
         this.addImage('tiles/ground_grass');
         this.addImage('tiles/ground_grass_end_right');
@@ -198,7 +196,7 @@ export default class BillyGameClass extends GameClass
         this.addImage('ui/pin');
         this.addImage('ui/trophy');
         this.addImage('ui/score_box');
-        this.addImage('ui/time_box');
+        this.addImage('ui/checkmark');
         this.addImage('ui/health_100');
         this.addImage('ui/health_75');
         this.addImage('ui/health_50');
@@ -206,8 +204,7 @@ export default class BillyGameClass extends GameClass
         this.addImage('ui/banner');
         this.addImage('ui/win_banner');
         
-            // sounds
-            
+        // sounds
         this.addSound('click');
         this.addSound('crack');
         this.addSound('bomb_tick');
@@ -228,14 +225,12 @@ export default class BillyGameClass extends GameClass
         this.addSound('pickup');
         this.addSound('funeral_march');
         
-            // music
-            
+        // music
         this.addMusic('world');
         this.addMusic('map');
         this.addMusic('boss');
         
-            // maps
-            
+        // maps
         this.addMap('world_main',new WorldMainMapClass(this));
         this.addMap('snakes_on_a_plain',new SnakesOnAPlainMapClass(this));
         this.addMap('apocalypse_carrot',new ApocalypseCarrotMapClass(this));
@@ -276,11 +271,13 @@ export default class BillyGameClass extends GameClass
             // restore that otherwise we create a default set
         
         if (!this.restorePersistedData()) {
-            this.setData('pins',0);                 // number of pins
-            this.setData('trophies',0);             // number of trophies
+            this.setData('pins',0); // number of pins
+            this.setData('trophies',0); // number of trophies
             this.setData('player_health',4);
-            this.setData('banner_text','');         // banner messages
-            this.setData('banner_count',-1);
+            this.setData('banner_title_text',''); // banner map title
+            this.setData('banner_map_name',null); // banner map name
+            this.setData('banner_fade_count',-1); // banner fade count
+            this.setData('banner_map_required_pin_count',0); // pin count required to enter this map
         }
     }
     
@@ -349,53 +346,48 @@ export default class BillyGameClass extends GameClass
         //return('king_ghastly_castle');
     }
     
-    setBanner(str,pinCount)
+    setBanner(mapTitle,mapName,requiredPinCount)
     {   
-        let count=this.getData('banner_count');
+        let count=this.getData('banner_fade_count');
         
+        // change fade
         if (count===-1) {
-            this.setData('banner_count',0);
+            this.setData('banner_fade_count',0);
         }
         else {
-            if (count>=10) this.setData('banner_count',10);
+            if (count>=10) this.setData('banner_fade_count',10);
         }
         
-        this.setData('banner_text',str);
-        this.setData('banner_pin_count',pinCount);
+        // set new banner
+        this.setData('banner_title_text',mapTitle);
+        this.setData('banner_map_name',mapName);
+        this.setData('banner_map_required_pin_count',requiredPinCount);
     }
     
-    runAI()
-    {
+    run() {
         let bannerCount;
         
-            // run any banners
-        
-        bannerCount=this.getData('banner_count');
+        // run any banners
+        bannerCount=this.getData('banner_fade_count');
 
         if (bannerCount!==-1) {
             bannerCount++;
-            this.setData('banner_count',((bannerCount>=20)?-1:bannerCount));
+            this.setData('banner_fade_count',((bannerCount>=20)?-1:bannerCount));
         }
     }
     
-    drawUI()
-    {
-        let count,mx,lx,rx,wid,pinCount,health;
+    drawUI() {
+        let count,mx,lx,rx,dx,wid,requiredPinCount,health;
+        let time,min,sec,timeStr;
         let playerSprite=this.map.getSpritePlayer();
         
-            // side scrolling UI
-            
+        // side scrolling UI 
         if (playerSprite instanceof PlayerSideScrollClass) {
             health=this.getData('player_health');
             if (health>0) this.drawUIImage(this.HEALTH_IMAGE_LIST[health-1],5,5);
-            
-            this.setupUIText('18px Arial','#000000','center','alphabetic');
-            this.drawUIImage('ui/time_box',(this.canvasWidth-120),10);
-            this.drawUIText(playerSprite.getPlayTimeAsString(),(this.canvasWidth-55),33);
         }
         
-            // world UI
-            
+        // world UI  
         else {
             this.setupUIText('24px Arial','#000000','right','alphabetic');
             
@@ -408,13 +400,11 @@ export default class BillyGameClass extends GameClass
             this.drawUIText((this.getData('trophies')+'/21'),(this.canvasWidth-20),(this.canvasHeight-33));
         }
         
-            // banners
-            
-        count=this.getData('banner_count');
+        // banners
+        count=this.getData('banner_fade_count');
         if (count!==-1) {
             
-                // the alpha
-                
+            // the alpha 
             if (count<10) {
                 this.drawSetAlpha(count/10);
             }
@@ -422,36 +412,56 @@ export default class BillyGameClass extends GameClass
                 if (count>10) this.drawSetAlpha(1.0-((count-10)/10));
             }
             
-                // special win banner
-                
-            if (this.getData('banner_text')===null) {
+            // special win banner
+            if (this.getData('banner_title_text')===null) {
                 wid=this.imageList.get('ui/win_banner').width;
                 mx=Math.trunc(this.canvasWidth*0.5);
                 lx=mx-Math.trunc(wid*0.5);
                 this.drawUIImage('ui/win_banner',lx,(this.canvasHeight-260));
             }
             
-                // regular banner
-              
+            // regular banner
             else {
                 wid=this.imageList.get('ui/banner').width;
                 mx=Math.trunc(this.canvasWidth*0.5);
                 lx=mx-Math.trunc(wid*0.5);
                 this.drawUIImage('ui/banner',lx,(this.canvasHeight-74));
 
-                pinCount=this.getData('banner_pin_count');
-                if (pinCount===-1) {
-                    this.setupUIText('bolder 36px Arial','#000000','center','alphabetic');
-                    this.drawUIText(this.getData('banner_text'),mx,(this.canvasHeight-29));
+                // checkmark for completing level
+                dx=lx+10;
+                if ((this.getData('pin_'+this.getData('banner_map_name'))===true) || (this.getData('boss_'+this.getData('banner_map_name'))===true)) {
+                    this.drawUIImage('ui/checkmark',dx,(this.canvasHeight-67));
+                    dx+=35;
                 }
-                else {
-                    this.setupUIText('bolder 36px Arial','#000000','left','alphabetic');
-                    this.drawUIText(this.getData('banner_text'),(lx+10),(this.canvasHeight-29));
-
+                
+                // trophy for getting hidden trophy
+                if (this.getData('trophy_'+this.getData('banner_map_name'))===true) {
+                    this.drawUIImage('ui/trophy',dx,(this.canvasHeight-67));
+                    dx+=35;
+                }
+                
+                // map title
+                this.setupUIText('bolder 36px Arial','#000000','left','alphabetic');
+                this.drawUIText(this.getData('banner_title_text'),dx,(this.canvasHeight-29));
+                
+                // times
+                time=this.getData('time_'+this.getData('banner_map_name'));
+                if (time!==null) {
+                    min=Math.trunc(time/60.0);
+                    sec=time-(min*60.0);
+                    timeStr=min+':'+(sec<10?'0':'')+sec.toFixed(2);
+                    dx+=(10+this.measureUITextWidth(this.getData('banner_title_text')));
+                    this.setupUIText('18px Arial','#000000','left','alphabetic');
+                    this.drawUIText(timeStr,dx,(this.canvasHeight-29));
+                }
+                
+                // required pins for bosses
+                requiredPinCount=this.getData('banner_map_required_pin_count');
+                if (requiredPinCount!==-1) {
                     rx=lx+wid;
                     this.drawUIImage('ui/pin',(rx-36),(this.canvasHeight-67));
                     this.setupUIText('bolder 36px Arial','#000000','right','alphabetic');
-                    this.drawUIText(pinCount,(rx-41),(this.canvasHeight-29));
+                    this.drawUIText(requiredPinCount,(rx-41),(this.canvasHeight-29));
                 }
             }
             

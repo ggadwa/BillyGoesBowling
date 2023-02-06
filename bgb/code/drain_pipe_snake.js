@@ -63,7 +63,7 @@ export default class DrainPipeSnakeClass extends SpriteClass {
         }
     }
     
-    runAI() {
+    run() {
         let map=this.game.map;
         let mx,tileIdx,switchDirection;
         

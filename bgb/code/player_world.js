@@ -2,10 +2,9 @@ import SpriteClass from '../../rpjs/engine/sprite.js';
 import BallClass from '../code/ball.js';
 import CloudBlockClass from './cloud_block.js';
 
-export default class PlayerWorldClass extends SpriteClass
-{
-    constructor(game,x,y,data)
-    {
+export default class PlayerWorldClass extends SpriteClass {
+
+    constructor(game,x,y,data) {
         super(game,x,y,data);
         
         // constants 
@@ -43,23 +42,19 @@ export default class PlayerWorldClass extends SpriteClass
         Object.seal(this);
     }
     
-    mapStartup()
-    {
+    mapStartup() {
         this.drawOffsetX=Math.trunc((this.game.map.MAP_TILE_SIZE-this.width)*0.5); // so world player draws in the center of tiles
     }
     
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
         return(new PlayerWorldClass(this.game,x,y,this.data));
     }
     
-    isPlayer()
-    {
+    isPlayer() {
         return(true);
     }
     
-    getTileIdxWithOffset(xOff,yOff)
-    {
+    getTileIdxWithOffset(xOff,yOff) {
         let tx,ty;
         let map=this.game.map;
         
@@ -72,8 +67,7 @@ export default class PlayerWorldClass extends SpriteClass
         return(map.tileData[(ty*map.MAP_TILE_WIDTH)+tx]);
     }
     
-    isTileIdxRoad(tileIdx)
-    {
+    isTileIdxRoad(tileIdx) {
         if (tileIdx===this.TILE_IDX_CROSS) return(true);
         if (tileIdx===this.TILE_IDX_LEFT_T) return(true);
         if (tileIdx===this.TILE_IDX_UP_T) return(true);
@@ -88,32 +82,27 @@ export default class PlayerWorldClass extends SpriteClass
         return(tileIdx===this.TILE_IDX_BRIDGE_VERTICAL);
     }
     
-    hasRoadLeft()
-    {
+    hasRoadLeft() {
         let tileIdx=this.getTileIdxWithOffset(-1,0);
         return(this.isTileIdxRoad(tileIdx));
     }
     
-    hasRoadRight()
-    {
+    hasRoadRight() {
         let tileIdx=this.getTileIdxWithOffset(1,0);
         return(this.isTileIdxRoad(tileIdx));
     }
     
-    hasRoadUp()
-    {
+    hasRoadUp() {
         let tileIdx=this.getTileIdxWithOffset(0,-1);
         return(this.isTileIdxRoad(tileIdx));
     }
     
-    hasRoadDown()
-    {
+    hasRoadDown() {
         let tileIdx=this.getTileIdxWithOffset(0,1);
         return(this.isTileIdxRoad(tileIdx));
     }
     
-    runAI()
-    {
+    run() {
         let tileIdx,xDir,yDir;
         let map=this.game.map;
         

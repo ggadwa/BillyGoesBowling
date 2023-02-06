@@ -51,6 +51,14 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.flipX=false;
         
         this.show=true;
+        
+        this.walkMaxSpeed=12.0;
+        this.walkAccel=2.1;
+        this.walkDecel=2.5;
+        this.airMaxSpeed=12.0;
+        this.airAccel=2.5;
+        this.airDecel=2.0;
+
         this.gravityFactor=0.25;
         this.gravityMinValue=8;
         this.gravityMaxValue=30;
@@ -58,9 +66,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.canStandOn=true;
         
         // variables
-        this.moveX=0.0;
-        this.moveY=0;
-        
+        this.moveX=0;
         this.lastGroundY=0;
         
         this.invincibleCount=-1;
@@ -70,9 +76,6 @@ export default class PlayerSideScrollClass extends SpriteClass {
         
         this.flashDrawFilter=new FlashFilterClass();
         this.warpDrawFilter=new WarpFilterClass();
-        
-        this.startTimestamp=0;
-        this.endTimestamp=0;
         
         this.ballSprite=null;
         this.shieldSprite=null;
@@ -89,19 +92,12 @@ export default class PlayerSideScrollClass extends SpriteClass {
     }
     
     mapStartup() {
-        // the timing
-        this.startTimestamp=this.endTimestamp=this.game.timestamp;
-
-        // add the ball and shield sprite
+        // add the ball sprite
         this.ballSprite=new BallClass(this.game,0,0,null);
         this.game.map.addSprite(this.ballSprite);
-        
+        // add the shield sprite
         this.shieldSprite=new ShieldClass(this.game,0,0,null);
         this.game.map.addSprite(this.shieldSprite);
-    }
-    
-    getPlayTimeAsString() {
-        return(''+((this.endTimestamp-this.startTimestamp)/1000).toFixed(2));
     }
     
     hurtPlayer() {
@@ -124,9 +120,9 @@ export default class PlayerSideScrollClass extends SpriteClass {
     
     killPlayer() {
         this.setCurrentImage('sprites/gravestone');
-        this.motion.x=0;
-        this.motion.y=0;
+        this.moveX=0;
         this.gravityFactor=0;
+        this.gravityExtraMotion=0;
         this.alpha=1.0;
         this.invincibleCount=-1;
         this.shieldCount=-1;
@@ -180,13 +176,13 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.game.map.getFirstSpriteOfType(BallClass).show=false;
         
         this.gravityFactor=0.0; // make sure we don't fall when warping
-        this.motion.y=0;
+        this.gravityExtraMotion=0;
         
         this.game.soundList.play('teleport');
     }
     
-    runAI() {
-        let walking,walkAnimationFrame,didCollide;
+    run() {
+        let walking ,walkAnimationFrame,didCollide;
         let map=this.game.map;
         
         // warping? 
@@ -203,10 +199,6 @@ export default class PlayerSideScrollClass extends SpriteClass {
             if (this.deathCount<=0) this.game.gotoMap('world_main');
             return;
         }
-        
-        // only update the end timestamp if we aren't
-        // dead or warping
-        this.endTimestamp=this.game.timestamp;
         
         // invincible
         if (this.invincibleCount!==-1) {
@@ -228,42 +220,44 @@ export default class PlayerSideScrollClass extends SpriteClass {
         
         // walking input
         walking=false;
-  
+        
+        // walk left
         if (this.game.input.isKeyDown("KeyA")) {
+            walking=true;
             this.flipX=true;
             if (this.grounded) {
-                if (this.moveX>-this.WALK_MAX_SPEED) { // can go up but not over when moving
-                    this.moveX-=this.WALK_ACCEL;
-                    if (this.moveX<-this.WALK_MAX_SPEED) this.moveX=-this.WALK_MAX_SPEED;
+                if (this.moveX>-this.walkMaxSpeed) {
+                    this.moveX-=this.walkAccel;
+                    if (this.moveX<-this.walkMaxSpeed) this.moveX=-this.walkMaxSpeed;
                 }
-                walking=true;
             }
             else {
-                if (this.moveX>-this.AIR_MAX_SPEED) {
-                    this.moveX-=this.AIR_ACCEL;
-                    if (this.moveX<-this.AIR_MAX_SPEED) this.moveX=-this.AIR_MAX_SPEED;
+                if (this.moveX>-this.airMaxSpeed) {
+                    this.moveX-=this.airAccel;
+                    if (this.moveX<-this.airMaxSpeed) this.moveX=-this.airMaxSpeed;
                 }
             }
-        }
-        if (this.game.input.isKeyDown("KeyD")) {
-            this.flipX=false;
-            if (this.grounded) {
-                if (this.moveX<this.WALK_MAX_SPEED) {
-                    this.moveX+=this.WALK_ACCEL;
-                    if (this.moveX>this.WALK_MAX_SPEED) this.moveX=this.WALK_MAX_SPEED;
-                }
-                walking=true;
-            }
-            else {
-                if (this.moveX<this.AIR_MAX_SPEED) {
-                    this.moveX+=this.AIR_ACCEL;
-                    if (this.moveX>this.AIR_MAX_SPEED) this.moveX=this.AIR_MAX_SPEED;
-                }
-            }
-            
         }
         
-        // automatically decelerate in air
+        // walk right
+        if (this.game.input.isKeyDown("KeyD")) {
+            walking=true;
+            this.flipX=false;
+            if (this.grounded) {
+                if (this.moveX<this.walkMaxSpeed) {
+                    this.moveX+=this.walkAccel;
+                    if (this.moveX>this.walkMaxSpeed) this.moveX=this.walkMaxSpeed;
+                }
+            }
+            else {
+                if (this.moveX<this.airMaxSpeed) {
+                    this.moveX+=this.airAccel;
+                    if (this.moveX>this.airMaxSpeed) this.moveX=this.airMaxSpeed;
+                }
+            }
+        }
+        
+        // any deceleration -- we don't decelerate if walking but always decel in air
         if (((!walking) || (!this.grounded)) && (this.moveX!==0.0)) {
             if (this.moveX<0.0) {
                 this.moveX+=(this.grounded?this.WALK_DECEL:this.AIR_DECEL);
@@ -274,12 +268,14 @@ export default class PlayerSideScrollClass extends SpriteClass {
                 if (this.moveX<=0.0) this.moveX=0.0;
             }
         }
+
+
         
         
         if (this.moveX!==0.0) {
             this.shieldSprite.canCollide=false;
             didCollide=this.moveWithCollision(this.moveX,0);
-            if (didCollide) this.motion.y=0.0;
+            //if (didCollide) this.gravityExtraMotion=0;
             this.shieldSprite.canCollide=true;
         }
             walkAnimationFrame=Math.trunc(this.game.timestamp/150)%4;
@@ -314,7 +310,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         */
         
         if ((!walking) || (!this.grounded)) {
-            this.setCurrentImage((this.motion.y<0)?'sprites/billy_jump_1':'sprites/billy_walk_1');
+            this.setCurrentImage((this.gravityExtraMotion<0)?'sprites/billy_jump_1':'sprites/billy_walk_1');
         }
         
         this.clampX(0,(map.width-this.width));
@@ -327,9 +323,11 @@ export default class PlayerSideScrollClass extends SpriteClass {
             if (this.moveX>0.0) {
                 this.moveX=this.JUMP_START_SPEED;
             }
-            this.motion.y+=this.JUMP_HEIGHT;
+            this.gravityExtraMotion+=this.JUMP_HEIGHT;
             this.gravityPauseTick=this.JUMP_GRAVITY_PAUSE;
         }
+        
+        this.runGravity();
         
         // remember the last ground because
         // we use that to tell the ball's location

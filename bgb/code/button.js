@@ -79,7 +79,7 @@ export default class ButtonClass extends SpriteClass
         this.canStandOn=false;
     }
     
-    runAI()
+    run()
     {
             // squishing?
             

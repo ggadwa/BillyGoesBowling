@@ -40,7 +40,7 @@ export default class CloudBlockClass extends SpriteClass
         if (this.countDown===-1) this.countDown=this.POP_TICK;
     }
     
-    runAI()
+    run()
     {
         if (this.countDown===-1) return;
         

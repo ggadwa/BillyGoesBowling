@@ -67,7 +67,7 @@ export default class RotoCarrotClass extends SpriteClass
         this.game.map.addSprite(new BombClass(this.game,sx,sy,null));
     }
 
-    runAI()
+    run()
     {
         let rad;
         let map=this.game.map;

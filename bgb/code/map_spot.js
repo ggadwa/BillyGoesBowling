@@ -41,14 +41,14 @@ export default class MapSpotClass extends SpriteClass {
         if (hasPin) this.setCurrentImage('sprites/world_map_spot_yellow');
     }
 
-    runAI() {
+    run() {
         let playerSprite=this.game.map.getSpritePlayer();
         
         // are we colliding with player?
         if (!playerSprite.collide(this)) return;
             
         // change UI
-        this.game.setBanner(this.getData('title'),-1);
+        this.game.setBanner(this.getData('title'),this.getData('map'),-1);
         
         // if space than jump to map
         // save the X/Y so we can restore when we exit

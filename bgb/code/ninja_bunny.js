@@ -87,7 +87,7 @@ export default class NinjaBunnyClass extends SpriteClass
         this.game.map.addSprite(new ShurikinClass(this.game,sx,sy,null));
     }
     
-    runAI()
+    run()
     {
         let map=this.game.map;
         let playerSprite=map.getSpritePlayer();

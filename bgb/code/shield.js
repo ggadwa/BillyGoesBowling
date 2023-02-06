@@ -39,7 +39,7 @@ export default class ShieldClass extends SpriteClass {
         }
     }
     
-    runAI() {
+    run() {
         let map=this.game.map;
         let playerSprite=map.getSpritePlayer();
         let didCollide;

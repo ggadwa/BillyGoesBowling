@@ -66,7 +66,7 @@ export default class EasterHeadClass extends SpriteClass {
         this.fireFrameStartTick=this.game.timestamp;
     }
     
-    runAI() {
+    run() {
         let map=this.game.map;
         let playerSprite=map.getSpritePlayer();
         

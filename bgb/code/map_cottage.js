@@ -29,7 +29,7 @@ export default class MapCottageClass extends SpriteClass
         return(new MapCottageClass(this.game,x,y,this.data));
     }
         
-    runAI()
+    run()
     {
         let n,cx,cy;
         let playerSprite=this.game.map.getSpritePlayer();
@@ -43,7 +43,7 @@ export default class MapCottageClass extends SpriteClass
         
             // trigger the win banner
             
-        this.game.setBanner(null,this.getData('pin'));
+        this.game.setBanner(null,null,this.getData('pin'));
         
             // if we just landed here, we can fire
             // random particles
