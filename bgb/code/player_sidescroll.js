@@ -36,6 +36,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.DEATH_TICK=100;
         this.INVINCIBLE_TICK=60;
         this.WARP_TICK=80;
+        this.WALK_FRAME_TICK=3;
         
         this.WALK_ANIMATION=['sprites/billy_walk_1','sprites/billy_walk_2','sprites/billy_walk_3','sprites/billy_walk_2'];
         
@@ -67,6 +68,9 @@ export default class PlayerSideScrollClass extends SpriteClass {
         
         // variables
         this.moveX=0;
+        this.walking=false;
+        this.walkAnimationFrame=0;
+        this.walkAnimationFrameCount=-1;
         this.lastGroundY=0;
         
         this.invincibleCount=-1;
@@ -122,7 +126,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.setCurrentImage('sprites/gravestone');
         this.moveX=0;
         this.gravityFactor=0;
-        this.gravityExtraMotion=0;
+        this.gravityMoveY=0;
         this.alpha=1.0;
         this.invincibleCount=-1;
         this.shieldCount=-1;
@@ -176,13 +180,13 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.game.map.getFirstSpriteOfType(BallClass).show=false;
         
         this.gravityFactor=0.0; // make sure we don't fall when warping
-        this.gravityExtraMotion=0;
+        this.gravityMoveY=0;
         
         this.game.soundList.play('teleport');
     }
     
     run() {
-        let walking ,walkAnimationFrame,didCollide;
+        let didCollide, goLeft, goRight;
         let map=this.game.map;
         
         // warping? 
@@ -218,13 +222,26 @@ export default class PlayerSideScrollClass extends SpriteClass {
             }
         }
         
-        // walking input
-        walking=false;
+        // walk left and right
+        goLeft=this.game.input.isKeyDown("KeyA");
+        goRight=this.game.input.isKeyDown("KeyD");
         
-        // walk left
-        if (this.game.input.isKeyDown("KeyA")) {
-            walking=true;
-            this.flipX=true;
+        // if we just started going left and right, reset walking
+        // animation to frame 0
+        if ((goLeft) || (goRight)) {
+            if (!this.walking) {
+                this.walkAnimationFrame=0;
+                this.walkAnimationFrameCount=this.WALK_FRAME_TICK;
+                this.walking=true;
+            }
+        }
+        else {
+            this.walking=false;
+        }
+        
+        if (goLeft) {
+            if (this.grounded) this.flipX=true;
+            
             if (this.grounded) {
                 if (this.moveX>-this.walkMaxSpeed) {
                     this.moveX-=this.walkAccel;
@@ -240,9 +257,9 @@ export default class PlayerSideScrollClass extends SpriteClass {
         }
         
         // walk right
-        if (this.game.input.isKeyDown("KeyD")) {
-            walking=true;
-            this.flipX=false;
+        if (goRight) {
+            if (this.grounded) this.flipX=false;
+            
             if (this.grounded) {
                 if (this.moveX<this.walkMaxSpeed) {
                     this.moveX+=this.walkAccel;
@@ -258,7 +275,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         }
         
         // any deceleration -- we don't decelerate if walking but always decel in air
-        if (((!walking) || (!this.grounded)) && (this.moveX!==0.0)) {
+        if (((!this.walking) || (!this.grounded)) && (this.moveX!==0.0)) {
             if (this.moveX<0.0) {
                 this.moveX+=(this.grounded?this.WALK_DECEL:this.AIR_DECEL);
                 if (this.moveX>=0.0) this.moveX=0.0;
@@ -268,53 +285,18 @@ export default class PlayerSideScrollClass extends SpriteClass {
                 if (this.moveX<=0.0) this.moveX=0.0;
             }
         }
-
-
         
-        
+        // now move, turning off any collision with ball or shield
         if (this.moveX!==0.0) {
+            this.ballSprite.canCollide=false;
             this.shieldSprite.canCollide=false;
             didCollide=this.moveWithCollision(this.moveX,0);
-            //if (didCollide) this.gravityExtraMotion=0;
             this.shieldSprite.canCollide=true;
-        }
-            walkAnimationFrame=Math.trunc(this.game.timestamp/150)%4;
-            this.setCurrentImage(this.WALK_ANIMATION[walkAnimationFrame]);
-            this.drawFilter=null;
-
+            this.ballSprite.canCollide=true;
             
-            //if (this.motion.y<5) console.info(this.motion.y+'>'+this.gravityAdd);
-        
-        /*
-        
-        if (this.game.input.isKeyDown("KeyA")) {
-            moveX=-(this.grounded?this.WALK_SPEED:this.WALK_AIR_SPEED);
-            this.data.set('facing_direction',-1);
-            walking=true;
+            this.clampX(0,(map.width-this.width));
         }
-        if (this.game.input.isKeyDown("KeyD")) {
-            moveX=this.grounded?this.WALK_SPEED:this.WALK_AIR_SPEED;
-            walking=true;
-        }
-        
-        if (this.shieldCount!==-1) moveX=0;
-        
-        if (moveX!==0) {
-            this.shieldSprite.canCollide=false;
-            this.moveWithCollision(moveX,0);
-            this.shieldSprite.canCollide=true;
-            walkAnimationFrame=Math.trunc(this.game.timestamp/150)%4;
-            this.setCurrentImage(this.WALK_ANIMATION_RIGHT[walkAnimationFrame]);
-        }
-        
-        */
-        
-        if ((!walking) || (!this.grounded)) {
-            this.setCurrentImage((this.gravityExtraMotion<0)?'sprites/billy_jump_1':'sprites/billy_walk_1');
-        }
-        
-        this.clampX(0,(map.width-this.width));
-        
+
         // jumping
         if ((this.game.input.isKeyDown("Space")) && (this.grounded)) {
             if (this.moveX<0.0) {
@@ -323,11 +305,43 @@ export default class PlayerSideScrollClass extends SpriteClass {
             if (this.moveX>0.0) {
                 this.moveX=this.JUMP_START_SPEED;
             }
-            this.gravityExtraMotion+=this.JUMP_HEIGHT;
+            this.gravityMoveY+=this.JUMP_HEIGHT;
             this.gravityPauseTick=this.JUMP_GRAVITY_PAUSE;
         }
         
         this.runGravity();
+        
+        // determine the sprite image
+        // if in air, determine jump/fall sprites
+        if (!this.grounded) {
+            this.setCurrentImage((this.gravityMoveY<0)?'sprites/billy_jump_1':'sprites/billy_walk_1');
+        }
+        // when walking, we just update the animation frame,
+        // when not walking, we animate until we hit 0 and stop
+        else {
+            this.walkAnimationFrameCount--;
+            if (this.walkAnimationFrameCount<0) {
+                this.walkAnimationFrameCount=this.WALK_FRAME_TICK;
+
+                if (this.walking) {
+                    this.walkAnimationFrame=(this.walkAnimationFrame+1)%4;
+                }
+                else {
+                    if (this.walkAnimationFrame!==0) this.walkAnimationFrame=(this.walkAnimationFrame+1)%4;
+                }
+            }
+            this.setCurrentImage(this.WALK_ANIMATION[this.walkAnimationFrame]);
+        }
+        
+        this.drawFilter=null;
+        
+                   // walkAnimationFrame=Math.trunc(this.game.tick/15)%4;
+            //this.setCurrentImage(this.WALK_ANIMATION[walkAnimationFrame]);
+            
+            
+            
+            //this.setCurrentImage((this.gravityMoveY<0)?'sprites/billy_jump_1':'sprites/billy_walk_1');
+
         
         // remember the last ground because
         // we use that to tell the ball's location

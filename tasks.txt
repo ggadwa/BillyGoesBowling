@@ -1,8 +1,13 @@
 //// TO DO
 
-
-
+- billy can't change facing in air
+- fall sprite
+- spin makes player invincible for a bit draw shield
+- can't move with shield on
+- redo all scripts first
 - put gravity in places it needs to be
+- find (and remove) all timestamp in scripts (use tick)
+- probably get rid of all the map=this.game.map kind of stuff
 
 - trunc all drawimage coords
 - why does snake face wrong way when hurt?
@@ -16,13 +21,12 @@
 
 - smoke on quick turn around (by feet)
 
-- three jump sprites (timed)
+
 
 - interaction has a command variable
 
 
-- spin makes player invincible for a bit draw shield
-- can't move with shield on
+
 
 - mr cpu needs jumping legs
 - boney one eye faces you X wise (and fires eye from different location)

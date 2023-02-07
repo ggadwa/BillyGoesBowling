@@ -30,7 +30,7 @@ export default class SpriteClass {
         this.gravityMinValue=0;
         this.gravityMaxValue=0;
         this.gravityAdd=0;
-        this.gravityExtraMotion=0;
+        this.gravityMoveY=0;
         this.gravityPauseTick=-1;
         
         this.show=true;
@@ -180,7 +180,7 @@ export default class SpriteClass {
         if (this.gravityFactor!==0.0) {
 
             y=-1;
-            if (this.gravityExtraMotion>=0) {
+            if (this.gravityMoveY>=0) {
                 y=this.game.map.checkCollisionStand(this,Math.trunc(this.gravityAdd));
             }
             else {
@@ -208,29 +208,29 @@ export default class SpriteClass {
                 this.y=y;
                 this.gravityAdd=0.0;
                 this.grounded=true;
-                this.gravityExtraMotion=0.0;
+                this.gravityMoveY=0.0;
             }
         }
              
         // rising   
-        if (this.gravityExtraMotion<0) {
-            y=this.game.map.checkCollisionRise(this,this.gravityExtraMotion);
+        if (this.gravityMoveY<0) {
+            y=this.game.map.checkCollisionRise(this,this.gravityMoveY);
             if (y!==-1) {
                 this.y=y+this.height;
-                this.gravityExtraMotion=0;
+                this.gravityMoveY=0;
             }
             else {
-                this.y+=this.gravityExtraMotion;
+                this.y+=this.gravityMoveY;
             }
         }
         
         // gravity slows down extra motion
-        if (this.gravityExtraMotion<0.0) {
-            this.gravityExtraMotion+=this.gravityAdd;
-            if (this.gravityExtraMotion>=0.0) {
-                this.gravityAdd=this.gravityExtraMotion;
+        if (this.gravityMoveY<0.0) {
+            this.gravityMoveY+=this.gravityAdd;
+            if (this.gravityMoveY>=0.0) {
+                this.gravityAdd=this.gravityMoveY;
                 if (this.gravityAdd>this.gravityMaxValue) this.gravityAdd=this.gravityMaxValue;
-                this.gravityExtraMotion=0.0;
+                this.gravityMoveY=0.0;
             }
         }
     }
