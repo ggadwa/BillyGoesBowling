@@ -79,6 +79,8 @@ export default class BallClass extends SpriteClass {
         this.x=playerSprite.x+Math.trunc((playerSprite.width-this.width)*0.5);
         this.y=(playerSprite.y-playerSprite.height)-this.HEAD_PIXEL_DISTANCE;
         this.reformParticle=this.game.map.addParticle((this.x+halfWid),(this.y-halfHigh),8,16,1.0,0.1,6,0.03,'particles/ball',16,0.5,true,this.REFORM_LIFE_TICK);
+        
+        this.game.soundList.playAtSprite('ball_reform',this,playerSprite);
     }
     
     run() {
@@ -259,6 +261,8 @@ export default class BallClass extends SpriteClass {
                 this.travelXDirection=playerSprite.flipX?-1:1;
                 this.travelYBottom=(Math.trunc(playerSprite.lastGroundY/map.MAP_TILE_SIZE)*map.MAP_TILE_SIZE)-Math.trunc((map.MAP_TILE_SIZE-this.height)*0.5);
                 if (!playerSprite.grounded) this.travelYBottom-=map.MAP_TILE_SIZE;
+                
+                this.game.soundList.playAtSprite('bowl',this,playerSprite);
             }
             
             // bowls up and back down  
@@ -266,13 +270,19 @@ export default class BallClass extends SpriteClass {
                 this.travelMode=this.TRAVEL_MODE_SLAM_UP;
                 this.travelX=playerSprite.x+xOffset;
                 this.travelY=(playerSprite.y-playerSprite.height)-this.HEAD_PIXEL_DISTANCE;
+                
+                this.game.soundList.playAtSprite('bowl',this,playerSprite);
             }
             
-            // bowls in a circle around player
+            // bowls in a circle around player, both the shield sprite
+            // and the player sprite check for this key and active their parts
+            // we chain this so only ball in right state can activate
             if (this.game.input.isKeyDown("ArrowDown")) {
-                playerSprite.interactWithSprite(this,null); // turn on shield
                 this.travelMode=this.TRAVEL_MODE_CIRCLE;
                 this.travelAngle=0.0;
+                playerSprite.interactWithSprite(this,null);
+                
+                this.game.soundList.playAtSprite('bowl',this,playerSprite);
             }
         }
     }

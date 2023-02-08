@@ -1,13 +1,16 @@
 //// TO DO
 
-- billy can't change facing in air
+
+- replace interactWithSprite with sendMessage(callSprite,cmd,data)
+- other side overrides processMessage(fromSprite,cmd,data)
+
+- adjust collisions with billy and shield from other creatures
 - fall sprite
 - spin makes player invincible for a bit draw shield
 - can't move with shield on
 - redo all scripts first
 - put gravity in places it needs to be
 - find (and remove) all timestamp in scripts (use tick)
-- probably get rid of all the map=this.game.map kind of stuff
 
 - trunc all drawimage coords
 - why does snake face wrong way when hurt?

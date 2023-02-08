@@ -82,9 +82,20 @@ export default class SpriteClass {
     }
     
     /**
+     * Override this to listen to messages from other sprites, this
+     * is up to the game developer as how to use cmd and data.
+     */
+    processMessage(fromSprite, cmd, data) {
+    }
+    
+    /**
      * Override this to change the per-tick AI of object.
      */
     run() {
+    }
+    
+    sendMessage(toSprite,cmd,data) {
+        toSprite.processMessage(this,cmd,data);
     }
         
     addImage(name) {

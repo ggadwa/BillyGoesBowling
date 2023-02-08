@@ -36,6 +36,7 @@ export default class ShieldClass extends SpriteClass {
         if (interactSprite instanceof PlayerSideScrollClass) {
             this.show=true;
             this.lifeCount=this.LIFE_TICK;
+            this.game.soundList.playAtSprite('shield',this,this.game.map.getSpritePlayer());
         }
     }
     
@@ -44,7 +45,7 @@ export default class ShieldClass extends SpriteClass {
         let playerSprite=map.getSpritePlayer();
         let didCollide;
         
-        // nothing to do if off
+        // not shown, nothing to do
         if (!this.show) return;
         
         // turn off if past life tick

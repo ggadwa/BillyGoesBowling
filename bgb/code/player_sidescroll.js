@@ -335,14 +335,6 @@ export default class PlayerSideScrollClass extends SpriteClass {
         
         this.drawFilter=null;
         
-                   // walkAnimationFrame=Math.trunc(this.game.tick/15)%4;
-            //this.setCurrentImage(this.WALK_ANIMATION[walkAnimationFrame]);
-            
-            
-            
-            //this.setCurrentImage((this.gravityMoveY<0)?'sprites/billy_jump_1':'sprites/billy_walk_1');
-
-        
         // remember the last ground because
         // we use that to tell the ball's location
         // for bowling   
@@ -362,7 +354,10 @@ export default class PlayerSideScrollClass extends SpriteClass {
         
         // check for hitting liquid
         if (map.liquidY!==-1) {
-            if (this.y>=map.liquidY) this.killPlayer();
+            if (this.y>=map.liquidY) {
+                this.killPlayer();
+                return;
+            }
         }
     }
 }

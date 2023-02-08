@@ -218,7 +218,10 @@ export default class BillyGameClass extends GameClass
         this.addSound('monster_die');
         this.addSound('hurt');
         this.addSound('pipe_break');
+        this.addSound('bowl');
         this.addSound('ball_break');
+        this.addSound('ball_reform');
+        this.addSound('shield');
         this.addSound('teleport');
         this.addSound('locked_castle');
         this.addSound('door');
