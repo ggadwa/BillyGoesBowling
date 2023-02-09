@@ -4,10 +4,9 @@ import FishClass from './fish.js';
 import ExplodeBlockClass from './explode_block.js';
 import KingGhastlyClass from './king_ghastly.js';
 
-export default class BreakBlockClass extends SpriteClass
-{
-    constructor(game,x,y,data)
-    {
+export default class BreakBlockClass extends SpriteClass {
+        
+    constructor(game,x,y,data) {
         super(game,x,y,data);
         
         this.addImage('sprites/break_block')
@@ -23,13 +22,11 @@ export default class BreakBlockClass extends SpriteClass
         Object.seal(this);
     }
     
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
         return(new BreakBlockClass(this.game,x,y,this.data));
     }
     
-    interactWithSprite(interactSprite,dataObj)
-    {
+    interactWithSprite(interactSprite,dataObj) {
         let cx,cy;
         
         if ((interactSprite instanceof BallClass) || (interactSprite instanceof FishClass) || (interactSprite instanceof ExplodeBlockClass) || (interactSprite instanceof KingGhastlyClass)) {
@@ -39,5 +36,9 @@ export default class BreakBlockClass extends SpriteClass
             this.game.soundList.playAtSprite('crack',this,this.game.map.getSpritePlayer());
             this.delete();
         }
+    }
+    
+    run() {
+        this.runGravity();
     }
 }

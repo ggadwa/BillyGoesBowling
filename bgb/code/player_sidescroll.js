@@ -45,7 +45,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.addImage('sprites/billy_walk_2');
         this.addImage('sprites/billy_walk_3');
         this.addImage('sprites/billy_jump_1');
-        this.addImage('sprites/billy_shield');
+        this.addImage('sprites/billy_fall_1');
         this.addImage('sprites/gravestone');
         
         this.setCurrentImage('sprites/billy_walk_1');
@@ -165,11 +165,17 @@ export default class PlayerSideScrollClass extends SpriteClass {
             this.hurtPlayer();
             return;
         }
-        
-        // the ball interaction turns on the shield
-        if (interactSprite instanceof BallClass) {
-            this.shieldCount=this.shieldSprite.LIFE_TICK;
-            this.shieldSprite.interactWithSprite(this,null);
+    }
+    
+    processMessage(fromSprite,cmd,data) {
+        switch (cmd) {
+            case 'start_shield':
+                this.shieldCount=this.shieldSprite.LIFE_TICK;
+                this.sendMessage(this.shieldSprite,'start_shield',null);
+                return;
+            case 'hurt':
+                this.hurtPlayer();
+                return;
         }
     }
     
@@ -186,7 +192,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
     }
     
     run() {
-        let didCollide, goLeft, goRight;
+        let goLeft, goRight;
         let map=this.game.map;
         
         // warping? 
@@ -290,7 +296,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         if (this.moveX!==0.0) {
             this.ballSprite.canCollide=false;
             this.shieldSprite.canCollide=false;
-            didCollide=this.moveWithCollision(this.moveX,0);
+            this.moveWithCollision(this.moveX,0);
             this.shieldSprite.canCollide=true;
             this.ballSprite.canCollide=true;
             
@@ -314,7 +320,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         // determine the sprite image
         // if in air, determine jump/fall sprites
         if (!this.grounded) {
-            this.setCurrentImage((this.gravityMoveY<0)?'sprites/billy_jump_1':'sprites/billy_walk_1');
+            this.setCurrentImage((this.gravityMoveY<0)?'sprites/billy_jump_1':'sprites/billy_fall_1');
         }
         // when walking, we just update the animation frame,
         // when not walking, we animate until we hit 0 and stop

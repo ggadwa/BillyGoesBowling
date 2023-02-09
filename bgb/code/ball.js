@@ -280,7 +280,7 @@ export default class BallClass extends SpriteClass {
             if (this.game.input.isKeyDown("ArrowDown")) {
                 this.travelMode=this.TRAVEL_MODE_CIRCLE;
                 this.travelAngle=0.0;
-                playerSprite.interactWithSprite(this,null);
+                this.sendMessage(playerSprite,'start_shield',null);
                 
                 this.game.soundList.playAtSprite('bowl',this,playerSprite);
             }

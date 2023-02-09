@@ -128,8 +128,11 @@ export default class BillyGameClass extends GameClass
         this.addImage('sprites/billy_walk_2');
         this.addImage('sprites/billy_walk_3');
         this.addImage('sprites/billy_jump_1');
+        this.addImage('sprites/billy_fall_1');
         this.addImage('sprites/billy_shield');
-        this.addImage('sprites/billy_world');
+        this.addImage('sprites/billy_world_1');
+        this.addImage('sprites/billy_world_2');
+        this.addImage('sprites/billy_world_3');
         this.addImage('sprites/pin');
         this.addImage('sprites/block');
         this.addImage('sprites/break_block');

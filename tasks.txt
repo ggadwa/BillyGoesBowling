@@ -4,13 +4,16 @@
 - replace interactWithSprite with sendMessage(callSprite,cmd,data)
 - other side overrides processMessage(fromSprite,cmd,data)
 
+- need hurt for player collisions
+
 - adjust collisions with billy and shield from other creatures
-- fall sprite
 - spin makes player invincible for a bit draw shield
 - can't move with shield on
 - redo all scripts first
 - put gravity in places it needs to be
 - find (and remove) all timestamp in scripts (use tick)
+
+- need transitions between worlds (closing squares)
 
 - trunc all drawimage coords
 - why does snake face wrong way when hurt?
@@ -19,14 +22,10 @@
 
 
 - get rid of all timestamp stuff, use ticks (MAYBE???) - particle by ticks
-
-- walk animation needs to reset to 0 instead of jumping there
-
 - smoke on quick turn around (by feet)
+- smoke on jump land
 
 
-
-- interaction has a command variable
 
 
 
@@ -51,20 +50,8 @@
 - snakes are the worst art, update them
 - readjust the bounce pads (need slower push)
 - add keys/secret exits (one could be having to race explosives throughout level for key at end before it falls in water)
-- pin has some stray alpha pixels
 - carrot needs shading
 
-- world view player's hair looks wrong
-
-
-
-- rotate particles
-    context.translate(x, y);
-    context.rotate(angleInRadians);
-    context.drawImage(image, -width / 2, -height / 2, width, height);
-    context.rotate(-angleInRadians);
-    context.translate(-x, -y);
-    (use context save/restore)
 
 
 - editor: put buttons as small font awesome/font material on right side

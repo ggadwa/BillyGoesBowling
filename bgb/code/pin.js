@@ -49,7 +49,6 @@ export default class PinClass extends SpriteClass {
         // update the time
         time=this.game.stopCompletionTimer();
         oldTime=this.game.getData('time_'+this.game.map.name);
-        console.info('time='+time+'>'+oldTime);
         if (time<oldTime) this.game.setData(('time_'+this.game.map.name),time);
         
         // and save the data

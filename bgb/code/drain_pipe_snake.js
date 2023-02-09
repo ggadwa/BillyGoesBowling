@@ -9,6 +9,8 @@ export default class DrainPipeSnakeClass extends SpriteClass {
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
+        this.MAX_WALK_SPEED=5.0;
+        this.ACCEL_SPEED=1.0;
         this.INVINCIBLE_TICK=20;
         this.TILE_IDX_GROUND_LEFT_END=1;
         this.TILE_IDX_GROUND_RIGHT_END=3;
@@ -16,6 +18,7 @@ export default class DrainPipeSnakeClass extends SpriteClass {
         this.TILE_IDX_GIRDER_RIGHT_END=12;
         
         // variables
+        this.walkSpeed=0.0;
         this.snakeHasPipe=true;
         this.invincibleCount=0;
         
@@ -65,7 +68,7 @@ export default class DrainPipeSnakeClass extends SpriteClass {
     
     run() {
         let map=this.game.map;
-        let mx,tileIdx,switchDirection;
+        let maxSpeed,tileIdx,switchDirection,playerSprite;
         
         // special count when invincible from
         // first ball hit  
@@ -78,17 +81,33 @@ export default class DrainPipeSnakeClass extends SpriteClass {
         // walk in direction until a collision
         switchDirection=false;
         
-        mx=((this.snakeHasPipe?5:10)*(this.flipX?-1:1));
+        maxSpeed=this.MAX_WALK_SPEED;
+        if (!this.snakeHasPipe) maxSpeed*=2.0;
         
-        this.x+=mx;
-        if (map.checkCollision(this)) {
-            if (this.collideSprite!==null) this.collideSprite.interactWithSprite(this,null);
-            this.x-=mx;
-            switchDirection=true;
+        if (this.flipX) {
+            this.walkSpeed-=this.ACCEL_SPEED;
+            if (this.walkSpeed<-maxSpeed) this.walkSpeed=-maxSpeed;
+        }
+        else {
+            this.walkSpeed+=this.ACCEL_SPEED;
+            if (this.walkSpeed>maxSpeed) this.walkSpeed=maxSpeed;
         }
         
-        // if we are on edge tiles, then
-        // turn around 
+        // run collisions, if we hit another sprite or tile, turn around
+        // immediately so we don't keep hitting it
+        this.moveWithCollision(this.walkSpeed,0);
+        if (this.collideSprite!==null) {
+            playerSprite=map.getSpritePlayer();
+            if (this.collideSprite===playerSprite) this.sendMessage(playerSprite,'hurt',null);
+            switchDirection=true;
+            this.walkSpeed=0.0;
+        }
+        if (this.collideTileIdx!==-1) {
+            switchDirection=true;
+            this.walkSpeed=0.0;
+        }
+        
+        // if we are on edge tiles, then turn around 
         tileIdx=map.getTileUnderSprite(this);
         if (((tileIdx===this.TILE_IDX_GROUND_LEFT_END) || (tileIdx===this.TILE_IDX_GIRDER_LEFT_END)) && (this.flipX)) switchDirection=true;
         if (((tileIdx===this.TILE_IDX_GROUND_RIGHT_END) || (tileIdx===this.TILE_IDX_GIRDER_RIGHT_END)) && (!this.flipX)) switchDirection=true;

@@ -21,10 +21,15 @@ export default class PlayerWorldClass extends SpriteClass {
         this.TILE_IDX_GATE=53;
         this.TILE_IDX_LEFT_T=55;
         this.TILE_IDX_UP_T=56;
+        this.WALK_FRAME_TICK=3;
+        
+        this.WALK_ANIMATION=['sprites/billy_world_1','sprites/billy_world_2','sprites/billy_world_3','sprites/billy_world_2'];
         
         // setup
-        this.addImage('sprites/billy_world');
-        this.setCurrentImage('sprites/billy_world');
+        this.addImage('sprites/billy_world_1');
+        this.addImage('sprites/billy_world_2');
+        this.addImage('sprites/billy_world_3');
+        this.setCurrentImage('sprites/billy_world_1');
         
         this.show=true;
         
@@ -33,6 +38,8 @@ export default class PlayerWorldClass extends SpriteClass {
         this.moveToY=0;
         this.lastToX=0;
         this.lastToY=0;
+        this.walkAnimationFrame=0;
+        this.walkAnimationFrameCount=-1;
         
         Object.seal(this);
     }
@@ -100,6 +107,21 @@ export default class PlayerWorldClass extends SpriteClass {
     run() {
         let tileIdx,xDir,yDir;
         let map=this.game.map;
+        
+        // when walking, we just update the animation frame,
+        // when not walking, we animate until we hit 0 and stop
+        this.walkAnimationFrameCount--;
+        if (this.walkAnimationFrameCount<0) {
+            this.walkAnimationFrameCount=this.WALK_FRAME_TICK;
+
+            if (this.moving) {
+                this.walkAnimationFrame=(this.walkAnimationFrame+1)%4;
+            }
+            else {
+                if (this.walkAnimationFrame!==0) this.walkAnimationFrame=(this.walkAnimationFrame+1)%4;
+            }
+            this.setCurrentImage(this.WALK_ANIMATION[this.walkAnimationFrame]);
+        }
         
         // input 
         if (!this.moving) {

@@ -31,12 +31,13 @@ export default class ShieldClass extends SpriteClass {
         return(new ShieldClass(this.game,x,y,this.data));
     }
     
-    interactWithSprite(interactSprite,dataObj) {
-        // interaction from player turns on shield
-        if (interactSprite instanceof PlayerSideScrollClass) {
-            this.show=true;
-            this.lifeCount=this.LIFE_TICK;
-            this.game.soundList.playAtSprite('shield',this,this.game.map.getSpritePlayer());
+    processMessage(fromSprite,cmd,data) {
+        switch (cmd) {
+            case 'start_shield':
+                this.show=true;
+                this.lifeCount=this.LIFE_TICK;
+                this.game.soundList.playAtSprite('shield',this,this.game.map.getSpritePlayer());
+                break;
         }
     }
     

@@ -1,9 +1,7 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 
-export default class BlockClass extends SpriteClass
-{
-    constructor(game,x,y,data)
-    {
+export default class BlockClass extends SpriteClass {
+    constructor(game,x,y,data) {
         super(game,x,y,data);
         
         this.addImage('sprites/block');
@@ -19,8 +17,11 @@ export default class BlockClass extends SpriteClass
         Object.seal(this);
     }
     
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
         return(new BlockClass(this.game,x,y,this.data));
+    }
+    
+    run() {
+        this.runGravity();
     }
 }
