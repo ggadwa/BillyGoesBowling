@@ -60,20 +60,32 @@ export default class NinjaBunnyClass extends SpriteClass
         this.game.soundList.playAtSprite('jump',this,this.game.map.getSpritePlayer());
     }
     
+    kill() {
+        this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,600);
+        this.game.soundList.playAtSprite('monster_die',this,this.game.map.getSpritePlayer());
+        this.delete();
+    }
+    
     interactWithSprite(interactSprite,dataObj)
     {
             // ball destroys bunny
             
         if (interactSprite instanceof BallClass) {
-            this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,600);
-            this.game.soundList.playAtSprite('monster_die',this,this.game.map.getSpritePlayer());
-            this.delete();
+            this.kill();
         }
         
             // hitting the player makes the
             // bunny jump backwards
             
         if (interactSprite instanceof PlayerSideScrollClass) this.jumpAwayFromSprite(interactSprite);
+    }
+    
+    processMessage(fromSprite,cmd,data) {
+        switch (cmd) {
+            case 'kill':
+                this.kill();
+                return;
+        }
     }
     
     fireShurikin(dist)

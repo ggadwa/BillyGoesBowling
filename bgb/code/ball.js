@@ -213,9 +213,11 @@ export default class BallClass extends SpriteClass {
             
         if ((this.travelMode===this.TRAVEL_MODE_BOWL_ACROSS) || (this.travelMode===this.TRAVEL_MODE_SLAM_UP) || (this.travelMode===this.TRAVEL_MODE_SLAM_DOWN) || (this.travelMode===this.TRAVEL_MODE_CIRCLE)) {
             
-            playerSprite.canCollide=false;
-            didCollide=map.checkCollision(this); // make sure player sprite is out of the way
+            playerSprite.canCollide=false; // get player and possible shield out of way
+            playerSprite.shieldSprite.canCollide=false;
+            didCollide=map.checkCollision(this);
             playerSprite.canCollide=true;
+            playerSprite.shieldSprite.canCollide=true;
             
             if (didCollide) {
                 
@@ -227,7 +229,7 @@ export default class BallClass extends SpriteClass {
                 }
                 
                 // collide with sprites
-                this.collideSprite.interactWithSprite(this,null);
+                this.sendMessage(this.collideSprite,'hurt',null);
                 
                 // stop ball for certain sprites
                 if ((this.collideSprite instanceof BlockClass) || (this.collideSprite instanceof BreakBlockStrongClass) || (this.collideSprite instanceof ExplodeBlockClass) || (this.collideSprite instanceof EasterHeadClass) || (this.collideSprite instanceof ExecutionerClass)) {

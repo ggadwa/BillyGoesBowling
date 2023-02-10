@@ -47,32 +47,66 @@ export default class DrainPipeSnakeClass extends SpriteClass {
         return(new DrainPipeSnakeClass(this.game,x,y,this.data));
     }
     
-    interactWithSprite(interactSprite,dataObj) {
-        if (interactSprite instanceof BallClass) {
-            if (this.invincibleCount>0) return;
-            
-            if (this.snakeHasPipe) {
-                this.snakeHasPipe=false;
-                this.invincibleCount=this.INVINCIBLE_TICK;
-                this.drawFilter=this.flashDrawFilter;
-                this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),16,16,1.0,0.1,5,0.05,'particles/pipe',10,0.5,false,800);
-                this.game.soundList.playAtSprite('pipe_break',this,this.game.map.getSpritePlayer());
-            }
-            else {
-                this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,600);
-                this.game.soundList.playAtSprite('monster_die',this,this.game.map.getSpritePlayer());
-                this.delete();
-            }
+    breakPipe() {
+        this.snakeHasPipe=false;
+        this.invincibleCount=this.INVINCIBLE_TICK;
+        this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),16,16,1.0,0.1,5,0.05,'particles/pipe',10,0.5,false,800);
+        this.game.soundList.playAtSprite('pipe_break',this,this.game.map.getSpritePlayer()); 
+    }
+    
+    kill() {
+        this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,600);
+        this.game.soundList.playAtSprite('monster_die',this,this.game.map.getSpritePlayer());
+        this.delete();
+    }
+    
+    hurt() {
+        if (this.invincibleCount>0) return;
+        
+        if (this.snakeHasPipe) {
+            this.breakPipe();
+        }
+        else {
+            this.kill();
+        }
+    }
+    
+    collide() {
+        let playerSprite;
+        
+        if ((this.collideSprite instanceof BallClass) || (this.collideSprite instanceof ShieldClass)) {
+           this.hurt();
+           return;
+        }
+        
+        playerSprite=map.getSpritePlayer();
+        if (this.collideSprite===playerSprite) {
+            if (this.snakeHasPipe) this.breakPipe(); // hitting a player breaks the pipe if there
+            this.sendMessage(playerSprite,'hurt',null);
+        }
+    }
+    
+    processMessage(fromSprite,cmd,data) {
+        switch (cmd) {
+            case 'break_pipe':
+                if (this.snakeHasPipe) this.breakPipe();
+                return;
+            case 'hurt':
+                this.hurt();
+                return;
         }
     }
     
     run() {
         let map=this.game.map;
-        let maxSpeed,tileIdx,switchDirection,playerSprite;
+        let maxSpeed,tileIdx,switchDirection;
+        
+        this.drawFilter=null;
         
         // special count when invincible from
         // first ball hit  
         if (this.invincibleCount>0) {
+            this.drawFilter=this.flashDrawFilter;
             this.drawFilterAnimationFactor=1.0-(this.invincibleCount/this.INVINCIBLE_TICK);
             this.invincibleCount--;
             if (this.invincibleCount===0) this.drawFilter=null;
@@ -97,8 +131,7 @@ export default class DrainPipeSnakeClass extends SpriteClass {
         // immediately so we don't keep hitting it
         this.moveWithCollision(this.walkSpeed,0);
         if (this.collideSprite!==null) {
-            playerSprite=map.getSpritePlayer();
-            if (this.collideSprite===playerSprite) this.sendMessage(playerSprite,'hurt',null);
+            this.collide();
             switchDirection=true;
             this.walkSpeed=0.0;
         }
