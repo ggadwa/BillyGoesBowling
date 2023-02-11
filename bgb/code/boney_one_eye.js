@@ -154,7 +154,7 @@ export default class BoneyOneEyeClass extends SpriteClass
                 sprites=map.getSpritesWithinBox((this.x-32),(this.y-32),((this.x+this.width)+32),(this.y+64),this,CloudBlockClass);
 
                 for (sprite of sprites) {
-                    sprite.interactWithSprite(this,null);
+                    this.sendMessage(sprite,'pop',null);
                 }
             }
         }

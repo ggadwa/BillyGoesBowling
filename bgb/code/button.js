@@ -1,19 +1,14 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import SquishFilterClass from '../../rpjs/filters/squish.js';
-import PlayerSideScrollClass from './player_sidescroll.js';
 
-export default class ButtonClass extends SpriteClass
-{
-    constructor(game,x,y,data)
-    {
+export default class ButtonClass extends SpriteClass {
+    constructor(game,x,y,data) {
         super(game,x,y,data);
         
-            // constants
-            
+        // constants
         this.SQUISH_TICK=5;
         
-            // variables
-        
+        // variables
         this.addImage('sprites/button');
         this.setCurrentImage('sprites/button');
         
@@ -31,47 +26,36 @@ export default class ButtonClass extends SpriteClass
         Object.seal(this);
     }
     
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
         return(new ButtonClass(this.game,x,y,this.data));
     }
     
-    interactWithSprite(interactSprite,dataObj)
-    {
-        let mode,sprite;
+    onStoodOnSprite(sprite) {
+        let mode;
         
-            // if squishing we can't step on again
-            
+        // if squishing we can't step on again
         if (this.squishCount!==-1) return;
         
-            // is button pushed (only if standing on it)
-            
-        if (!(interactSprite instanceof PlayerSideScrollClass)) return;
-        if (interactSprite.standSprite!==this) return;
-        
+        // get the action
         mode=this.data.get('mode');
         
-            // mode = show means show the first sprite
-            // that has this show_id
-            
+        // mode = show means show the first sprite
+        // that has this show_id
         if (mode==='show') {
             sprite=this.game.map.getFirstSpriteWithData('id',this.data.get('show_id'));
             sprite.show=true;
         }
         
-            // mode = liquid means move the liquid to
-            // the position by liquid_y
-            
+        // mode = liquid means move the liquid to
+        // the position by liquid_y
         if (mode==='liquid') {
             this.game.map.moveLiquidTo(this.data.get('liquid_y'),this.data.get('liquid_move_speed'));
         }
         
-            // click sound
-            
+        // click sound
         this.game.soundList.play('click');
         
-            // start the squish
-            
+        // start the squish
         this.squishCount=this.SQUISH_TICK;
         this.drawFilter=this.squishDrawFilter;
         
@@ -79,10 +63,11 @@ export default class ButtonClass extends SpriteClass
         this.canStandOn=false;
     }
     
-    run()
-    {
-            // squishing?
-            
+    run() {
+        // run the collision without moving
+        this.checkCollision();
+        
+        // squishing?
         if (this.squishCount===-1) return;
         
         this.drawFilterAnimationFactor=1.0-(this.squishCount/this.SQUISH_TICK);

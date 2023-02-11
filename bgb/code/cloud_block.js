@@ -1,5 +1,9 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
-import PlayerSideScrollClass from './player_sidescroll.js';
+import BallClass from './ball.js';
+import ShieldClass from './shield.js';
+import ShurikinClass from './shurikin.js';
+import BombClass from './bomb.js';
+import FishClass from './fish.js';
 
 export default class CloudBlockClass extends SpriteClass
 {
@@ -35,31 +39,49 @@ export default class CloudBlockClass extends SpriteClass
         return(new CloudBlockClass(this.game,x,y,this.data));
     }
     
-    interactWithSprite(interactSprite,dataObj)
-    {
-        if (this.countDown===-1) this.countDown=this.POP_TICK;
+    pop() {
+        this.show=false;
+        this.countDown=this.REAPPEAR_TICK;
+        this.game.soundList.playAtSprite('pop',this,this.game.map.getSpritePlayer());
+        this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,500);
     }
     
-    run()
-    {
+    onCollideSprite(sprite) {
+        // colliding with ball, shield, shurikin, bomb, or fish instantly pops cloud
+        if (
+                (sprite instanceof BallClass) ||
+                (sprite instanceof ShieldClass) ||
+                (sprite instanceof ShurikinClass) ||
+                (sprite instanceof BombClass) ||
+                (sprite instanceof FishClass)) {
+                   this.pop();
+                   return;
+        }
+    }
+    
+    onStoodOnSprite(sprite) {
+        // if stood on and not alredy counting down, start pop countdown
+        if (this.countDown===-1) this.countDown=this.POP_TICK;
+    }
+
+    run() {
+        // run collision checks without moving
+        this.checkCollision();
+        
+        // nothing to do
         if (this.countDown===-1) return;
         
+        // otherwise run the pop
         this.countDown--;
         if (this.countDown>0) return;
         
-            // disappear
-            
+        // disappear
         if (this.show) {
-            this.show=false;
-            this.countDown=this.REAPPEAR_TICK;
-            this.game.soundList.playAtSprite('pop',this,this.game.map.getSpritePlayer());
-            
-            this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,500);
+            this.pop();
             return;
         }
         
-            // reappear
-            
+        // reappear
         this.show=true;
         this.countDown=-1;
     }

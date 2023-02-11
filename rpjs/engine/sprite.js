@@ -21,6 +21,10 @@ export default class SpriteClass {
         this.flipX=false;
         this.flipY=false;
         this.alpha=1.0;
+        this.flash=false;
+        this.resizeX=1.0;
+        this.resizeY=1.0;
+        
         this.drawFilter=null; // when the filter is non-null, it's a filter class that is used to draw the sprite instead of regular drawing
         this.drawFilterAnimationFactor=1.0; // this is an animation factor for any drawing, 0.0-1.0 from start to finish
         
@@ -31,7 +35,7 @@ export default class SpriteClass {
         this.gravityMaxValue=0;
         this.gravityAdd=0;
         this.gravityMoveY=0;
-        this.gravityPauseTick=-1;
+        this.gravityPauseTick=0;
         
         this.show=true;
         this.grounded=false;
@@ -72,6 +76,37 @@ export default class SpriteClass {
      * that happen when a map is started.
      */
     mapStartup() {
+    }
+    
+    /**
+     * Override this to react to this sprite hitting another sprite
+     * (will need to call one of the checkcollisions or another sprite calling
+     * that for this to happen.)
+     */
+    onCollideSprite(sprite) {
+    }
+    
+    /**
+     * Override this to react to this sprite hitting a tile
+     * (will need to call one of the checkcollisions or another sprite calling
+     * that for this to happen.)
+     */
+    onCollideTile(tileX,tileY,tileIdx) {
+    }
+    
+    onStandOnSprite(sprite) {
+    }
+    
+    onStoodOnSprite(sprite) {
+    }
+    
+    onStandOnTile(tileX,tileY,tileIdx) {
+    }
+    
+    onRiseIntoSprite(sprite) {
+    }
+    
+    onRiseIntoTile(tileX,tileY,tileIdx) {
     }
     
     /**
@@ -163,7 +198,13 @@ export default class SpriteClass {
         if (this.game.map.checkCollision(this)) {
             this.x-=mx;
             this.y-=my;
+            return(true);
         }
+        return(false);
+    }
+    
+    checkCollision() {
+        return(this.game.map.checkCollision(this));
     }
     
     clampX(min,max) {
@@ -183,6 +224,14 @@ export default class SpriteClass {
         return(Math.trunc(Math.sqrt((x*x)+(y*y))));
     }
     
+    findSpriteStandingOn() {
+        return(this.game.map.findSpriteStandingOn(this));
+    }
+    
+    getTileUnderSprite() {
+        return(this.game.map.getTileUnderSprite(this));
+    }
+    
     runGravity() {
         let y;
         
@@ -200,7 +249,7 @@ export default class SpriteClass {
             }
 
             if (y===-1) {
-                if (this.gravityPauseTick===-1) {
+                if (this.gravityPauseTick===0) {
                     this.y=Math.trunc(this.y+this.gravityAdd);
                     if (this.gravityAdd<=0.0) {
                         this.gravityAdd=this.gravityMinValue*this.gravityFactor;
@@ -246,6 +295,11 @@ export default class SpriteClass {
         }
     }
     
+    addGravity(gravityAdd,pauseTick) {
+        this.gravityMoveY+=gravityAdd;
+        this.gravityPauseTick=pauseTick;
+    }
+    
     delete() {
         this.removeFlag=true;
     }
@@ -264,7 +318,8 @@ export default class SpriteClass {
     }
     
     draw(ctx,offX,offY) {
-        let hasTransform;
+        let alpha,hasTransform;
+        let xAdd,yAdd;
         let x=(this.x+this.drawOffsetX)-offX;
         let y=((this.y-this.height)+this.drawOffsetY)-offY;
         
@@ -278,8 +333,12 @@ export default class SpriteClass {
             return;
         }
         
+        // flashing
+        alpha=1.0;
+        if (this.flash) alpha=((this.game.timestamp&0x4)===0)?0.5:0.9;
+        
         // any transforms
-        hasTransform=(this.flipX) || (this.flipY) || (this.alpha!==1.0);
+        hasTransform=(this.flipX) || (this.flipY) || (alpha!==1.0);
         if (hasTransform) {
             ctx.save();
             
@@ -306,11 +365,19 @@ export default class SpriteClass {
                 }
             }
             
-            if (this.alpha!==1.0) ctx.globalAlpha=this.alpha;
+            if (alpha!==1.0) ctx.globalAlpha=alpha;
+        }
+        
+        // any resize?
+        if ((this.resizeX!==1.0) && (this.resizeY!==1.0)) {
+            xAdd=0; // offset from X resize
+            yAdd=0; // offset from Y resize
         }
 
         // otherwise regular drawing
-        ctx.drawImage(this.currentImage,Math.trunc(x),Math.trunc(y));
+        else {
+            ctx.drawImage(this.currentImage,Math.trunc(x),Math.trunc(y));
+        }
         
         // restore any transforms
         if (hasTransform) {

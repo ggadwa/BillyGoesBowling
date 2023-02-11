@@ -1,7 +1,9 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
-import FlashFilterClass from '../../rpjs/filters/flash.js';
 import BallClass from './ball.js';
-import SpringClass from './spring.js';
+import ShieldClass from './shield.js';
+import ShurikinClass from './shurikin.js';
+import BombClass from './bomb.js';
+import FishClass from './fish.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
 
 export default class DrainPipeSnakeClass extends SpriteClass {
@@ -11,7 +13,7 @@ export default class DrainPipeSnakeClass extends SpriteClass {
         
         this.MAX_WALK_SPEED=5.0;
         this.ACCEL_SPEED=1.0;
-        this.INVINCIBLE_TICK=20;
+        this.INVINCIBLE_TICK=30;
         this.TILE_IDX_GROUND_LEFT_END=1;
         this.TILE_IDX_GROUND_RIGHT_END=3;
         this.TILE_IDX_GIRDER_LEFT_END=10;
@@ -38,8 +40,6 @@ export default class DrainPipeSnakeClass extends SpriteClass {
         
         this.flipX=(Math.random()>0.5); // start with random direction
         
-        this.flashDrawFilter=new FlashFilterClass();
-        
         Object.seal(this);
     }
     
@@ -50,6 +50,7 @@ export default class DrainPipeSnakeClass extends SpriteClass {
     breakPipe() {
         this.snakeHasPipe=false;
         this.invincibleCount=this.INVINCIBLE_TICK;
+        this.flash=true;
         this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),16,16,1.0,0.1,5,0.05,'particles/pipe',10,0.5,false,800);
         this.game.soundList.playAtSprite('pipe_break',this,this.game.map.getSpritePlayer()); 
     }
@@ -60,61 +61,71 @@ export default class DrainPipeSnakeClass extends SpriteClass {
         this.delete();
     }
     
-    hurt() {
-        if (this.invincibleCount>0) return;
+    onCollideSprite(sprite) {
+        // colliding with ball, shield, shurikin, bomb, or fish hurts snake
+        if (
+                (sprite instanceof BallClass) ||
+                (sprite instanceof ShieldClass) ||
+                (sprite instanceof ShurikinClass) ||
+                (sprite instanceof BombClass) ||
+                (sprite instanceof FishClass)) {
+                    if (this.invincibleCount>0) return;
+
+                    if (this.snakeHasPipe) {
+                        this.breakPipe();
+                    }
+                    else {
+                        this.kill();
+                    }
+                   return;
+        }
         
-        if (this.snakeHasPipe) {
-            this.breakPipe();
+        // colliding with player breaks pipe and turns snake around
+        if (sprite instanceof PlayerSideScrollClass) {
+            if (this.snakeHasPipe) this.breakPipe();
+            this.flipX=!this.flipX;
+            this.walkSpeed=0.0;
+            return;
         }
-        else {
-            this.kill();
-        }
+        
+        // colliding with any other sprite turns snake around
+        this.flipX=!this.flipX;
+        this.walkSpeed=0.0;
     }
     
-    collide() {
-        let playerSprite;
-        
-        if ((this.collideSprite instanceof BallClass) || (this.collideSprite instanceof ShieldClass)) {
-           this.hurt();
-           return;
-        }
-        
-        playerSprite=map.getSpritePlayer();
-        if (this.collideSprite===playerSprite) {
-            if (this.snakeHasPipe) this.breakPipe(); // hitting a player breaks the pipe if there
-            this.sendMessage(playerSprite,'hurt',null);
-        }
+    onCollideTile(tileX,tileY,tileIdx) {
+        // colliding with tiles turns snake around immediately
+        this.flipX=!this.flipX;
+        this.walkSpeed=0.0;
     }
     
-    processMessage(fromSprite,cmd,data) {
-        switch (cmd) {
-            case 'break_pipe':
-                if (this.snakeHasPipe) this.breakPipe();
-                return;
-            case 'hurt':
-                this.hurt();
-                return;
+    onStandOnTile(tileX,tileY,tileIdx) {
+        // we call this because stand on tile just gives us the first tile we are standing on and this
+        // gives us a more precise tile that we are centered on
+        tileIdx=this.getTileUnderSprite();
+        if (tileIdx===-1) return;
+        
+        // if we are on edge tiles, then turn around 
+        if (((tileIdx===this.TILE_IDX_GROUND_LEFT_END) || (tileIdx===this.TILE_IDX_GIRDER_LEFT_END)) && (this.flipX)) {
+            this.flipX=false;
+            return;
+        }
+        
+        if (((tileIdx===this.TILE_IDX_GROUND_RIGHT_END) || (tileIdx===this.TILE_IDX_GIRDER_RIGHT_END)) && (!this.flipX)) {
+            this.flipX=true;
         }
     }
     
     run() {
-        let map=this.game.map;
-        let maxSpeed,tileIdx,switchDirection;
+        let maxSpeed;
         
-        this.drawFilter=null;
-        
-        // special count when invincible from
-        // first ball hit  
+        // special count when invincible from broken pipe
         if (this.invincibleCount>0) {
-            this.drawFilter=this.flashDrawFilter;
-            this.drawFilterAnimationFactor=1.0-(this.invincibleCount/this.INVINCIBLE_TICK);
             this.invincibleCount--;
-            if (this.invincibleCount===0) this.drawFilter=null;
+            if (this.invincibleCount===0) this.flash=false;
         }
         
         // walk in direction until a collision
-        switchDirection=false;
-        
         maxSpeed=this.MAX_WALK_SPEED;
         if (!this.snakeHasPipe) maxSpeed*=2.0;
         
@@ -127,35 +138,9 @@ export default class DrainPipeSnakeClass extends SpriteClass {
             if (this.walkSpeed>maxSpeed) this.walkSpeed=maxSpeed;
         }
         
-        // run collisions, if we hit another sprite or tile, turn around
-        // immediately so we don't keep hitting it
+        // move the snake
         this.moveWithCollision(this.walkSpeed,0);
-        if (this.collideSprite!==null) {
-            this.collide();
-            switchDirection=true;
-            this.walkSpeed=0.0;
-        }
-        if (this.collideTileIdx!==-1) {
-            switchDirection=true;
-            this.walkSpeed=0.0;
-        }
-        
-        // if we are on edge tiles, then turn around 
-        tileIdx=map.getTileUnderSprite(this);
-        if (((tileIdx===this.TILE_IDX_GROUND_LEFT_END) || (tileIdx===this.TILE_IDX_GIRDER_LEFT_END)) && (this.flipX)) switchDirection=true;
-        if (((tileIdx===this.TILE_IDX_GROUND_RIGHT_END) || (tileIdx===this.TILE_IDX_GIRDER_RIGHT_END)) && (!this.flipX)) switchDirection=true;
-        
-        // check for standing on a cloud or button
-        if (this.standSprite!==null) {
-            if ((this.standSprite instanceof SpringClass) || (this.standSprite instanceof PlayerSideScrollClass)) {
-                this.standSprite.interactWithSprite(this,null);
-            }
-        }
-        
-        // switch direction
-        if (switchDirection) {
-            this.flipX=!this.flipX;
-        }
+        this.runGravity();
         
         // image
         if (this.snakeHasPipe) {

@@ -1,6 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import WarpFilterClass from '../../rpjs/filters/warp.js';
-import FlashFilterClass from '../../rpjs/filters/flash.js';
 import BallClass from './ball.js';
 import ShieldClass from './shield.js';
 import CloudBlockClass from './cloud_block.js';
@@ -73,12 +72,11 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.walkAnimationFrameCount=-1;
         this.lastGroundY=0;
         
-        this.invincibleCount=-1;
-        this.shieldCount=-1;
-        this.deathCount=-1;
-        this.warpCount=-1;
+        this.invincibleCount=0;
+        this.shieldCount=0;
+        this.deathCount=0;
+        this.warpCount=0;
         
-        this.flashDrawFilter=new FlashFilterClass();
         this.warpDrawFilter=new WarpFilterClass();
         
         this.ballSprite=null;
@@ -119,6 +117,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         }
         
         this.invincibleCount=this.INVINCIBLE_TICK;
+        this.flash=true;
     }
     
     killPlayer() {
@@ -126,10 +125,11 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.gravityFactor=0;
         this.gravityMoveY=0;
         this.alpha=1.0;
-        this.invincibleCount=-1;
-        this.shieldCount=-1;
-        this.drawFilter=null;
+        this.invincibleCount=0;
+        this.shieldCount=0;
         this.flipX=false;
+        this.flash=false;
+        this.canCollide=false;
         
         this.game.map.getFirstSpriteOfType(BallClass).show=false;
         this.game.musicList.stop();
@@ -139,34 +139,27 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.deathCount=this.DEATH_TICK;
     }
     
-    collide() {
-        if (this.collideSprite instanceof KingGhastlyClass) {
-            if (this.standSprite===this.collideSprite) {
-                this.killPlayer(); // king ghastly is a special sprite that kills instantly if you stand on him, so you can get around him
-            }
-            else {
+    onCollideSprite(sprite) {
+        if (
+            (sprite instanceof DrainPipeSnakeClass) ||
+            (sprite instanceof NinjaBunnyClass) ||
+            (sprite instanceof ShurikinClass) ||
+            (sprite instanceof RotoCarrotClass) ||
+            (sprite instanceof BombClass) ||
+            (sprite instanceof FishClass) ||
+            (sprite instanceof ExecutionerClass) ||
+            (sprite instanceof AxeClass) ||
+            (sprite instanceof MrCPUClass) ||
+            (sprite instanceof BoneyOneEyeClass) ||
+            (sprite instanceof EyeClass) ||
+            (sprite instanceof KingGhastlyClass)) {
                 this.hurtPlayer();
-            }
-            return;
+                return;
         }
-        if (this.collideSprite instanceof DrainPipeSnakeClass) {
-            this.sendMessage(this.collideSprite,'break_pipe',null); // pipe snakes break their pipes when hurting player
-            this.hurtPlayer();
-            return;
-        }
-        if (this.collideSprite instanceof NinjaBunnyClass) {
-            this.sendMessage(this.collideSprite,'kill',null); // ninja bunnies die hitting player
-            this.hurtPlayer();
-            return;
-        }
-        if ((this.collideSprite instanceof ShurikinClass) || (this.collideSprite instanceof RotoCarrotClass) || (this.collideSprite instanceof BombClass) || (this.collideSprite instanceof FishClass) || (this.collideSprite instanceof MrCPUClass) || (this.collideSprite instanceof EyeClass) || (this.collideSprite instanceof AxeClass)) {
-            this.hurtPlayer();
-            return;
-        }
-        if ((this.collideSprite instanceof ExecutionerClass) || (this.collideSprite instanceof BoneyOneEyeClass)) {
-            if (this.standSprite!==this.collideSprite) this.hurtPlayer(); // ok to stand on these sprites
-            return;
-        }
+    }
+    
+    onStoodOnSprite(sprite) {
+        if (sprite instanceof KingGhastlyClass) this.killPlayer(); // king ghastly instant kills players so you can't get around him by standing on top
     }
     
     processMessage(fromSprite,cmd,data) {
@@ -174,9 +167,6 @@ export default class PlayerSideScrollClass extends SpriteClass {
             case 'start_shield':
                 this.shieldCount=this.shieldSprite.LIFE_TICK;
                 this.sendMessage(this.shieldSprite,'start_shield',null);
-                return;
-            case 'hurt':
-                this.hurtPlayer();
                 return;
         }
     }
@@ -196,43 +186,31 @@ export default class PlayerSideScrollClass extends SpriteClass {
         let goLeft, goRight;
         let map=this.game.map;
         
-        this.drawFilter=null;
-        
         // warping? 
-        if (this.warpCount!==-1) {
+        if (this.warpCount!==0) {
             this.setCurrentImage('sprites/billy_walk_1');
-            this.drawFilter=this.warpDrawFilter;
-            this.drawFilterAnimationFactor=1.0-(this.warpCount/this.WARP_TICK);
             this.warpCount--;
-            if (this.warpCount<=0) this.game.gotoMap('world_main');
+            if (this.warpCount===0) this.game.gotoMap('world_main');
             return;
         }
         
         // dead?
-        if (this.deathCount!==-1) {
+        if (this.deathCount!==0) {
             this.setCurrentImage('sprites/gravestone');
             this.deathCount--;
-            if (this.deathCount<=0) this.game.gotoMap('world_main');
+            if (this.deathCount===0) this.game.gotoMap('world_main');
             return;
         }
         
         // invincible
-        if (this.invincibleCount!==-1) {
-            this.drawFilter=this.flashDrawFilter;
-            this.drawFilterAnimationFactor=1.0-(this.invincibleCount/this.INVINCIBLE_TICK);
+        if (this.invincibleCount!==0) {
             this.invincibleCount--;
-            if (this.invincibleCount<=0) {
-                this.invincibleCount=-1;
-                this.drawFilter=null;
-            }
+            if (this.invincibleCount===0) this.flash=false;
         }
         
         // shield
-        if (this.shieldCount!==-1) {
+        if (this.shieldCount!==0) {
             this.shieldCount--;
-            if (this.shieldCount<=0) {
-                this.shieldCount=-1;
-            }
         }
         
         // walk left and right
@@ -305,13 +283,9 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.moveWithCollision(this.moveX,0);
         this.shieldSprite.canCollide=true;
         this.ballSprite.canCollide=true;
+        
         this.clampX(0,(map.width-this.width));
         
-        // check for colliding with things that can hurt you
-        if (this.collideSprite!=null) {
-            this.collide();
-        }
-
         // jumping
         if ((this.game.input.isKeyDown("Space")) && (this.grounded)) {
             if (this.moveX<0.0) {
@@ -320,8 +294,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
             if (this.moveX>0.0) {
                 this.moveX=this.JUMP_START_SPEED;
             }
-            this.gravityMoveY+=this.JUMP_HEIGHT;
-            this.gravityPauseTick=this.JUMP_GRAVITY_PAUSE;
+            this.addGravity(this.JUMP_HEIGHT,this.JUMP_GRAVITY_PAUSE);
         }
         
         this.runGravity();
@@ -352,13 +325,6 @@ export default class PlayerSideScrollClass extends SpriteClass {
         // we use that to tell the ball's location
         // for bowling   
         if (this.grounded) this.lastGroundY=this.y;
-        
-        // check for standing on a cloud or button
-        if (this.standSprite!==null) {
-            if ((this.standSprite instanceof CloudBlockClass) || (this.standSprite instanceof ButtonClass) || (this.standSprite instanceof SpringClass)) {
-                this.standSprite.interactWithSprite(this,null);
-            }
-        }
         
         // check for hitting liquid
         if (map.liquidY!==-1) {

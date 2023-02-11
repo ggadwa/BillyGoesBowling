@@ -1,6 +1,4 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
-import BreakBlockClass from '../code/break_block.js';
-import CloudBlockClass from './cloud_block.js';
 import BallClass from './ball.js';
 
 export default class FishClass extends SpriteClass {
@@ -73,17 +71,8 @@ export default class FishClass extends SpriteClass {
         // or cloud/break block sprite changes direction
         if (map.checkCollision(this)) {
             if (this.collideSprite!==null) {
-                if ((this.collideSprite instanceof CloudBlockClass) || (this.collideSprite instanceof BreakBlockClass)) {
-                    this.collideSprite.interactWithSprite(this,null);
-                    this.removeFish();
-                    return;
-                }
-            }
-            
-            if (this.collideSprite===playerSprite) {
-                this.collideSprite.interactWithSprite(this,null);
+                this.sendMessage(this.collideSprite,'hurt',null);
                 this.removeFish();
-                return;
             }
             
             this.x-=this.travelX;

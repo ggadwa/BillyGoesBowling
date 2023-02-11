@@ -87,7 +87,7 @@ export default class ExplodeBlockClass extends SpriteClass
         sprites=this.game.map.getSpritesWithinBox((this.x-16),(this.y-80),(this.x+80),(this.y+16),this,null);
         
         for (sprite of sprites) {
-            sprite.interactWithSprite(this,null);
+            this.sendMessage(sprite,'hurt',null);
         }
         
         cx=this.x+Math.trunc(this.width*0.5);

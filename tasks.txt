@@ -1,8 +1,13 @@
 //// TO DO
 
+- get rid of filters
+- why does spring break?
+- do button by resizeY
 
 - replace interactWithSprite with sendMessage(callSprite,cmd,data)
 - other side overrides processMessage(fromSprite,cmd,data)
+
+- get rid of map.checkCollision, call directly on sprite
 
 - need hurt for player collisions
 
@@ -16,7 +21,6 @@
 - need transitions between worlds (closing squares)
 
 - trunc all drawimage coords
-- why does snake face wrong way when hurt?
 
 - move game time to 60 fps
 
@@ -42,13 +46,12 @@
 - carrots fire bombs at random times
 - make executioner always jump around and always throw axes
 - last boss can kill billy multiple times when grave
-- add bush, small hill, and walk cycle to world map
+- add bush, small hill to world map
 - better water on world map?
 
 - do awaits on all the initialization loops in game.js
 * reverse particles
 - snakes are the worst art, update them
-- readjust the bounce pads (need slower push)
 - add keys/secret exits (one could be having to race explosives throughout level for key at end before it falls in water)
 - carrot needs shading
 

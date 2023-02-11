@@ -245,9 +245,10 @@ export default class MapClass {
             if (sprite===checkSprite) continue;
             if (!sprite.show) continue;
             if (!sprite.canCollide) continue;
-            
             if (checkSprite.collide(sprite)) {
                 checkSprite.collideSprite=sprite;
+                sprite.onCollideSprite(checkSprite);
+                checkSprite.onCollideSprite(sprite);
                 return(true);
             }
         }
@@ -282,6 +283,7 @@ export default class MapClass {
                 if ((rgt<=dx) || (lft>=(dx+this.MAP_TILE_SIZE))) continue;
                 
                 checkSprite.collideTileIdx=tileIdx;
+                checkSprite.onCollideTile(gx,gy,tileIdx);
                 
                 return(true);
             }
@@ -313,6 +315,8 @@ export default class MapClass {
                 y=sprite.y-sprite.height;
                 if ((y<ty) || (ty===-1)) {
                     checkSprite.standSprite=sprite;
+                    checkSprite.onStandOnSprite(sprite);
+                    sprite.onStoodOnSprite(checkSprite);
                     ty=y;
                 }
             }
@@ -354,6 +358,7 @@ export default class MapClass {
                 if ((dy<ty) || (ty===-1)) {
                     checkSprite.standSprite=null;
                     checkSprite.standTileIdx=tileIdx;
+                    checkSprite.onStandOnTile(gx,gy,tileIdx);
                     ty=dy;
                 }
             }
@@ -382,6 +387,7 @@ export default class MapClass {
                 y=sprite.y;
                 if ((y<ty) || (ty===-1)) {
                     checkSprite.riseSprite=sprite;
+                    checkSprite.onRiseIntoSprite(sprite);
                     ty=y;
                 }
             }
@@ -423,12 +429,24 @@ export default class MapClass {
                 if ((dy<ty) || (ty===-1)) {
                     checkSprite.riseSprite=null;
                     checkSprite.riseTileIdx=tileIdx;
+                    checkSprite.onRiseIntoTile(gx,gy,tileIdx);
                     ty=dy+this.MAP_TILE_SIZE;
                 }
             }
         }
         
         return(ty);
+    }
+    
+    findSpriteStandingOn(checkSprite) {
+        let sprite;
+
+        for (sprite of this.sprites) {
+            if (sprite===checkSprite) continue;
+            if (sprite.standSprite===checkSprite) return(sprite);
+        }
+        
+        return(null);
     }
     
     getSpritesWithinBox(lft,top,rgt,bot,ignoreSprite,filterClass) {
