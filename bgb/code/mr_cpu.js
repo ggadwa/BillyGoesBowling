@@ -1,5 +1,4 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
-import GrayFilterClass from '../../rpjs/filters/gray.js';
 import CloudBlockClass from './cloud_block.js';
 import BreakBlockStrongClass from '../code/break_block_strong.js';
 import ExplodeBlockClass from '../code/explode_block.js';
@@ -37,8 +36,6 @@ export default class MrCPUClass extends SpriteClass
         this.canCollide=true;
         this.canStandOn=true;
         
-        this.grayDrawFilter=new GrayFilterClass();
-        
         Object.seal(this);
     }
     
@@ -61,7 +58,7 @@ export default class MrCPUClass extends SpriteClass
         let time, oldTime;
         let map=this.game.map;
         let sprites,sprite,speed,mx;
-        let playerSprite=map.getSpritePlayer();
+        let playerSprite=this.getPlayerSprite();
         
             // the first time we get called is
             // when we first appear, so play sound fx
@@ -69,7 +66,7 @@ export default class MrCPUClass extends SpriteClass
         if (this.show) {
             if (this.isFirstShow) {
                 this.isFirstShow=false;
-                this.game.soundList.play('boss_appear');
+                this.playSound('boss_appear');
             }
         }
         
@@ -82,7 +79,7 @@ export default class MrCPUClass extends SpriteClass
             
             this.isDropping=false;
             map.shake(10);
-            this.game.soundList.play('thud');
+            this.playSound('thud');
         }
         
             // if we are dead, do nothing
@@ -95,13 +92,10 @@ export default class MrCPUClass extends SpriteClass
             // hit the liquid?
          
         if (this.y>=map.liquidY) {
-            playerSprite.warpOut();
             this.isDead=true;
-            this.gravityFactor=0.0;
-            this.motion.y=0;
-            this.drawFilter=this.grayDrawFilter;
+            this.stopAllGravity();
             this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
-            this.game.soundList.play('boss_dead');
+            this.playSound('boss_dead');
             
             // update the state
             this.game.setData(('boss_'+map.name),true);
@@ -117,6 +111,9 @@ export default class MrCPUClass extends SpriteClass
             this.game.persistData();
             
             map.forceCameraSprite=this;
+            
+            // warp player out
+            this.sendMessage(this.getPlayerSprite(),'warp_out',null);
             return;
         }
              
@@ -133,7 +130,7 @@ export default class MrCPUClass extends SpriteClass
             
             if ((this.collideTileIdx===this.TILE_IDX_BUMP_1) || (this.collideTileIdx===this.TILE_IDX_BUMP_2)) {
                 this.direction=-this.direction;
-                this.motion.y=this.JUMP_HEIGHT;
+                this.addGravity(this.JUMP_HEIGHT,0);
                 
                 return;
             }
@@ -145,7 +142,7 @@ export default class MrCPUClass extends SpriteClass
         if (this.standSprite===playerSprite) {
             this.standSprite.interactWithSprite(this,null);
             this.direction=-this.direction;
-            this.motion.y=this.JUMP_HEIGHT;
+            this.addGravity(this.JUMP_HEIGHT);
             
             return;
         }
@@ -175,11 +172,11 @@ export default class MrCPUClass extends SpriteClass
         }
         
         map.shake(4);
-        this.game.soundList.play('thud');
+        this.playSound('thud');
 
             // jump back up
         
-        this.motion.y=this.JUMP_HEIGHT;
+        this.addGravity(this.JUMP_HEIGHT);
         this.speedIdx++;
         if (this.speedIdx>=this.SPEEDS.length) this.speedIdx=0;
     }

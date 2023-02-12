@@ -1,5 +1,4 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
-import SquishFilterClass from '../../rpjs/filters/squish.js';
 
 export default class ButtonClass extends SpriteClass {
     constructor(game,x,y,data) {
@@ -12,7 +11,7 @@ export default class ButtonClass extends SpriteClass {
         this.addImage('sprites/button');
         this.setCurrentImage('sprites/button');
         
-        this.squishCount=-1;
+        this.squishCount=0;
         
         this.show=true;
         this.gravityFactor=0.2;
@@ -20,8 +19,6 @@ export default class ButtonClass extends SpriteClass {
         this.gravityMaxValue=15;
         this.canCollide=true;
         this.canStandOn=true;
-        
-        this.squishDrawFilter=new SquishFilterClass();
         
         Object.seal(this);
     }
@@ -34,7 +31,7 @@ export default class ButtonClass extends SpriteClass {
         let mode;
         
         // if squishing we can't step on again
-        if (this.squishCount!==-1) return;
+        if (this.squishCount!==0) return;
         
         // get the action
         mode=this.data.get('mode');
@@ -53,27 +50,26 @@ export default class ButtonClass extends SpriteClass {
         }
         
         // click sound
-        this.game.soundList.play('click');
+        this.playSound('click');
         
         // start the squish
         this.squishCount=this.SQUISH_TICK;
-        this.drawFilter=this.squishDrawFilter;
         
         this.canCollide=false;
         this.canStandOn=false;
     }
     
     run() {
-        // run the collision without moving
-        this.checkCollision();
+        // if not squishing just check collisions
+        if (this.squishCount===0) {
+            this.checkCollision();
+            return;
+        }
         
-        // squishing?
-        if (this.squishCount===-1) return;
-        
-        this.drawFilterAnimationFactor=1.0-(this.squishCount/this.SQUISH_TICK);
+        this.resizeY=(this.squishCount-1)/this.SQUISH_TICK;
         this.squishCount--;
         
-        if (this.squishCount<=0) {
+        if (this.squishCount===0) {
             this.delete();
         }
     }

@@ -54,11 +54,11 @@ export default class PinClass extends SpriteClass {
         // and save the data
         this.game.persistData();
         
-        this.game.soundList.play('pickup');
+        this.playSound('pickup');
         
         this.delete();
         
         // warp out the player
-        this.game.map.getSpritePlayer().warpOut();
+        this.sendMessage(this.getPlayerSprite(),'warp_out',null);
     }
 }

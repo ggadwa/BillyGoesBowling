@@ -26,7 +26,7 @@ export default class DoorClass extends SpriteClass {
     
     run() {
         let door;
-        let playerSprite=this.game.map.getSpritePlayer();
+        let playerSprite=this.getPlayerSprite();
         
         // up jumps to other door
         // we always clear this so you don't bounce between doors
@@ -41,7 +41,7 @@ export default class DoorClass extends SpriteClass {
         
         this.game.map.resetOffsetY();
         
-        this.game.soundList.play('door');
+        this.playSound('door');
     }
     
 }

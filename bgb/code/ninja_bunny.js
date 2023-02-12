@@ -1,21 +1,21 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import BallClass from './ball.js';
+import ShieldClass from './shield.js';
+import BombClass from './bomb.js';
+import FishClass from './fish.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
 import ShurikinClass from './shurikin.js';
 
-export default class NinjaBunnyClass extends SpriteClass
-{
-    constructor(game,x,y,data)
-    {
+export default class NinjaBunnyClass extends SpriteClass {
+    constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        this.BUNNY_JUMP_HEIGHT=-55;
+        this.BUNNY_JUMP_HEIGHT=-25;
         this.BUNNY_AIR_SPEED=8;
         this.BUNNY_PAUSE_TICK=45;
         this.BUNNY_ACTIVATE_DISTANCE=800;
         
-            // variables
-            
+        // variables  
         this.bunnyActive=false;
         this.bunnyPause=0;
         this.bunnyJumpDirection=-1;
@@ -23,8 +23,7 @@ export default class NinjaBunnyClass extends SpriteClass
         this.bunnyBounceBack=false;
         this.lastMotionY=0;
         
-            // setup
-            
+        // setup
         this.addImage('sprites/ninja_bunny');
         this.addImage('sprites/ninja_bunny_jump');
         this.setCurrentImage('sprites/ninja_bunny');
@@ -39,57 +38,53 @@ export default class NinjaBunnyClass extends SpriteClass
         Object.seal(this);
     }
     
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
         return(new NinjaBunnyClass(this.game,x,y,this.data));
     }
     
-    jumpTowardsSprite(sprite)
-    {
+    jumpTowardsSprite(sprite) {
         this.bunnyJumpDirection=Math.sign(sprite.x-this.x);
-        if (this.motion.y>=0) this.motion.y+=this.BUNNY_JUMP_HEIGHT;
+        if (this.getCurrentGravity()>=0) this.addGravity(this.BUNNY_JUMP_HEIGHT,0);
         
-        this.game.soundList.playAtSprite('jump',this,this.game.map.getSpritePlayer());
+        this.playSound('jump');
     }
     
-    jumpAwayFromSprite(sprite)
-    {
+    jumpAwayFromSprite(sprite) {
         this.jumpTowardsSprite(sprite);
         this.bunnyJumpDirection=-this.bunnyJumpDirection;
         
-        this.game.soundList.playAtSprite('jump',this,this.game.map.getSpritePlayer());
+        this.playSound('jump');
     }
     
     kill() {
         this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,600);
-        this.game.soundList.playAtSprite('monster_die',this,this.game.map.getSpritePlayer());
+        this.playSound('monster_die');
         this.delete();
     }
     
-    interactWithSprite(interactSprite,dataObj)
-    {
-            // ball destroys bunny
-            
-        if (interactSprite instanceof BallClass) {
-            this.kill();
+    onCollideSprite(sprite) {
+        // colliding with ball, shield, bomb, or fish hurts bunny
+        // no shurikins because they will hit each other
+        if (
+                (sprite instanceof BallClass) ||
+                (sprite instanceof ShieldClass) ||
+                (sprite instanceof BombClass) ||
+                (sprite instanceof FishClass)) {
+                    this.kill();
+                    return;
         }
         
-            // hitting the player makes the
-            // bunny jump backwards
-            
-        if (interactSprite instanceof PlayerSideScrollClass) this.jumpAwayFromSprite(interactSprite);
-    }
-    
-    processMessage(fromSprite,cmd,data) {
-        switch (cmd) {
-            case 'kill':
-                this.kill();
-                return;
+        // colliding with player kills bunny
+        if (sprite instanceof PlayerSideScrollClass) {
+            this.kill();
+            return;
         }
+        
+        // another other sprite turns the bunny around
+        this.jumpAwayFromSprite(sprite);
     }
     
-    fireShurikin(dist)
-    {
+    fireShurikin(dist) {
         let sx,sy;
         
         sx=Math.trunc(this.width*0.8)*Math.sign(dist);
@@ -99,35 +94,32 @@ export default class NinjaBunnyClass extends SpriteClass
         this.game.map.addSprite(new ShurikinClass(this.game,sx,sy,null));
     }
     
-    run()
-    {
-        let map=this.game.map;
-        let playerSprite=map.getSpritePlayer();
-        let checkSprite;
+    run() {
+        let playerSprite=this.getPlayerSprite();
         
-            // button is only active at
-            // certain distance from player
-            
+        // bunny is only active at
+        // certain distance from player
         let dist=playerSprite.x-this.x;
         
         this.bunnyActive=(Math.abs(dist)<this.BUNNY_ACTIVATE_DISTANCE);
         if (!this.bunnyActive) return;
         
-            // only move if jumping
-        
+        // only move if jumping
         if (!this.grounded) {    
             this.moveWithCollision((this.BUNNY_AIR_SPEED*this.bunnyJumpDirection),0);
         }
         
-            // image
-            
-        this.setCurrentImage((this.motion.y<0)?'sprites/ninja_bunny_jump':'sprites/ninja_bunny');
+        // gravity
+        this.runGravity();
         
-            // if standing on top or colliding with
-            // another sprite, then if the player we always
-            // jump away, else if any other sprite, we jump
-            // away if grounded
-         
+        // image 
+        this.setCurrentImage((this.getCurrentGravity()<0)?'sprites/ninja_bunny_jump':'sprites/ninja_bunny');
+        
+        // if standing on top or colliding with
+        // another sprite, then if the player we always
+        // jump away, else if any other sprite, we jump
+        // away if grounded
+         /*
         checkSprite=null;
         
         if (this.standSprite!==null) checkSprite=this.standSprite;
@@ -139,7 +131,7 @@ export default class NinjaBunnyClass extends SpriteClass
                 this.jumpAwayFromSprite(checkSprite);
             }
         }
-        
+        */
             // if we have started falling, than launch
             // one shurikin
             
@@ -149,11 +141,11 @@ export default class NinjaBunnyClass extends SpriteClass
         }
         else {
             if (this.bunnyShurikinOK) {
-                if ((this.lastMotionY<0) && (this.motion.y>=0)) {
+                if ((this.lastMotionY<0) && (this.getCurrentGravity()>=0)) {
                     this.fireShurikin(dist);
                     this.bunnyShurikinOK=false;
                 }
-                this.lastMotionY=this.motion.y;
+                this.lastMotionY=this.getCurrentGravity();
             }
         }
         

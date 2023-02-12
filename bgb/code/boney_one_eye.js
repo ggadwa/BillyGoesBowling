@@ -1,5 +1,4 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
-import GrayFilterClass from '../../rpjs/filters/gray.js';
 import CloudBlockClass from './cloud_block.js';
 import BreakBlockStrongClass from '../code/break_block_strong.js';
 import BallClass from './ball.js';
@@ -33,8 +32,6 @@ export default class BoneyOneEyeClass extends SpriteClass
         this.canCollide=true;
         this.canStandOn=true;
         
-        this.grayDrawFilter=new GrayFilterClass();
-        
         Object.seal(this);
     }
     
@@ -64,7 +61,7 @@ export default class BoneyOneEyeClass extends SpriteClass
         
         this.game.map.addSprite(new EyeClass(this.game,x,y,null));
         
-        this.game.soundList.playAtSprite('jump',this,this.game.map.getSpritePlayer());
+        this.playSound('jump');
     }
     
     run()
@@ -72,7 +69,6 @@ export default class BoneyOneEyeClass extends SpriteClass
         let time, oldTime;
         let sprite,sprites;
         let map=this.game.map;
-        let playerSprite=map.getSpritePlayer();
         
             // the first time we get called is
             // when we first appear, so play sound fx
@@ -80,7 +76,7 @@ export default class BoneyOneEyeClass extends SpriteClass
         if (this.show) {
             if (this.isFirstShow) {
                 this.isFirstShow=false;
-                this.game.soundList.play('boss_appear');
+                this.playSound('boss_appear');
             }
         }
                 
@@ -95,7 +91,7 @@ export default class BoneyOneEyeClass extends SpriteClass
             this.isFalling=false;
             
             map.shake(10);
-            this.game.soundList.play('thud');
+            this.playSound('thud');
         }
         
             // dead, do nothig
@@ -108,12 +104,10 @@ export default class BoneyOneEyeClass extends SpriteClass
             // hit the liquid?
          
         if (this.y>=map.liquidY) {
-            playerSprite.warpOut();
             this.isDead=true;
             this.gravityFactor=0.0;
-            this.drawFilter=this.grayDrawFilter;
             this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
-            this.game.soundList.play('boss_dead');
+            this.playSound('boss_dead');
             
             // update the state
             this.game.setData(('boss_'+map.name),true);
@@ -129,6 +123,9 @@ export default class BoneyOneEyeClass extends SpriteClass
             this.game.persistData();
             
             map.forceCameraSprite=this;
+            
+            // warp player out
+            this.sendMessage(this.getPlayerSprite(),'warp_out',null);
             return;
         }
         
@@ -142,7 +139,7 @@ export default class BoneyOneEyeClass extends SpriteClass
             if (this.grounded) {
                 this.isFalling=false;
                 map.shake(4);
-                this.game.soundList.play('thud');
+                this.playSound('thud');
             }
         }
         

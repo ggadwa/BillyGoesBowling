@@ -53,7 +53,7 @@ export default class ExplodeBlockClass extends SpriteClass
             this.countDown=3;
             this.countDownTick=this.COUNT_DOWN_TICK_WAIT;
             this.setCurrentImage('sprites/explode_block_'+this.countDown);
-            this.game.soundList.playAtSprite('bomb_tick',this,this.game.map.getSpritePlayer());
+            this.playSound('bomb_tick');
         }
     }
     
@@ -75,7 +75,7 @@ export default class ExplodeBlockClass extends SpriteClass
 
         if (this.countDown>=0) {
             this.setCurrentImage('sprites/explode_block_'+this.countDown);
-            this.game.soundList.playAtSprite('bomb_tick',this,this.game.map.getSpritePlayer());
+            this.playSound('bomb_tick');
             return;
         }
 
@@ -96,7 +96,7 @@ export default class ExplodeBlockClass extends SpriteClass
         this.game.map.addParticle(cx,cy,35,200,0.8,0.01,8,0.02,'particles/explode_red',16,0.3,false,550);
         this.game.map.addParticle(cx,cy,25,140,0.7,0.01,6,0.01,'particles/explode_orange',8,0.25,false,540);
         this.game.map.addParticle(cx,cy,15,60,0.6,0.01,4,0.005,'particles/explode_yellow',2,0.2,false,530);
-        this.game.soundList.playAtSprite('explode',this,this.game.map.getSpritePlayer());
+        this.playSound('explode');
         
         this.delete();
     }

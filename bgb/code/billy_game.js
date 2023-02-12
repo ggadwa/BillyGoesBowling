@@ -385,7 +385,7 @@ export default class BillyGameClass extends GameClass
     drawUI() {
         let count,mx,lx,rx,dx,wid,requiredPinCount,health;
         let time,min,sec,timeStr;
-        let playerSprite=this.map.getSpritePlayer();
+        let playerSprite=this.map.getPlayerSprite();
         
         // side scrolling UI 
         if (playerSprite instanceof PlayerSideScrollClass) {

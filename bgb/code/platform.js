@@ -38,7 +38,7 @@ export default class PlatformClass extends SpriteClass
     
     run()
     {
-        let playerSprite=this.game.map.getSpritePlayer();
+        let playerSprite=this.getPlayerSprite();
         
             // are we paused?
             

@@ -1,5 +1,4 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
-import GrayFilterClass from '../../rpjs/filters/gray.js';
 import CloudBlockClass from './cloud_block.js';
 import BreakBlockClass from '../code/break_block.js';
 import ExplodeBlockClass from '../code/explode_block.js';
@@ -36,8 +35,6 @@ export default class KingGhastlyClass extends SpriteClass
         this.canCollide=true;
         this.canStandOn=true;
         
-        this.grayDrawFilter=new GrayFilterClass();
-        
         Object.seal(this);
     }
     
@@ -73,14 +70,13 @@ export default class KingGhastlyClass extends SpriteClass
         }
         
         map.shake(4);
-        this.game.soundList.play('thud');
+        this.playSound('thud');
     }
     
     run()
     {
         let time, oldTime;
         let map=this.game.map;
-        let playerSprite=map.getSpritePlayer();
         
             // the first time we get called is
             // when we first appear, so play sound fx
@@ -88,7 +84,7 @@ export default class KingGhastlyClass extends SpriteClass
         if (this.show) {
             if (this.isFirstShow) {
                 this.isFirstShow=false;
-                this.game.soundList.play('boss_appear');
+                this.playSound('boss_appear');
             }
         }
         
@@ -101,7 +97,7 @@ export default class KingGhastlyClass extends SpriteClass
             
             this.isDropping=false;
             map.shake(10);
-            this.game.soundList.play('thud');
+            this.playSound('thud');
         }
         
             // dead, do nothig
@@ -114,12 +110,10 @@ export default class KingGhastlyClass extends SpriteClass
             // hit the liquid?
          
         if (this.y>=map.liquidY) {
-            playerSprite.warpOut();
             this.isDead=true;
             this.gravityFactor=0.0;
-            this.drawFilter=this.grayDrawFilter;
             this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
-            this.game.soundList.play('boss_dead');
+            this.playSound('boss_dead');
             
             // update the state
             this.game.setData(('boss_'+map.name),true);
@@ -135,6 +129,9 @@ export default class KingGhastlyClass extends SpriteClass
             this.game.persistData();
             
             map.forceCameraSprite=this;
+            
+            // warp player out
+            this.sendMessage(this.getPlayerSprite(),'warp_out',null);
             return;
         }
 
@@ -168,7 +165,7 @@ export default class KingGhastlyClass extends SpriteClass
             this.x-=this.GHASTLY_SPEED;
             
             if (this.grounded) {
-                this.motion.y=this.JUMP_HEIGHT;
+                this.addGravity(this.JUMP_HEIGHT,0);
                 
                 if (this.collideSprite!==null) {
                     if (this.collideSprite instanceof BreakBlockClass) this.backupCount=this.BACKUP_TICK;

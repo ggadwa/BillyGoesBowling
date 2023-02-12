@@ -62,14 +62,14 @@ export default class BallClass extends SpriteClass {
     
     returnBall(showDestroy) {
         let map=this.game.map;
-        let playerSprite=map.getSpritePlayer();
+        let playerSprite=this.getPlayerSprite();
         let halfWid=Math.trunc(this.width*0.5);
         let halfHigh=Math.trunc(this.height*0.5);
         
         // ball destroyed
         if (showDestroy) {
             map.addParticle((this.x+halfWid),(this.y-halfHigh),8,8,1.0,0.1,4,0.03,'particles/ball',16,0.5,false,500);
-            this.game.soundList.playAtSprite('ball_break',this,playerSprite);
+            this.playSound('ball_break');
         }
         
         // reset position and reform
@@ -80,12 +80,12 @@ export default class BallClass extends SpriteClass {
         this.y=(playerSprite.y-playerSprite.height)-this.HEAD_PIXEL_DISTANCE;
         this.reformParticle=this.game.map.addParticle((this.x+halfWid),(this.y-halfHigh),8,16,1.0,0.1,6,0.03,'particles/ball',16,0.5,true,this.REFORM_LIFE_TICK);
         
-        this.game.soundList.playAtSprite('ball_reform',this,playerSprite);
+        this.playSound('ball_reform');
     }
     
     run() {
         let map=this.game.map;
-        let playerSprite=map.getSpritePlayer();
+        let playerSprite=this.getPlayerSprite();
         let didCollide;
         let px,py,lftEdge,rgtEdge,topEdge,botEdge,tick;
         let xOffset, yOffset, rad;
@@ -264,7 +264,7 @@ export default class BallClass extends SpriteClass {
                 this.travelYBottom=(Math.trunc(playerSprite.lastGroundY/map.MAP_TILE_SIZE)*map.MAP_TILE_SIZE)-Math.trunc((map.MAP_TILE_SIZE-this.height)*0.5);
                 if (!playerSprite.grounded) this.travelYBottom-=map.MAP_TILE_SIZE;
                 
-                this.game.soundList.playAtSprite('bowl',this,playerSprite);
+                this.playSound('bowl');
             }
             
             // bowls up and back down  
@@ -273,7 +273,7 @@ export default class BallClass extends SpriteClass {
                 this.travelX=playerSprite.x+xOffset;
                 this.travelY=(playerSprite.y-playerSprite.height)-this.HEAD_PIXEL_DISTANCE;
                 
-                this.game.soundList.playAtSprite('bowl',this,playerSprite);
+                this.playSound('bowl');
             }
             
             // bowls in a circle around player, both the shield sprite
@@ -284,7 +284,7 @@ export default class BallClass extends SpriteClass {
                 this.travelAngle=0.0;
                 this.sendMessage(playerSprite,'start_shield',null);
                 
-                this.game.soundList.playAtSprite('bowl',this,playerSprite);
+                this.playSound('bowl');
             }
         }
     }

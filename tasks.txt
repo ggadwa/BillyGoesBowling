@@ -1,8 +1,10 @@
 //// TO DO
 
-- get rid of filters
+
 - why does spring break?
-- do button by resizeY
+- ninja bunny hitting player kills ninja bunny
+
+- need water sound (when changing)
 
 - replace interactWithSprite with sendMessage(callSprite,cmd,data)
 - other side overrides processMessage(fromSprite,cmd,data)
@@ -14,15 +16,20 @@
 - adjust collisions with billy and shield from other creatures
 - spin makes player invincible for a bit draw shield
 - can't move with shield on
-- redo all scripts first
+- redo all scripts first before 60 fps
 - put gravity in places it needs to be
 - find (and remove) all timestamp in scripts (use tick)
 
 - need transitions between worlds (closing squares)
+- make game & map private in sprite and map private in game?
 
 - trunc all drawimage coords
 
 - move game time to 60 fps
+
+- add kangaroo boss and another level
+
+- snakes on a plane, where water gets lowered make steps down
 
 
 - get rid of all timestamp stuff, use ticks (MAYBE???) - particle by ticks
@@ -38,7 +45,7 @@
 - boney one eye faces you X wise (and fires eye from different location)
 - boney one eye forms eye by alpha before firing (maybe doesn't have eye on sprite?)
 
-- ninja bunny hitting player kills ninja bunny
+
 
 
 - need to use controllers
@@ -50,7 +57,6 @@
 - better water on world map?
 
 - do awaits on all the initialization loops in game.js
-* reverse particles
 - snakes are the worst art, update them
 - add keys/secret exits (one could be having to race explosives throughout level for key at end before it falls in water)
 - carrot needs shading

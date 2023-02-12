@@ -62,22 +62,20 @@ export default class SoundListClass
     
     /**
      * Plays a sound where the volumn is attuned to
-     * the distance from the camera sprite.
+     * the distance from the player sprite.
      */
-    playAtSprite(name,sprite,cameraSprite)
-    {
+    playAtSprite(name,sprite) {
         let ctx=this.game.audioContext;
         let source,gain,vol;
-        let x=sprite.x-cameraSprite.x;
-        let y=sprite.y-cameraSprite.y;
+        let playerSprite=this.game.map.getPlayerSprite();
+        let x=sprite.x-playerSprite.x;
+        let y=sprite.y-playerSprite.y;
         
-            // attenuate, and if <= 0, don't play sound
-            
+        // attenuate, and if <= 0, don't play sound 
         vol=this.MAIN_VOLUME-(Math.sqrt((x*x)+(y*y))*this.DISTANCE_ATTUATION);
         if (vol<=0.0) return;
         
-            // play sound
-            
+        // play sound  
         source=ctx.createBufferSource();
         gain=ctx.createGain();
         

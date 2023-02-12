@@ -36,14 +36,14 @@ export default class ShieldClass extends SpriteClass {
             case 'start_shield':
                 this.show=true;
                 this.lifeCount=this.LIFE_TICK;
-                this.game.soundList.playAtSprite('shield',this,this.game.map.getSpritePlayer());
+                this.playSound('shield',this);
                 break;
         }
     }
     
     run() {
         let map=this.game.map;
-        let playerSprite=map.getSpritePlayer();
+        let playerSprite=this.getPlayerSprite();
         let didCollide;
         
         // not shown, nothing to do

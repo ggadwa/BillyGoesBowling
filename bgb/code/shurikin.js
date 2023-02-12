@@ -38,7 +38,7 @@ export default class ShurikinClass extends SpriteClass {
     
     run() {
         let map=this.game.map;
-        let playerSprite=map.getSpritePlayer();
+        let playerSprite=this.getPlayerSprite();
         
         // if first call, then we need to setup the travel  
         if (this.travelX===0) this.travelX=(playerSprite.x<this.x)?-this.SHURIKIN_X_SPEED:this.SHURIKIN_X_SPEED;

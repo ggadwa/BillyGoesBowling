@@ -36,7 +36,7 @@ export default class SpringClass extends SpriteClass {
         
         sprite.addGravity(this.SPRING_HEIGHT,0);
         sprite.flash=true;
-        this.game.soundList.playAtSprite('boing',this,sprite);
+        this.playSound('boing');
         
         this.openCount=this.OPEN_TICK;
         this.setCurrentImage('sprites/spring_open');

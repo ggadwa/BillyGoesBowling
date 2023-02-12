@@ -25,9 +25,6 @@ export default class SpriteClass {
         this.resizeX=1.0;
         this.resizeY=1.0;
         
-        this.drawFilter=null; // when the filter is non-null, it's a filter class that is used to draw the sprite instead of regular drawing
-        this.drawFilterAnimationFactor=1.0; // this is an animation factor for any drawing, 0.0-1.0 from start to finish
-        
         this.layer=this.FOREGROUND_LAYER;
         
         this.gravityFactor=0;
@@ -217,6 +214,10 @@ export default class SpriteClass {
         if (this.y>max) this.y=max;
     }
     
+    getPlayerSprite() {
+        return(this.game.map.getPlayerSprite());
+    }
+    
     distanceToSprite(sprite) {
         let x=sprite.x-this.x;
         let y=sprite.y-this.y;
@@ -230,6 +231,14 @@ export default class SpriteClass {
     
     getTileUnderSprite() {
         return(this.game.map.getTileUnderSprite(this));
+    }
+    
+    playSound(name) {
+        this.game.soundList.playAtSprite(name,this);
+    }
+    
+    playSoundGlobal(name) {
+        this.game.soundList.play(name);
     }
     
     runGravity() {
@@ -300,6 +309,16 @@ export default class SpriteClass {
         this.gravityPauseTick=pauseTick;
     }
     
+    getCurrentGravity() {
+        return(this.gravityMoveY);
+    }
+    
+    stopAllGravity() {
+        this.gravityFactor=0.0
+        this.gravityMoveY=0;
+        this.gravityPauseTick=0;
+    }
+    
     delete() {
         this.removeFlag=true;
     }
@@ -319,19 +338,13 @@ export default class SpriteClass {
     
     draw(ctx,offX,offY) {
         let alpha,hasTransform;
-        let xAdd,yAdd;
+        let dx,dy,wid,high;
         let x=(this.x+this.drawOffsetX)-offX;
         let y=((this.y-this.height)+this.drawOffsetY)-offY;
         
         // clip anything offscreen
         if ((x>=this.game.canvasWidth) || ((x+this.width)<=0)) return;
         if ((y>=this.game.canvasHeight) || ((y+this.height)<=0)) return;
-        
-        // if there is a filter, draw with that
-        if (this.drawFilter!==null) {
-            this.drawFilter.draw(ctx,this.currentImage,Math.trunc(x),Math.trunc(y),this.drawFilterAnimationFactor,this.game.timestamp);
-            return;
-        }
         
         // flashing
         alpha=1.0;
@@ -369,9 +382,14 @@ export default class SpriteClass {
         }
         
         // any resize?
-        if ((this.resizeX!==1.0) && (this.resizeY!==1.0)) {
-            xAdd=0; // offset from X resize
-            yAdd=0; // offset from Y resize
+        if ((this.resizeX!==1.0) || (this.resizeY!==1.0)) {
+            wid=Math.trunc(this.width*this.resizeX);
+            dx=Math.trunc(x+((this.width-wid)/2));
+            
+            high=Math.trunc(this.height*this.resizeY); // resizeY is from floor
+            dy=y+(this.height-high);
+            
+            ctx.drawImage(this.currentImage,dx,dy,wid,high);
         }
 
         // otherwise regular drawing

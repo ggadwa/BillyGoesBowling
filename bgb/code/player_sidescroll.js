@@ -1,5 +1,4 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
-import WarpFilterClass from '../../rpjs/filters/warp.js';
 import BallClass from './ball.js';
 import ShieldClass from './shield.js';
 import CloudBlockClass from './cloud_block.js';
@@ -34,7 +33,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.JUMP_GRAVITY_PAUSE=4;
         this.DEATH_TICK=100;
         this.INVINCIBLE_TICK=60;
-        this.WARP_TICK=80;
+        this.WARP_TICK=40;
         this.WALK_FRAME_TICK=3;
         
         this.WALK_ANIMATION=['sprites/billy_walk_1','sprites/billy_walk_2','sprites/billy_walk_3','sprites/billy_walk_2'];
@@ -77,8 +76,6 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.deathCount=0;
         this.warpCount=0;
         
-        this.warpDrawFilter=new WarpFilterClass();
-        
         this.ballSprite=null;
         this.shieldSprite=null;
         
@@ -107,7 +104,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         
         if ((this.invincibleCount>0) || (this.shieldCount>0) || (this.warpCount>0) || (this.deathCount>0)) return;
         
-        this.game.soundList.play('hurt');
+        this.playSound('hurt');
         
         health=this.game.getData('player_health')-1;
         this.game.setData('player_health',health);
@@ -122,8 +119,6 @@ export default class PlayerSideScrollClass extends SpriteClass {
     
     killPlayer() {
         this.moveX=0;
-        this.gravityFactor=0;
-        this.gravityMoveY=0;
         this.alpha=1.0;
         this.invincibleCount=0;
         this.shieldCount=0;
@@ -131,12 +126,24 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.flash=false;
         this.canCollide=false;
         
+        this.stopAllGravity();
+        
         this.game.map.getFirstSpriteOfType(BallClass).show=false;
         this.game.musicList.stop();
-        this.game.soundList.play('funeral_march');
+        this.playSound('funeral_march');
         
         this.game.setData('player_health',0);
         this.deathCount=this.DEATH_TICK;
+    }
+    
+    warpOut() {
+        this.warpCount=this.WARP_TICK;
+        
+        this.game.map.getFirstSpriteOfType(BallClass).show=false;
+        
+        this.stopAllGravity();
+        
+        this.playSound('teleport');
     }
     
     onCollideSprite(sprite) {
@@ -168,18 +175,10 @@ export default class PlayerSideScrollClass extends SpriteClass {
                 this.shieldCount=this.shieldSprite.LIFE_TICK;
                 this.sendMessage(this.shieldSprite,'start_shield',null);
                 return;
+            case 'warp_out':
+                this.warpOut();
+                return;
         }
-    }
-    
-    warpOut() {
-        this.warpCount=this.WARP_TICK;
-        
-        this.game.map.getFirstSpriteOfType(BallClass).show=false;
-        
-        this.gravityFactor=0.0; // make sure we don't fall when warping
-        this.gravityMoveY=0;
-        
-        this.game.soundList.play('teleport');
     }
     
     run() {
@@ -189,6 +188,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         // warping? 
         if (this.warpCount!==0) {
             this.setCurrentImage('sprites/billy_walk_1');
+            this.resizeX=this.alpha=(this.warpCount-1)/this.WARP_TICK;
             this.warpCount--;
             if (this.warpCount===0) this.game.gotoMap('world_main');
             return;
@@ -302,7 +302,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         // determine the sprite image
         // if in air, determine jump/fall sprites
         if (!this.grounded) {
-            this.setCurrentImage((this.gravityMoveY<0)?'sprites/billy_jump_1':'sprites/billy_fall_1');
+            this.setCurrentImage((this.getCurrentGravity()<0)?'sprites/billy_jump_1':'sprites/billy_fall_1');
         }
         // when walking, we just update the animation frame,
         // when not walking, we animate until we hit 0 and stop

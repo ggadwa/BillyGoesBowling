@@ -1,5 +1,4 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
-import GrayFilterClass from '../../rpjs/filters/gray.js';
 import CloudBlockClass from './cloud_block.js';
 import BreakBlockStrongClass from '../code/break_block_strong.js';
 import BallClass from './ball.js';
@@ -41,8 +40,6 @@ export default class ExecutionerClass extends SpriteClass
         this.gravityMaxValue=30;
         this.canCollide=true;
         this.canStandOn=true;
-        
-        this.grayDrawFilter=new GrayFilterClass();
         
         Object.seal(this);
     }
@@ -99,7 +96,7 @@ export default class ExecutionerClass extends SpriteClass
 
                 this.game.map.addSprite(new AxeClass(this.game,sx,sy,null));
                 
-                this.game.soundList.playAtSprite('jump',this,this.game.map.getSpritePlayer());
+                this.playSound('jump');
                 return;
             }
         }
@@ -110,7 +107,7 @@ export default class ExecutionerClass extends SpriteClass
         let time, oldTime;
         let map=this.game.map;
         let speed,bumpUp;
-        let playerSprite=map.getSpritePlayer();
+        let playerSprite=this.getPlayerSprite();
         
             // the first time we get called is
             // when we first appear, so play sound fx
@@ -118,7 +115,7 @@ export default class ExecutionerClass extends SpriteClass
         if (this.show) {
             if (this.isFirstShow) {
                 this.isFirstShow=false;
-                this.game.soundList.play('boss_appear');
+                this.playSound('boss_appear');
             }
         }
         
@@ -131,7 +128,7 @@ export default class ExecutionerClass extends SpriteClass
             
             this.isDropping=false;
             map.shake(10);
-            this.game.soundList.play('thud');
+            this.playSound('thud');
         }
         else {
             if (!this.grounded) {
@@ -141,7 +138,7 @@ export default class ExecutionerClass extends SpriteClass
                 if (this.inAir) {
                     this.inAir=false;
                     map.shake(3);
-                    this.game.soundList.play('thud');
+                    this.playSound('thud');
                 }
             }
         }
@@ -205,7 +202,7 @@ export default class ExecutionerClass extends SpriteClass
 
             if (this.grounded) {
                 bumpUp=bumpUp||(this.collideTileIdx===this.TILE_IDX_BUMP);
-                if (bumpUp) this.motion.y=this.JUMP_HEIGHT;
+                if (bumpUp) this.addGravity(this.JUMP_HEIGHT,0);
             }
         }
         
@@ -216,12 +213,10 @@ export default class ExecutionerClass extends SpriteClass
             // hit the liquid?
             
         if (this.y>=map.liquidY) {
-            playerSprite.warpOut();
             this.isDead=true;
             this.gravityFactor=0.0;
-            this.drawFilter=this.grayDrawFilter;
             this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
-            this.game.soundList.play('boss_dead');
+            this.playSound('boss_dead');
             
             // update the state
             this.game.setData(('boss_'+map.name),true);
@@ -237,6 +232,9 @@ export default class ExecutionerClass extends SpriteClass
             this.game.persistData();
             
             map.forceCameraSprite=this;
+            
+            // warp player out
+            this.sendMessage(this.getPlayerSprite(),'warp_out',null);
         }
     }
     

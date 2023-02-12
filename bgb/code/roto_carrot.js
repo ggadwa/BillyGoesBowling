@@ -52,7 +52,7 @@ export default class RotoCarrotClass extends SpriteClass
     {
         if (interactSprite instanceof BallClass) {
             this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,600);
-            this.game.soundList.playAtSprite('monster_die',this,this.game.map.getSpritePlayer());
+            this.playSound('monster_die');
             this.delete();
         }
     }
@@ -71,7 +71,6 @@ export default class RotoCarrotClass extends SpriteClass
     {
         let rad;
         let map=this.game.map;
-        let playerSprite=map.getSpritePlayer();
         
             // is carrot paused?
             

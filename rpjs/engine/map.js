@@ -113,7 +113,7 @@ export default class MapClass {
         return(this.sprites[spriteIdx]);
     }
     
-    getSpritePlayer() {
+    getPlayerSprite() {
         return(this.sprites[this.playerIdx]);
     }
     
@@ -509,7 +509,7 @@ export default class MapClass {
     run() {
         let n;
         let sprite;
-        let playerSprite=this.getSpritePlayer();
+        let playerSprite=this.getPlayerSprite();
         
         // move any liquid
         if (this.toLiquidY!==-1) {

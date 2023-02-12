@@ -33,13 +33,13 @@ export default class FishClass extends SpriteClass {
     
     removeFish() {
         this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),8,8,1.0,0.1,2,0.03,'particles/fish',8,0.5,false,500);
-        this.game.soundList.playAtSprite('ball_break',this,this.game.map.getSpritePlayer()); // use the same sound effect here
+        this.playSound('ball_break');
         this.delete();
     }
     
     bounceFish() {
         this.travelX=-this.travelX;
-        this.game.soundList.playAtSprite('crack',this,this.game.map.getSpritePlayer()); // use the same sound effect here
+        this.playSound('crack');
     }
     
     interactWithSprite(interactSprite,dataObj) {
@@ -51,7 +51,7 @@ export default class FishClass extends SpriteClass {
     
     run() {
         let map=this.game.map;
-        let playerSprite=map.getSpritePlayer();
+        let playerSprite=this.getPlayerSprite();
         
         // if first call, then we need to setup the travel
         if (this.travelX===0) {

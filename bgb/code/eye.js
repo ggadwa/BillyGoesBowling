@@ -42,7 +42,7 @@ export default class EyeClass extends SpriteClass
     killEye()
     {
         this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,600);
-        this.game.soundList.playAtSprite('pop',this,this.game.map.getSpritePlayer());
+        this.playSound('pop');
         this.delete();
     }
     
@@ -51,7 +51,7 @@ export default class EyeClass extends SpriteClass
         let x,y,f;
         let sprite,sprites;
         let map=this.game.map;
-        let playerSprite=map.getSpritePlayer();
+        let playerSprite=this.getPlayerSprite();
         
             // if first call, then aim at player
             

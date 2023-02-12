@@ -38,7 +38,7 @@ export default class MapCastleClass extends SpriteClass {
             if (this.game.getData('boss_explode_'+this.getData('map'))) {
                 this.game.deleteData('boss_explode_'+this.getData('map'));      // only happens once
                 this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),10,10,1.0,0.1,5,0.04,'particles/castle',40,0.5,false,1500);
-                this.game.soundList.play('explode');
+                this.playSoundGlobal('explode');
             }
 
         }
@@ -53,7 +53,7 @@ export default class MapCastleClass extends SpriteClass {
     }
     
     run() {
-        let playerSprite=this.game.map.getSpritePlayer();
+        let playerSprite=this.getPlayerSprite();
         
         // are we colliding with player?
         if (!playerSprite.collide(this)) return;
@@ -65,7 +65,7 @@ export default class MapCastleClass extends SpriteClass {
         // save the X/Y so we can restore when we exit
         if (this.game.input.isKeyDown("Space")) {
             if (!this.isUnlocked()) {
-                this.game.soundList.play('locked_castle');
+                this.playSoundGlobal('locked_castle');
             }
             else {
                 this.game.setData('worldXPos',playerSprite.x);

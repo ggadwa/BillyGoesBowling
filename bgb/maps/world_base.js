@@ -60,7 +60,7 @@ export default class WorldBaseMapClass extends MapClass
         y=this.game.getData('worldYPos');
         if ((x===null) || (y===null)) return;
         
-        playerSprite=this.getSpritePlayer();
+        playerSprite=this.getPlayerSprite();
         playerSprite.x=x;
         playerSprite.y=y;
     }

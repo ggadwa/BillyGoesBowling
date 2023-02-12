@@ -32,7 +32,7 @@ export default class MapCottageClass extends SpriteClass
     run()
     {
         let n,cx,cy;
-        let playerSprite=this.game.map.getSpritePlayer();
+        let playerSprite=this.getPlayerSprite();
         
             // are we colliding with player?
             
@@ -60,6 +60,6 @@ export default class MapCottageClass extends SpriteClass
             this.game.map.addParticle(cx,cy,10,10,1.0,0.1,5,0.06,'particles/block',40,0.4,false,1500);
         }
         
-        this.game.soundList.play('pickup');
+        this.playSoundGlobal('pickup');
     }
 }

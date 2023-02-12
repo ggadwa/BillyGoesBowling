@@ -42,7 +42,7 @@ export default class MapSpotClass extends SpriteClass {
     }
 
     run() {
-        let playerSprite=this.game.map.getSpritePlayer();
+        let playerSprite=this.getPlayerSprite();
         
         // are we colliding with player?
         if (!playerSprite.collide(this)) return;

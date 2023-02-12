@@ -45,7 +45,7 @@ export default class EasterHeadClass extends SpriteClass {
     
     throwFish() {
         let sx,sy,dist;
-        let playerSprite=this.game.map.getSpritePlayer();
+        let playerSprite=this.getPlayerSprite();
         
         // throw the fish
         dist=this.distanceToSprite(playerSprite);
@@ -60,15 +60,14 @@ export default class EasterHeadClass extends SpriteClass {
         sy=(this.y-this.height)+this.THROW_MARGIN_Y;
 
         this.game.map.addSprite(new FishClass(this.game,sx,sy,null));
-        this.game.soundList.playAtSprite('pipe_break',this,playerSprite); // use the same sound effect here
+        this.playSound('pipe_break');
         
         // show eyes
         this.fireFrameStartTick=this.game.timestamp;
     }
     
     run() {
-        let map=this.game.map;
-        let playerSprite=map.getSpritePlayer();
+        let playerSprite=this.getPlayerSprite();
         
         // if player is standing on head, then sink
         if (playerSprite.standSprite===this) {
