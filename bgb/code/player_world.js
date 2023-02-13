@@ -1,6 +1,4 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
-import BallClass from '../code/ball.js';
-import CloudBlockClass from './cloud_block.js';
 
 export default class PlayerWorldClass extends SpriteClass {
 

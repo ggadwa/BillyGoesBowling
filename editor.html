@@ -4,8 +4,9 @@
 
 <head>
 <meta charset="utf-8">
-<title>Billy Goes Bowling Editor</title>
+<title>RPJS Editor</title>
 <link rel="stylesheet" type="text/css" href="common.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 
 <!-- the script -->
 
@@ -20,17 +21,19 @@
 
 <body class="editorBody">
 
-<div id="editorToolBar" class="editorToolBar">
-    <div id="mapUpButton" class="editorToolButton">Map Up</div>
-    <div id="mapDownButton" class="editorToolButton">Map Down</div>
-    <div id="mapLeftButton" class="editorToolButton">Map Left</div>
-    <div id="mapRightButton" class="editorToolButton">Map Right</div>
-    <div id="compileButton" class="editorToolButtonRight">Compile</div>
-</div>
+<canvas id="editorSpritePaletteCanvas" class="editorSpritePaletteCanvas"></canvas>
+<canvas id="editorMapCanvas" class="editorMapCanvas"></canvas>
+<canvas id="editorTilePaletteCanvas" class="editorTilePaletteCanvas"></canvas>
 
-<canvas id="editorSpritePaletteCanvas" class="editorSpritePaletteCanvas" width="192" height="640"></canvas>
-<canvas id="editorMapCanvas" class="editorMapCanvas" width="1344" height="640"></canvas>
-<canvas id="editorTilePaletteCanvas" class="editorTilePaletteCanvas" width="1536" height="192"></canvas>
+<div id="editorToolBar" class="editorToolBar">
+    <div id="compileButton" class="editorToolButton" title="Compile"><span class="material-symbols-outlined">code</span></div>
+    <div id="mapUpButton" class="editorToolButton" title="Insert Push Map Up"><span class="material-symbols-outlined">keyboard_arrow_up</span></div>
+    <div id="mapDownButton" class="editorToolButton" title="Insert Push map Down"><span class="material-symbols-outlined">keyboard_arrow_down</span></div>
+    <div id="mapLeftButton" class="editorToolButton" title="Insert Push Map Left"><span class="material-symbols-outlined">keyboard_arrow_left</span></div>
+    <div id="mapRightButton" class="editorToolButton" title="Insert Push Map Right"><span class="material-symbols-outlined">keyboard_arrow_right</span></div>
+    <div id="mapRemoveRow" class="editorToolButton" title="Remove Row"><span class="material-symbols-outlined" style="transform: rotate(-90deg);">compare_arrows</span></div>
+    <div id="mapRemoveColumn" class="editorToolButton" title="Remove Column"><span class="material-symbols-outlined">compare_arrows</span></div>
+</div>
 
 <div id="editorCompile" class="editorCompile" style="display:none">
     <textarea id="editorCompileText" class="editorCompileText" rows="25" cols="45" spellcheck="false" readonly></textarea>

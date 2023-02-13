@@ -14,57 +14,58 @@
 
 .editorBody {
     overflow: hidden;
-}
-
-.editorToolBar {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 35px;
-    background-color: #EEEEEE;
-}
-
-.editorToolButton, .editorToolButtonRight {
-    float: left;
-    margin: 2px;
-    width: 100px;
-    height: 31px;
-    font-family: 'Arial';
-    font-size: 12pt;
-    text-align: center;
-    padding-left: 5px;
-    padding-top: 5px;
     box-sizing: border-box;
-    border: 1px solid #000000;
-    cursor: pointer;
-    background-color: #AAAAFF;
-}
-
-.editorToolButtonRight {
-    float: right;
-}
-
-.editorToolButton:hover, .editorToolButtonRight:hover {
-    background-color: #CCCCFF;
 }
 
 .editorSpritePaletteCanvas {
     position: absolute;
     left: 0px;
-    top: 35px;
+    top: 0px;
+    width: 192px;
+    height: calc(100% - 192px);
+    border-right: 1px solid #333333;
 }
 
 .editorMapCanvas {
     position: absolute;
-    left: 192px;
-    top: 35px;
+    left: 193px;
+    top: 0px;
+    width: calc(100% - 230px);
+    height: calc(100% - 193px);
 }
 
 .editorTilePaletteCanvas {
     position: absolute;
     left: 0px;
-    top: 675px;
+    top: calc(100% - 192px);
+    width: 100%;
+    height: 192px;
+    border-top: 1px solid #333333;
+}
+
+.editorToolBar {
+    position: absolute;
+    top: 0px;
+    left: calc(100% - 37px);
+    width: 36px;
+    height: calc(100% - 192px);
+    background-color: #AAAAAA;
+    border-left: 1px solid #333333;
+}
+
+.editorToolButton {
+    width: 34px;
+    height: 34px;
+    text-align: center;
+    padding-top: 8px;
+    border-radius: 5px;
+    border: 1px solid #9999DD;
+    cursor: pointer;
+    background-color: #AAAAFF;
+}
+
+.editorToolButton:hover {
+    background-color: #CCCCFF;
 }
 
 .editorCompile {
@@ -73,7 +74,6 @@
     top: 40px;
     width: 506px;
     height: 506px;
-    box-sizing: border-box;
     border: 1px solid #000000;
     background-color: #EEEEEE;
     white-space: normal;

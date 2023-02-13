@@ -36,6 +36,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.WARP_TICK=40;
         this.WALK_FRAME_TICK=3;
         
+        this.COLLIDE_CLASS_IGNORE=[BallClass,ShieldClass];
         this.WALK_ANIMATION=['sprites/billy_walk_1','sprites/billy_walk_2','sprites/billy_walk_3','sprites/billy_walk_2'];
         
         // setup
@@ -182,7 +183,6 @@ export default class PlayerSideScrollClass extends SpriteClass {
     
     run() {
         let goLeft, goRight;
-        let liquidY;
         let map=this.game.map;
         
         // warping? 
@@ -335,12 +335,9 @@ export default class PlayerSideScrollClass extends SpriteClass {
         if (this.grounded) this.lastGroundY=this.y;
         
         // check for hitting liquid
-        liquidY=this.getLiquidY();
-        if (liquidY!==-1) {
-            if (this.y>=liquidY) {
-                this.killPlayer();
-                return;
-            }
+        if (this.isInLiquid()) {
+            this.killPlayer();
+            return;
         }
     }
 }

@@ -1,5 +1,6 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import BallClass from './ball.js';
+import RotoCarrotClass from './roto_carrot.js';
 
 export default class BombClass extends SpriteClass {
     constructor(game,x,y,data) {
@@ -7,6 +8,8 @@ export default class BombClass extends SpriteClass {
         
         // constants
         this.BOMB_SPEED=7;
+        
+        this.COLLIDE_CLASS_IGNORE=[RotoCarrotClass];
         
         // setup
         this.addImage('sprites/bomb');
@@ -47,20 +50,14 @@ export default class BombClass extends SpriteClass {
     }
     
     run() {
-        let map=this.game.map;
-        let liquidY;
-        
         this.y+=this.BOMB_SPEED;
         
-        liquidY=this.getLiquidY();
-        if (liquidY!==-1) {
-            if (this.y>=liquidY) {
-                this.explode();
-                return;
-            }
+        if (this.isInLiquid()) {
+            this.explode();
+            return;
         }
 
-        if (this.checkCollision(this)) {
+        if (this.checkCollision(this.COLLIDE_CLASS_IGNORE)) {
             if (this.collideSprite!=null) this.collideSprite.interactWithSprite(this,null);
             this.explode();
         }

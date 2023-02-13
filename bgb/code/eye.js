@@ -9,9 +9,10 @@ export default class EyeClass extends SpriteClass
     {
         super(game,x,y,data);
         
-            // constants
-            
+        // constants  
         this.EYE_SPEED=15;
+        
+        this.COLLIDE_CLASS_IGNORE=[BoneyOneEyeClass];
         
             // variables
             
@@ -80,7 +81,7 @@ export default class EyeClass extends SpriteClass
             // destroy eye on any collision, and if
             // it's a strong break block, break a couple around it
             
-        if (this.checkCollision(this)) {
+        if (this.checkCollision(this.COLLIDE_CLASS_IGNORE)) {
             
             if (this.collideSprite!=null) {
                 if (this.collideSprite instanceof BoneyOneEyeClass) return;         // never hits firing skull

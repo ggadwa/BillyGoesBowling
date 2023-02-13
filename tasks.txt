@@ -1,22 +1,41 @@
 //// TO DO
 
 
-- add a ignore class list to moveWithCollision and checkCollision (null = no list)
 
-
-- why does spring break?
-
+- first carrot level needs to protect snakes at end from bombs, end needs to be lower
 - snakes on a plane, where water gets lowered make steps down
 - switch platforms over water and carrot level
+- add bush, small hill to world map, add kangaroo level
 
-- need water sound (when changing)
+editor
+- editor: add ?map=world_main
+- figure out if we need duplicate
+- delete/backspace should delete
+- remove weird BGB stuff from editor
+- remove row, column
+
+
+
+
+
+
+
+
+
+- move game time to 60 fps
+- particles by tick
+
+- platforms need to push with API (and anything that stands on them)
+- why does spring not push sprites (I suspect it's a collision)
+
+
 
 - replace interactWithSprite with sendMessage(callSprite,cmd,data)
 - other side overrides processMessage(fromSprite,cmd,data)
 
-- get rid of map.checkCollision, call directly on sprite
+- get rid of all map. or game.
+- run passes in tick
 
-- need hurt for player collisions
 
 - adjust collisions with billy and shield from other creatures
 - spin makes player invincible for a bit draw shield
@@ -30,14 +49,14 @@
 
 - trunc all drawimage coords
 
-- move game time to 60 fps
+
 
 - add kangaroo boss and another level
 
 
 
 
-- get rid of all timestamp stuff, use ticks (MAYBE???) - particle by ticks
+- get rid of all timestamp stuff, use ticks
 - smoke on quick turn around (by feet)
 - smoke on jump land
 
@@ -55,10 +74,9 @@
 
 - need to use controllers
 - destroyed carrots reset
-- carrots fire bombs at random times
 - make executioner always jump around and always throw axes
 - last boss can kill billy multiple times when grave
-- add bush, small hill to world map
+
 - better water on world map?
 
 - do awaits on all the initialization loops in game.js
@@ -68,8 +86,7 @@
 
 
 
-- editor: put buttons as small font awesome/font material on right side
-- editor: add ?map=world_main
+
 
 //// ART
 

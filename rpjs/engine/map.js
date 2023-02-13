@@ -249,8 +249,9 @@ export default class MapClass {
     onLiquidMoveDone() {
     }
     
-    checkCollision(checkSprite) {
+    checkCollision(checkSprite,classIgnoreList) {
         let sprite,tileIdx;
+        let ignore,ignoreClass;
         let lx,rx,ty,by,dx,dy,gx,gy;
         let lft,top,rgt,bot;
         
@@ -263,12 +264,29 @@ export default class MapClass {
             if (sprite===checkSprite) continue;
             if (!sprite.show) continue;
             if (!sprite.canCollide) continue;
-            if (checkSprite.collide(sprite)) {
-                checkSprite.collideSprite=sprite;
-                sprite.onCollideSprite(checkSprite);
-                checkSprite.onCollideSprite(sprite);
-                return(true);
+            
+            // check collision first, this is probably faster
+            if (!checkSprite.collide(sprite)) continue;
+            
+            // now check ignore list
+            if (classIgnoreList!=null) {
+                ignore=false;
+
+                for (ignoreClass of classIgnoreList) {
+                    if (sprite instanceof ignoreClass) {
+                        ignore=true;
+                        break;
+                    }
+                }
+
+                if (ignore) continue;
             }
+            
+            // otherwise it is a hit
+            checkSprite.collideSprite=sprite;
+            sprite.onCollideSprite(checkSprite);
+            checkSprite.onCollideSprite(sprite);
+            return(true);
         }
         
         // check map

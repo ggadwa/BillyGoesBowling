@@ -143,7 +143,7 @@ export default class DrainPipeSnakeClass extends SpriteClass {
         }
         
         // move the snake
-        this.moveWithCollision(this.walkSpeed,0);
+        this.moveWithCollision(this.walkSpeed,0,null);
         this.runGravity();
         
         // image

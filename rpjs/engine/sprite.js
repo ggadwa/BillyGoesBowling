@@ -201,10 +201,10 @@ export default class SpriteClass {
         return((this.y-this.height)<bot);
     }
     
-    moveWithCollision(mx,my) {
+    moveWithCollision(mx,my,classIgnoreList) {
         this.x+=mx;
         this.y+=my;
-        if (this.game.map.checkCollision(this)) {
+        if (this.game.map.checkCollision(this,classIgnoreList)) {
             this.x-=mx;
             this.y-=my;
             return(true);
@@ -212,8 +212,8 @@ export default class SpriteClass {
         return(false);
     }
     
-    checkCollision() {
-        return(this.game.map.checkCollision(this));
+    checkCollision(classIgnoreList) {
+        return(this.game.map.checkCollision(this,classIgnoreList));
     }
     
     clampX(min,max) {
@@ -267,6 +267,20 @@ export default class SpriteClass {
 
     moveLiquidTo(toLiquidY,liquidMoveSpeed) {
         this.game.map.moveLiquidTo(toLiquidY,liquidMoveSpeed);
+    }
+    
+    isInLiquid() {
+        let liquidY=this.getLiquidY();
+        
+        if (liquidY===-1) return(false);
+        return(this.y>=liquidY);
+    }
+    
+    isUnderLiquid() {
+        let liquidY=this.getLiquidY();
+        
+        if (liquidY===-1) return(false);
+        return((this.y-this.height)>=liquidY);
     }
     
     runGravity() {

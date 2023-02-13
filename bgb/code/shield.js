@@ -11,6 +11,8 @@ export default class ShieldClass extends SpriteClass {
         this.GLOW_RATE=5.0;
         this.SHAKE_SIZE=3.0;
         
+        this.COLLIDE_CLASS_IGNORE=[BallClass,PlayerSideScrollClass];
+        
         // variables
         this.lifeCount=-1;
         
@@ -42,7 +44,6 @@ export default class ShieldClass extends SpriteClass {
     }
     
     run() {
-        let map=this.game.map;
         let playerSprite=this.getPlayerSprite();
         let didCollide;
         
@@ -61,11 +62,7 @@ export default class ShieldClass extends SpriteClass {
         this.alpha=0.4+Math.abs(Math.sin(this.lifeCount/this.GLOW_RATE)*0.3);
         
         // check for collisions outside of player and ball
-        playerSprite.canCollide=false;
-        playerSprite.ballSprite.canCollide=false;
-        didCollide=this.checkCollision(this);
-        playerSprite.canCollide=true;
-        playerSprite.ballSprite.canCollide=true;
+        didCollide=this.checkCollision(this.COLLIDE_CLASS_IGNORE);
             
         if ((didCollide) && (this.collideSprite!==null)) {
             this.collideSprite.interactWithSprite(this,null);

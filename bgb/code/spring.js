@@ -44,7 +44,7 @@ export default class SpringClass extends SpriteClass {
 
     run() {
         // run collision checks without moving
-        this.checkCollision();
+        this.checkCollision(null);
         
         // open if closed
         if (this.openCount!==0) {

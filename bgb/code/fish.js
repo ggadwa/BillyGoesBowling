@@ -1,5 +1,6 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import BallClass from './ball.js';
+import EasterHeadClass from './easter_head.js';
 
 export default class FishClass extends SpriteClass {
     constructor(game,x,y,data) {
@@ -8,6 +9,8 @@ export default class FishClass extends SpriteClass {
         // constants
         this.FISH_SPEED=12;
         this.FISH_INITIAL_ARC=10;
+        
+        this.COLLIDE_CLASS_IGNORE=[EasterHeadClass];
         
         // variables
         this.travelX=0;
@@ -69,7 +72,7 @@ export default class FishClass extends SpriteClass {
 
         // colliding with anything but the player
         // or cloud/break block sprite changes direction
-        if (this.checkCollision(this)) {
+        if (this.checkCollision(this.COLLIDE_CLASS_IGNORE)) {
             if (this.collideSprite!==null) {
                 this.sendMessage(this.collideSprite,'hurt',null);
                 this.removeFish();

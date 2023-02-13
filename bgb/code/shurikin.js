@@ -1,5 +1,6 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import BallClass from './ball.js';
+import NinjaBunnyClass from './ninja_bunny.js';
 
 export default class ShurikinClass extends SpriteClass {
     constructor(game,x,y,data) {
@@ -8,6 +9,8 @@ export default class ShurikinClass extends SpriteClass {
         // constants
         this.SHURIKIN_X_SPEED=12;
         this.SHURIKIN_Y_SPEED=15;
+        
+        this.COLLIDE_CLASS_IGNORE=[NinjaBunnyClass];
         
         // variables
         this.travelX=0;
@@ -37,7 +40,6 @@ export default class ShurikinClass extends SpriteClass {
     }
     
     run() {
-        let map=this.game.map;
         let playerSprite=this.getPlayerSprite();
         
         // if first call, then we need to setup the travel  
@@ -46,8 +48,9 @@ export default class ShurikinClass extends SpriteClass {
         this.x+=this.travelX;
         this.y+=this.SHURIKIN_Y_SPEED;
 
-        if (this.checkCollision(this)) {
+        if (this.checkCollision(this.COLLIDE_CLASS_IGNORE)) {
             if (this.collideSprite!=null) this.collideSprite.interactWithSprite(this,null);
+            this.addParticle((this.x+(this.width/2)),(this.y-(this.height/2)),8,2,1.0,0.1,2,0.02,'particles/ball',8,0.7,false,500);
             this.delete();
         }
     }

@@ -51,7 +51,7 @@ export default class PlatformClass extends SpriteClass
             
         this.x+=this.xAdd;
         
-        if (this.checkCollision(this)) {
+        if (this.checkCollision(null)) {
             this.xAdd=-this.xAdd;
             this.x+=this.xAdd;
             this.pauseCount=this.PLATFORM_PAUSE_TICK;
@@ -62,7 +62,7 @@ export default class PlatformClass extends SpriteClass
             // on it
             
         if (playerSprite.standSprite===this) {
-            playerSprite.moveWithCollision(this.xAdd,0);
+            playerSprite.moveWithCollision(this.xAdd,0,null);
         }
     }
 }

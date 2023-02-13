@@ -1,4 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import ShieldClass from './shield.js';
 import BlockClass from './block.js';
 import BreakBlockStrongClass from './break_block_strong.js';
 import ExplodeBlockClass from './explode_block.js';
@@ -28,6 +29,8 @@ export default class BallClass extends SpriteClass {
         this.BALL_CIRCLE_RADIUS_X=45;
         this.BALL_CIRCLE_OFFSET_Y=50;
         this.BALL_CIRCLE_RADIUS_Y=100;
+        
+        this.COLLIDE_CLASS_IGNORE=[ShieldClass];
         
         // variables
         this.travelMode=this.TRAVEL_MODE_FLOATING;
@@ -86,7 +89,6 @@ export default class BallClass extends SpriteClass {
     run() {
         let map=this.game.map;
         let playerSprite=this.getPlayerSprite();
-        let didCollide,liquidY;
         let px,py,lftEdge,rgtEdge,topEdge,botEdge,tick;
         let xOffset, yOffset, rad;
         
@@ -213,13 +215,7 @@ export default class BallClass extends SpriteClass {
             
         if ((this.travelMode===this.TRAVEL_MODE_BOWL_ACROSS) || (this.travelMode===this.TRAVEL_MODE_SLAM_UP) || (this.travelMode===this.TRAVEL_MODE_SLAM_DOWN) || (this.travelMode===this.TRAVEL_MODE_CIRCLE)) {
             
-            playerSprite.canCollide=false; // get player and possible shield out of way
-            playerSprite.shieldSprite.canCollide=false;
-            didCollide=this.checkCollision(this);
-            playerSprite.canCollide=true;
-            playerSprite.shieldSprite.canCollide=true;
-            
-            if (didCollide) {
+            if (this.checkCollision(this.COLLIDE_CLASS_IGNORE)) {
                 
                 // colliding with map, return ball
                 // unless it's a defensive circle
@@ -241,12 +237,9 @@ export default class BallClass extends SpriteClass {
         }
         
         // hitting water auto returns the ball
-        liquidY=this.getLiquidY();
-        if (liquidY!==-1) {
-            if (this.y>liquidY) {
-                this.returnBall(true);
-                return;
-            }
+        if (this.isInLiquid()) {
+            this.returnBall(true);
+            return;
         }
         
         // change any travel mode

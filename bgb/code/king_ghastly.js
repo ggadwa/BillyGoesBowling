@@ -107,9 +107,8 @@ export default class KingGhastlyClass extends SpriteClass
             return;
         }
         
-            // hit the liquid?
-         
-        if (this.y>=this.getLiquidY()) {
+        // hit the liquid?
+        if (this.isInLiquid()) {
             this.isDead=true;
             this.gravityFactor=0.0;
             this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
@@ -141,7 +140,7 @@ export default class KingGhastlyClass extends SpriteClass
             this.backupCount--;
             
             this.x-=this.GHASTLY_SPEED;
-            if (this.checkCollision(this)) this.x+=this.GHASTLY_SPEED;
+            if (this.checkCollision(null)) this.x+=this.GHASTLY_SPEED;
             return;
         }
         
@@ -161,7 +160,7 @@ export default class KingGhastlyClass extends SpriteClass
             // any collisions with breaking blocks forces
             // ghastly back, any other up
         
-        if (this.checkCollision(this)) {
+        if (this.checkCollision(null)) {
             this.x-=this.GHASTLY_SPEED;
             
             if (this.grounded) {

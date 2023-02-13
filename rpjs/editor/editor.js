@@ -44,30 +44,32 @@ export default class EditorClass
         Object.seal(this);
     }
     
-    initialize()
-    {
-            // canvas and contextes
-            
+    initialize() {
+        // any resize events
+        window.addEventListener('resize',this.resize.bind(this),false);
+        
+        // get the canvases
         this.mapCanvas=document.getElementById('editorMapCanvas');
+        this.tilePaletteCanvas=document.getElementById('editorTilePaletteCanvas');
+        this.spritePaletteCanvas=document.getElementById('editorSpritePaletteCanvas');
+        
+        // setup canvases
+        this.setCanvasPixelAndContext();
+        
+        // events
         this.mapCanvas.onmousedown=this.leftMouseDownMapCanvas.bind(this);
         this.mapCanvas.onmousemove=this.leftMouseMoveMapCanvas.bind(this);
         this.mapCanvas.onmouseup=this.leftMouseUpMapCanvas.bind(this);
-        this.mapCanvas.onmouseout=this.leftMouseUpMapCanvas.bind(this);     // mouse out forces a mouse up
+        this.mapCanvas.onmouseout=this.leftMouseUpMapCanvas.bind(this); // mouse out forces a mouse up
         this.mapCanvas.onwheel=this.wheelMapCanvas.bind(this);
         
-        document.onkeydown=this.keyDownMapCanvas.bind(this);                // need to be on document
+        document.onkeydown=this.keyDownMapCanvas.bind(this); // need to be on document
         document.onkeyup=this.keyUpMapCanvas.bind(this);
         
         this.mapCanvas.oncontextmenu=this.rightClickMapCanvas.bind(this);
-        this.mapCTX=this.mapCanvas.getContext('2d');
         
-        this.tilePaletteCanvas=document.getElementById('editorTilePaletteCanvas');
         this.tilePaletteCanvas.onclick=this.clickTilePaletteCanvas.bind(this);
-        this.tilePaletteCTX=this.tilePaletteCanvas.getContext('2d');
-        
-        this.spritePaletteCanvas=document.getElementById('editorSpritePaletteCanvas');
         this.spritePaletteCanvas.onclick=this.clickSpritePaletteCanvas.bind(this);
-        this.spritePaletteCTX=this.spritePaletteCanvas.getContext('2d');
         
             // current map offset
             
@@ -130,6 +132,29 @@ export default class EditorClass
         this.refresh();
     }
     
+    // setup canvas pixels and contexts
+    setCanvasPixelAndContext() {
+        this.mapCanvas.width=this.mapCanvas.offsetWidth;
+        this.mapCanvas.height=this.mapCanvas.offsetHeight;
+        this.mapCTX=this.mapCanvas.getContext('2d');
+
+        this.tilePaletteCanvas.width=this.tilePaletteCanvas.offsetWidth;
+        this.tilePaletteCanvas.height=this.tilePaletteCanvas.offsetHeight;
+        this.tilePaletteCTX=this.tilePaletteCanvas.getContext('2d');
+        
+        this.spritePaletteCanvas.width=this.spritePaletteCanvas.offsetWidth;
+        this.spritePaletteCanvas.height=this.spritePaletteCanvas.offsetHeight;
+        this.spritePaletteCTX=this.spritePaletteCanvas.getContext('2d');
+    }
+    
+    // resize
+    resize() {
+        this.setCanvasPixelAndContext();
+        this.drawMapCanvas();
+        this.drawTilePaletteCanvas();
+        this.drawSpritePaletteCanvas();
+    }
+    
         //
         // draw canvases
         //
@@ -145,10 +170,10 @@ export default class EditorClass
             // get the tile draw viewport
             
         lx=this.offsetX;
-        rx=lx+Math.trunc(this.mapCanvas.width/this.MAP_TILE_SIZE);
+        rx=lx+(Math.trunc(this.mapCanvas.width/this.MAP_TILE_SIZE)+1);
             
         ty=this.offsetY;
-        by=ty+Math.trunc(this.mapCanvas.height/this.MAP_TILE_SIZE);
+        by=ty+(Math.trunc(this.mapCanvas.height/this.MAP_TILE_SIZE)+1);
         
             // clear
             
@@ -182,7 +207,7 @@ export default class EditorClass
 
             // grid
             
-        ctx.strokeStyle='#CCCCCC';
+        ctx.strokeStyle='#AAAAAA';
         ctx.setLineDash([2,2]);
             
         dy=0;
@@ -242,11 +267,6 @@ export default class EditorClass
             ctx.strokeRect(dx,dy,this.MAP_TILE_SIZE,this.MAP_TILE_SIZE);
             ctx.lineWidth=1.0;
         }
-       
-            // borders
-            
-        ctx.strokeStyle='#000000';
-        ctx.strokeRect(0,0,(this.mapCanvas.width-1),(this.mapCanvas.height-1));
     }
     
     drawTilePaletteCanvas()
@@ -270,7 +290,7 @@ export default class EditorClass
             ctx.drawImage(tile,x,y);
             
             x+=this.MAP_TILE_SIZE;
-            if (x>=wid) {
+            if ((x+this.MAP_TILE_SIZE)>=wid) {
                 x=0;
                 y+=this.MAP_TILE_SIZE;
             }
@@ -316,7 +336,7 @@ export default class EditorClass
             ctx.drawImage(img,x,y,Math.min(this.MAP_TILE_SIZE,img.width),Math.min(this.MAP_TILE_SIZE,img.height));      // sprites can be bigger than map tile size
             
             x+=this.MAP_TILE_SIZE;
-            if (x>=wid) {
+            if ((x+this.MAP_TILE_SIZE)>=wid) {
                 x=0;
                 y+=this.MAP_TILE_SIZE;
             }

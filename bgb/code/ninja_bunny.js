@@ -10,10 +10,13 @@ export default class NinjaBunnyClass extends SpriteClass {
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        this.BUNNY_JUMP_HEIGHT=-30;
+        // constants
+        this.BUNNY_JUMP_HEIGHT=-33;
         this.BUNNY_AIR_SPEED=8;
         this.BUNNY_PAUSE_TICK=45;
         this.BUNNY_ACTIVATE_DISTANCE=800;
+        
+        this.COLLIDE_CLASS_IGNORE=[ShurikinClass];
         
         // variables  
         this.bunnyActive=false;
@@ -31,7 +34,7 @@ export default class NinjaBunnyClass extends SpriteClass {
         this.setCurrentImage('sprites/ninja_bunny');
         
         this.show=true;
-        this.gravityFactor=0.2;
+        this.gravityFactor=0.18;
         this.gravityMinValue=3;
         this.gravityMaxValue=20;
         this.canCollide=true;
@@ -86,8 +89,16 @@ export default class NinjaBunnyClass extends SpriteClass {
         this.jumpAwayFromSprite(sprite);
     }
     
+    onStoodOnSprite(sprite) {
+        // standing on player kills bunny
+        if (sprite instanceof PlayerSideScrollClass) {
+            this.kill();
+            return;
+        }
+    }
+    
     fireShurikin() {
-        this.currentShurikin=new ShurikinClass(this.game,this.x,(this.y-(this.height*0.5)),null);
+        this.currentShurikin=new ShurikinClass(this.game,(this.x+16),(this.y-(this.height*0.5)),null);
         this.addSprite(this.currentShurikin);
     }
     
@@ -105,7 +116,7 @@ export default class NinjaBunnyClass extends SpriteClass {
         
         // only move if jumping, and ignore if we have a shurikin out
         if (!this.grounded) {
-            this.moveWithCollision((this.BUNNY_AIR_SPEED*this.bunnyJumpDirection),0);
+            this.moveWithCollision((this.BUNNY_AIR_SPEED*this.bunnyJumpDirection),0,this.COLLIDE_CLASS_IGNORE);
         }
         
         // gravity

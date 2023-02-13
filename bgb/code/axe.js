@@ -1,10 +1,14 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
-import BreakBlockStrongClass from '../code/break_block_strong.js';
+import BreakBlockStrongClass from './break_block_strong.js';
+import ExecutionerClass from './executioner.js';
 
 export default class AxeClass extends SpriteClass {
         
     constructor(game,x,y,data) {
         super(game,x,y,data);
+        
+        // constants
+        this.COLLIDE_CLASS_IGNORE=[ExecutionerClass];
         
         // variables
         this.topY=this.y-800;
@@ -50,7 +54,7 @@ export default class AxeClass extends SpriteClass {
         }
 
         // collisions
-        if (!this.checkCollision(this)) return;
+        if (!this.checkCollision(this.COLLIDE_CLASS_IGNORE)) return;
         
         // interact with sprites, like destroying clouds
         if (this.collideSprite!=null) this.collideSprite.interactWithSprite(this,null);

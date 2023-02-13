@@ -4,21 +4,22 @@ import BreakBlockStrongClass from '../code/break_block_strong.js';
 import BallClass from './ball.js';
 import AxeClass from './axe.js';
 
-export default class ExecutionerClass extends SpriteClass
-{
-    constructor(game,x,y,data)
-    {
+export default class ExecutionerClass extends SpriteClass {
+        
+    constructor(game,x,y,data) {
         super(game,x,y,data);
         
+        // constants
         this.TILE_IDX_BUMP=18;
         this.MAX_SPEED=8;
         this.JUMP_HEIGHT=-40;
         
-            // variables
-            
+        this.COLLIDE_CLASS_IGNORE=[AxeClass];
+        
+        // variables  
         this.executionerSpeed=0;
         this.lastLaunchXPosition=-1;
-        this.launchXPositionsLeft=null;     // array of axe launch positions, loaded on startup
+        this.launchXPositionsLeft=null; // array of axe launch positions, loaded on startup
         this.launchXPositionsRight=null;
         this.isDropping=true;
         this.inAir=false;
@@ -185,7 +186,7 @@ export default class ExecutionerClass extends SpriteClass
         speed=Math.trunc(this.executionerSpeed);
         this.x+=speed;
         
-        if (this.checkCollision(this)) {
+        if (this.checkCollision(this.COLLIDE_CLASS_IGNORE)) {
             this.x-=speed;
 
                 // run collisions
@@ -210,9 +211,8 @@ export default class ExecutionerClass extends SpriteClass
 
         this.fireAxe();
         
-            // hit the liquid?
-            
-        if (this.y>=this.getLiquidY()) {
+        // hit the liquid?
+        if (this.isInLiquid()) {
             this.isDead=true;
             this.gravityFactor=0.0;
             this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
