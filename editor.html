@@ -11,10 +11,11 @@
 <!-- the script -->
 
 <script type="module">
-    import * as main from './rpjs/editor/main.js';
+    import EditorClass from './rpjs/editor/editor.js';
     import BillyGameClass from './bgb/code/billy_game.js';
     
-    main.run(new BillyGameClass());
+    let editor=new EditorClass(new BillyGameClass());
+    editor.initialize();
 </script>
 
 </head>
@@ -26,17 +27,59 @@
 <canvas id="editorTilePaletteCanvas" class="editorTilePaletteCanvas"></canvas>
 
 <div id="editorToolBar" class="editorToolBar">
-    <div id="compileButton" class="editorToolButton" title="Compile"><span class="material-symbols-outlined">code</span></div>
+    <div id="compileButton" class="editorToolButton" title="Compile"><span class="material-symbols-outlined">settings</span></div>
     <div id="mapUpButton" class="editorToolButton" title="Insert Push Map Up"><span class="material-symbols-outlined">keyboard_arrow_up</span></div>
     <div id="mapDownButton" class="editorToolButton" title="Insert Push map Down"><span class="material-symbols-outlined">keyboard_arrow_down</span></div>
     <div id="mapLeftButton" class="editorToolButton" title="Insert Push Map Left"><span class="material-symbols-outlined">keyboard_arrow_left</span></div>
     <div id="mapRightButton" class="editorToolButton" title="Insert Push Map Right"><span class="material-symbols-outlined">keyboard_arrow_right</span></div>
-    <div id="mapRemoveRow" class="editorToolButton" title="Remove Row"><span class="material-symbols-outlined" style="transform: rotate(-90deg);">compare_arrows</span></div>
-    <div id="mapRemoveColumn" class="editorToolButton" title="Remove Column"><span class="material-symbols-outlined">compare_arrows</span></div>
+    <div id="spriteInfo" class="editorToolButton" title="Edit Sprite Info"><span class="material-symbols-outlined">info</span></div>
 </div>
 
-<div id="editorCompile" class="editorCompile" style="display:none">
-    <textarea id="editorCompileText" class="editorCompileText" rows="25" cols="45" spellcheck="false" readonly></textarea>
+<div id="editorFade" class="editorFade" style="display:none"></div>
+
+<div id="editorInfo" class="editorInfo" style="display:none">
+    <table class="editorInfoTable">
+        <tr>
+            <td class="editorInfoTableNameCol">Name</td>
+            <td class="editorInfoTableValueCol">Value</td>
+        <tr>
+            <td><input id="editorInfoName1" type="text" class="editorInfoNameInput"></td>
+            <td><input id="editorInfoValue1" type="text" class="editorInfoValueInput"></td>
+        </tr>
+        <tr>
+            <td><input id="editorInfoName2" type="text" class="editorInfoNameInput"></td>
+            <td><input id="editorInfoValue2" type="text" class="editorInfoValueInput"></td>
+        </tr>
+        <tr>
+            <td><input id="editorInfoName3" type="text" class="editorInfoNameInput"></td>
+            <td><input id="editorInfoValue3" type="text" class="editorInfoValueInput"></td>
+        </tr>
+        <tr>
+            <td><input id="editorInfoName4" type="text" class="editorInfoNameInput"></td>
+            <td><input id="editorInfoValue4" type="text" class="editorInfoValueInput"></td>
+        </tr>
+        <tr>
+            <td><input id="editorInfoName5" type="text" class="editorInfoNameInput"></td>
+            <td><input id="editorInfoValue5" type="text" class="editorInfoValueInput"></td>
+        </tr>
+        <tr>
+            <td><input id="editorInfoName6" type="text" class="editorInfoNameInput"></td>
+            <td><input id="editorInfoValue6" type="text" class="editorInfoValueInput"></td>
+        </tr>
+        <tr>
+            <td><input id="editorInfoName7" type="text" class="editorInfoNameInput"></td>
+            <td><input id="editorInfoValue7" type="text" class="editorInfoValueInput"></td>
+        </tr>
+        <tr>
+            <td><input id="editorInfoName8" type="text" class="editorInfoNameInput"></td>
+            <td><input id="editorInfoValue8" type="text" class="editorInfoValueInput"></td>
+        </tr>
+        <tr>
+            <td><input id="editorInfoName9" type="text" class="editorInfoNameInput"></td>
+            <td><input id="editorInfoValue9" type="text" class="editorInfoValueInput"></td>
+        </tr>
+    </table>
+    <div id="editorInfoOk" class="editorInfoButton">OK</div>
 </div>
     
 </body>

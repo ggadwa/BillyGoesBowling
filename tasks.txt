@@ -12,12 +12,12 @@ editor
 - figure out if we need duplicate
 - delete/backspace should delete
 - remove weird BGB stuff from editor
-- remove row, column
 
 
 
 
 
+- do awaits on all the initialization loops in game.js and editor
 
 
 
@@ -79,7 +79,7 @@ editor
 
 - better water on world map?
 
-- do awaits on all the initialization loops in game.js
+
 - snakes are the worst art, update them
 - add keys/secret exits (one could be having to race explosives throughout level for key at end before it falls in water)
 - carrot needs shading

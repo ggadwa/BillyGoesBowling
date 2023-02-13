@@ -59,8 +59,8 @@
     text-align: center;
     padding-top: 8px;
     border-radius: 5px;
-    border: 1px solid #9999DD;
     cursor: pointer;
+    border: 1px solid #9999DD;
     background-color: #AAAAFF;
 }
 
@@ -68,26 +68,75 @@
     background-color: #CCCCFF;
 }
 
-.editorCompile {
-    position: absolute;
-    left: calc(100% - 511px);
-    top: 40px;
-    width: 506px;
-    height: 506px;
-    border: 1px solid #000000;
-    background-color: #EEEEEE;
-    white-space: normal;
-    z-index: 100;
-    overflow: hidden;
-}
-
-.editorCompileText {
+.editorFade {
     position: absolute;
     left: 0px;
     top: 0px;
-    width: 500px;
-    height: 500px;
-    font-family: 'Courier';
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+    background-color: #000000;
+     z-index: 100;
+}
+
+.editorInfo {
+    position: absolute;
+    left: calc(50% - 300px);
+    top: calc(50% - 142px);
+    width: 600px;
+    height: 285px;
+    font-family: 'Arial';
     font-size: 12pt;
-    tab-size: 4;
+    border: 1px solid #000000;
+    background-color: #CCCCCC;
+    padding: 2px;
+    z-index: 101;
+}
+
+.editorInfoTable {
+    table-layout: fixed;
+    width:100%;
+}
+
+.editorInfoTableNameCol {
+    width: 200px;
+    padding-left: 4px;
+    background-color: #9999DD;
+}
+
+.editorInfoTableValueCol {
+    width: 385px;
+    padding-left: 4px;
+    background-color: #9999DD;
+}
+
+.editorInfoNameInput {
+    width: 195px;
+    font-family: 'Arial';
+    font-size: 10pt;
+}
+
+.editorInfoValueInput {
+    width: 380px;
+    font-family: 'Arial';
+    font-size: 10pt;
+}
+
+.editorInfoButton {
+    position: absolute;
+    left: calc(100% - 85px);
+    top: calc(100% - 35px);
+    width: 78px;
+    height: 25px;
+    padding-top: 5px;
+    text-align: center;
+    font-family: 'Arial';
+    font-size: 14pt;
+    cursor: pointer;
+    border: 1px solid #9999DD;
+    background-color: #AAAAFF;
+}
+
+.editorInfoButton:hover {
+    background-color: #CCCCFF;
 }

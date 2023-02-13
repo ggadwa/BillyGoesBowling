@@ -1,7 +1,6 @@
-export default class EditorClass
-{
-    constructor(game)
-    {
+export default class EditorClass {
+        
+    constructor(game) {
         this.game=game;
         this.map=null;
         
@@ -66,31 +65,35 @@ export default class EditorClass
         document.onkeydown=this.keyDownMapCanvas.bind(this); // need to be on document
         document.onkeyup=this.keyUpMapCanvas.bind(this);
         
-        this.mapCanvas.oncontextmenu=this.rightClickMapCanvas.bind(this);
-        
         this.tilePaletteCanvas.onclick=this.clickTilePaletteCanvas.bind(this);
         this.spritePaletteCanvas.onclick=this.clickSpritePaletteCanvas.bind(this);
         
-            // current map offset
-            
+        // toolbar buttons
+        document.getElementById('compileButton').onclick=this.compile.bind(this);
+        document.getElementById('mapUpButton').onclick=this.mapUp.bind(this);
+        document.getElementById('mapDownButton').onclick=this.mapDown.bind(this);
+        document.getElementById('mapLeftButton').onclick=this.mapLeft.bind(this);
+        document.getElementById('mapRightButton').onclick=this.mapRight.bind(this);
+        document.getElementById('spriteInfo').onclick=this.infoOpen.bind(this);
+        
+        // editor info button
+        document.getElementById('editorInfoOk').onclick=this.infoOk.bind(this);
+
+        // current map offset
         this.offsetX=0;
         this.offsetY=0;
         
-            // load resources
-            
+        // load resources
         this.game.attachResources();
         
-            // initialize the map list
-            
+        // initialize the map list
         this.game.mapList.initialize(this.game);
         
-            // initialize the image list
-            
+        // initialize the image list
         this.game.imageList.initialize(this.initialize2.bind(this));
     }
     
-    initialize2()
-    {
+    initialize2() {
             // the tile list is a list of all the loaded
             // images from the tile subdirectory
             
@@ -150,38 +153,29 @@ export default class EditorClass
     // resize
     resize() {
         this.setCanvasPixelAndContext();
-        this.drawMapCanvas();
-        this.drawTilePaletteCanvas();
-        this.drawSpritePaletteCanvas();
+        this.refresh();
     }
     
-        //
-        // draw canvases
-        //
-        
-    drawMapCanvas()
-    {
+    // draw canvases
+    drawMapCanvas() {
         let x,y,dx,dy,tileIdx,sprite;
         let lx,rx,ty,by,textOffset;
         let img;
         let ctx=this.mapCTX;
         let tiles=this.game.tileImageList;
         
-            // get the tile draw viewport
-            
+        // get the tile draw viewport
         lx=this.offsetX;
         rx=lx+(Math.trunc(this.mapCanvas.width/this.MAP_TILE_SIZE)+1);
             
         ty=this.offsetY;
         by=ty+(Math.trunc(this.mapCanvas.height/this.MAP_TILE_SIZE)+1);
         
-            // clear
-            
+        // clear
         ctx.fillStyle='#FFFFFF';
         ctx.fillRect(0,0,this.mapCanvas.width,this.mapCanvas.height);
         
-            // tiles
-
+        // tiles
         for (y=ty;y!==by;y++) {
             for (x=lx;x!==rx;x++) {
                 tileIdx=this.map.tileData[(y*this.MAP_TILE_WIDTH)+x]-1;
@@ -189,8 +183,7 @@ export default class EditorClass
             }
         }
         
-            // entities
-        
+        // entities
         for (sprite of this.map.sprites) {
             img=sprite.currentImage;
             
@@ -205,8 +198,7 @@ export default class EditorClass
             ctx.drawImage(img,(dx-(lx*this.MAP_TILE_SIZE)),(dy-(ty*this.MAP_TILE_SIZE)));
         }
 
-            // grid
-            
+        // grid
         ctx.strokeStyle='#AAAAAA';
         ctx.setLineDash([2,2]);
             
@@ -233,8 +225,7 @@ export default class EditorClass
         ctx.strokeStyle='#000000';
         ctx.setLineDash([]);
 
-            // cell numbers
-
+        // cell numbers
         ctx.font='16px Arial';
         ctx.fillStyle='#000000';
         ctx.textAlign='center';
@@ -257,8 +248,7 @@ export default class EditorClass
             ctx.fillText((''+y),dx,(((y-ty)*this.MAP_TILE_SIZE)+textOffset));
         }
         
-            // selected sprite
-            
+        // selected sprite
         if ((this.selectX>=lx) && (this.selectX<rx) && (this.selectY>=ty) && (this.selectY<by)) {
             dx=(this.selectX-lx)*this.MAP_TILE_SIZE;
             dy=(this.selectY-ty)*this.MAP_TILE_SIZE;
@@ -269,23 +259,20 @@ export default class EditorClass
         }
     }
     
-    drawTilePaletteCanvas()
-    {
+    drawTilePaletteCanvas() {
         let x,y,tile,cnt;
         let wid=this.tilePaletteCanvas.width;
         let tiles=this.game.tileImageList;
         let ctx=this.tilePaletteCTX;
         
-            // clear
-            
+        // clear
         ctx.fillStyle='#EEEEEE';
         ctx.fillRect(0,0,this.tilePaletteCanvas.width,this.tilePaletteCanvas.height);
         
         x=0;
         y=0;
         
-            // the images
-            
+        // the images
         for (tile of tiles) {
             ctx.drawImage(tile,x,y);
             
@@ -296,8 +283,7 @@ export default class EditorClass
             }
         }
         
-            // the selection
-            
+        // the selection
         if ((this.paletteSelType===this.PALETTE_TILE) && (this.paletteSelIndex!==-1)) {
             ctx.strokeStyle='#FF3333';
             ctx.lineWidth=4;
@@ -315,22 +301,19 @@ export default class EditorClass
         }
     }
     
-    drawSpritePaletteCanvas()
-    {
+    drawSpritePaletteCanvas() {
         let x,y,sprite,img,cnt;
         let wid=this.spritePaletteCanvas.width;
         let ctx=this.spritePaletteCTX;
         
-            // clear
-            
+        // clear
         ctx.fillStyle='#EEEEEE';
         ctx.fillRect(0,0,this.spritePaletteCanvas.width,this.spritePaletteCanvas.height);
         
         x=0;
         y=0;
         
-            // the images
-            
+        // the images
         for (sprite of this.spritePaletteList) {
             img=sprite.currentImage;
             ctx.drawImage(img,x,y,Math.min(this.MAP_TILE_SIZE,img.width),Math.min(this.MAP_TILE_SIZE,img.height));      // sprites can be bigger than map tile size
@@ -342,8 +325,7 @@ export default class EditorClass
             }
         }
         
-            // the selection
-            
+        // the selection
         if ((this.paletteSelType===this.PALETTE_SPRITE) && (this.paletteSelIndex!==-1)) {
             ctx.strokeStyle='#FF3333';
             ctx.lineWidth=4;
@@ -361,19 +343,14 @@ export default class EditorClass
         }
     }
     
-    refresh()
-    {
+    refresh() {
         this.drawMapCanvas();
         this.drawTilePaletteCanvas();
         this.drawSpritePaletteCanvas();
     }
     
-        //
-        // lookups
-        //
-        
-    findSpriteIndexForPosition(x,y)
-    {
+    // lookups
+    findSpriteIndexForPosition(x,y) {
         let n,sprite;
         
         x=x*this.MAP_TILE_SIZE;
@@ -387,48 +364,40 @@ export default class EditorClass
         return(-1);
     }
     
-    findSpriteForPosition(x,y)
-    {
+    findSpriteForPosition(x,y) {
         let idx=this.findSpriteIndexForPosition(x,y);
         if (idx===-1) return(null);
         return(this.map.sprites[idx]);
     }
     
-        //
-        // spot editing
-        //
-        
-    clearSpot(x,y,idx)
-    {
+    // spot editing
+    clearSpot(x,y) {
         let spriteIdx;
         
-            // is there a sprite?
-        
+        // is there a sprite?
         spriteIdx=this.findSpriteIndexForPosition(x,y);
         if (spriteIdx!==-1) {
             this.map.removeSprite(spriteIdx);
             return;
         }
         
-            // otherwise remove tile
-            
-        this.map.tileData[idx]=0;
+        // otherwise remove tile
+        this.map.tileData[x+(y*this.MAP_TILE_WIDTH)]=0;
     }
     
-    setSpot(x,y,idx)
-    {
+    setSpot(x,y) {
         let spriteIdx;
         
         if (this.paletteSelIndex===-1) return;
         
         switch (this.paletteSelType) {
             case this.PALETTE_TILE:
-                this.map.tileData[idx]=this.paletteSelIndex+1;
+                this.map.tileData[x+(y*this.MAP_TILE_WIDTH)]=this.paletteSelIndex+1;
                 break;
             case this.PALETTE_SPRITE:
-                spriteIdx=this.findSpriteIndexForPosition(x,y);     // remove old sprite before putting down a new one
+                spriteIdx=this.findSpriteIndexForPosition(x,y); // remove old sprite before putting down a new one
                 if (spriteIdx!==-1) {
-                    if (this.map.sprites[spriteIdx] instanceof this.spritePaletteList[this.paletteSelIndex].constructor) break;     // if it's the same type, just leave it
+                    if (this.map.sprites[spriteIdx] instanceof this.spritePaletteList[this.paletteSelIndex].constructor) break; // if it's the same type, just leave it
                     this.map.removeSprite(spriteIdx);
                 }
                 this.map.addSprite(this.spritePaletteList[this.paletteSelIndex].duplicate((x*this.MAP_TILE_SIZE),((y+1)*this.MAP_TILE_SIZE)));
@@ -440,30 +409,19 @@ export default class EditorClass
         // click canvases
         //
         
-    leftClickMapCanvas(event)
-    {
-        let wid=this.mapCanvas.width;
+    leftClickMapCanvas(event) {
         let x=this.offsetX+Math.trunc(event.offsetX/this.MAP_TILE_SIZE);
         let y=this.offsetY+Math.trunc(event.offsetY/this.MAP_TILE_SIZE);
-        let idx=x+(y*Math.trunc(wid/this.MAP_TILE_SIZE));
         
-            // new selection
-            
+        // new selection
         this.selectX=x;
         this.selectY=y;
         
-            // run click
-        
+        // run click
         event.stopPropagation();
         event.preventDefault();
         
-        if (event.ctrlKey) {
-            this.clearSpot(x,y,idx);
-        }
-        else {
-            this.setSpot(x,y,idx);
-        }
-        
+        this.setSpot(x,y);
         this.drawMapCanvas();
     }
     
@@ -540,14 +498,7 @@ export default class EditorClass
         
         x=this.offsetX+Math.trunc(event.offsetX/this.MAP_TILE_SIZE);
         y=this.offsetY+Math.trunc(event.offsetY/this.MAP_TILE_SIZE);
-        idx=x+(y*this.MAP_TILE_WIDTH);
-        
-        if (event.ctrlKey) {
-            this.clearSpot(x,y,idx);
-        }
-        else {
-            this.setSpot(x,y,idx);
-        }
+        this.setSpot(x,y);
         
         this.drawMapCanvas();
     }
@@ -576,23 +527,6 @@ export default class EditorClass
     {
         this.canvasMouseDown=false;
         this.inDrag=false;
-    }
-    
-    rightClickMapCanvas(event)
-    {
-        let spriteIdx;
-        let x=this.offsetX+Math.trunc(event.offsetX/this.MAP_TILE_SIZE);
-        let y=this.offsetY+Math.trunc(event.offsetY/this.MAP_TILE_SIZE);
-        
-        event.stopPropagation();
-        event.preventDefault();
-        
-            // edit sprite data
-            
-        spriteIdx=this.findSpriteIndexForPosition(x,y);
-        if (spriteIdx===-1) return;
-        
-        this.drawMapCanvas();
     }
     
     clickTilePaletteCanvas(event)
@@ -633,32 +567,31 @@ export default class EditorClass
         this.drawSpritePaletteCanvas();
     }
     
-        //
-        // keys
-        //
-        
-    keyDownMapCanvas(event)
-    {
-        if ((event.keyCode===32) && (!this.spaceDown)) {
+    // keys
+    keyDownMapCanvas(event) {
+        if ((event.key===' ') && (!this.spaceDown)) {
             this.spaceDown=true;
             this.mapCanvas.style.cursor='grab';
+            return;
         }
     }
     
-    keyUpMapCanvas(event)
-    {
-        if (event.keyCode===32) {
+    keyUpMapCanvas(event) {
+        if (event.key===' ') {
             this.spaceDown=false;
             this.mapCanvas.style.cursor='default';
+            return;
+        }
+        
+        if ((event.key==='Backspace') || (event.key==='Delete')) {
+            this.clearSpot(this.selectX,this.selectY);
+            this.drawMapCanvas();
+            return;
         }
     }
     
-        //
-        // map movement
-        //
-        
-    mapUp()
-    {
+    // toolbar buttons
+    mapUp() {
         let x,y,my,sprite;
         
         for (y=this.selectY;(y+1)<(this.MAP_TILE_HEIGHT);y++) {
@@ -680,8 +613,7 @@ export default class EditorClass
         this.drawMapCanvas();
     }
     
-    mapDown()
-    {
+    mapDown() {
         let x,y,my,sprite;
         
         for (y=(this.MAP_TILE_HEIGHT-1);y>this.selectY;y--) {
@@ -703,8 +635,7 @@ export default class EditorClass
         this.drawMapCanvas();
     }
     
-    mapLeft()
-    {
+    mapLeft() {
         let x,y,mx,sprite;
         
         if (this.selectX===0) return;
@@ -725,8 +656,7 @@ export default class EditorClass
         this.drawMapCanvas();
     }
     
-    mapRight()
-    {
+    mapRight() {
         let x,y,mx,sprite;
         
         for (y=0;y!==this.MAP_TILE_HEIGHT;y++) {
@@ -745,37 +675,44 @@ export default class EditorClass
         this.drawMapCanvas();
     }
     
-        //
-        // compiling
-        //
+    // info
+    infoOpen() {
+        let n;
+        let sprite=this.findSpriteForPosition(this.selectX,this.selectY);
+        if (sprite==null) return;
         
-    compile()
-    {
-        let n,sprite,first,str;
-        let div=document.getElementById('editorCompile');
-        let textArea=document.getElementById('editorCompileText');
+        document.getElementById('editorFade').display='';
+        document.getElementById('editorInfo').display='';
         
-            // re-hide
-            
-        if (div.style.display==='') {
-            div.style.display='none';
-            return;
+        for (n=0;n!=10;n++) {
+            document.getElementById('editorInfoName'+n).value=n;
+            document.getElementById('editorInfoValue'+n).value=n*10;
         }
+    }
+    
+    infoOk() {
+        document.getElementById('editorFade').display='none';
+        document.getElementById('editorInfo').display='none';
+    }
+    
+    // compiling
+    compile() {
+        let n,sprite,first,str;
         
-            // compile
-        
+        // map tiles      
         str='    create()\r\n';
         str+='    {\r\n';
         str+='        this.createTileData=new Uint16Array([';
         
         for (n=0;n!=this.map.tileData.length;n++) {
             if (n!==0) str+=',';
-            if ((n%this.MAP_TILE_WIDTH)===0) str+="\r\n            ";
+            if ((n%this.MAP_TILE_WIDTH)===0) str+='\r\n            ';
             str+=this.map.tileData[n].toString();
         }
         
         str+='\r\n        ]);\r\n\r\n';
         
+        // sprites
         str+='        this.createSprites=[\r\n'
         
         first=true;
@@ -798,16 +735,10 @@ export default class EditorClass
         str+='\r\n        ];\r\n';
         str+='    }\r\n';
         
-        textArea.value=str;
-            
-            // show
-            
-        div.style.display='';
+        // copy to clipboard
+        navigator.clipboard.writeText(str);
         
-            // select it
-            
-        textArea.focus();
-        textArea.select();
+        alert('Class copied to clipboard');
     }
     
 }
