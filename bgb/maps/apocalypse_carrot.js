@@ -209,7 +209,6 @@ export default class ApocalypseCarrotMapClass extends SideScrollNormalBaseMapCla
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=1952;
+        this.setLiquidY(1952);
     }
 }

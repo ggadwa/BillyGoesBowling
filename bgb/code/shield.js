@@ -63,7 +63,7 @@ export default class ShieldClass extends SpriteClass {
         // check for collisions outside of player and ball
         playerSprite.canCollide=false;
         playerSprite.ballSprite.canCollide=false;
-        didCollide=map.checkCollision(this);
+        didCollide=this.checkCollision(this);
         playerSprite.canCollide=true;
         playerSprite.ballSprite.canCollide=true;
             

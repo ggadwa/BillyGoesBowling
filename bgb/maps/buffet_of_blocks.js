@@ -315,7 +315,6 @@ export default class BuffetOfBlocksMapClass extends SideScrollNormalBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=928;
+        this.setLiquidY(928);
     }
 }

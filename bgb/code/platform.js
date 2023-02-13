@@ -51,7 +51,7 @@ export default class PlatformClass extends SpriteClass
             
         this.x+=this.xAdd;
         
-        if (this.game.map.checkCollision(this)) {
+        if (this.checkCollision(this)) {
             this.xAdd=-this.xAdd;
             this.x+=this.xAdd;
             this.pauseCount=this.PLATFORM_PAUSE_TICK;

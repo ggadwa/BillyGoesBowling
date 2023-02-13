@@ -80,7 +80,7 @@ export default class EyeClass extends SpriteClass
             // destroy eye on any collision, and if
             // it's a strong break block, break a couple around it
             
-        if (map.checkCollision(this)) {
+        if (this.checkCollision(this)) {
             
             if (this.collideSprite!=null) {
                 if (this.collideSprite instanceof BoneyOneEyeClass) return;         // never hits firing skull

@@ -281,7 +281,6 @@ export default class MrCPUCastleMapClass extends SideScrollCastleBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=2016;
+        this.setLiquidY(2016);
     }
 }

@@ -320,7 +320,6 @@ export default class SprintAThonMapClass extends SideScrollNormalBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=2336;
+        this.setLiquidY(2336);
     }
 }

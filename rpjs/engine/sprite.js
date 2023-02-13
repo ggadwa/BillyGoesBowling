@@ -22,6 +22,10 @@ export default class SpriteClass {
         this.flipY=false;
         this.alpha=1.0;
         this.flash=false;
+        this.flashRate=0;
+        this.shake=false;
+        this.shakeSize=0;
+        this.shakePeriodTick=0;
         this.resizeX=1.0;
         this.resizeY=1.0;
         
@@ -153,6 +157,14 @@ export default class SpriteClass {
         this.height=img.height;
     }
     
+    addSprite(sprite) {
+        return(this.game.map.addSprite(sprite));
+    }
+    
+    addParticle(x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,imageName,count,rotateFactor,reverse,lifeTick) {
+        return(this.game.map.addParticle(x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,imageName,count,rotateFactor,reverse,lifeTick));
+    }
+    
     collide(hitSprite) {
         if ((this.x+this.width)<=hitSprite.x) return(false);
         if (this.x>=(hitSprite.x+hitSprite.width)) return(false);
@@ -214,6 +226,10 @@ export default class SpriteClass {
         if (this.y>max) this.y=max;
     }
     
+    getMapWidth() {
+        return(this.game.map.width);
+    }
+    
     getPlayerSprite() {
         return(this.game.map.getPlayerSprite());
     }
@@ -239,6 +255,18 @@ export default class SpriteClass {
     
     playSoundGlobal(name) {
         this.game.soundList.play(name);
+    }
+
+    getLiquidY() {
+        return(this.game.map.getLiquidY());
+    }
+
+    setLiquidY(y) {
+        this.game.map.setLiquidY(y);
+    }
+
+    moveLiquidTo(toLiquidY,liquidMoveSpeed) {
+        this.game.map.moveLiquidTo(toLiquidY,liquidMoveSpeed);
     }
     
     runGravity() {
@@ -348,7 +376,17 @@ export default class SpriteClass {
         
         // flashing
         alpha=1.0;
-        if (this.flash) alpha=((this.game.timestamp&0x4)===0)?0.5:0.9;
+        if (this.flash) {
+            alpha=(((this.game.tick/this.flashRate)&0x1)===0)?0.5:0.9;
+        }
+        
+        // shaking
+        if (this.shake) {
+            if (((this.game.tick/this.shakePeriodTick)&0x1)===0) {
+                x+=(Math.random()*(this.shakeSize*2.0))-this.shakeSize;
+                y+=(Math.random()*(this.shakeSize*2.0))-this.shakeSize;
+            }
+        }
         
         // any transforms
         hasTransform=(this.flipX) || (this.flipY) || (alpha!==1.0);

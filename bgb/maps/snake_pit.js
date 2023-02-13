@@ -239,7 +239,5 @@ export default class SnakePitMapClass extends SideScrollNormalBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=-1;
     }
 }

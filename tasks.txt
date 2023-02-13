@@ -1,8 +1,13 @@
 //// TO DO
 
 
+- add a ignore class list to moveWithCollision and checkCollision (null = no list)
+
+
 - why does spring break?
-- ninja bunny hitting player kills ninja bunny
+
+- snakes on a plane, where water gets lowered make steps down
+- switch platforms over water and carrot level
 
 - need water sound (when changing)
 
@@ -29,7 +34,7 @@
 
 - add kangaroo boss and another level
 
-- snakes on a plane, where water gets lowered make steps down
+
 
 
 - get rid of all timestamp stuff, use ticks (MAYBE???) - particle by ticks

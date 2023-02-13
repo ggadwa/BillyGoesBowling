@@ -247,7 +247,6 @@ export default class HeadsUpMapClass extends SideScrollNormalBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=1248;
+        this.setLiquidY(1248);
     }
 }

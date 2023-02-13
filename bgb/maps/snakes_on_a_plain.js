@@ -210,7 +210,6 @@ export default class SnakesOnAPlainMapClass extends SideScrollNormalBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=1184;
+        this.setLiquidY(1184);
     }
 }

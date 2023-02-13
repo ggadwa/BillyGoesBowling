@@ -50,7 +50,7 @@ export default class AxeClass extends SpriteClass {
         }
 
         // collisions
-        if (!map.checkCollision(this)) return;
+        if (!this.checkCollision(this)) return;
         
         // interact with sprites, like destroying clouds
         if (this.collideSprite!=null) this.collideSprite.interactWithSprite(this,null);

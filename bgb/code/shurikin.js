@@ -46,7 +46,7 @@ export default class ShurikinClass extends SpriteClass {
         this.x+=this.travelX;
         this.y+=this.SHURIKIN_Y_SPEED;
 
-        if (map.checkCollision(this)) {
+        if (this.checkCollision(this)) {
             if (this.collideSprite!=null) this.collideSprite.interactWithSprite(this,null);
             this.delete();
         }

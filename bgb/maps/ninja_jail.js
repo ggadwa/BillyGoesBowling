@@ -329,7 +329,6 @@ export default class NinjaJailMapClass extends SideScrollNormalBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=3520;
+        this.setLiquidY(3520);
     }
 }

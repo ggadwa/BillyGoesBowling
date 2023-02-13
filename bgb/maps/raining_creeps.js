@@ -551,7 +551,6 @@ export default class RainingCreepsMapClass extends SideScrollNormalBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=1744;
+        this.setLiquidY(1744);
     }
 }

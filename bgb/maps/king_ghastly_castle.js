@@ -274,7 +274,6 @@ export default class KingGhastlyCastleMapClass extends SideScrollCastleBaseMapCl
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=1952;
+        this.setLiquidY(1952);
     }
 }

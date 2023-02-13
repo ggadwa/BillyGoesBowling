@@ -200,7 +200,5 @@ export default class NinjaHordeMapClass extends SideScrollNormalBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=-1;
     }
 }

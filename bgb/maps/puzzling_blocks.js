@@ -311,7 +311,6 @@ export default class PuzzlingBlocksMapClass extends SideScrollNormalBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=8096;
+        this.setLiquidY(8096);
     }
 }

@@ -185,7 +185,5 @@ export default class NinjaMountainMapClass extends SideScrollNormalBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=-1;
     }
 }

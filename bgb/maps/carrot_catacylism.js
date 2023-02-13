@@ -192,7 +192,6 @@ export default class CarrotCatacylismMapClass extends SideScrollNormalBaseMapCla
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=3616;
+        this.setLiquidY(3616);
     }
 }

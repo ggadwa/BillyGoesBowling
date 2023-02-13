@@ -46,7 +46,8 @@ export default class ButtonClass extends SpriteClass {
         // mode = liquid means move the liquid to
         // the position by liquid_y
         if (mode==='liquid') {
-            this.game.map.moveLiquidTo(this.data.get('liquid_y'),this.data.get('liquid_move_speed'));
+            this.playSoundGlobal('splash');
+            this.moveLiquidTo(this.data.get('liquid_y'),this.data.get('liquid_move_speed'));
         }
         
         // click sound

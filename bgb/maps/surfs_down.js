@@ -188,22 +188,24 @@ export default class SurfsDownMapClass extends SideScrollNormalBaseMapClass
         ];
     }
     
-    liquidMoveDone()
+    onLiquidMoveDone()
     {
-        if (this.liquidY===1056) {
+        if (this.getLiquidY()===1056) {
             this.moveLiquidTo(1984,4);
         }
         else {
             this.moveLiquidTo(1056,5);
         }
+        
+        this.playSoundGlobal('splash');
     }
     
     mapStartup()
     {
         super.mapStartup();
         
-        this.liquidY=992;
-        
+        this.setLiquidY(992);
         this.moveLiquidTo(1984,3);
+        this.playSoundGlobal('splash');
     }
 }

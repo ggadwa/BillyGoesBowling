@@ -229,6 +229,7 @@ export default class BillyGameClass extends GameClass
         this.addSound('locked_castle');
         this.addSound('door');
         this.addSound('pickup');
+        this.addSound('splash');
         this.addSound('funeral_march');
         
         // music

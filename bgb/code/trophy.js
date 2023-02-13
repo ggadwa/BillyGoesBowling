@@ -37,7 +37,7 @@ export default class TrophyClass extends SpriteClass
     {
             // are we colliding with player?
             
-        if (!this.game.map.checkCollision(this)) return;
+        if (!this.checkCollision(this)) return;
         if (this.collideSprite===null) return;
         if (!(this.collideSprite instanceof PlayerSideScrollClass)) return;
             

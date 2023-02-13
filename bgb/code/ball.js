@@ -86,7 +86,7 @@ export default class BallClass extends SpriteClass {
     run() {
         let map=this.game.map;
         let playerSprite=this.getPlayerSprite();
-        let didCollide;
+        let didCollide,liquidY;
         let px,py,lftEdge,rgtEdge,topEdge,botEdge,tick;
         let xOffset, yOffset, rad;
         
@@ -215,7 +215,7 @@ export default class BallClass extends SpriteClass {
             
             playerSprite.canCollide=false; // get player and possible shield out of way
             playerSprite.shieldSprite.canCollide=false;
-            didCollide=map.checkCollision(this);
+            didCollide=this.checkCollision(this);
             playerSprite.canCollide=true;
             playerSprite.shieldSprite.canCollide=true;
             
@@ -241,8 +241,9 @@ export default class BallClass extends SpriteClass {
         }
         
         // hitting water auto returns the ball
-        if (map.liquidY!==-1) {
-            if (this.y>map.liquidY) {
+        liquidY=this.getLiquidY();
+        if (liquidY!==-1) {
+            if (this.y>liquidY) {
                 this.returnBall(true);
                 return;
             }

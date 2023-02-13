@@ -216,7 +216,6 @@ export default class PlatformPerilMapClass extends SideScrollNormalBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=5440;
+        this.setLiquidY(5440);
     }
 }

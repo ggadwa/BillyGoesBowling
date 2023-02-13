@@ -452,7 +452,6 @@ export default class SpeedwayMapClass extends SideScrollNormalBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=2240;
+        this.setLiquidY(2240);
     }
 }

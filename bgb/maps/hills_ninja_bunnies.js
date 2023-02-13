@@ -265,7 +265,5 @@ export default class HillsNinjaBunniesMapClass extends SideScrollNormalBaseMapCl
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=-1;
     }
 }

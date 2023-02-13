@@ -251,7 +251,6 @@ export default class RunningAheadMapClass extends SideScrollNormalBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=2464;
+        this.setLiquidY(2464);
     }
 }

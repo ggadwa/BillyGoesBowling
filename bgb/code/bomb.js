@@ -48,17 +48,19 @@ export default class BombClass extends SpriteClass {
     
     run() {
         let map=this.game.map;
+        let liquidY;
         
         this.y+=this.BOMB_SPEED;
         
-        if (this.game.map.liquidY!==-1) {
-            if (this.y>=this.game.map.liquidY) {
+        liquidY=this.getLiquidY();
+        if (liquidY!==-1) {
+            if (this.y>=liquidY) {
                 this.explode();
                 return;
             }
         }
 
-        if (map.checkCollision(this)) {
+        if (this.checkCollision(this)) {
             if (this.collideSprite!=null) this.collideSprite.interactWithSprite(this,null);
             this.explode();
         }

@@ -103,7 +103,7 @@ export default class RotoCarrotClass extends SpriteClass
             // check for collisions to hurt player
             // but always go through objects
         
-        if (map.checkCollision(this)) {
+        if (this.checkCollision(this)) {
             if (this.collideSprite!==null) this.collideSprite.interactWithSprite(this,null);
         }
         

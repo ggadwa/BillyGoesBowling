@@ -69,7 +69,7 @@ export default class FishClass extends SpriteClass {
 
         // colliding with anything but the player
         // or cloud/break block sprite changes direction
-        if (map.checkCollision(this)) {
+        if (this.checkCollision(this)) {
             if (this.collideSprite!==null) {
                 this.sendMessage(this.collideSprite,'hurt',null);
                 this.removeFish();

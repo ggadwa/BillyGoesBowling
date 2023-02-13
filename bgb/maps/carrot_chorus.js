@@ -198,7 +198,6 @@ export default class CarrotChorusMapClass extends SideScrollNormalBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=4896;
+        this.setLiquidY(4896);
     }
 }

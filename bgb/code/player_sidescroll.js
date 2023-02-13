@@ -93,10 +93,10 @@ export default class PlayerSideScrollClass extends SpriteClass {
     mapStartup() {
         // add the ball sprite
         this.ballSprite=new BallClass(this.game,0,0,null);
-        this.game.map.addSprite(this.ballSprite);
+        this.addSprite(this.ballSprite);
         // add the shield sprite
         this.shieldSprite=new ShieldClass(this.game,0,0,null);
-        this.game.map.addSprite(this.shieldSprite);
+        this.addSprite(this.shieldSprite);
     }
     
     hurtPlayer() {
@@ -114,7 +114,6 @@ export default class PlayerSideScrollClass extends SpriteClass {
         }
         
         this.invincibleCount=this.INVINCIBLE_TICK;
-        this.flash=true;
     }
     
     killPlayer() {
@@ -128,7 +127,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         
         this.stopAllGravity();
         
-        this.game.map.getFirstSpriteOfType(BallClass).show=false;
+        this.ballSprite.show=false;
         this.game.musicList.stop();
         this.playSound('funeral_march');
         
@@ -139,7 +138,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
     warpOut() {
         this.warpCount=this.WARP_TICK;
         
-        this.game.map.getFirstSpriteOfType(BallClass).show=false;
+        this.ballSprite.show=false;
         
         this.stopAllGravity();
         
@@ -183,12 +182,13 @@ export default class PlayerSideScrollClass extends SpriteClass {
     
     run() {
         let goLeft, goRight;
+        let liquidY;
         let map=this.game.map;
         
         // warping? 
         if (this.warpCount!==0) {
             this.setCurrentImage('sprites/billy_walk_1');
-            this.resizeX=this.alpha=(this.warpCount-1)/this.WARP_TICK;
+            this.resizeX=this.resizeY=this.alpha=(this.warpCount-1)/this.WARP_TICK;
             this.warpCount--;
             if (this.warpCount===0) this.game.gotoMap('world_main');
             return;
@@ -197,15 +197,23 @@ export default class PlayerSideScrollClass extends SpriteClass {
         // dead?
         if (this.deathCount!==0) {
             this.setCurrentImage('sprites/gravestone');
+            this.shake=true;
+            this.shakeSize=3;
+            this.shakePeriodTick=30;
             this.deathCount--;
             if (this.deathCount===0) this.game.gotoMap('world_main');
             return;
         }
         
         // invincible
+        this.flash=false;
+        
         if (this.invincibleCount!==0) {
             this.invincibleCount--;
-            if (this.invincibleCount===0) this.flash=false;
+            if (this.invincibleCount>0) {
+                this.flash=true;
+                this.flashRate=(this.invincibleCount>(this.INVINCIBLE_TICK/2))?5:2;
+            }
         }
         
         // shield
@@ -284,7 +292,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.shieldSprite.canCollide=true;
         this.ballSprite.canCollide=true;
         
-        this.clampX(0,(map.width-this.width));
+        this.clampX(0,(this.getMapWidth()-this.width));
         
         // jumping
         if ((this.game.input.isKeyDown("Space")) && (this.grounded)) {
@@ -327,8 +335,9 @@ export default class PlayerSideScrollClass extends SpriteClass {
         if (this.grounded) this.lastGroundY=this.y;
         
         // check for hitting liquid
-        if (map.liquidY!==-1) {
-            if (this.y>=map.liquidY) {
+        liquidY=this.getLiquidY();
+        if (liquidY!==-1) {
+            if (this.y>=liquidY) {
                 this.killPlayer();
                 return;
             }

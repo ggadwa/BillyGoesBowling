@@ -183,7 +183,6 @@ export default class PlatformTroubledWatersMapClass extends SideScrollNormalBase
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=2032;
+        this.setLiquidY(2032);
     }
 }

@@ -497,7 +497,6 @@ export default class Cloud9MapClass extends SideScrollNormalBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        
-        this.liquidY=7584;
+        this.setLiquidY(7584);
     }
 }

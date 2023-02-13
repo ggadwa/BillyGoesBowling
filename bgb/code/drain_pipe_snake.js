@@ -13,7 +13,7 @@ export default class DrainPipeSnakeClass extends SpriteClass {
         
         this.MAX_WALK_SPEED=5.0;
         this.ACCEL_SPEED=1.0;
-        this.INVINCIBLE_TICK=30;
+        this.INVINCIBLE_TICK=60;
         this.TILE_IDX_GROUND_LEFT_END=1;
         this.TILE_IDX_GROUND_RIGHT_END=3;
         this.TILE_IDX_GIRDER_LEFT_END=10;
@@ -50,13 +50,12 @@ export default class DrainPipeSnakeClass extends SpriteClass {
     breakPipe() {
         this.snakeHasPipe=false;
         this.invincibleCount=this.INVINCIBLE_TICK;
-        this.flash=true;
-        this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),16,16,1.0,0.1,5,0.05,'particles/pipe',10,0.5,false,800);
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),16,16,1.0,0.1,5,0.05,'particles/pipe',10,0.5,false,800);
         this.playSound('pipe_break'); 
     }
     
     kill() {
-        this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,600);
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,600);
         this.playSound('monster_die');
         this.delete();
     }
@@ -119,10 +118,15 @@ export default class DrainPipeSnakeClass extends SpriteClass {
     run() {
         let maxSpeed;
         
-        // special count when invincible from broken pipe
+        // invincible from broken pipe
+        this.flash=false;
+        
         if (this.invincibleCount>0) {
             this.invincibleCount--;
-            if (this.invincibleCount===0) this.flash=false;
+            if (this.invincibleCount>0) {
+                this.flash=true;
+                this.flashRate=(this.invincibleCount>(this.INVINCIBLE_TICK/2))?5:2;
+            }
         }
         
         // walk in direction until a collision

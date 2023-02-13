@@ -174,6 +174,10 @@ export default class MapClass {
         this.shakeCount=tickCount;
     }
     
+    playSoundGlobal(name) {
+        this.game.soundList.play(name);
+    }
+    
     /**
      * Adds a single parallax background image to this map, to be drawn
      * in add order.  Y is the y offset to draw at, and xFactor is how it moves
@@ -217,6 +221,20 @@ export default class MapClass {
     }
     
     /**
+     * Get current liquid height.
+     */
+    getLiquidY() {
+        return(this.liquidY);
+    }
+    
+    /**
+     * Set liquid height.
+     */
+    setLiquidY(y) {
+        this.liquidY=y;
+    }
+    
+    /**
      * Start a liquid movement.
      */
     moveLiquidTo(toLiquidY,liquidMoveSpeed) {
@@ -228,7 +246,7 @@ export default class MapClass {
      * Override this to detected when a liquid movement
      * has finished.
      */
-    liquidMoveDone() {
+    onLiquidMoveDone() {
     }
     
     checkCollision(checkSprite) {
@@ -518,7 +536,7 @@ export default class MapClass {
                 if (this.liquidY<this.toLiquidY) {
                     this.liquidY=this.toLiquidY;
                     this.toLiquidY=-1;
-                    this.liquidMoveDone();
+                    this.onLiquidMoveDone();
                 }
             }
             else {
@@ -526,7 +544,7 @@ export default class MapClass {
                 if (this.liquidY>this.toLiquidY) {
                     this.liquidY=this.toLiquidY;
                     this.toLiquidY=-1;
-                    this.liquidMoveDone();
+                    this.onLiquidMoveDone();
                 }
             }
         }
