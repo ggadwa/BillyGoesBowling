@@ -13,7 +13,7 @@ export default class DrainPipeSnakeClass extends SpriteClass {
         
         this.MAX_WALK_SPEED=5.0;
         this.ACCEL_SPEED=1.0;
-        this.INVINCIBLE_TICK=60;
+        this.INVINCIBLE_TICK=40;
         this.TILE_IDX_GROUND_LEFT_END=1;
         this.TILE_IDX_GROUND_RIGHT_END=3;
         this.TILE_IDX_GIRDER_LEFT_END=10;

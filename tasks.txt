@@ -10,8 +10,9 @@
 editor
 - editor: add ?map=world_main
 - figure out if we need duplicate
-- delete/backspace should delete
-- remove weird BGB stuff from editor
+- need to be able to drag sprites
+
+
 
 
 

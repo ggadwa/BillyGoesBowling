@@ -78,6 +78,7 @@ export default class EditorClass {
         
         // editor info button
         document.getElementById('editorInfoOk').onclick=this.infoOk.bind(this);
+        document.getElementById('editorInfoCancel').onclick=this.infoCancel.bind(this);
 
         // current map offset
         this.offsetX=0;
@@ -677,22 +678,48 @@ export default class EditorClass {
     
     // info
     infoOpen() {
-        let n;
+        let n,idx;
         let sprite=this.findSpriteForPosition(this.selectX,this.selectY);
         if (sprite==null) return;
         
-        document.getElementById('editorFade').display='';
-        document.getElementById('editorInfo').display='';
+        idx=0;
         
-        for (n=0;n!=10;n++) {
-            document.getElementById('editorInfoName'+n).value=n;
-            document.getElementById('editorInfoValue'+n).value=n*10;
+        for (name of sprite.data.keys()) {
+            document.getElementById('editorInfoName'+idx).value=name;
+            document.getElementById('editorInfoValue'+idx).value=sprite.data.get(name);
+            idx++;
         }
+        
+        for (n=idx;n<10;n++) {
+            document.getElementById('editorInfoName'+n).value='';
+            document.getElementById('editorInfoValue'+n).value='';
+        }
+        
+        document.getElementById('editorFade').style.display='';
+        document.getElementById('editorInfo').style.display='';
     }
     
     infoOk() {
-        document.getElementById('editorFade').display='none';
-        document.getElementById('editorInfo').display='none';
+        let n,name;
+        let sprite=this.findSpriteForPosition(this.selectX,this.selectY);
+        let data=new Map();
+        
+        for (n=0;n!=10;n++) {
+            name=document.getElementById('editorInfoName'+n).value;
+            if (name!=='') {
+                data.set(name,document.getElementById('editorInfoValue'+n).value);
+            }
+        }
+        
+        sprite.data=data;
+        
+        document.getElementById('editorFade').style.display='none';
+        document.getElementById('editorInfo').style.display='none';
+    }
+    
+    infoCancel() {
+        document.getElementById('editorFade').style.display='none';
+        document.getElementById('editorInfo').style.display='none';
     }
     
     // compiling

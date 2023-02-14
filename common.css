@@ -76,20 +76,21 @@
     height: 100%;
     opacity: 0.8;
     background-color: #000000;
-     z-index: 100;
+    z-index: 100;
 }
 
 .editorInfo {
     position: absolute;
     left: calc(50% - 300px);
-    top: calc(50% - 142px);
+    top: calc(50% - 155px);
     width: 600px;
-    height: 285px;
+    height: 310px;
     font-family: 'Arial';
     font-size: 12pt;
     border: 1px solid #000000;
     background-color: #CCCCCC;
     padding: 2px;
+    box-shadow: 3px 3px 3px #000000;
     z-index: 101;
 }
 
@@ -122,9 +123,8 @@
     font-size: 10pt;
 }
 
-.editorInfoButton {
+.editorInfoButtonOk, .editorInfoButtonCancel {
     position: absolute;
-    left: calc(100% - 85px);
     top: calc(100% - 35px);
     width: 78px;
     height: 25px;
@@ -137,6 +137,14 @@
     background-color: #AAAAFF;
 }
 
-.editorInfoButton:hover {
+.editorInfoButtonOk {
+    left: calc(100% - 170px);
+}
+
+.editorInfoButtonCancel {
+    left: calc(100% - 85px);
+}
+
+.editorInfoButton:hover, .editorInfoButtonCancel:hover {
     background-color: #CCCCFF;
 }
