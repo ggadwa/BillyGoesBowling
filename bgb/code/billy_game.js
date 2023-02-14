@@ -42,6 +42,7 @@ import CarrotCatacylismMapClass from '../maps/carrot_catacylism.js';
 import SnakePitMapClass from '../maps/snake_pit.js';
 import NinjaMountainMapClass from '../maps/ninja_mountain.js';
 import BoneyOneEyeCastleMapClass from '../maps/boney_one_eye_castle.js';
+import KangarangCastleMapClass from '../maps/kangarang_castle.js';
 import Cloud9MapClass from '../maps/cloud_9.js';
 import CarrotChorusMapClass from '../maps/carrot_chorus.js';
 import RunningAheadMapClass from '../maps/running_ahead.js';
@@ -259,6 +260,8 @@ export default class BillyGameClass extends GameClass
         this.addMap('snake_pit',new SnakePitMapClass(this));
         this.addMap('ninja_mountain',new NinjaMountainMapClass(this));
         this.addMap('boney_one_eye_castle',new BoneyOneEyeCastleMapClass(this));
+        
+        this.addMap('kangarang_castle',new KangarangCastleMapClass(this));
         
         this.addMap('cloud_9',new Cloud9MapClass(this));
         this.addMap('carrot_chorus',new CarrotChorusMapClass(this));

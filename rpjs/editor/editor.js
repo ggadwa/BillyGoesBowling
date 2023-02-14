@@ -4,9 +4,14 @@ export default class EditorClass {
         this.game=game;
         this.map=null;
         
-        this.MAP_TILE_WIDTH=256;        // todo -- these are here until we can have static class fields (replace with Map.X)
+        this.MAP_TILE_WIDTH=256; // todo -- these are here until we can have static class fields (replace with Map.X)
         this.MAP_TILE_HEIGHT=128;
         this.MAP_TILE_SIZE=64;
+        
+        this.DRAG_NONE=-1;
+        this.DRAG_SCROLL=0;
+        this.DRAG_SPRITE=1;
+        this.DRAG_DRAW_TILE=2;
         
         this.mapCanvas=null;
         this.mapCTX=null;
@@ -17,7 +22,7 @@ export default class EditorClass {
         this.spritePaletteCanvas=null;
         this.spritePaletteCTX=null;
         
-        this.spritePaletteList=null;                // preloaded sprites that we use for the palette
+        this.spritePaletteList=null; // preloaded sprites that we use for the palette
         
         this.PALETTE_TILE=0;
         this.PALETTE_SPRITE=1;
@@ -32,13 +37,12 @@ export default class EditorClass {
         this.selectY=0;
         
         this.spaceDown=false;
-        this.inDrag=false;
+        this.dragMode=this.DRAG_NONE;
         this.dragOriginalOffsetX=0;
         this.dragOriginalOffsetY=0;
         this.dragStartX=-1;
         this.dragStartY=-1;
-        
-        this.canvasMouseDown=false;
+        this.dragSprite=null;
         
         Object.seal(this);
     }
@@ -107,9 +111,12 @@ export default class EditorClass {
         
             // and get the map to edit
             
-        this.map=this.game.mapList.get(this.game.getStartMap());
+            let mapName=(new URLSearchParams(window.location.search)).get('map');
+            if (mapName===null) mapName=this.game.getStartMap();
+            
+        this.map=this.game.mapList.get(mapName);
         if (this.map===undefined) {
-            console.log('Unknown start map: '+this.game.getStartMap());
+            alert('Unknown start map: '+mapName);
             return;
         }
         
@@ -386,80 +393,79 @@ export default class EditorClass {
         this.map.tileData[x+(y*this.MAP_TILE_WIDTH)]=0;
     }
     
-    setSpot(x,y) {
-        let spriteIdx;
+    setSpotSprite(x,y,idx) {
+        // if there is already a sprite in this position, then just return that one
+        let spriteIdx=this.findSpriteIndexForPosition(x,y);
+        if (spriteIdx!==-1) return(spriteIdx);
         
-        if (this.paletteSelIndex===-1) return;
-        
-        switch (this.paletteSelType) {
-            case this.PALETTE_TILE:
-                this.map.tileData[x+(y*this.MAP_TILE_WIDTH)]=this.paletteSelIndex+1;
-                break;
-            case this.PALETTE_SPRITE:
-                spriteIdx=this.findSpriteIndexForPosition(x,y); // remove old sprite before putting down a new one
-                if (spriteIdx!==-1) {
-                    if (this.map.sprites[spriteIdx] instanceof this.spritePaletteList[this.paletteSelIndex].constructor) break; // if it's the same type, just leave it
-                    this.map.removeSprite(spriteIdx);
-                }
-                this.map.addSprite(this.spritePaletteList[this.paletteSelIndex].duplicate((x*this.MAP_TILE_SIZE),((y+1)*this.MAP_TILE_SIZE)));
-                break;
-        }
+        // otherwise make a new one
+        return(this.map.addSprite(this.spritePaletteList[idx].duplicate((x*this.MAP_TILE_SIZE),((y+1)*this.MAP_TILE_SIZE))));
     }
     
-        //
-        // click canvases
-        //
+    setSpotTile(x,y,idx) {
+        this.map.tileData[x+(y*this.MAP_TILE_WIDTH)]=idx+1;
+    }
+    
+    // click map canvas
+    leftMouseDownMapCanvas(event) {
+        let spriteIdx;
         
-    leftClickMapCanvas(event) {
-        let x=this.offsetX+Math.trunc(event.offsetX/this.MAP_TILE_SIZE);
-        let y=this.offsetY+Math.trunc(event.offsetY/this.MAP_TILE_SIZE);
+        // if space is down, we are starting a scroll
+        if (this.spaceDown) {
+            this.dragMode=this.DRAG_SCROLL;
+            this.dragStartX=-1;
+            this.dragStartY=-1;
+            return;
+        }
         
-        // new selection
-        this.selectX=x;
-        this.selectY=y;
+        // move the select
+        this.selectX=this.offsetX+Math.trunc(event.offsetX/this.MAP_TILE_SIZE);
+        this.selectY=this.offsetY+Math.trunc(event.offsetY/this.MAP_TILE_SIZE);
         
-        // run click
+        // if there is a sprite, then we move that
+        this.dragSprite=this.findSpriteForPosition(this.selectX,this.selectY);
+        if (this.dragSprite!=null) {
+            this.dragMode=this.DRAG_SPRITE;
+        }
+        
+        else {
+            
+            // a dropped selection
+            if (this.paletteSelIndex!==-1) {
+            
+                // if it's a sprite in the palette, then drop that and move it
+                if (this.paletteSelType===this.PALETTE_SPRITE) {
+                    spriteIdx=this.setSpotSprite(this.selectX,this.selectY,this.paletteSelIndex);
+                    this.dragSprite=this.map.sprites[spriteIdx];
+                    this.dragMode=this.DRAG_SPRITE;
+                }
+                else {
+                    this.setSpotTile(this.selectX,this.selectY,this.paletteSelIndex);
+                    this.dragMode=this.DRAG_DRAW_TILE;
+                }
+            }
+        }
+        
+         this.drawMapCanvas();
+    }
+    
+    leftMouseUpMapCanvas(event) {
+        this.dragMode=this.DRAG_NONE;
+    }
+    
+    leftMouseMoveMapCanvas(event) {
+        let x,y,max;
+        
+        // no dragging
+        if (this.dragMode===this.DRAG_NONE) return;
+        
+        // some type of dragging, handle event
         event.stopPropagation();
         event.preventDefault();
         
-        this.setSpot(x,y);
-        this.drawMapCanvas();
-    }
-    
-    leftMouseDownMapCanvas(event)
-    {
-        this.canvasMouseDown=true;
-        
-            // if space is down, we are starting a drag
-            
-        if (this.spaceDown) {
-            this.inDrag=true;
-            this.dragStartX=-1;
-            this.dragStartY=-1;
-        }
-        
-            // otherwise move the select
-            
-        else {
-            this.selectX=this.offsetX+Math.trunc(event.offsetX/this.MAP_TILE_SIZE);
-            this.selectY=this.offsetY+Math.trunc(event.offsetY/this.MAP_TILE_SIZE);
-        }
-        
-            // otherwise we are clicking and item
-            
-        this.leftMouseMoveMapCanvas(event);
-    }
-    
-    leftMouseMoveMapCanvas(event)
-    {
-        let x,y,max,idx;
-        
-            // are we in a drag?
-            
-        if (this.inDrag) {
-                
-                // first time through
-                
+        // scroll drag
+        if (this.dragMode===this.DRAG_SCROLL) {
+            // first time
             if (this.dragStartX===-1) {
                 this.dragStartX=event.offsetX;
                 this.dragStartY=event.offsetY;
@@ -467,45 +473,49 @@ export default class EditorClass {
                 this.dragOriginalOffsetY=this.offsetY;
                 return;
             }
-            
-                // otherwise start dragging
-                
+
+            // otherwise start dragging
             x=this.dragOriginalOffsetX+Math.trunc((this.dragStartX-event.offsetX)/this.MAP_TILE_SIZE);
             if (x<0) x=0;
             max=this.MAP_TILE_WIDTH-Math.trunc(this.mapCanvas.width/this.MAP_TILE_SIZE);
             if (x>max) x=max;
-            
+
             y=this.dragOriginalOffsetY+Math.trunc((this.dragStartY-event.offsetY)/this.MAP_TILE_SIZE);
             if (y<0) y=0;
             max=this.MAP_TILE_HEIGHT-Math.trunc(this.mapCanvas.height/this.MAP_TILE_SIZE);
             if (y>max) y=max;
-            
+
             if ((x===this.offsetX) && (y===this.offsetY)) return;
-            
+
             this.offsetX=x;
             this.offsetY=y;
+
+            this.drawMapCanvas();
+            return;
+        }
+
+        this.selectX=this.offsetX+Math.trunc(event.offsetX/this.MAP_TILE_SIZE);
+        this.selectY=this.offsetY+Math.trunc(event.offsetY/this.MAP_TILE_SIZE);
+
+        // sprite dragging
+        if (this.dragMode===this.DRAG_SPRITE) {
+            this.dragSprite.x=this.selectX*this.MAP_TILE_SIZE;
+            this.dragSprite.y=(this.selectY+1)*this.MAP_TILE_SIZE;
             
             this.drawMapCanvas();
             return;
         }
-        
-            // as long as the mouse is down, fill
-            // in grid spots
             
-        if (!this.canvasMouseDown) return;
-        
-        event.stopPropagation();
-        event.preventDefault();
-        
-        x=this.offsetX+Math.trunc(event.offsetX/this.MAP_TILE_SIZE);
-        y=this.offsetY+Math.trunc(event.offsetY/this.MAP_TILE_SIZE);
-        this.setSpot(x,y);
-        
-        this.drawMapCanvas();
+        // sprite dragging
+        if (this.dragMode===this.DRAG_DRAW_TILE) {
+            this.setSpotTile(this.selectX,this.selectY,this.paletteSelIndex);
+            
+            this.drawMapCanvas();
+            return;
+        }
     }
     
-    wheelMapCanvas(event)
-    {
+    wheelMapCanvas(event) {
         let x,y,max;
         
         x=this.offsetX+Math.sign(event.deltaX);
@@ -524,14 +534,8 @@ export default class EditorClass {
         this.drawMapCanvas();
     }
     
-    leftMouseUpMapCanvas(event)
-    {
-        this.canvasMouseDown=false;
-        this.inDrag=false;
-    }
-    
-    clickTilePaletteCanvas(event)
-    {
+    // click tile canvas
+    clickTilePaletteCanvas(event) {
         let wid=this.tilePaletteCanvas.width;
         let x=event.offsetX;
         let y=event.offsetY;
@@ -549,8 +553,8 @@ export default class EditorClass {
         this.drawSpritePaletteCanvas();
     }
     
-    clickSpritePaletteCanvas(event)
-    {
+    // click palette canvas
+    clickSpritePaletteCanvas(event) {
         let wid=this.spritePaletteCanvas.width;
         let x=event.offsetX;
         let y=event.offsetY;
@@ -727,8 +731,7 @@ export default class EditorClass {
         let n,sprite,first,str;
         
         // map tiles      
-        str='    create()\r\n';
-        str+='    {\r\n';
+        str='    create() {\r\n';
         str+='        this.createTileData=new Uint16Array([';
         
         for (n=0;n!=this.map.tileData.length;n++) {

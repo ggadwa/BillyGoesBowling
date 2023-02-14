@@ -3,14 +3,11 @@
 
 
 - first carrot level needs to protect snakes at end from bombs, end needs to be lower
-- snakes on a plane, where water gets lowered make steps down
-- switch platforms over water and carrot level
-- add bush, small hill to world map, add kangaroo level
 
-editor
-- editor: add ?map=world_main
-- figure out if we need duplicate
-- need to be able to drag sprites
+- add bush, small hill to world map, add kangaroo levels
+- liquid needs to compress Y as it moves
+
+
 
 
 

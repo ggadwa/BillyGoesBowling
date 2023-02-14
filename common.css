@@ -82,9 +82,9 @@
 .editorInfo {
     position: absolute;
     left: calc(50% - 300px);
-    top: calc(50% - 155px);
+    top: calc(50% - 160px);
     width: 600px;
-    height: 310px;
+    height: 320px;
     font-family: 'Arial';
     font-size: 12pt;
     border: 1px solid #000000;
@@ -112,15 +112,23 @@
 }
 
 .editorInfoNameInput {
-    width: 195px;
+    width: 200px;
+    height: 20px;
+    padding-left: 2px;
     font-family: 'Arial';
     font-size: 10pt;
+    border: none;
+    background-color: #AAAACC;
 }
 
 .editorInfoValueInput {
-    width: 380px;
+    width: 385px;
+    height: 20px;
+    padding-left: 2px;
     font-family: 'Arial';
     font-size: 10pt;
+    border: none;
+    background-color: #AAAACC;
 }
 
 .editorInfoButtonOk, .editorInfoButtonCancel {
