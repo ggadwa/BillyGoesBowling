@@ -28,16 +28,30 @@ export default class BreakBlockStrongClass extends SpriteClass
         return(new BreakBlockStrongClass(this.game,x,y,this.data));
     }
     
-    interactWithSprite(interactSprite,dataObj)
-    {
+    breakBlock() {
         let cx,cy;
         
-        if ((interactSprite instanceof ExplodeBlockClass) || (interactSprite instanceof AxeClass) || (interactSprite instanceof MrCPUClass) || (interactSprite instanceof EyeClass)) {
-            cx=this.x+Math.trunc(this.width*0.5);
-            cy=this.y-Math.trunc(this.height*0.5);
-            this.game.map.addParticle(cx,cy,16,16,1.0,0.1,0.08,5,'particles/block',10,0.5,false,800);
-            this.playSound('crack');
-            this.delete();
+        cx=this.x+Math.trunc(this.width*0.5);
+        cy=this.y-Math.trunc(this.height*0.5);
+        this.game.map.addParticle(cx,cy,16,16,1.0,0.1,0.08,5,'particles/block',10,0.5,false,800);
+        this.playSound('crack');
+        this.delete();
+    }
+
+    onCollideSprite(sprite) {
+        // colliding with axe, mr cpu, or boney's eye breaks block
+        if (
+            (sprite instanceof AxeClass) ||
+            (sprite instanceof MrCPUClass) ||
+            (sprite instanceof EyeClass)) {
+                this.breakBlock();
+                return;
+        }
+    }
+    
+    onMessage(fromSprite,cmd,data) {
+        if (cmd==='explode') {
+            this.breakBlock();
         }
     }
 }

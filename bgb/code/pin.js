@@ -31,14 +31,9 @@ export default class PinClass extends SpriteClass {
         this.game.startCompletionTimer();
     }
     
-    run() {
+    pickup() {
         let time,oldTime;
         
-        // are we colliding with player?
-        if (!this.checkCollision(null)) return;
-        if (this.collideSprite===null) return;
-        if (!(this.collideSprite instanceof PlayerSideScrollClass)) return;
-            
         // update the win state
         if (this.game.getData('pin_'+this.game.map.name)===null) {
             this.game.setData('pins',(this.game.getData('pins')+1));
@@ -60,5 +55,17 @@ export default class PinClass extends SpriteClass {
         
         // warp out the player
         this.sendMessage(this.getPlayerSprite(),'warp_out',null);
+    }
+    
+    onCollideSprite(sprite) {
+        // colliding player picks up
+        if (sprite instanceof PlayerSideScrollClass) {
+            this.pickup();
+        }
+    }
+    
+    run() {
+        this.checkCollision();
+        this.runGravity();
     }
 }

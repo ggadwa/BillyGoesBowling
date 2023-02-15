@@ -3,25 +3,20 @@ import PlayerSideScrollClass from './player_sidescroll.js';
 import BreakBlockStrongClass from '../code/break_block_strong.js';
 import BoneyOneEyeClass from '../code/boney_one_eye.js';
 
-export default class EyeClass extends SpriteClass
-{
-    constructor(game,x,y,data)
-    {
+export default class EyeClass extends SpriteClass {
+        
+    constructor(game,x,y,data) {
         super(game,x,y,data);
         
         // constants  
         this.EYE_SPEED=15;
         
-        this.COLLIDE_CLASS_IGNORE=[BoneyOneEyeClass];
-        
-            // variables
-            
+        // variables
         this.needReset=true;
         this.xAdd=0;
         this.yAdd=0;
         
-            // setup
-            
+        // setup
         this.addImage('sprites/eye');
         this.setCurrentImage('sprites/eye');
         
@@ -32,23 +27,22 @@ export default class EyeClass extends SpriteClass
         this.canCollide=false;
         this.canStandOn=false;
         
+        this.setCollideSpriteClassIgnoreList([BoneyOneEyeClass]);
+        
         Object.seal(this);
     }
     
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
         return(new EyeClass(this.game,x,y,this.data));
     }
     
-    killEye()
-    {
+    killEye() {
         this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,600);
         this.playSound('pop');
         this.delete();
     }
     
-    run()
-    {
+    run() {
         let x,y,f;
         let sprite,sprites;
         let map=this.game.map;
@@ -81,7 +75,7 @@ export default class EyeClass extends SpriteClass
             // destroy eye on any collision, and if
             // it's a strong break block, break a couple around it
             
-        if (this.checkCollision(this.COLLIDE_CLASS_IGNORE)) {
+        if (this.checkCollision()) {
             
             if (this.collideSprite!=null) {
                 if (this.collideSprite instanceof BoneyOneEyeClass) return;         // never hits firing skull

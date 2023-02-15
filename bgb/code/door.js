@@ -33,7 +33,7 @@ export default class DoorClass extends SpriteClass {
         if (!this.game.input.isKeyDownAndClear("KeyW")) return;
         
         // are we colliding with player?
-        if (!playerSprite.collide(this)) return;
+        if (!this.collide(playerSprite)) return;
         
         door=this.game.map.getFirstSpriteWithData('name',this.getData('goto'));
         playerSprite.x=door.x;

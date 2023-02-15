@@ -16,8 +16,6 @@ export default class NinjaBunnyClass extends SpriteClass {
         this.BUNNY_PAUSE_TICK=45;
         this.BUNNY_ACTIVATE_DISTANCE=800;
         
-        this.COLLIDE_CLASS_IGNORE=[ShurikinClass];
-        
         // variables  
         this.bunnyActive=false;
         this.bunnyPause=0;
@@ -39,6 +37,9 @@ export default class NinjaBunnyClass extends SpriteClass {
         this.gravityMaxValue=20;
         this.canCollide=true;
         this.canStandOn=true;
+        
+        this.setCollideSpriteClassIgnoreList([ShurikinClass]);
+        this.setCollideTileIndexIgnoreList([22,23]);
         
         Object.seal(this);
     }
@@ -71,12 +72,12 @@ export default class NinjaBunnyClass extends SpriteClass {
         // colliding with ball, shield, bomb, or fish hurts bunny
         // no shurikins because they will hit each other
         if (
-                (sprite instanceof BallClass) ||
-                (sprite instanceof ShieldClass) ||
-                (sprite instanceof BombClass) ||
-                (sprite instanceof FishClass)) {
-                    this.kill();
-                    return;
+            (sprite instanceof BallClass) ||
+            (sprite instanceof ShieldClass) ||
+            (sprite instanceof BombClass) ||
+            (sprite instanceof FishClass)) {
+                this.kill();
+                return;
         }
         
         // colliding with player kills bunny
@@ -116,7 +117,7 @@ export default class NinjaBunnyClass extends SpriteClass {
         
         // only move if jumping, and ignore if we have a shurikin out
         if (!this.grounded) {
-            this.moveWithCollision((this.BUNNY_AIR_SPEED*this.bunnyJumpDirection),0,this.COLLIDE_CLASS_IGNORE);
+            this.moveWithCollision((this.BUNNY_AIR_SPEED*this.bunnyJumpDirection),0);
         }
         
         // gravity

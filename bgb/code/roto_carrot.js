@@ -33,6 +33,8 @@ export default class RotoCarrotClass extends SpriteClass {
         this.canCollide=true;
         this.canStandOn=true;
         
+        this.setCollideTileIndexIgnoreList([22,23]);
+        
         this.originalY=0;
         this.bombTick=0;
         this.carrotPause=0;

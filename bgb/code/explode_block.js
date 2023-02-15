@@ -3,23 +3,19 @@ import BallClass from './ball.js';
 import MrCPUClass from '../code/mr_cpu.js';
 import KingGhastlyClass from './king_ghastly.js';
 
-export default class ExplodeBlockClass extends SpriteClass
-{
-    constructor(game,x,y,data)
-    {
+export default class ExplodeBlockClass extends SpriteClass {
+        
+    constructor(game,x,y,data) {
         super(game,x,y,data);
         
-            // statics
-            
+        // constants
         this.COUNT_DOWN_TICK_WAIT=5;
         
-            // variables
-            
+        // variables
         this.countDown=-1;
         this.countDownTick=0;
          
-            // setup
-        
+        // setup
         this.addImage('sprites/explode_block_0');
         this.addImage('sprites/explode_block_1');
         this.addImage('sprites/explode_block_2');
@@ -28,7 +24,7 @@ export default class ExplodeBlockClass extends SpriteClass
         this.setCurrentImage('sprites/explode_block_0');
         
         this.show=true;
-        this.gravityFactor=0.0;     // explode blocks don't fall
+        this.gravityFactor=0.0; // explode blocks don't fall
         this.gravityMinValue=0;
         this.gravityMaxValue=0;
         this.canCollide=true;
@@ -37,23 +33,33 @@ export default class ExplodeBlockClass extends SpriteClass
         Object.seal(this);
     }
     
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
         return(new ExplodeBlockClass(this.game,x,y,this.data));
     }
     
-    interactWithSprite(interactSprite,dataObj)
-    {
-        if (this.countDown!==-1) return;
-        
-            // start the countdown if ball or
-            // another exploding block
-            
-        if ((interactSprite instanceof BallClass) || (interactSprite instanceof ExplodeBlockClass) || (interactSprite instanceof MrCPUClass) || (interactSprite instanceof KingGhastlyClass)) {
+    startCountdown() {
+        if (this.countDown===-1) {
             this.countDown=3;
             this.countDownTick=this.COUNT_DOWN_TICK_WAIT;
             this.setCurrentImage('sprites/explode_block_'+this.countDown);
             this.playSound('bomb_tick');
+        }
+    }
+    
+    onCollideSprite(sprite) {
+        // colliding with ball, cpu, or king ghastly starts countdown
+        if (
+                (sprite instanceof BallClass) ||
+                (sprite instanceof MrCPUClass) ||
+                (sprite instanceof KingGhastlyClass)) {
+                    this.startCountdown();
+                    return;
+        }
+    }
+    
+    onMessage(fromSprite,cmd,data) {
+        if (cmd==='explode') {
+            this.startCountdown();
         }
     }
     
@@ -63,13 +69,11 @@ export default class ExplodeBlockClass extends SpriteClass
         
         if (this.countDown===-1) return;
         
-            // wait for next countdown
-            
+        // wait for next countdown
         this.countDownTick--;
         if (this.countDownTick>0) return;
         
-            // countdown has changed
-            
+        // countdown has changed
         this.countDown--;
         this.countDownTick=this.COUNT_DOWN_TICK_WAIT;
 
@@ -79,15 +83,14 @@ export default class ExplodeBlockClass extends SpriteClass
             return;
         }
 
-            // explode
-            // look for any sprite that's directly surrounding this
-            // within a single tile distance (which is 64, we just need to
-            // get the collision rect within that area.)
-        
+        // explode
+        // look for any sprite that's directly surrounding this
+        // within a single tile distance (which is 64, we just need to
+        // get the collision rect within that area.)
         sprites=this.game.map.getSpritesWithinBox((this.x-16),(this.y-80),(this.x+80),(this.y+16),this,null);
         
         for (sprite of sprites) {
-            this.sendMessage(sprite,'hurt',null);
+            this.sendMessage(sprite,'explode',null);
         }
         
         cx=this.x+Math.trunc(this.width*0.5);

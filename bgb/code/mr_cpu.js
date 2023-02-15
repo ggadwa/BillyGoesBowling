@@ -123,7 +123,7 @@ export default class MrCPUClass extends SpriteClass
         speed=this.SPEEDS[this.speedIdx]*this.direction;
         this.x+=speed;
         
-        if (this.checkCollision(null)) {
+        if (this.checkCollision()) {
             this.x-=speed;
             if (this.collideSprite!=null) this.collideSprite.interactWithSprite(this,null);
             

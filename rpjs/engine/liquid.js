@@ -1,32 +1,33 @@
-export default class LiquidClass
-{
-    constructor(game)
-    {
+export default class LiquidClass {
+    constructor(game) {
         this.game=game;
     }
     
-    draw(ctx)
-    {
+    draw(ctx) {
         let map=this.game.map;
         let liquidY=map.liquidY;
         let r,g,b;
         let tintDarken=map.liquidTintDarken;
-        let waveHigh=map.liquidWaveHeight;
+        let waveHigh;
         let x,y,cy,rad,liquidHigh,idx;
         let wid=this.game.canvasWidth;
         let high=this.game.canvasHeight;
         let imgData,data;
         
-            // any liquid to draw?
-            
+        // any liquid to draw?
         if (liquidY===-1) return;
         
-        liquidY-=map.offsetY;
+        // get liquid Y
+        liquidY=Math.trunc(liquidY-map.offsetY);
         liquidHigh=high-liquidY;
         if (liquidHigh<=0) return;
+        
+        // get wave height
+        waveHigh=Math.abs(Math.sin(((this.game.timestamp%5000)*(2*Math.PI))/5000.0));
+        waveHigh=(waveHigh*0.5)+0.5;
+        waveHigh=map.liquidWaveHeight*waveHigh;
             
-            // draw the water
-            
+        // draw the water
         imgData=ctx.getImageData(0,liquidY,wid,liquidHigh);
         data=imgData.data;
 

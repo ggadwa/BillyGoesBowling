@@ -1,18 +1,20 @@
 //// TO DO
 
 
-
-- first carrot level needs to protect snakes at end from bombs, end needs to be lower
-
-- add bush, small hill to world map, add kangaroo levels
-- liquid needs to compress Y as it moves
+- make spring top be closed top, change offset when it springs open
+- pendant tile for castle levels (next to bush tile)
 
 
+- add kangaroo levels
+
+- do all shield stuff
+- can't move with shield on
 
 
 
 
 
+- Ninja HQ (tall girder skyscraper)
 
 
 - do awaits on all the initialization loops in game.js and editor
@@ -29,7 +31,7 @@
 
 
 - replace interactWithSprite with sendMessage(callSprite,cmd,data)
-- other side overrides processMessage(fromSprite,cmd,data)
+- other side overrides onMessage(fromSprite,cmd,data)
 
 - get rid of all map. or game.
 - run passes in tick
@@ -37,7 +39,7 @@
 
 - adjust collisions with billy and shield from other creatures
 - spin makes player invincible for a bit draw shield
-- can't move with shield on
+
 - redo all scripts first before 60 fps
 - put gravity in places it needs to be
 - find (and remove) all timestamp in scripts (use tick)

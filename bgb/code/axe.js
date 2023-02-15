@@ -7,9 +7,6 @@ export default class AxeClass extends SpriteClass {
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        // constants
-        this.COLLIDE_CLASS_IGNORE=[ExecutionerClass];
-        
         // variables
         this.topY=this.y-800;
         
@@ -24,7 +21,10 @@ export default class AxeClass extends SpriteClass {
         this.gravityMaxValue=0;
         this.canCollide=false;
         this.canStandOn=false;
-        this.canRiseBlock=false; // so execution doesn't hit own axe
+        this.canRiseBlock=false;
+        
+        this.setCollideSpriteClassIgnoreList([ExecutionerClass]);
+        this.setCollideTileIndexIgnoreList([22,23]);
         
         Object.seal(this);
     }
@@ -54,7 +54,7 @@ export default class AxeClass extends SpriteClass {
         }
 
         // collisions
-        if (!this.checkCollision(this.COLLIDE_CLASS_IGNORE)) return;
+        if (!this.checkCollision()) return;
         
         // interact with sprites, like destroying clouds
         if (this.collideSprite!=null) this.collideSprite.interactWithSprite(this,null);

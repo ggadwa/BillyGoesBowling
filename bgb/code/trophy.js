@@ -1,10 +1,9 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
 
-export default class TrophyClass extends SpriteClass
-{
-    constructor(game,x,y,data)
-    {
+export default class TrophyClass extends SpriteClass {
+
+    constructor(game,x,y,data) {
         super(game,x,y,data);
         
         this.addImage('sprites/trophy');
@@ -20,37 +19,36 @@ export default class TrophyClass extends SpriteClass
         Object.seal(this);
     }
     
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
         return(new TrophyClass(this.game,x,y,this.data));
     }
 
-    mapStartup()
-    {
-            // if trophy has been picked up once, then
-            // make it transparent
-            
+    mapStartup() {
+        // if trophy has been picked up once, then make it transparent
         if (this.game.getData('trophy_'+this.game.map.name)!==null) this.alpha=0.4;
     }
     
-    run()
-    {
-            // are we colliding with player?
-            
-        if (!this.checkCollision(null)) return;
-        if (this.collideSprite===null) return;
-        if (!(this.collideSprite instanceof PlayerSideScrollClass)) return;
-            
-            // add pin
-            
+    pickup() {
         if (this.game.getData('trophy_'+this.game.map.name)===null) {
             this.game.setData('trophies',(this.game.getData('trophies')+1));
             this.game.setData(('trophy_'+this.game.map.name),true);
             this.game.persistData();
         }
-        
+
         this.playSound('pickup');
-        
+
         this.delete();
+    }
+    
+    onCollideSprite(sprite) {
+        // colliding player picks up
+        if (sprite instanceof PlayerSideScrollClass) {
+            this.pickup();
+        }
+    }
+    
+    run() {
+        this.checkCollision();
+        this.runGravity();
     }
 }

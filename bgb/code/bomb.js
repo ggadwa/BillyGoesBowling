@@ -9,8 +9,6 @@ export default class BombClass extends SpriteClass {
         // constants
         this.BOMB_SPEED=7;
         
-        this.COLLIDE_CLASS_IGNORE=[RotoCarrotClass];
-        
         // setup
         this.addImage('sprites/bomb');
         this.setCurrentImage('sprites/bomb');
@@ -20,6 +18,8 @@ export default class BombClass extends SpriteClass {
         this.gravityMinValue=0;
         this.gravityMaxValue=0;
         this.canStandOn=false;
+        
+        this.setCollideSpriteClassIgnoreList([RotoCarrotClass]);
         
         Object.seal(this);
     }
@@ -42,24 +42,22 @@ export default class BombClass extends SpriteClass {
         this.delete();
     }
     
-    interactWithSprite(interactSprite,dataObj) {
-        // ball explodes bomb 
-        if (interactSprite instanceof BallClass) {
-            this.explode();
-        }
+    onCollideSprite(sprite) {
+        this.explode(); // colliding with any sprite explodes bomb
+    }
+    
+    onCollideTile(tileX,tileY,tileIdx) {
+        this.explode(); // colliding with any tile explodes bomb
     }
     
     run() {
-        this.y+=this.BOMB_SPEED;
+        this.y+=this.BOMB_SPEED; // bomb falls at steady rate
         
         if (this.isInLiquid()) {
             this.explode();
             return;
         }
 
-        if (this.checkCollision(this.COLLIDE_CLASS_IGNORE)) {
-            if (this.collideSprite!=null) this.collideSprite.interactWithSprite(this,null);
-            this.explode();
-        }
+        this.checkCollision();
     }
 }

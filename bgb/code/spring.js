@@ -35,7 +35,7 @@ export default class SpringClass extends SpriteClass {
         if (this.openCount>0) return;
         
         sprite.addGravity(this.SPRING_HEIGHT,0);
-        sprite.flash=true;
+
         this.playSound('boing');
         
         this.openCount=this.OPEN_TICK;
@@ -44,7 +44,7 @@ export default class SpringClass extends SpriteClass {
 
     run() {
         // run collision checks without moving
-        this.checkCollision(null);
+        this.checkCollision();
         
         // open if closed
         if (this.openCount!==0) {

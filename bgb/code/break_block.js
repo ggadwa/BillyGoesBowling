@@ -1,5 +1,8 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import BallClass from './ball.js';
+import ShieldClass from './shield.js';
+import ShurikinClass from './shurikin.js';
+import BombClass from './bomb.js';
 import FishClass from './fish.js';
 import ExplodeBlockClass from './explode_block.js';
 import KingGhastlyClass from './king_ghastly.js';
@@ -36,11 +39,23 @@ export default class BreakBlockClass extends SpriteClass {
         this.delete();
     }
     
-    processMessage(fromSprite,cmd,data) {
-        switch (cmd) {
-            case 'hurt':
-                this.breakBlock();
-                return;
+    onCollideSprite(sprite) {
+        // colliding with ball, shurikin, bomb, fish, or king ghastly breaks block
+        if (
+                (sprite instanceof BallClass) ||
+                (sprite instanceof ShieldClass) ||
+                (sprite instanceof ShurikinClass) ||
+                (sprite instanceof BombClass) ||
+                (sprite instanceof FishClass) ||
+                (sprite instanceof KingGhastlyClass)) {
+                    this.breakBlock();
+                    return;
+        }
+    }
+    
+    onMessage(fromSprite,cmd,data) {
+        if (cmd==='explode') {
+            this.breakBlock();
         }
     }
     

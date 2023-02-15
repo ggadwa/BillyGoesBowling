@@ -19,6 +19,7 @@ export default class PlayerWorldClass extends SpriteClass {
         this.TILE_IDX_GATE=53;
         this.TILE_IDX_LEFT_T=55;
         this.TILE_IDX_UP_T=56;
+        this.TILE_IDX_BRIDGE_CENTER=57;
         this.WALK_FRAME_TICK=3;
         
         this.WALK_ANIMATION=['sprites/billy_world_1','sprites/billy_world_2','sprites/billy_world_3','sprites/billy_world_2'];
@@ -72,6 +73,7 @@ export default class PlayerWorldClass extends SpriteClass {
         if (tileIdx===this.TILE_IDX_LEFT_T) return(true);
         if (tileIdx===this.TILE_IDX_UP_T) return(true);
         if (tileIdx===this.TILE_IDX_DOT) return(true);
+        if (tileIdx===this.TILE_IDX_BRIDGE_CENTER) return(true);
         if (tileIdx===this.TILE_IDX_ROAD_HORIZONTAL) return(true);
         if (tileIdx===this.TILE_IDX_ROAD_VERTICAL) return(true);
         if (tileIdx===this.TILE_IDX_ROAD_TOP_LEFT_CORNER) return(true);
@@ -168,6 +170,7 @@ export default class PlayerWorldClass extends SpriteClass {
             case this.TILE_IDX_LEFT_T:
             case this.TILE_IDX_UP_T:
             case this.TILE_IDX_DOT:
+            case this.TILE_IDX_BRIDGE_CENTER:
                 this.moving=false;
                 break;
                 

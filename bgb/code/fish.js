@@ -10,8 +10,6 @@ export default class FishClass extends SpriteClass {
         this.FISH_SPEED=12;
         this.FISH_INITIAL_ARC=10;
         
-        this.COLLIDE_CLASS_IGNORE=[EasterHeadClass];
-        
         // variables
         this.travelX=0;
         this.travelY=0;
@@ -26,6 +24,9 @@ export default class FishClass extends SpriteClass {
         this.gravityMinValue=0.2;
         this.gravityMaxValue=12;
         this.canStandOn=false;
+        
+        this.setCollideSpriteClassIgnoreList([EasterHeadClass]);
+        this.setCollideTileIndexIgnoreList([22,23]);
         
         Object.seal(this);
     }
@@ -72,7 +73,7 @@ export default class FishClass extends SpriteClass {
 
         // colliding with anything but the player
         // or cloud/break block sprite changes direction
-        if (this.checkCollision(this.COLLIDE_CLASS_IGNORE)) {
+        if (this.checkCollision()) {
             if (this.collideSprite!==null) {
                 this.sendMessage(this.collideSprite,'hurt',null);
                 this.removeFish();

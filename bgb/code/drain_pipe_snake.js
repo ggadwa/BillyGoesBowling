@@ -38,6 +38,8 @@ export default class DrainPipeSnakeClass extends SpriteClass {
         this.canCollide=true;
         this.canStandOn=true;
         
+        this.setCollideTileIndexIgnoreList([22,23]);
+        
         this.flipX=(Math.random()>0.5); // start with random direction
         
         Object.seal(this);
@@ -63,20 +65,20 @@ export default class DrainPipeSnakeClass extends SpriteClass {
     onCollideSprite(sprite) {
         // colliding with ball, shield, shurikin, bomb, or fish hurts snake
         if (
-                (sprite instanceof BallClass) ||
-                (sprite instanceof ShieldClass) ||
-                (sprite instanceof ShurikinClass) ||
-                (sprite instanceof BombClass) ||
-                (sprite instanceof FishClass)) {
-                    if (this.invincibleCount>0) return;
+            (sprite instanceof BallClass) ||
+            (sprite instanceof ShieldClass) ||
+            (sprite instanceof ShurikinClass) ||
+            (sprite instanceof BombClass) ||
+            (sprite instanceof FishClass)) {
+                if (this.invincibleCount>0) return;
 
-                    if (this.snakeHasPipe) {
-                        this.breakPipe();
-                    }
-                    else {
-                        this.kill();
-                    }
-                   return;
+                if (this.snakeHasPipe) {
+                    this.breakPipe();
+                }
+                else {
+                    this.kill();
+                }
+               return;
         }
         
         // colliding with player breaks pipe and turns snake around
@@ -143,7 +145,7 @@ export default class DrainPipeSnakeClass extends SpriteClass {
         }
         
         // move the snake
-        this.moveWithCollision(this.walkSpeed,0,null);
+        this.moveWithCollision(this.walkSpeed,0);
         this.runGravity();
         
         // image

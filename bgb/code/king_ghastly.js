@@ -35,6 +35,8 @@ export default class KingGhastlyClass extends SpriteClass
         this.canCollide=true;
         this.canStandOn=true;
         
+        this.setCollideTileIndexIgnoreList([22,23]);
+        
         Object.seal(this);
     }
     
@@ -140,7 +142,7 @@ export default class KingGhastlyClass extends SpriteClass
             this.backupCount--;
             
             this.x-=this.GHASTLY_SPEED;
-            if (this.checkCollision(null)) this.x+=this.GHASTLY_SPEED;
+            if (this.checkCollision()) this.x+=this.GHASTLY_SPEED;
             return;
         }
         
@@ -160,7 +162,7 @@ export default class KingGhastlyClass extends SpriteClass
             // any collisions with breaking blocks forces
             // ghastly back, any other up
         
-        if (this.checkCollision(null)) {
+        if (this.checkCollision()) {
             this.x-=this.GHASTLY_SPEED;
             
             if (this.grounded) {

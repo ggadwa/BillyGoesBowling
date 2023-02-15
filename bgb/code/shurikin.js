@@ -10,8 +10,6 @@ export default class ShurikinClass extends SpriteClass {
         this.SHURIKIN_X_SPEED=12;
         this.SHURIKIN_Y_SPEED=15;
         
-        this.COLLIDE_CLASS_IGNORE=[NinjaBunnyClass];
-        
         // variables
         this.travelX=0;
         
@@ -24,6 +22,9 @@ export default class ShurikinClass extends SpriteClass {
         this.gravityMinValue=0;
         this.gravityMaxValue=0;
         this.canStandOn=false;
+        
+        this.setCollideSpriteClassIgnoreList([NinjaBunnyClass]);
+        this.setCollideTileIndexIgnoreList([22,23]);
         
         Object.seal(this);
     }
@@ -48,7 +49,7 @@ export default class ShurikinClass extends SpriteClass {
         this.x+=this.travelX;
         this.y+=this.SHURIKIN_Y_SPEED;
 
-        if (this.checkCollision(this.COLLIDE_CLASS_IGNORE)) {
+        if (this.checkCollision()) {
             if (this.collideSprite!=null) this.collideSprite.interactWithSprite(this,null);
             this.addParticle((this.x+(this.width/2)),(this.y-(this.height/2)),8,2,1.0,0.1,2,0.02,'particles/ball',8,0.7,false,500);
             this.delete();

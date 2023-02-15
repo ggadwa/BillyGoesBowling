@@ -36,7 +36,6 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.WARP_TICK=40;
         this.WALK_FRAME_TICK=3;
         
-        this.COLLIDE_CLASS_IGNORE=[BallClass,ShieldClass];
         this.WALK_ANIMATION=['sprites/billy_walk_1','sprites/billy_walk_2','sprites/billy_walk_3','sprites/billy_walk_2'];
         
         // setup
@@ -64,6 +63,9 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.gravityMaxValue=30;
         this.canCollide=true;
         this.canStandOn=true;
+        
+        this.setCollideSpriteClassIgnoreList([BallClass,ShieldClass]);
+        this.setCollideTileIndexIgnoreList([22,23]);
         
         // variables
         this.moveX=0;
@@ -169,7 +171,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         if (sprite instanceof KingGhastlyClass) this.killPlayer(); // king ghastly instant kills players so you can't get around him by standing on top
     }
     
-    processMessage(fromSprite,cmd,data) {
+    onMessage(fromSprite,cmd,data) {
         switch (cmd) {
             case 'start_shield':
                 this.shieldCount=this.shieldSprite.LIFE_TICK;
@@ -183,7 +185,6 @@ export default class PlayerSideScrollClass extends SpriteClass {
     
     run() {
         let goLeft, goRight;
-        let map=this.game.map;
         
         // warping? 
         if (this.warpCount!==0) {
@@ -286,11 +287,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         }
         
         // now move, turning off any collision with ball or shield
-        this.ballSprite.canCollide=false;
-        this.shieldSprite.canCollide=false;
         this.moveWithCollision(this.moveX,0);
-        this.shieldSprite.canCollide=true;
-        this.ballSprite.canCollide=true;
         
         this.clampX(0,(this.getMapWidth()-this.width));
         

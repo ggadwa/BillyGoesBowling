@@ -14,8 +14,6 @@ export default class ExecutionerClass extends SpriteClass {
         this.MAX_SPEED=8;
         this.JUMP_HEIGHT=-40;
         
-        this.COLLIDE_CLASS_IGNORE=[AxeClass];
-        
         // variables  
         this.executionerSpeed=0;
         this.lastLaunchXPosition=-1;
@@ -41,6 +39,8 @@ export default class ExecutionerClass extends SpriteClass {
         this.gravityMaxValue=30;
         this.canCollide=true;
         this.canStandOn=true;
+        
+        this.setCollideSpriteClassIgnoreList([AxeClass]);
         
         Object.seal(this);
     }
@@ -186,7 +186,7 @@ export default class ExecutionerClass extends SpriteClass {
         speed=Math.trunc(this.executionerSpeed);
         this.x+=speed;
         
-        if (this.checkCollision(this.COLLIDE_CLASS_IGNORE)) {
+        if (this.checkCollision()) {
             this.x-=speed;
 
                 // run collisions
@@ -206,6 +206,8 @@ export default class ExecutionerClass extends SpriteClass {
                 if (bumpUp) this.addGravity(this.JUMP_HEIGHT,0);
             }
         }
+        
+        this.runGravity();
         
             // time to fire axe?
 

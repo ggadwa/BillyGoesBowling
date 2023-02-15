@@ -30,8 +30,6 @@ export default class BallClass extends SpriteClass {
         this.BALL_CIRCLE_OFFSET_Y=50;
         this.BALL_CIRCLE_RADIUS_Y=100;
         
-        this.COLLIDE_CLASS_IGNORE=[ShieldClass];
-        
         // variables
         this.travelMode=this.TRAVEL_MODE_FLOATING;
         this.travelX=0;
@@ -55,6 +53,9 @@ export default class BallClass extends SpriteClass {
         this.canCollide=false;
         this.canStandOn=false;
         this.canRiseBlock=false;
+        
+        this.setCollideSpriteClassIgnoreList([ShieldClass]);
+        this.setCollideTileIndexIgnoreList([22,23]);
         
         Object.seal(this);
     }
@@ -215,7 +216,7 @@ export default class BallClass extends SpriteClass {
             
         if ((this.travelMode===this.TRAVEL_MODE_BOWL_ACROSS) || (this.travelMode===this.TRAVEL_MODE_SLAM_UP) || (this.travelMode===this.TRAVEL_MODE_SLAM_DOWN) || (this.travelMode===this.TRAVEL_MODE_CIRCLE)) {
             
-            if (this.checkCollision(this.COLLIDE_CLASS_IGNORE)) {
+            if (this.checkCollision()) {
                 
                 // colliding with map, return ball
                 // unless it's a defensive circle
@@ -223,9 +224,6 @@ export default class BallClass extends SpriteClass {
                     if (this.travelMode!==this.TRAVEL_MODE_CIRCLE) this.returnBall(true);
                     return;
                 }
-                
-                // collide with sprites
-                this.sendMessage(this.collideSprite,'hurt',null);
                 
                 // stop ball for certain sprites
                 if ((this.collideSprite instanceof BlockClass) || (this.collideSprite instanceof BreakBlockStrongClass) || (this.collideSprite instanceof ExplodeBlockClass) || (this.collideSprite instanceof EasterHeadClass) || (this.collideSprite instanceof ExecutionerClass)) {

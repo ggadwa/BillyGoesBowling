@@ -28,6 +28,8 @@ export default class PlatformClass extends SpriteClass
         this.canCollide=true;
         this.canStandOn=true;
         
+        this.setCollideTileIndexIgnoreList([22,23]);
+        
         Object.seal(this);
     }
     
@@ -51,7 +53,7 @@ export default class PlatformClass extends SpriteClass
             
         this.x+=this.xAdd;
         
-        if (this.checkCollision(null)) {
+        if (this.checkCollision()) {
             this.xAdd=-this.xAdd;
             this.x+=this.xAdd;
             this.pauseCount=this.PLATFORM_PAUSE_TICK;
@@ -62,7 +64,7 @@ export default class PlatformClass extends SpriteClass
             // on it
             
         if (playerSprite.standSprite===this) {
-            playerSprite.moveWithCollision(this.xAdd,0,null);
+            playerSprite.moveWithCollision(this.xAdd,0);
         }
     }
 }

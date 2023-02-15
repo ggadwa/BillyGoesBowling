@@ -213,14 +213,6 @@ export default class MapClass {
     }
     
     /**
-     * Override this to return a array of tiles to ignore in any tile collisions,
-     * or null for all tiles have collision.
-     */
-    getIgnoreTiles() {
-        return(null);
-    }
-    
-    /**
      * Get current liquid height.
      */
     getLiquidY() {
@@ -249,8 +241,8 @@ export default class MapClass {
     onLiquidMoveDone() {
     }
     
-    checkCollision(checkSprite,classIgnoreList) {
-        let sprite,tileIdx;
+    checkCollision(checkSprite) {
+        let sprite,tileIdx,ignoreTileIdx;
         let ignore,ignoreClass;
         let lx,rx,ty,by,dx,dy,gx,gy;
         let lft,top,rgt,bot;
@@ -269,10 +261,10 @@ export default class MapClass {
             if (!checkSprite.collide(sprite)) continue;
             
             // now check ignore list
-            if (classIgnoreList!=null) {
+            if (checkSprite.spriteClassIgnoreList!=null) {
                 ignore=false;
 
-                for (ignoreClass of classIgnoreList) {
+                for (ignoreClass of checkSprite.spriteClassIgnoreList) {
                     if (sprite instanceof ignoreClass) {
                         ignore=true;
                         break;
@@ -318,6 +310,21 @@ export default class MapClass {
                 dx=gx*this.MAP_TILE_SIZE;
                 if ((rgt<=dx) || (lft>=(dx+this.MAP_TILE_SIZE))) continue;
                 
+                // now check ignore list
+                if (checkSprite.tileIndexIgnoreList!=null) {
+                    ignore=false;
+
+                    for (ignoreTileIdx of checkSprite.tileIndexIgnoreList) {
+                        if (tileIdx===ignoreTileIdx) {
+                            ignore=true;
+                            break;
+                        }
+                    }
+
+                    if (ignore) continue;
+                }
+                
+                // tile contact
                 checkSprite.collideTileIdx=tileIdx;
                 checkSprite.onCollideTile(gx,gy,tileIdx);
                 
@@ -329,7 +336,8 @@ export default class MapClass {
     }
     
     checkCollisionStand(checkSprite,dist) {
-        let sprite,tileIdx;
+        let sprite,tileIdx,ignoreTileIdx,ignoreClass;
+        let ignore;
         let ty=-1;
         let x,y,dx,dy,gx,gy,leftTileX,rightTileX;
         let lft,top,rgt,bot;
@@ -350,6 +358,22 @@ export default class MapClass {
             if (checkSprite.collideStand(sprite,dist)) {
                 y=sprite.y-sprite.height;
                 if ((y<ty) || (ty===-1)) {
+                    
+                    // now check ignore list
+                    if (checkSprite.spriteClassIgnoreList!=null) {
+                        ignore=false;
+
+                        for (ignoreClass of checkSprite.spriteClassIgnoreList) {
+                            if (sprite instanceof ignoreClass) {
+                                ignore=true;
+                                break;
+                            }
+                        }
+
+                        if (ignore) continue;
+                    }
+
+                    // standing on sprite
                     checkSprite.standSprite=sprite;
                     checkSprite.onStandOnSprite(sprite);
                     sprite.onStoodOnSprite(checkSprite);
@@ -392,6 +416,22 @@ export default class MapClass {
                 if ((rgt<=dx) || (lft>=(dx+this.MAP_TILE_SIZE))) continue;
                 
                 if ((dy<ty) || (ty===-1)) {
+                    
+                    // now check ignore list
+                    if (checkSprite.tileIndexIgnoreList!=null) {
+                        ignore=false;
+
+                        for (ignoreTileIdx of checkSprite.tileIndexIgnoreList) {
+                            if (tileIdx===ignoreTileIdx) {
+                                ignore=true;
+                                break;
+                            }
+                        }
+
+                        if (ignore) continue;
+                    }
+
+                    // standing on
                     checkSprite.standSprite=null;
                     checkSprite.standTileIdx=tileIdx;
                     checkSprite.onStandOnTile(gx,gy,tileIdx);
@@ -404,7 +444,8 @@ export default class MapClass {
     }
     
     checkCollisionRise(checkSprite,dist) {
-        let sprite,tileIdx;
+        let sprite,tileIdx,ignoreTileIdx,ignoreClass;
+        let ignore;
         let ty=-1;
         let x,y,dx,dy,gx,gy,leftTileX,rightTileX;
         let lft,top,rgt,bot;
@@ -422,6 +463,21 @@ export default class MapClass {
             if (checkSprite.collideRise(sprite,dist)) {
                 y=sprite.y;
                 if ((y<ty) || (ty===-1)) {
+                    // now check ignore list
+                    if (checkSprite.spriteClassIgnoreList!=null) {
+                        ignore=false;
+
+                        for (ignoreClass of checkSprite.spriteClassIgnoreList) {
+                            if (sprite instanceof ignoreClass) {
+                                ignore=true;
+                                break;
+                            }
+                        }
+
+                        if (ignore) continue;
+                    }
+                    
+                    // rise collision
                     checkSprite.riseSprite=sprite;
                     checkSprite.onRiseIntoSprite(sprite);
                     ty=y;
@@ -463,6 +519,21 @@ export default class MapClass {
                 if ((rgt<=dx) || (lft>=(dx+this.MAP_TILE_SIZE))) continue;
                 
                 if ((dy<ty) || (ty===-1)) {
+                    // now check ignore list
+                    if (checkSprite.tileIndexIgnoreList!=null) {
+                        ignore=false;
+
+                        for (ignoreTileIdx of checkSprite.tileIndexIgnoreList) {
+                            if (tileIdx===ignoreTileIdx) {
+                                ignore=true;
+                                break;
+                            }
+                        }
+
+                        if (ignore) continue;
+                    }
+                    
+                    // rise collision
                     checkSprite.riseSprite=null;
                     checkSprite.riseTileIdx=tileIdx;
                     checkSprite.onRiseIntoTile(gx,gy,tileIdx);

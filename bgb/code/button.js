@@ -1,4 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import PlayerSideScrollClass from './player_sidescroll.js';
 
 export default class ButtonClass extends SpriteClass {
     constructor(game,x,y,data) {
@@ -29,6 +30,9 @@ export default class ButtonClass extends SpriteClass {
     
     onStoodOnSprite(sprite) {
         let mode;
+        
+        // only player can activate buttons
+        if (!(sprite instanceof PlayerSideScrollClass)) return;
         
         // if squishing we can't step on again
         if (this.squishCount!==0) return;
@@ -63,7 +67,7 @@ export default class ButtonClass extends SpriteClass {
     run() {
         // if not squishing just check collisions
         if (this.squishCount===0) {
-            this.checkCollision(null);
+            this.checkCollision();
             return;
         }
         

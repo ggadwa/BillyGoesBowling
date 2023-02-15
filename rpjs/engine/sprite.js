@@ -51,6 +51,9 @@ export default class SpriteClass {
         this.canStandOn=true;
         this.canRiseBlock=true;
         
+        this.spriteClassIgnoreList=null;
+        this.tileIndexIgnoreList=null;
+        
         this.removeFlag=false; // make this private
         
         // can't seal this object as it's extended
@@ -121,7 +124,7 @@ export default class SpriteClass {
      * Override this to listen to messages from other sprites, this
      * is up to the game developer as how to use cmd and data.
      */
-    processMessage(fromSprite, cmd, data) {
+    onMessage(fromSprite, cmd, data) {
     }
     
     /**
@@ -131,7 +134,15 @@ export default class SpriteClass {
     }
     
     sendMessage(toSprite,cmd,data) {
-        toSprite.processMessage(this,cmd,data);
+        toSprite.onMessage(this,cmd,data);
+    }
+    
+    setCollideSpriteClassIgnoreList(spriteClassIgnoreList) {
+        this.spriteClassIgnoreList=spriteClassIgnoreList;
+    }
+    
+    setCollideTileIndexIgnoreList(tileIndexIgnoreList) {
+        this.tileIndexIgnoreList=tileIndexIgnoreList;
     }
         
     addImage(name) {
@@ -201,10 +212,10 @@ export default class SpriteClass {
         return((this.y-this.height)<bot);
     }
     
-    moveWithCollision(mx,my,classIgnoreList) {
+    moveWithCollision(mx,my) {
         this.x+=mx;
         this.y+=my;
-        if (this.game.map.checkCollision(this,classIgnoreList)) {
+        if (this.game.map.checkCollision(this)) {
             this.x-=mx;
             this.y-=my;
             return(true);
@@ -212,8 +223,8 @@ export default class SpriteClass {
         return(false);
     }
     
-    checkCollision(classIgnoreList) {
-        return(this.game.map.checkCollision(this,classIgnoreList));
+    checkCollision() {
+        return(this.game.map.checkCollision(this));
     }
     
     clampX(min,max) {

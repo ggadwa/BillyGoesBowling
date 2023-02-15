@@ -30,7 +30,7 @@ import ApocalypseCarrotMapClass from '../maps/apocalypse_carrot.js';
 import HillsNinjaBunniesMapClass from '../maps/hills_ninja_bunnies.js';
 import BuffetOfBlocksMapClass from '../maps/buffet_of_blocks.js';
 import ExecutionerCastleMapClass from '../maps/executioners_castle.js';
-import PlatformTroubledWaterMapClass from '../maps/platform_troubled_water.js';
+import PlatformTroubledWatersMapClass from '../maps/platform_troubled_waters.js';
 import SurfsUpMapClass from '../maps/surfs_up.js';
 import SurfsDownMapClass from '../maps/surfs_down.js';
 import HeadsUpMapClass from '../maps/heads_up.js';
@@ -88,7 +88,7 @@ export default class BillyGameClass extends GameClass
         this.addImage('tiles/ground_dirt_left');
         this.addImage('tiles/ground_dirt_right');
         this.addImage('tiles/ground_dirt_fill_2');
-        this.addImage('tiles/unused_2');
+        this.addImage('tiles/decorate_bush');
         this.addImage('tiles/unused_3');
         this.addImage('tiles/unused_4');
         this.addImage('tiles/unused_5');
@@ -123,6 +123,8 @@ export default class BillyGameClass extends GameClass
         this.addImage('tiles/arrow_down');
         this.addImage('tiles/world_left_t');
         this.addImage('tiles/world_up_t');
+        this.addImage('tiles/world_bridge_center');
+        this.addImage('tiles/world_bush');
         
         this.addImage('sprites/ball');
         this.addImage('sprites/billy_walk_1');
@@ -246,7 +248,7 @@ export default class BillyGameClass extends GameClass
         this.addMap('buffet_of_blocks',new BuffetOfBlocksMapClass(this));
         this.addMap('executioners_castle',new ExecutionerCastleMapClass(this));
         
-        this.addMap('platform_troubled_waters',new PlatformTroubledWaterMapClass(this));
+        this.addMap('platform_troubled_waters',new PlatformTroubledWatersMapClass(this));
         this.addMap('surfs_up',new SurfsUpMapClass(this));
         this.addMap('surfs_down',new SurfsDownMapClass(this));
         
@@ -324,36 +326,6 @@ export default class BillyGameClass extends GameClass
     getStartMap()
     {
         return('world_main');
-
-        //return('snakes_on_a_plain');
-        //return('apocalypse_carrot');
-        //return('buffet_of_blocks');
-        //return('hills_ninja_bunnies');
-        //return('executioners_castle');
-        
-        //return('platform_troubled_waters');
-        //return('surfs_up');
-        //return('surfs_down');
-
-        //return('heads_up');
-        //return('raining_creeps');
-        //return('ninja_jail');
-        //return('puzzling_blocks');
-        //return('mr_cpu_castle');
-        
-        //return('carrot_catacylism');
-        //return('snake_pit');
-        //return('ninja_mountain');
-        //return('boney_one_eye_castle');
-        
-        //return('cloud_9');
-        //return('carrot_chorus');
-        //return('running_ahead');
-        //return('speedway');
-        //return('platform_peril');
-        //return('ninja_horde');
-        //return('spring_a_thon');
-        //return('king_ghastly_castle');
     }
     
     setBanner(mapTitle,mapName,requiredPinCount)

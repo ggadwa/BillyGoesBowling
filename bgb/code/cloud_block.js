@@ -66,7 +66,7 @@ export default class CloudBlockClass extends SpriteClass
 
     run() {
         // run collision checks without moving
-        this.checkCollision(null);
+        this.checkCollision();
         
         // nothing to do
         if (this.countDown===-1) return;
