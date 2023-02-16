@@ -93,7 +93,7 @@ export default class BillyGameClass extends GameClass
         this.addImage('tiles/unused_4');
         this.addImage('tiles/unused_5');
         this.addImage('tiles/unused_6');
-        this.addImage('tiles/unused_7');
+        this.addImage('tiles/spring_base');
         this.addImage('tiles/world_grass_top_left');
         this.addImage('tiles/world_grass_top');
         this.addImage('tiles/world_grass_top_right');

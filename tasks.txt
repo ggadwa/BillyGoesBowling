@@ -1,7 +1,12 @@
 //// TO DO
 
 
-- make spring top be closed top, change offset when it springs open
+
+- need onRunBefore and onRunAfter
+- spring uses onRunAfter to push other items
+- pass in tick there
+
+
 - pendant tile for castle levels (next to bush tile)
 
 
