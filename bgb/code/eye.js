@@ -42,7 +42,7 @@ export default class EyeClass extends SpriteClass {
         this.delete();
     }
     
-    run() {
+    onRun(tick) {
         let x,y,f;
         let sprite,sprites;
         let map=this.game.map;

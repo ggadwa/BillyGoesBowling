@@ -52,7 +52,7 @@ export default class MapCastleClass extends SpriteClass {
         }
     }
     
-    run() {
+    onRun(tick) {
         let playerSprite=this.getPlayerSprite();
         
         // are we colliding with player?

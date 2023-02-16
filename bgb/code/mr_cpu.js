@@ -5,10 +5,9 @@ import ExplodeBlockClass from '../code/explode_block.js';
 import BallClass from './ball.js';
 import PlayerSideScroll from './player_sidescroll.js';
 
-export default class MrCPUClass extends SpriteClass
-{
-    constructor(game,x,y,data)
-    {
+export default class MrCPUClass extends SpriteClass {
+
+    constructor(game,x,y,data) {
         super(game,x,y,data);
         
         this.SPEEDS=[20,15,18,13,18];
@@ -39,13 +38,11 @@ export default class MrCPUClass extends SpriteClass
         Object.seal(this);
     }
     
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
         return(new MrCPUClass(this.game,x,y,this.data));
     }
     
-    mapStartup()
-    {
+    mapStartup() {
         this.isDropping=true;
         this.isDead=false;
         this.isFirstShow=true;
@@ -53,8 +50,7 @@ export default class MrCPUClass extends SpriteClass
         this.game.startCompletionTimer();
     }
    
-    run()
-    {
+    onRun(tick) {
         let time, oldTime;
         let map=this.game.map;
         let sprites,sprite,speed,mx;

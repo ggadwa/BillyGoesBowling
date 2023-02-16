@@ -52,7 +52,7 @@ export default class SpringClass extends SpriteClass {
         this.springMode=this.SPRING_UP;
     }
 
-    run() {
+    onRun(tick) {
         // run collision checks without moving
         this.checkCollision();
         

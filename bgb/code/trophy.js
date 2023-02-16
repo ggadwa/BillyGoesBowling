@@ -47,7 +47,7 @@ export default class TrophyClass extends SpriteClass {
         }
     }
     
-    run() {
+    onRun(tick) {
         this.checkCollision();
         this.runGravity();
     }

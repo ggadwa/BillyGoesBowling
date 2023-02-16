@@ -41,7 +41,7 @@ export default class MapSpotClass extends SpriteClass {
         if (hasPin) this.setCurrentImage('sprites/world_map_spot_yellow');
     }
 
-    run() {
+    onRun(tick) {
         let playerSprite=this.getPlayerSprite();
         
         // are we colliding with player?

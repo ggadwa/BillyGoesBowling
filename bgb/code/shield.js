@@ -44,7 +44,7 @@ export default class ShieldClass extends SpriteClass {
         }
     }
     
-    run() {
+    onRun(tick) {
         let playerSprite=this.getPlayerSprite();
         let didCollide;
         

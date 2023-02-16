@@ -104,7 +104,7 @@ export default class PlayerWorldClass extends SpriteClass {
         return(this.isTileIdxRoad(tileIdx));
     }
     
-    run() {
+    onRun(tick) {
         let tileIdx,xDir,yDir;
         let map=this.game.map;
         

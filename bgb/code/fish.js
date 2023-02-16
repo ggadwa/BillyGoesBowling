@@ -53,8 +53,7 @@ export default class FishClass extends SpriteClass {
         }
     }
     
-    run() {
-        let map=this.game.map;
+    onRun(tick) {
         let playerSprite=this.getPlayerSprite();
         
         // if first call, then we need to setup the travel

@@ -103,7 +103,7 @@ export default class NinjaBunnyClass extends SpriteClass {
         this.addSprite(this.currentShurikin);
     }
     
-    run() {
+    onRun(tick) {
         let playerSprite=this.getPlayerSprite();
         
         this.shake=false;

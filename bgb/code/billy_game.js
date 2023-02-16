@@ -346,7 +346,7 @@ export default class BillyGameClass extends GameClass
         this.setData('banner_map_required_pin_count',requiredPinCount);
     }
     
-    run() {
+    onRun(tick) {
         let bannerCount;
         
         // run any banners

@@ -66,7 +66,7 @@ export default class EasterHeadClass extends SpriteClass {
         this.fireFrameStartTick=this.game.timestamp;
     }
     
-    run() {
+    onRun(tick) {
         let playerSprite=this.getPlayerSprite();
         
         // if player is standing on head, then sink

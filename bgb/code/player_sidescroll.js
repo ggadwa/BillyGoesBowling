@@ -168,8 +168,25 @@ export default class PlayerSideScrollClass extends SpriteClass {
     }
     
     onStoodOnSprite(sprite) {
-        if (sprite instanceof KingGhastlyClass) this.killPlayer(); // king ghastly instant kills players so you can't get around him by standing on top
+        // these sprites hurt player if they land on them
+        if (
+            (sprite instanceof ExecutionerClass) ||
+            (sprite instanceof MrCPUClass) ||
+            (sprite instanceof BoneyOneEyeClass) ||
+            (sprite instanceof KingGhastlyClass)) {
+                this.hurtPlayer();
+                return;
+        }
     }
+    
+    onStandOnSprite(sprite) {
+        // special case so you can't stand on ghastly to get around him
+        if (sprite instanceof KingGhastlyClass) {
+            this.killPlayer();
+            return;
+        }
+    }
+    
     
     onMessage(fromSprite,cmd,data) {
         switch (cmd) {
@@ -183,7 +200,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         }
     }
     
-    run() {
+    onRun(tick) {
         let goLeft, goRight;
         
         // warping? 

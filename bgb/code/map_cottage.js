@@ -29,8 +29,7 @@ export default class MapCottageClass extends SpriteClass
         return(new MapCottageClass(this.game,x,y,this.data));
     }
         
-    run()
-    {
+    onRun(tick) {
         let n,cx,cy;
         let playerSprite=this.getPlayerSprite();
         

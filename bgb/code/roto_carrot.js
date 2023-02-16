@@ -70,7 +70,7 @@ export default class RotoCarrotClass extends SpriteClass {
         this.addSprite(new BombClass(this.game,(this.x+16),(this.y-(this.height/3)),null));
     }
 
-    run() {
+    onRun(tick) {
         let rad;
         let map=this.game.map;
         
@@ -81,7 +81,7 @@ export default class RotoCarrotClass extends SpriteClass {
             return;
         }
         else {
-            if ((Math.trunc(this.game.tick/2)&0x1)===0) {
+            if ((Math.trunc(tick/2)&0x1)===0) {
                 this.setCurrentImage('sprites/roto_carrot_1');
             }
             else {

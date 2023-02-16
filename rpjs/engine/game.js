@@ -406,7 +406,7 @@ export default class GameClass {
      * Override this to run any game based logic, it is called before
      * any sprite logic.
      */
-    run() {
+    run(tick) {
     }
     
     /**
@@ -459,8 +459,8 @@ export default class GameClass {
             
             // run game and map logic
             // which runs the sprite logic
-            this.run();
-            this.map.run();
+            this.run(this.tick);
+            this.map.run(this.tick);
             
             // check for map goto triggers 
             if (this.gotoMapName!==null) {

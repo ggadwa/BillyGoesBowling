@@ -11,29 +11,35 @@ export default class ExecutionerClass extends SpriteClass {
         
         // constants
         this.TILE_IDX_BUMP=18;
+        this.ACCELERATION=1.0;
         this.MAX_SPEED=8;
         this.JUMP_HEIGHT=-40;
+        this.FIRE_AXE_DISTANCE=1000;
+        this.AXE_COOL_DOWN_TICK=45;
+        this.AXE_START_COOL_DOWN_TICK=90;
+        this.AXE_Y_OFFSET=800;
         
-        // variables  
+        // variables
+        this.executionerDirection=-1;
         this.executionerSpeed=0;
-        this.lastLaunchXPosition=-1;
-        this.launchXPositionsLeft=null; // array of axe launch positions, loaded on startup
-        this.launchXPositionsRight=null;
-        this.isDropping=true;
+        this.executionerLeft=0;
+        this.executionerRight=0;
+        
+        this.axeLaunchIndex=0;
+        this.axeLaunchPositions=null;
+        this.axeCoolDownCount=0;
+        
+        this.firstDrop=false;
         this.inAir=false;
         this.isDead=false;
         this.isFirstShow=true;
         
-        this.launchLeft=true;
-        this.launchPos=null;
-        
-            // setup
-        
+        // setup
         this.addImage('sprites/executioner_1');
         this.addImage('sprites/executioner_2');
         this.setCurrentImage('sprites/executioner_1');
         
-        this.show=false;            // start with it not shown, button starts it
+        this.show=false; // start with it not shown, button starts it
         this.gravityFactor=0.15;
         this.gravityMinValue=3;
         this.gravityMaxValue=30;
@@ -45,31 +51,50 @@ export default class ExecutionerClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
         return(new ExecutionerClass(this.game,x,y,this.data));
     }
     
-    mapStartup()
-    {
-        this.launchXPositionsLeft=this.data.get('axe_x_launch_left');
-        this.launchXPositionsRight=this.data.get('axe_x_launch_right');
-        this.lastLaunchXPosition=-1;
-        this.isDropping=true;
+    mapStartup() {
+        this.executionerDirection=-1;
+        this.executionerSpeed=0;
+        
+        this.executionerLeft=this.data.get('left');
+        this.executionerRight=this.data.get('right');
+        
+        this.axeCoolDownCount=this.AXE_START_COOL_DOWN_TICK;
+        this.axeLaunchIndex=0;
+        this.axeLaunchPositions=this.data.get('axe');
+        
+        this.firstDrop=true;
         this.inAir=false;
         this.isDead=false;
         this.isFirstShow=true;
         
-        this.launchLeft=true;
-        this.launchPos=this.launchXPositionsLeft.slice();
-        
         this.game.startCompletionTimer();
     }
     
-    fireAxe()
-    {
-        let n,ex,launchX,sx,sy;
+    fireAxe() {
+        let sx,sy;
+        let playerSprite=this.getPlayerSprite();
         
+        // are we in cool down?
+        if (this.axeCoolDownCount>0) {
+            this.axeCoolDownCount--;
+            return;
+        }
+        
+        // fire axe
+        sx=this.axeLaunchPositions[this.axeLaunchIndex]*this.game.map.MAP_TILE_SIZE;
+        this.game.map.addSprite(new AxeClass(this.game,sx,(playerSprite.y-this.AXE_Y_OFFSET),null));
+                
+        this.playSound('jump');
+        
+        this.axeLaunchIndex++;
+        if (this.axeLaunchIndex>this.axeLaunchPositions.length) this.axeLaunchIndex=0;
+        this.axeCoolDownCount=this.AXE_COOL_DOWN_TICK;
+        
+        /*
             // time to switch to other list?
             
         if (this.launchPos.length===0) {
@@ -101,51 +126,37 @@ export default class ExecutionerClass extends SpriteClass {
                 return;
             }
         }
+            */
     }
     
-    run()
-    {
+    onRun(tick) {
         let time, oldTime;
         let map=this.game.map;
-        let speed,bumpUp;
-        let playerSprite=this.getPlayerSprite();
         
-            // the first time we get called is
-            // when we first appear, so play sound fx
-            
-        if (this.show) {
-            if (this.isFirstShow) {
-                this.isFirstShow=false;
-                this.playSound('boss_appear');
-            }
+        // do nothing if we aren't shown
+        if (!this.show) return;
+        
+        // the first time we get called is
+        // when we first appear, so play sound fx
+        if (this.isFirstShow) {
+            this.isFirstShow=false;
+            this.playSound('boss_appear');
         }
-        
-            // we have a special check for dropping
-            // out of the sky, ignore everything until
-            // we hit ground
-            
-        if (this.isDropping) {
-            if (!this.grounded) return;
-            
-            this.isDropping=false;
-            map.shake(10);
-            this.playSound('thud');
+
+        // shake map when hitting ground
+        if (!this.grounded) {
+            this.inAir=true;
         }
         else {
-            if (!this.grounded) {
-                this.inAir=true;
-            }
-            else {
-                if (this.inAir) {
-                    this.inAir=false;
-                    map.shake(3);
-                    this.playSound('thud');
-                }
+            if (this.inAir) {
+                this.firstDrop=false;
+                this.inAir=false;
+                map.shake(10);
+                this.playSound('thud');
             }
         }
         
-            // dead, do nothig
-            
+        // dead, do nothig  
         if (this.isDead) {
             this.y+=4;
             return;
@@ -162,7 +173,16 @@ export default class ExecutionerClass extends SpriteClass {
         
             // always follow the player, but with
             // an acceleration
+
+        if (this.firstDrop) {
+            this.executionerSpeed=0;
+        }
+        else {
+            this.executionerSpeed+=this.ACCELERATION;
+        }
+        if (this.executionerSpeed>this.MAX_SPEED) this.executionerSpeed=this.MAX_SPEED;
             
+            /*
         if ((playerSprite.x+Math.trunc(playerSprite.width*0.5))<(this.x+Math.trunc(this.width*0.5))) {
             if (this.executionerSpeed>-this.MAX_SPEED) {
                 this.executionerSpeed-=0.5;
@@ -179,13 +199,32 @@ export default class ExecutionerClass extends SpriteClass {
                 this.executionerSpeed=this.MAX_SPEED;
             }
         }
-        
+        */
+
+        if (this.grounded) {
+            this.executionerSpeed=0;
+            this.addGravity(this.JUMP_HEIGHT,0);
+        }
+
             // we need to bump up at collisions to get the
             // executioner can get out of holes he's digging
         
-        speed=Math.trunc(this.executionerSpeed);
-        this.x+=speed;
+        this.moveWithCollision((this.executionerSpeed*this.executionerDirection),0);
         
+        // turn around at edges
+        if (this.x<=this.executionerLeft) {
+            this.x=this.executionerLeft+1;
+            this.executionerSpeed=0;
+            this.executionerDirection=1;
+        }
+        if (this.x>=this.executionerRight) {
+            this.x=this.executionerRight-1;
+            this.executionerSpeed=0;
+            this.executionerDirection=-1;
+        }
+
+        
+        /*
         if (this.checkCollision()) {
             this.x-=speed;
 
@@ -205,8 +244,10 @@ export default class ExecutionerClass extends SpriteClass {
                 bumpUp=bumpUp||(this.collideTileIdx===this.TILE_IDX_BUMP);
                 if (bumpUp) this.addGravity(this.JUMP_HEIGHT,0);
             }
+                 
+
         }
-        
+        */
         this.runGravity();
         
             // time to fire axe?

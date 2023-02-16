@@ -15,7 +15,7 @@ export default class BoneyOneEyeClass extends SpriteClass
             // variables
             
         this.fireWait=0;
-        this.isDropping=true;
+        this.inAir=false;
         this.isFalling=false;
         this.isDead=false;
         this.isFirstShow=true;
@@ -43,7 +43,7 @@ export default class BoneyOneEyeClass extends SpriteClass
     mapStartup()
     {
         this.fireWait=this.FIRE_TICK;
-        this.isDropping=true;
+        this.inAir=false;
         this.isDead=false;
         this.isFirstShow=true;
         
@@ -64,34 +64,31 @@ export default class BoneyOneEyeClass extends SpriteClass
         this.playSound('jump');
     }
     
-    run()
-    {
+    onRun(tick) {
         let time, oldTime;
         let sprite,sprites;
         let map=this.game.map;
         
-            // the first time we get called is
-            // when we first appear, so play sound fx
-            
-        if (this.show) {
-            if (this.isFirstShow) {
-                this.isFirstShow=false;
-                this.playSound('boss_appear');
-            }
+        // do nothing if we aren't shown
+        if (!this.show) return;
+        
+        // the first time we get called is
+        // when we first appear, so play sound fx
+        if (this.isFirstShow) {
+            this.isFirstShow=false;
+            this.playSound('boss_appear');
         }
-                
-            // we have a special check for dropping
-            // out of the sky, ignore everything until
-            // we hit ground
-            
-        if (this.isDropping) {
-            if (!this.grounded) return;
-            
-            this.isDropping=false;
-            this.isFalling=false;
-            
-            map.shake(10);
-            this.playSound('thud');
+
+        // shake map when hitting ground
+        if (!this.grounded) {
+            this.inAir=true;
+        }
+        else {
+            if (this.inAir) {
+                this.inAir=false;
+                map.shake(10);
+                this.playSound('thud');
+            }
         }
         
             // dead, do nothig

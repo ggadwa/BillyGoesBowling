@@ -1,4 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import CloudBlockClass from './cloud_block.js';
 import BreakBlockStrongClass from './break_block_strong.js';
 import ExecutionerClass from './executioner.js';
 
@@ -7,13 +8,12 @@ export default class AxeClass extends SpriteClass {
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        // variables
-        this.topY=this.y-800;
+        // constants
+        this.SPEED=20;
         
         // setup
         this.addImage('sprites/axe');
         this.setCurrentImage('sprites/axe');
-        this.flipY=false; // starts going up
         
         this.show=true;
         this.gravityFactor=0.0;
@@ -22,6 +22,8 @@ export default class AxeClass extends SpriteClass {
         this.canCollide=false;
         this.canStandOn=false;
         this.canRiseBlock=false;
+        
+        this.flipY=true;
         
         this.setCollideSpriteClassIgnoreList([ExecutionerClass]);
         this.setCollideTileIndexIgnoreList([22,23]);
@@ -33,41 +35,36 @@ export default class AxeClass extends SpriteClass {
         return(new AxeClass(this.game,x,y,this.data));
     }
     
-    mapStartup() {
-        this.x-=Math.trunc(this.width*0.5); // recenter on axe width from launch point
-    }
-    
-    run() {
-        let map=this.game.map;
-        let sprites,sprite;
-        
-        // travel in current direction
-        this.y+=(this.flipY?25:-25);
-        
-        // switch directions at top
-        if (!this.flipY) {
-            if (this.y<this.topY) {
-                this.flipY=true;
-                this.y=this.topY;
-            }
+    onCollideSprite(sprite) {
+        let sprites,checkSprite;
+
+        // pop clouds
+        if (sprite instanceof CloudBlockClass) {
+            this.sendMessage(sprite,'pop',null);
             return;
         }
+        
+        // break any strong blocks
+        if (sprite instanceof BreakBlockStrongClass) {
+            sprites=this.game.map.getSpritesWithinBox((this.x+10),(this.y+10),((this.x+this.width)-10),(this.y+20),this,BreakBlockStrongClass);
+        
+            for (checkSprite of sprites) {
+                this.sendMessage(checkSprite,'explode',null);
+            }
+            
+            this.delete();
+        }
+    }
+    
+    onCollideTile(tileX,tileY,tileIdx) {
+        this.delete();
+    }
+    
+    onRun(tick) {
+        // constant speed
+        this.y+=this.SPEED;
 
         // collisions
-        if (!this.checkCollision()) return;
-        
-        // interact with sprites, like destroying clouds
-        if (this.collideSprite!=null) this.collideSprite.interactWithSprite(this,null);
-        
-        // explode if we hit a break block
-        if (!(this.collideSprite instanceof BreakBlockStrongClass)) return;
-        
-        sprites=map.getSpritesWithinBox((this.x+10),(this.y+10),((this.x+this.width)-10),(this.y+20),this,BreakBlockStrongClass);
-        
-        for (sprite of sprites) {
-            sprite.interactWithSprite(this,null);
-        }
-
-        this.delete();
+        this.checkCollision();        
     }
 }

@@ -38,8 +38,7 @@ export default class PlatformClass extends SpriteClass
         return(new PlatformClass(this.game,x,y,this.data));
     }
     
-    run()
-    {
+    onRun(tick) {
         let playerSprite=this.getPlayerSprite();
         
             // are we paused?

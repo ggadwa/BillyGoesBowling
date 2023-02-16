@@ -56,6 +56,20 @@ export default class SpriteClass {
         
         this.removeFlag=false; // make this private
         
+        this.eventCollideSprite=null;
+        this.eventCollideTileX=0;
+        this.eventCollideTileY=0;
+        this.eventCollideTileIdx=-1;
+        this.eventStandSprite=null;
+        this.eventStoodSprite=null;
+        this.eventStandTileX=0;
+        this.eventStandTileY=0;
+        this.eventStandTileIdx=-1;
+        this.eventRiseIntoSprite=null;
+        this.eventRiseIntoTileX=0;
+        this.eventRiseIntoTileY=0;
+        this.eventRiseIntoTileIdx=-1;
+        
         // can't seal this object as it's extended
     }
     
@@ -130,7 +144,7 @@ export default class SpriteClass {
     /**
      * Override this to change the per-tick AI of object.
      */
-    run() {
+    onRun(tick) {
     }
     
     sendMessage(toSprite,cmd,data) {
@@ -389,6 +403,64 @@ export default class SpriteClass {
         this.data.set(name,value);
     }
     
+    // event staging
+    // we need to stage events so they only get called after the run, otherwise
+    // they can interfere with the internal state during a run
+    clearStageEvents() {
+        this.eventCollideSprite=null;
+        this.eventCollideTileIdx=-1;
+        this.eventStandSprite=null;
+        this.eventStoodSprite=null;
+        this.eventStandTileIdx=-1;
+        this.eventRiseIntoSprite=null;
+        this.eventRiseIntoTileIdx=-1;        
+    }
+    
+    runStageEvents() {
+        if (this.eventCollideSprite!=null) this.onCollideSprite(this.eventCollideSprite);
+        if (this.eventCollideTileIdx!==-1) this.onCollideTile(this.eventCollideTileX,this.eventCollideTileY,this.eventCollideTileIdx);
+        if (this.eventStandSprite!=null) this.onStandOnSprite(this.eventStandSprite);
+        if (this.eventStoodSprite!=null) this.onStoodOnSprite(this.eventStoodSprite);
+        if (this.eventStandTileIdx!==-1) this.onStandOnTile(this.eventStandTileX,this.eventStandTileY,this.eventStandTileIdx);
+        if (this.eventRiseIntoSprite!=null) this.onRiseIntoSprite(this.eventRiseIntoSprite);
+        if (this.eventRiseIntoTileIdx!==-1) this.onRiseIntoTile(this.eventRiseIntoTileX,this.eventRiseIntoTileY,this.eventRiseIntoTileIdx);
+    }
+
+    stageEventCollideSprite(sprite) {
+        this.eventCollideSprite=sprite;
+    }
+    
+    stageEventCollideTile(x,y,tileIdx) {
+        this.eventCollideTileX=x;
+        this.eventCollideTileY=y;
+        this.eventCollideTileIdx=tileIdx;
+    }
+    
+    stageEventStandOnSprite(sprite) {
+        this.eventStandSprite=sprite;
+    }
+    
+    stageEventStoodOnSprite(sprite) {
+        this.eventStoodSprite=sprite;
+    }
+    
+    stageEventStandOnTile(x,y,tileIdx) {
+        this.eventStandTileX=x;
+        this.eventStandTileY=y;
+        this.eventStandTileIdx=tileIdx;
+    }
+    
+    stageEventRiseIntoSprite(sprite) {
+        this.eventRiseIntoSprite=sprite;
+    }
+    
+    stageEventRiseIntoTile(x,y,tileIdx) {
+        this.eventRiseIntoTileX=x;
+        this.eventRiseIntoTileY=y;
+        this.eventRiseIntoTileIdx=idx;
+    }
+    
+    // draw sprite
     draw(ctx,offX,offY) {
         let alpha,hasTransform;
         let dx,dy,wid,high;
@@ -400,7 +472,7 @@ export default class SpriteClass {
         if ((y>=this.game.canvasHeight) || ((y+this.height)<=0)) return;
         
         // flashing
-        alpha=1.0;
+        alpha=this.alpha;
         if (this.flash) {
             alpha=(((this.game.tick/this.flashRate)&0x1)===0)?0.5:0.9;
         }

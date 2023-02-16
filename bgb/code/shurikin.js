@@ -40,7 +40,7 @@ export default class ShurikinClass extends SpriteClass {
         }
     }
     
-    run() {
+    onRun(tick) {
         let playerSprite=this.getPlayerSprite();
         
         // if first call, then we need to setup the travel  

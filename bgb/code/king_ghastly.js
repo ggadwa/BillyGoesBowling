@@ -75,8 +75,7 @@ export default class KingGhastlyClass extends SpriteClass
         this.playSound('thud');
     }
     
-    run()
-    {
+    onRun(tick) {
         let time, oldTime;
         let map=this.game.map;
         

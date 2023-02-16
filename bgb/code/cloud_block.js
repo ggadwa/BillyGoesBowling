@@ -64,7 +64,7 @@ export default class CloudBlockClass extends SpriteClass
         if (this.countDown===-1) this.countDown=this.POP_TICK;
     }
 
-    run() {
+    onRun(tick) {
         // run collision checks without moving
         this.checkCollision();
         

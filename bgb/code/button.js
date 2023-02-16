@@ -64,7 +64,7 @@ export default class ButtonClass extends SpriteClass {
         this.canStandOn=false;
     }
     
-    run() {
+    onRun(tick) {
         // if not squishing just check collisions
         if (this.squishCount===0) {
             this.checkCollision();

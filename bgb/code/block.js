@@ -21,7 +21,7 @@ export default class BlockClass extends SpriteClass {
         return(new BlockClass(this.game,x,y,this.data));
     }
     
-    run() {
+    onRun(tick) {
         this.runGravity();
     }
 }

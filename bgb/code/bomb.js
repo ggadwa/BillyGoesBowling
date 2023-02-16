@@ -50,7 +50,7 @@ export default class BombClass extends SpriteClass {
         this.explode(); // colliding with any tile explodes bomb
     }
     
-    run() {
+    onRun(tick) {
         this.y+=this.BOMB_SPEED; // bomb falls at steady rate
         
         if (this.isInLiquid()) {

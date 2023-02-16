@@ -21,8 +21,8 @@ export default class BallClass extends SpriteClass {
         
         this.HEAD_PIXEL_DISTANCE=10;
         
-        this.REFORM_LIFE_TICK=400;
-        this.REFORM_SHOW_TICK=200;
+        this.REFORM_COUNT=12;
+        this.REFORM_BALL_SHOW_COUNT=6;
         
         this.BALL_CIRCLE_SPEED=10;
         this.BALL_CIRCLE_OFFSET_X=8;
@@ -39,7 +39,7 @@ export default class BallClass extends SpriteClass {
         this.travelYBottom=0;
         this.travelAngle=0;
         
-        this.travelReformStartTick=0;
+        this.reformTick=0;
         this.reformParticle=null;
         
         // setup
@@ -78,19 +78,19 @@ export default class BallClass extends SpriteClass {
         
         // reset position and reform
         this.travelMode=this.TRAVEL_MODE_REFORM;
-        this.travelReformStartTick=this.game.timestamp;
+        this.reformTick=this.REFORM_COUNT;
         
         this.x=playerSprite.x+Math.trunc((playerSprite.width-this.width)*0.5);
         this.y=(playerSprite.y-playerSprite.height)-this.HEAD_PIXEL_DISTANCE;
-        this.reformParticle=this.game.map.addParticle((this.x+halfWid),(this.y-halfHigh),8,16,1.0,0.1,6,0.03,'particles/ball',16,0.5,true,this.REFORM_LIFE_TICK);
+        this.reformParticle=this.game.map.addParticle((this.x+halfWid),(this.y-halfHigh),8,16,1.0,0.1,6,0.03,'particles/ball',16,0.5,true,(this.REFORM_COUNT*33));
         
         this.playSound('ball_reform');
     }
     
-    run() {
+    onRun(tick) {
         let map=this.game.map;
         let playerSprite=this.getPlayerSprite();
-        let px,py,lftEdge,rgtEdge,topEdge,botEdge,tick;
+        let px,py,lftEdge,rgtEdge,topEdge,botEdge;
         let xOffset, yOffset, rad;
         
         // if the ball is hidden, it means the player
@@ -110,8 +110,8 @@ export default class BallClass extends SpriteClass {
         if (this.travelMode===this.TRAVEL_MODE_REFORM) {
             
             // are we done reforming?
-            tick=this.game.timestamp-this.travelReformStartTick;
-            if (tick>this.REFORM_LIFE_TICK) {
+            this.reformTick--;
+            if (this.reformTick===0) {
                 this.alpha=1.0;
                 this.travelMode=this.TRAVEL_MODE_FLOATING;
             }
@@ -119,12 +119,12 @@ export default class BallClass extends SpriteClass {
             else {
                 this.x=px;
                 this.y=py;
-                if (tick<this.REFORM_SHOW_TICK) {
+                if (this.reformTick>this.REFORM_BALL_SHOW_COUNT) {
                     this.alpha=0.0;
                 }
                 else {
-                    this.alpha=(tick-this.REFORM_SHOW_TICK)/(this.REFORM_LIFE_TICK-this.REFORM_SHOW_TICK);
-                }             
+                    this.alpha=1.0-(this.reformTick/this.REFORM_BALL_SHOW_COUNT);
+                }
                         
                 if (this.reformParticle!=null) {
                     this.reformParticle.resetPosition((px+Math.trunc(this.width*0.5)),(py-Math.trunc(this.height*0.5)));

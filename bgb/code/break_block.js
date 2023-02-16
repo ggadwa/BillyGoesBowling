@@ -59,7 +59,7 @@ export default class BreakBlockClass extends SpriteClass {
         }
     }
     
-    run() {
+    onRun(tick) {
         this.runGravity();
     }
 }

@@ -63,8 +63,7 @@ export default class ExplodeBlockClass extends SpriteClass {
         }
     }
     
-    run()
-    {
+    onRun(tick) {
         let cx,cy,sprites,sprite;
         
         if (this.countDown===-1) return;

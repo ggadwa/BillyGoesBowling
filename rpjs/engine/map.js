@@ -276,8 +276,8 @@ export default class MapClass {
             
             // otherwise it is a hit
             checkSprite.collideSprite=sprite;
-            sprite.onCollideSprite(checkSprite);
-            checkSprite.onCollideSprite(sprite);
+            sprite.stageEventCollideSprite(checkSprite);
+            checkSprite.stageEventCollideSprite(sprite);
             return(true);
         }
         
@@ -326,7 +326,7 @@ export default class MapClass {
                 
                 // tile contact
                 checkSprite.collideTileIdx=tileIdx;
-                checkSprite.onCollideTile(gx,gy,tileIdx);
+                checkSprite.stageEventCollideTile(gx,gy,tileIdx);
                 
                 return(true);
             }
@@ -375,8 +375,8 @@ export default class MapClass {
 
                     // standing on sprite
                     checkSprite.standSprite=sprite;
-                    checkSprite.onStandOnSprite(sprite);
-                    sprite.onStoodOnSprite(checkSprite);
+                    checkSprite.stageEventStandOnSprite(sprite);
+                    sprite.stageEventStoodOnSprite(checkSprite);
                     ty=y;
                 }
             }
@@ -434,7 +434,7 @@ export default class MapClass {
                     // standing on
                     checkSprite.standSprite=null;
                     checkSprite.standTileIdx=tileIdx;
-                    checkSprite.onStandOnTile(gx,gy,tileIdx);
+                    checkSprite.stageEventStandOnTile(gx,gy,tileIdx);
                     ty=dy;
                 }
             }
@@ -479,7 +479,7 @@ export default class MapClass {
                     
                     // rise collision
                     checkSprite.riseSprite=sprite;
-                    checkSprite.onRiseIntoSprite(sprite);
+                    checkSprite.stageEventRiseIntoSprite(sprite);
                     ty=y;
                 }
             }
@@ -536,7 +536,7 @@ export default class MapClass {
                     // rise collision
                     checkSprite.riseSprite=null;
                     checkSprite.riseTileIdx=tileIdx;
-                    checkSprite.onRiseIntoTile(gx,gy,tileIdx);
+                    checkSprite.stageEventRiseIntoTile(gx,gy,tileIdx);
                     ty=dy+this.MAP_TILE_SIZE;
                 }
             }
@@ -613,10 +613,9 @@ export default class MapClass {
         return(this.getMapViewportTopEdge()+this.game.canvasHeight);
     }
     
-    run() {
+    run(tick) {
         let n;
         let sprite;
-        let playerSprite=this.getPlayerSprite();
         
         // move any liquid
         if (this.toLiquidY!==-1) {
@@ -638,14 +637,20 @@ export default class MapClass {
             }
         }
         
-        // always run the player first
-        playerSprite.run();
-
+        // clear all the events, events are staged until
+        // the run finishes so they don't effect state within a run
+        for (sprite of this.sprites) {
+            sprite.clearStageEvents();
+        }
+        
         // run through all the sprites   
         for (sprite of this.sprites) {
-            if (sprite!==playerSprite) {
-                sprite.run();
-            }   
+            sprite.onRun(tick); 
+        }
+        
+        // now run the events
+        for (sprite of this.sprites) {
+            sprite.runStageEvents();
         }
         
         // delete any finished sprites

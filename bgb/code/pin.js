@@ -64,7 +64,7 @@ export default class PinClass extends SpriteClass {
         }
     }
     
-    run() {
+    onRun(tick) {
         this.checkCollision();
         this.runGravity();
     }

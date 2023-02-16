@@ -24,7 +24,7 @@ export default class DoorClass extends SpriteClass {
         return(new DoorClass(this.game,x,y,this.data));
     }
     
-    run() {
+    onRun(tick) {
         let door;
         let playerSprite=this.getPlayerSprite();
         

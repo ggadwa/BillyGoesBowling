@@ -2,10 +2,7 @@
 
 
 
-- need onRunBefore and onRunAfter
-- spring uses onRunAfter to push other items
-- pass in tick there
-
+- axes come down in pattern from executioner data
 
 - pendant tile for castle levels (next to bush tile)
 
@@ -31,7 +28,6 @@
 - particles by tick
 
 - platforms need to push with API (and anything that stands on them)
-- why does spring not push sprites (I suspect it's a collision)
 
 
 
