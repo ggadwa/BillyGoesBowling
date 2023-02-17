@@ -399,6 +399,13 @@ export default class GameClass {
     }
     
     /**
+     * Override this to listen to messages from sprites, this
+     * is up to the game developer as how to use cmd and data.
+     */
+    onMessage(fromSprite,cmd,data) {
+    }    
+    
+    /**
      * Override this to create any data that needs to be
      * persisted for game state.
      */
@@ -417,7 +424,7 @@ export default class GameClass {
      * Override this to run any game based logic, it is called before
      * any sprite logic.
      */
-    run(tick) {
+    onRun(tick) {
     }
     
     /**
@@ -470,8 +477,8 @@ export default class GameClass {
             
             // run game and map logic
             // which runs the sprite logic
-            this.run(this.tick);
-            this.map.run(this.tick);
+            this.onRun(this.tick);
+            this.map.onRun(this.tick);
             
             // check for map goto triggers 
             if (this.gotoMapName!==null) {

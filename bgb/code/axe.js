@@ -9,7 +9,7 @@ export default class AxeClass extends SpriteClass {
         super(game,x,y,data);
         
         // constants
-        this.SPEED=20;
+        this.SPEED=6;
         
         // setup
         this.addImage('sprites/axe');
@@ -22,9 +22,7 @@ export default class AxeClass extends SpriteClass {
         this.canCollide=false;
         this.canStandOn=false;
         this.canRiseBlock=false;
-        
-        this.flipY=true;
-        
+
         this.setCollideSpriteClassIgnoreList([ExecutionerClass]);
         this.setCollideTileIndexIgnoreList([22,23]);
         
@@ -44,13 +42,13 @@ export default class AxeClass extends SpriteClass {
     onCollideSprite(sprite) {
         // pop clouds
         if (sprite instanceof CloudBlockClass) {
-            this.sendMessageToSpritesWithinBox((this.x+10),(this.y+10),((this.x+this.width)-10),(this.y+20),this,CloudBlockClass,'pop',null);
+            this.sendMessageToSpritesAroundSprite(0,0,0,32,CloudBlockClass,'pop',null);
             return;
         }
         
         // break any strong blocks
         if (sprite instanceof BreakBlockStrongClass) {
-            this.sendMessageToSpritesWithinBox((this.x+10),(this.y+10),((this.x+this.width)-10),(this.y+20),this,BreakBlockStrongClass,'explode',null);
+            this.sendMessageToSpritesAroundSprite(0,0,0,32,BreakBlockStrongClass,'explode',null);
             this.kill();
         }
     }

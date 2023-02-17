@@ -86,7 +86,7 @@ export default class ExplodeBlockClass extends SpriteClass {
         // look for any sprite that's directly surrounding this
         // within a single tile distance (which is 64, we just need to
         // get the collision rect within that area.)
-        this.sendMessageToSpritesWithinBox((this.x-16),(this.y-80),(this.x+80),(this.y+16),this,null,'explode',null);
+        this.sendMessageToSpritesAroundSprite(-32,-32,32,32,null,'explode',null);
         
         cx=this.x+Math.trunc(this.width*0.5);
         cy=this.y-Math.trunc(this.height*0.5);

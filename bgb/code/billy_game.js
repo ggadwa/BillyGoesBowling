@@ -52,13 +52,19 @@ import NinjaHordeMapClass from '../maps/ninja_horde.js';
 import SprintAThonMapClass from '../maps/spring_a_thon.js';
 import KingGhastlyCastleMapClass from '../maps/king_ghastly_castle.js';
 
-export default class BillyGameClass extends GameClass
-{
-    constructor()
-    {
+export default class BillyGameClass extends GameClass {
+
+    constructor() {
         super();
         
+        // constants
         this.HEALTH_IMAGE_LIST=['ui/health_25','ui/health_50','ui/health_75','ui/health_100'];
+        
+        // variables
+        this.bannerTitleText='';
+        this.bannerMapName='';
+        this.bannerMapRequiredPinCount=0;
+        this.bannerFadeCount=-1;
         
         Object.seal(this);
     }
@@ -166,7 +172,6 @@ export default class BillyGameClass extends GameClass
         this.addImage('sprites/easter_head_fire');
         this.addImage('sprites/fish');
         this.addImage('sprites/executioner_1');
-        this.addImage('sprites/executioner_2');
         this.addImage('sprites/axe');
         this.addImage('sprites/mr_cpu');
         this.addImage('sprites/boney_one_eye');
@@ -275,23 +280,13 @@ export default class BillyGameClass extends GameClass
         this.addMap('king_ghastly_castle',new KingGhastlyCastleMapClass(this));
     }
     
-    createData()
-    {
-            // data persisted into the game objects is the
-            // state of the game.  We first look to see if there
-            // if any data in the current save slot, if so we
-            // restore that otherwise we create a default set
-        
+    createData() {
         if (!this.restorePersistedData()) {
-            this.setData('banner_title_text',''); // banner map title
-            this.setData('banner_map_name',null); // banner map name
-            this.setData('banner_fade_count',-1); // banner fade count
-            this.setData('banner_map_required_pin_count',0); // pin count required to enter this map
+            // any new data we need if a new game
         }
     }
     
-    getEditorSpritePaletteList()
-    {
+    getEditorSpritePaletteList() {
         return([
             new PlayerWorldClass(this,0,0,null),
             new PlayerSideScrollClass(this,0,0,null),
@@ -320,43 +315,42 @@ export default class BillyGameClass extends GameClass
         ]);
     }
    
-    getStartMap()
-    {
+    getStartMap() {
         return('world_main');
     }
     
-    setBanner(mapTitle,mapName,requiredPinCount)
-    {   
-        let count=this.getData('banner_fade_count');
-        
+    setBanner(mapTitle,mapName,requiredPinCount) {
         // change fade
-        if (count===-1) {
-            this.setData('banner_fade_count',0);
+        if (this.bannerFadeCount===-1) {
+            this.bannerFadeCount=0;
         }
         else {
-            if (count>=10) this.setData('banner_fade_count',10);
+            if (this.bannerFadeCount>=10) this.bannerFadeCount=10;
         }
-        
+
         // set new banner
-        this.setData('banner_title_text',mapTitle);
-        this.setData('banner_map_name',mapName);
-        this.setData('banner_map_required_pin_count',requiredPinCount);
+        this.bannerTitleText=mapTitle;
+        this.bannerMapName=mapName;
+        this.bannerMapRequiredPinCount=requiredPinCount;
+    }
+    
+    onMessage(fromSprite,cmd,data) {
+        switch (cmd) {
+            case 'banner':
+                this.setBanner(data.title,data.map,data.pin);
+                break;
+        }
     }
     
     onRun(tick) {
-        let bannerCount;
-        
-        // run any banners
-        bannerCount=this.getData('banner_fade_count');
-
-        if (bannerCount!==-1) {
-            bannerCount++;
-            this.setData('banner_fade_count',((bannerCount>=20)?-1:bannerCount));
+        if (this.bannerFadeCount!==-1) {
+            this.bannerFadeCount++;
+            if (this.bannerCount>=20) this.bannerFadeCount=-1;
         }
     }
     
     drawUI() {
-        let count,mx,lx,rx,dx,wid,requiredPinCount,health;
+        let mx,lx,rx,dx,wid,health;
         let time,min,sec,timeStr;
         let playerSprite=this.map.getPlayerSprite();
         
@@ -376,74 +370,71 @@ export default class BillyGameClass extends GameClass
             this.drawUIImage('ui/score_box',(this.canvasWidth-120),(this.canvasHeight-74));
             this.drawUIImage('ui/trophy',(this.canvasWidth-110),(this.canvasHeight-68));
             this.drawUIText((this.getGameDataCountForPrefix('trophy_')+'/21'),(this.canvasWidth-20),(this.canvasHeight-33));
-        }
-        
-        // banners
-        count=this.getData('banner_fade_count');
-        if (count!==-1) {
-            
-            // the alpha 
-            if (count<10) {
-                this.drawSetAlpha(count/10);
-            }
-            else {
-                if (count>10) this.drawSetAlpha(1.0-((count-10)/10));
-            }
-            
-            // special win banner
-            if (this.getData('banner_title_text')===null) {
-                wid=this.imageList.get('ui/win_banner').width;
-                mx=Math.trunc(this.canvasWidth*0.5);
-                lx=mx-Math.trunc(wid*0.5);
-                this.drawUIImage('ui/win_banner',lx,(this.canvasHeight-260));
-            }
-            
-            // regular banner
-            else {
-                wid=this.imageList.get('ui/banner').width;
-                mx=Math.trunc(this.canvasWidth*0.5);
-                lx=mx-Math.trunc(wid*0.5);
-                this.drawUIImage('ui/banner',lx,(this.canvasHeight-74));
 
-                // checkmark for completing level
-                dx=lx+10;
-                if ((this.getData('pin_'+this.getData('banner_map_name'))===true) || (this.getData('boss_'+this.getData('banner_map_name'))===true)) {
-                    this.drawUIImage('ui/checkmark',dx,(this.canvasHeight-67));
-                    dx+=35;
-                }
-                
-                // trophy for getting hidden trophy
-                if (this.getData('trophy_'+this.getData('banner_map_name'))===true) {
-                    this.drawUIImage('ui/trophy',dx,(this.canvasHeight-67));
-                    dx+=35;
-                }
-                
-                // map title
-                this.setupUIText('bolder 36px Arial','#000000','left','alphabetic');
-                this.drawUIText(this.getData('banner_title_text'),dx,(this.canvasHeight-29));
-                
-                // times
-                time=this.getData('time_'+this.getData('banner_map_name'));
-                if (time!==null) {
-                    min=Math.trunc(time/60.0);
-                    sec=time-(min*60.0);
-                    timeStr=min+':'+(sec<10?'0':'')+sec.toFixed(2);
-                    dx+=(10+this.measureUITextWidth(this.getData('banner_title_text')));
-                    this.setupUIText('18px Arial','#000000','left','alphabetic');
-                    this.drawUIText(timeStr,dx,(this.canvasHeight-29));
-                }
-                
-                // required pins for bosses
-                requiredPinCount=this.getData('banner_map_required_pin_count');
-                if (requiredPinCount!==-1) {
-                    rx=lx+wid;
-                    this.drawUIImage('ui/pin',(rx-36),(this.canvasHeight-67));
-                    this.setupUIText('bolder 36px Arial','#000000','right','alphabetic');
-                    this.drawUIText(requiredPinCount,(rx-41),(this.canvasHeight-29));
-                }
-            }
+            if (this.bannerFadeCount!==-1) {
             
-            this.drawSetAlpha(1.0);
+                // the alpha 
+                if (this.bannerFadeCount<10) {
+                    this.drawSetAlpha(this.bannerFadeCount/10);
+                }
+                else {
+                    if (this.bannerFadeCount>10) this.drawSetAlpha(1.0-((this.bannerFadeCount-10)/10));
+                }
+
+                // special win banner
+                if (this.bannerTitleText===null) {
+                    wid=this.imageList.get('ui/win_banner').width;
+                    mx=Math.trunc(this.canvasWidth*0.5);
+                    lx=mx-Math.trunc(wid*0.5);
+                    this.drawUIImage('ui/win_banner',lx,(this.canvasHeight-260));
+                }
+
+                // regular banner
+                else {
+                    wid=this.imageList.get('ui/banner').width;
+                    mx=Math.trunc(this.canvasWidth*0.5);
+                    lx=mx-Math.trunc(wid*0.5);
+                    this.drawUIImage('ui/banner',lx,(this.canvasHeight-74));
+
+                    // checkmark for completing level
+                    dx=lx+10;
+                    if ((this.getData('pin_'+this.bannerMapName)===true) || (this.getData('boss_'+this.bannerMapName)===true)) {
+                        this.drawUIImage('ui/checkmark',dx,(this.canvasHeight-67));
+                        dx+=35;
+                    }
+
+                    // trophy for getting hidden trophy
+                    if (this.getData('trophy_'+this.bannerMapName)===true) {
+                        this.drawUIImage('ui/trophy',dx,(this.canvasHeight-67));
+                        dx+=35;
+                    }
+
+                    // map title
+                    this.setupUIText('bolder 36px Arial','#000000','left','alphabetic');
+                    this.drawUIText(this.bannerTitleText,dx,(this.canvasHeight-29));
+
+                    // times
+                    time=this.getData('time_'+this.bannerMapName);
+                    if (time!==null) {
+                        min=Math.trunc(time/60.0);
+                        sec=time-(min*60.0);
+                        timeStr=min+':'+(sec<10?'0':'')+sec.toFixed(2);
+                        dx+=(10+this.measureUITextWidth(this.bannerTitleText));
+                        this.setupUIText('18px Arial','#000000','left','alphabetic');
+                        this.drawUIText(timeStr,dx,(this.canvasHeight-29));
+                    }
+
+                    // required pins for bosses
+                    if (this.bannerMapRequiredPinCount!==-1) {
+                        rx=lx+wid;
+                        this.drawUIImage('ui/pin',(rx-36),(this.canvasHeight-67));
+                        this.setupUIText('bolder 36px Arial','#000000','right','alphabetic');
+                        this.drawUIText(this.bannerMapRequiredPinCount,(rx-41),(this.canvasHeight-29));
+                    }
+                }
+
+                this.drawSetAlpha(1.0);
+            }
         }
     }
 }

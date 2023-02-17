@@ -33,16 +33,15 @@ export default class MapCottageClass extends SpriteClass
         let n,cx,cy;
         let playerSprite=this.getPlayerSprite();
         
-            // are we colliding with player?
+        // are we colliding with player?
             
         if (!playerSprite.collide(this)) {
             this.canFireParticles=true;
             return;
         }
         
-            // trigger the win banner
-            
-        this.game.setBanner(null,null,this.getData('pin'));
+        // trigger the win banner
+        this.sendMessageToGame('banner',{"title":null,"map":null,"pin":this.getData('pin')});
         
             // if we just landed here, we can fire
             // random particles

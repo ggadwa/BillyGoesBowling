@@ -19,7 +19,7 @@ export default class MrCPUClass extends SpriteClass {
             
         this.speedIdx=(Date.now()%this.SPEEDS.length);  // start with random speed
         this.direction=1;
-        this.isDropping=true;
+        this.inAir=true;
         this.isDead=false;
         this.isFirstShow=true;
         
@@ -28,10 +28,10 @@ export default class MrCPUClass extends SpriteClass {
         this.addImage('sprites/mr_cpu');
         this.setCurrentImage('sprites/mr_cpu');
         
-        this.show=false;            // start with it not shown, button starts it
+        this.show=false; // start with it not shown, button starts it
         this.gravityFactor=0.15;
-        this.gravityMinValue=1;
-        this.gravityMaxValue=50;
+        this.gravityMinValue=3;
+        this.gravityMaxValue=30;
         this.canCollide=true;
         this.canStandOn=true;
         
@@ -43,11 +43,36 @@ export default class MrCPUClass extends SpriteClass {
     }
     
     mapStartup() {
-        this.isDropping=true;
+        this.inAir=true;
         this.isDead=false;
         this.isFirstShow=true;
         
         this.game.startCompletionTimer();
+    }
+
+    land() {
+        this.shakeMap(10);
+        this.playSound('thud');
+               
+        // pop any clouds
+        this.sendMessageToSpritesAroundSprite(0,0,0,32,CloudBlockClass,'pop',null);
+    }
+    
+    kill() {
+        this.isDead=true;
+        this.gravityFactor=0.0;
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
+        this.playSound('boss_dead');
+
+        // update the state
+        this.setGameData(('boss_'+this.getMapName()),true);
+        this.setGameData(('boss_explode_'+this.getMapName()),true);
+        this.setGameDataIfLess(('time_'+this.getMapName()),this.game.stopCompletionTimer());
+
+        this.game.map.forceCameraSprite=this;
+
+        // warp player out
+        this.sendMessage(this.getPlayerSprite(),'warp_out',null);
     }
    
     onRun(tick) {
@@ -55,78 +80,62 @@ export default class MrCPUClass extends SpriteClass {
         let speed,mx;
         let playerSprite=this.getPlayerSprite();
         
-            // the first time we get called is
-            // when we first appear, so play sound fx
-            
-        if (this.show) {
-            if (this.isFirstShow) {
-                this.isFirstShow=false;
-                this.playSound('boss_appear');
+        // do nothing if we aren't shown
+        if (!this.show) return;   
+        
+        // dead, just sink 
+        if (this.isDead) {
+            this.y+=4;
+            this.alpha-=0.05;
+            if (this.alpha<0.0) this.alpha=0.0;
+            return;
+        }
+        
+        // the first time we get called is
+        // when we first appear, so play sound fx
+        if (this.isFirstShow) {
+            this.isFirstShow=false;
+            this.playSound('boss_appear');
+        }
+
+        // shake map when hitting ground
+        if (!this.grounded) {
+            this.inAir=true;
+        }
+        else {
+            if (this.inAir) {
+                this.inAir=false;
+                this.land();
             }
         }
         
-            // we have a special check for dropping
-            // out of the sky, ignore everything until
-            // we hit ground
-            
-        if (this.isDropping) {
-            if (!this.grounded) return;
-            
-            this.isDropping=false;
-            this.shakeMap(10);
-            this.playSound('thud');
-        }
-        
-            // if we are dead, do nothing
-            
-        if (this.isDead) {
-            this.y+=4;
-            return;
-        }
-        
-        // hit the liquid?
-        if (this.isInLiquid()) {
-            this.isDead=true;
-            this.stopAllGravity();
-            this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
-            this.playSound('boss_dead');
-            
-            // update the state
-            this.setGameData(('boss_'+this.getMapName()),true);
-            this.setGameData(('boss_explode_'+this.getMapName()),true);
-            this.setGameDataIfLess(('time_'+this.getMapName()),this.game.stopCompletionTimer());
-            
-            map.forceCameraSprite=this;
-            
-            // warp player out
-            this.sendMessage(this.getPlayerSprite(),'warp_out',null);
-            return;
-        }
              
             // move
             // if we hit something, back off, and if it's
             // a wall, turn around
         
         speed=this.SPEEDS[this.speedIdx]*this.direction;
-        this.x+=speed;
+        //this.x+=speed;
         
         if (this.checkCollision()) {
-            this.x-=speed;
-            if (this.collideSprite!=null) this.collideSprite.interactWithSprite(this,null);
+            //this.x-=speed;
+            //if (this.collideSprite!=null) this.collideSprite.interactWithSprite(this,null);
             
             if ((this.collideTileIdx===this.TILE_IDX_BUMP_1) || (this.collideTileIdx===this.TILE_IDX_BUMP_2)) {
-                this.direction=-this.direction;
-                this.addGravity(this.JUMP_HEIGHT,0);
+                //this.direction=-this.direction;
+                //this.addGravity(this.JUMP_HEIGHT,0);
                 
-                return;
+                //return;
             }
         }
         
+        this.runGravity();
+        
             // standing on player hurts him and
             // change direction and jump backward
-            
+            /*
         if (this.standSprite===playerSprite) {
-            this.standSprite.interactWithSprite(this,null);
+            //this.standSprite.interactWithSprite(this,null);
             this.direction=-this.direction;
             this.addGravity(this.JUMP_HEIGHT);
             
@@ -137,26 +146,30 @@ export default class MrCPUClass extends SpriteClass {
             
         if (this.standSprite!==null) {
             if (this.standSprite instanceof ExplodeBlockClass) {
-                this.sendMessageToSpritesWithinBox((this.x-32),(this.y-32),((this.x+this.width)+32),(this.y+64),this,ExplodeBlockClass,'explode',null);
+                this.sendMessageToSpritesAroundSprite(-32,-32,32,32,ExplodeBlockClass,'explode',null);
             }
         }
 
             // if grounded, then we need to smash
-            // the blocks (only 4 wide) at the bottom of the chicken
+            // the blocks at the bottom of the cpu
             
         if (!(this.standSprite instanceof BreakBlockStrongClass)) return;
 
-        mx=this.x+Math.trunc(this.width*0.4);
-        this.sendMessageToSpritesWithinBox((mx-120),(this.y+10),(mx+120),(this.y+20),this,BreakBlockStrongClass,'explode',null);
+        this.sendMessageToSpritesAroundSprite(-32,-32,32,32,BreakBlockStrongClass,'explode',null);
         
         this.shakeMap(4);
         this.playSound('thud');
-
+*/
             // jump back up
         
-        this.addGravity(this.JUMP_HEIGHT);
-        this.speedIdx++;
-        if (this.speedIdx>=this.SPEEDS.length) this.speedIdx=0;
+        //this.addGravity(this.JUMP_HEIGHT);
+        //this.speedIdx++;
+        //if (this.speedIdx>=this.SPEEDS.length) this.speedIdx=0;
+        
+        // hit the liquid?
+        if (this.isInLiquid()) {
+            this.kill();
+        }
     }
     
 }

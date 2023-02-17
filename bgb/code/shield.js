@@ -34,6 +34,10 @@ export default class ShieldClass extends SpriteClass {
         return(new ShieldClass(this.game,x,y,this.data));
     }
     
+    onCollideSprite(sprite) {
+        this.sendMessage(sprite,'hurt',null);
+    }
+    
     onMessage(fromSprite,cmd,data) {
         switch (cmd) {
             case 'start_shield':
@@ -46,7 +50,6 @@ export default class ShieldClass extends SpriteClass {
     
     onRun(tick) {
         let playerSprite=this.getPlayerSprite();
-        let didCollide;
         
         // not shown, nothing to do
         if (!this.show) return;
@@ -62,11 +65,7 @@ export default class ShieldClass extends SpriteClass {
         // glows
         this.alpha=0.4+Math.abs(Math.sin(this.lifeCount/this.GLOW_RATE)*0.3);
         
-        // check for collisions outside of player and ball
-        didCollide=this.checkCollision();
-            
-        if ((didCollide) && (this.collideSprite!==null)) {
-            this.collideSprite.interactWithSprite(this,null);
-        }
+        // check for collisions
+        this.checkCollision();
     }
 }

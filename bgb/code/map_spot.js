@@ -48,7 +48,7 @@ export default class MapSpotClass extends SpriteClass {
         if (!playerSprite.collide(this)) return;
             
         // change UI
-        this.game.setBanner(this.getData('title'),this.getData('map'),-1);
+        this.sendMessageToGame('banner',{"title":this.getData('title'),"map":this.getData('map'),"pin":-1});
         
         // if space than jump to map
         // save the X/Y so we can restore when we exit

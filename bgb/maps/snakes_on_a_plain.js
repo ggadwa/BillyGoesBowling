@@ -202,12 +202,10 @@ export default class SnakesOnAPlainMapClass extends SideScrollNormalBaseMapClass
             new BlockClass(this.game,5376,1408,new Map([])),
             new DoorClass(this.game,2112,1344,new Map([["name","Secret Door"],["goto","Higher Door"]])),
             new ButtonClass(this.game,3584,1152,new Map([["mode","liquid"],["liquid_y",1632],["liquid_move_speed",5]])),
-            new TrophyClass(this.game,1984,1344,new Map([])),
+            new TrophyClass(this.game,1792,1344,new Map([])),
             new BreakBlockClass(this.game,2176,960,new Map([])),
             new BreakBlockClass(this.game,2048,960,new Map([])),
-            new BreakBlockClass(this.game,1984,960,new Map([])),
             new BreakBlockClass(this.game,2240,960,new Map([])),
-            new BreakBlockClass(this.game,2304,960,new Map([])),
             new BlockClass(this.game,2048,896,new Map([])),
             new BlockClass(this.game,2176,896,new Map([])),
             new BlockClass(this.game,2240,896,new Map([])),
@@ -216,18 +214,17 @@ export default class SnakesOnAPlainMapClass extends SideScrollNormalBaseMapClass
             new BreakBlockClass(this.game,2240,832,new Map([])),
             new BlockClass(this.game,2112,960,new Map([])),
             new BreakBlockClass(this.game,2112,832,new Map([])),
-            new BlockClass(this.game,2112,704,new Map([])),
-            new BlockClass(this.game,2176,704,new Map([])),
-            new BreakBlockClass(this.game,2112,768,new Map([])),
-            new BreakBlockClass(this.game,2176,768,new Map([])),
-            new DrainPipeSnakeClass(this.game,2176,640,new Map([])),
+            new DrainPipeSnakeClass(this.game,2176,768,new Map([])),
             new BlockClass(this.game,2240,704,new Map([])),
             new BreakBlockClass(this.game,2240,768,new Map([])),
             new BreakBlockClass(this.game,5312,1344,new Map([])),
             new BreakBlockClass(this.game,5312,1280,new Map([])),
             new BreakBlockClass(this.game,5248,1280,new Map([])),
             new BreakBlockClass(this.game,5184,1280,new Map([])),
-            new BreakBlockClass(this.game,5376,1344,new Map([]))
+            new BreakBlockClass(this.game,5376,1344,new Map([])),
+            new BlockClass(this.game,2048,704,new Map([])),
+            new BreakBlockClass(this.game,2048,768,new Map([])),
+            new BreakBlockClass(this.game,2048,832,new Map([]))
         ];
     }
    

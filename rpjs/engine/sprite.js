@@ -130,13 +130,6 @@ export default class SpriteClass {
     }
     
     /**
-     * Called when another sprite is interacting with this one, this
-     * is up to the game developer what this means.
-     */
-    interactWithSprite(interactSprite,dataObj) {
-    }
-    
-    /**
      * Override this to listen to messages from other sprites, this
      * is up to the game developer as how to use cmd and data.
      */
@@ -153,14 +146,18 @@ export default class SpriteClass {
         toSprite.onMessage(this,cmd,data);
     }
     
-    sendMessageToSpritesWithinBox(lft,top,rgt,bot,ignoreSprite,filterClass,cmd,data) {
+    sendMessageToSpritesAroundSprite(lftAdd,topAdd,rgtAdd,botAdd,filterClass,cmd,data) {
         let sprites, sprite;
         
-        sprites=this.game.map.getSpritesWithinBox(lft,top,rgt,bot,ignoreSprite,filterClass);
+        sprites=this.game.map.getSpritesWithinBox((this.x+lftAdd),((this.y-this.height)+topAdd),((this.x+this.width)+rgtAdd),(this.y+botAdd),this,filterClass);
         
         for (sprite of sprites) {
             this.sendMessage(sprite,cmd,data);
         }
+    }
+    
+    sendMessageToGame(cmd,data) {
+        this.game.onMessage(this,cmd,data);
     }
     
     getMapName() {

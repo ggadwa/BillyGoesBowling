@@ -63,12 +63,45 @@ export default class BoneyOneEyeClass extends SpriteClass
         
         this.playSound('jump');
     }
+
+    land() {
+        this.shakeMap(10);
+        this.playSound('thud');
+               
+        // pop any clouds
+        this.sendMessageToSpritesAroundSprite(0,0,0,32,CloudBlockClass,'pop',null);
+    }
+    
+    kill() {
+        this.isDead=true;
+        this.gravityFactor=0.0;
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
+        this.playSound('boss_dead');
+
+        // update the state
+        this.setGameData(('boss_'+this.getMapName()),true);
+        this.setGameData(('boss_explode_'+this.getMapName()),true);
+        this.setGameDataIfLess(('time_'+this.getMapName()),this.game.stopCompletionTimer());
+
+        this.game.map.forceCameraSprite=this;
+
+        // warp player out
+        this.sendMessage(this.getPlayerSprite(),'warp_out',null);
+    }
     
     onRun(tick) {
         let map=this.game.map;
         
         // do nothing if we aren't shown
         if (!this.show) return;
+        
+        // dead, just sink 
+        if (this.isDead) {
+            this.y+=4;
+            this.alpha-=0.05;
+            if (this.alpha<0.0) this.alpha=0.0;
+            return;
+        }
         
         // the first time we get called is
         // when we first appear, so play sound fx
@@ -84,35 +117,8 @@ export default class BoneyOneEyeClass extends SpriteClass
         else {
             if (this.inAir) {
                 this.inAir=false;
-                this.shakeMap(10);
-                this.playSound('thud');
+                this.land();
             }
-        }
-        
-            // dead, do nothig
-            
-        if (this.isDead) {
-            this.y+=4;
-            return;
-        }
-        
-            // hit the liquid?
-        if (this.isInLiquid()) {
-            this.isDead=true;
-            this.gravityFactor=0.0;
-            this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
-            this.playSound('boss_dead');
-            
-            // update the state
-            this.setGameData(('boss_'+this.getMapName()),true);
-            this.setGameData(('boss_explode_'+this.getMapName()),true);
-            this.setGameDataIfLess(('time_'+this.getMapName()),this.game.stopCompletionTimer());
-            
-            map.forceCameraSprite=this;
-            
-            // warp player out
-            this.sendMessage(this.getPlayerSprite(),'warp_out',null);
-            return;
         }
         
             // special check if we are falling
@@ -134,7 +140,7 @@ export default class BoneyOneEyeClass extends SpriteClass
             
         if (this.standSprite!==null) {
             if (this.standSprite instanceof CloudBlockClass) {
-                this.sendMessageToSpritesWithinBox((this.x-32),(this.y-32),((this.x+this.width)+32),(this.y+64),this,CloudBlockClass,'pop',null);
+                this.sendMessageToSpritesAroundSprite(0,0,0,32,CloudBlockClass,'pop',null);
             }
         }
         
@@ -144,6 +150,11 @@ export default class BoneyOneEyeClass extends SpriteClass
         if (this.fireWait===0) {
             this.fireWait=this.FIRE_TICK;
             this.fireEye();
+        }
+
+        // hit the liquid?
+        if (this.isInLiquid()) {
+            this.kill();
         }
     }
     

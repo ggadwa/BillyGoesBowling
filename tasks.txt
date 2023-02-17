@@ -1,23 +1,32 @@
 //// TO DO
 
+- give banners a mode (fade in, fade out, show, none)
+- makes doors work
+
+- fix the mr cpu
+   - lands, runs towards player, then jetpacks up and explosions break blocks
+   - needs one flipping walk cycle
+- fix one eye
+- fix ghastly
+- add kangaroo
+
+- boney one eye faces you X wise (and fires eye from different location)
+- boney one eye forms eye by alpha before firing (maybe doesn't have eye on sprite?)
+
+- both game and sprite still have some non-"on" events
 
 
-- finish axe patterns
 
-- banner_title_text not in game data
-- sendMessageToSpritesWithinBox does offsets around sprite instead of absolutes
-- why are banners broken
+- editor: need x erase block
+
+- what's with snake underwater in snakes on a plain (by trophy)
 
 - pendant tile for castle levels (next to bush tile)
 
 
-- add kangaroo levels
-
-- do all shield stuff
-- can't move with shield on
 
 
-
+- input might need to be different -- with isLeft(maxSpeed) (keyboard returns maxspeed, sticks %)
 
 
 - Ninja HQ (tall girder skyscraper)
@@ -29,24 +38,18 @@
 
 
 - move game time to 60 fps
-- particles by tick
+- particles by tick (just for the sprite call, convert them to timestamp after that)
 
 - platforms need to push with API (and anything that stands on them)
 
 
 
-- replace interactWithSprite with sendMessage(callSprite,cmd,data)
-- other side overrides onMessage(fromSprite,cmd,data)
+
 
 - get rid of all map. or game.
-- run passes in tick
 
-
-- adjust collisions with billy and shield from other creatures
-- spin makes player invincible for a bit draw shield
 
 - redo all scripts first before 60 fps
-- put gravity in places it needs to be
 - find (and remove) all timestamp in scripts (use tick)
 
 - need transitions between worlds (closing squares)
@@ -55,13 +58,6 @@
 - trunc all drawimage coords
 
 
-
-- add kangaroo boss and another level
-
-
-
-
-- get rid of all timestamp stuff, use ticks
 - smoke on quick turn around (by feet)
 - smoke on jump land
 
@@ -70,20 +66,14 @@
 
 
 
-- mr cpu needs jumping legs
-- boney one eye faces you X wise (and fires eye from different location)
-- boney one eye forms eye by alpha before firing (maybe doesn't have eye on sprite?)
 
 
 
 
 - need to use controllers
-- destroyed carrots reset
-- make executioner always jump around and always throw axes
 - last boss can kill billy multiple times when grave
 
 - better water on world map?
-
 
 - snakes are the worst art, update them
 - add keys/secret exits (one could be having to race explosives throughout level for key at end before it falls in water)

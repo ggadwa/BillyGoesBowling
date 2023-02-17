@@ -12,7 +12,7 @@ export default class ExecutionerClass extends SpriteClass {
         // constants
         this.TILE_IDX_BUMP=18;
         this.ACCELERATION=1.0;
-        this.MAX_SPEED=8;
+        this.MAX_SPEED=7;
         this.JUMP_HEIGHT=-40;
         this.AXE_COOL_DOWN_TICK=35;
         this.AXE_START_COOL_DOWN_TICK=45;
@@ -21,8 +21,6 @@ export default class ExecutionerClass extends SpriteClass {
         // variables
         this.executionerDirection=-1;
         this.executionerSpeed=0;
-        this.executionerLeft=0;
-        this.executionerRight=0;
         
         this.axeLaunchIndex=0;
         this.axeLaunchPositions=null;
@@ -32,11 +30,9 @@ export default class ExecutionerClass extends SpriteClass {
         this.inAir=false;
         this.isDead=false;
         this.isFirstShow=true;
-        this.imageToggle=true;
         
         // setup
         this.addImage('sprites/executioner_1');
-        this.addImage('sprites/executioner_2');
         this.setCurrentImage('sprites/executioner_1');
         
         this.show=false; // start with it not shown, button starts it
@@ -59,9 +55,6 @@ export default class ExecutionerClass extends SpriteClass {
         this.executionerDirection=-1;
         this.executionerSpeed=0;
         
-        this.executionerLeft=this.data.get('left');
-        this.executionerRight=this.data.get('right');
-        
         this.axeCoolDownCount=this.AXE_START_COOL_DOWN_TICK;
         this.axeLaunchIndex=0;
         this.axeLaunchPositions=this.data.get('axe');
@@ -70,7 +63,6 @@ export default class ExecutionerClass extends SpriteClass {
         this.inAir=false;
         this.isDead=false;
         this.isFirstShow=true;
-        this.imageToggle=true;
         
         this.game.startCompletionTimer();
     }
@@ -95,12 +87,17 @@ export default class ExecutionerClass extends SpriteClass {
         this.axeCoolDownCount=this.AXE_COOL_DOWN_TICK;
     }
     
+    onCollideTile(tileX,tileY,tileIdx) {
+        this.executionerSpeed=0;
+        this.executionerDirection=-this.executionerDirection;
+    }
+    
     land() {
         this.shakeMap(10);
         this.playSound('thud');
                
         // pop any clouds
-        this.sendMessageToSpritesWithinBox((this.x-32),(this.y+10),((this.x+this.width)+32),(this.y+20),this,CloudBlockClass,'pop',null);
+        this.sendMessageToSpritesAroundSprite(0,0,0,32,CloudBlockClass,'pop',null);
     }
     
     kill() {
@@ -124,6 +121,14 @@ export default class ExecutionerClass extends SpriteClass {
         // do nothing if we aren't shown
         if (!this.show) return;
         
+        // dead, just sink 
+        if (this.isDead) {
+            this.y+=4;
+            this.alpha-=0.05;
+            if (this.alpha<0.0) this.alpha=0.0;
+            return;
+        }
+        
         // the first time we get called is
         // when we first appear, so play sound fx
         if (this.isFirstShow) {
@@ -144,12 +149,6 @@ export default class ExecutionerClass extends SpriteClass {
             }
         }
         
-        // dead, do nothig  
-        if (this.isDead) {
-            this.y+=4;
-            return;
-        }
-        
         // always follow the player, but with
         // an acceleration
         if (this.firstDrop) {
@@ -160,29 +159,16 @@ export default class ExecutionerClass extends SpriteClass {
         }
         if (this.executionerSpeed>this.MAX_SPEED) this.executionerSpeed=this.MAX_SPEED;
             
-        if (this.grounded) {
+        // jump unless the ground we are on is a cloud, then don't jump so we fall through
+        if ((this.grounded) && (!(this.standSprite instanceof CloudBlockClass))) {
             this.executionerSpeed=0;
             this.addGravity(this.JUMP_HEIGHT,0);
 
-            this.imageToggle=!this.imageToggle;
-            this.setCurrentImage(this.imageToggle?'sprites/executioner_1':'sprites/executioner_2');
+            this.flipX=!this.flipX;
         }
 
         // move
         this.moveWithCollision((this.executionerSpeed*this.executionerDirection),0);
-        
-        // turn around at edges
-        if (this.x<=this.executionerLeft) {
-            this.x=this.executionerLeft+1;
-            this.executionerSpeed=0;
-            this.executionerDirection=1;
-        }
-        if (this.x>=this.executionerRight) {
-            this.x=this.executionerRight-1;
-            this.executionerSpeed=0;
-            this.executionerDirection=-1;
-        }
-
         this.runGravity();
         
         // time to fire axe?

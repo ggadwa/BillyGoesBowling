@@ -77,7 +77,7 @@ export default class EyeClass extends SpriteClass {
             
             if (this.collideSprite!=null) {
                 if (this.collideSprite instanceof BreakBlockStrongClass) {
-                    this.sendMessageToSpritesWithinBox((this.x-10),((this.y-this.height)-10),((this.x+this.width)+10),(this.y+10),this,BreakBlockStrongClass,'explode',null);
+                    this.sendMessageToSpritesAroundSprite(-32,-32,32,32,BreakBlockStrongClass,'explode',null);
                 }
             }
 

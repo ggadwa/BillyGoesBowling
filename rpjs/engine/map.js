@@ -613,7 +613,7 @@ export default class MapClass {
         return(this.getMapViewportTopEdge()+this.game.canvasHeight);
     }
     
-    run(tick) {
+    onRun(tick) {
         let n;
         let sprite;
         

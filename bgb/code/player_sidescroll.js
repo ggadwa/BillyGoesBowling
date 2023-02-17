@@ -201,7 +201,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
     }
     
     onRun(tick) {
-        let goLeft, goRight;
+        let goLeft,goRight,jump;
         
         // warping? 
         if (this.warpCount!==0) {
@@ -234,14 +234,15 @@ export default class PlayerSideScrollClass extends SpriteClass {
             }
         }
         
-        // shield
+        // when shield is on, you can't move
         if (this.shieldCount!==0) {
             this.shieldCount--;
         }
-        
-        // walk left and right
-        goLeft=this.game.input.isKeyDown("KeyA");
-        goRight=this.game.input.isKeyDown("KeyD");
+        else {
+            goLeft=this.game.input.isKeyDown("KeyA");
+            goRight=this.game.input.isKeyDown("KeyD");
+            jump=this.game.input.isKeyDown("Space")
+        }
         
         // if we just started going left and right, reset walking
         // animation to frame 0
@@ -309,7 +310,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.clampX(0,(this.getMapWidth()-this.width));
         
         // jumping
-        if ((this.game.input.isKeyDown("Space")) && (this.grounded)) {
+        if ((jump) && (this.grounded)) {
             if (this.moveX<0.0) {
                 this.moveX=-this.JUMP_START_SPEED;
             }
