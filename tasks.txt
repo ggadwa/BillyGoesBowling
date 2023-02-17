@@ -2,7 +2,11 @@
 
 
 
-- axes come down in pattern from executioner data
+- finish axe patterns
+
+- banner_title_text not in game data
+- sendMessageToSpritesWithinBox does offsets around sprite instead of absolutes
+- why are banners broken
 
 - pendant tile for castle levels (next to bush tile)
 

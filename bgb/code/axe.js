@@ -35,36 +35,36 @@ export default class AxeClass extends SpriteClass {
         return(new AxeClass(this.game,x,y,this.data));
     }
     
+    kill() {
+        this.playSound('crack');
+        this.addParticle((this.x+(this.width/2)),(this.y-(this.height/4)),50,10,1.0,0.1,8,0.05,'particles/ball',24,0.5,false,300);
+        this.delete();
+    }
+    
     onCollideSprite(sprite) {
-        let sprites,checkSprite;
-
         // pop clouds
         if (sprite instanceof CloudBlockClass) {
-            this.sendMessage(sprite,'pop',null);
+            this.sendMessageToSpritesWithinBox((this.x+10),(this.y+10),((this.x+this.width)-10),(this.y+20),this,CloudBlockClass,'pop',null);
             return;
         }
         
         // break any strong blocks
         if (sprite instanceof BreakBlockStrongClass) {
-            sprites=this.game.map.getSpritesWithinBox((this.x+10),(this.y+10),((this.x+this.width)-10),(this.y+20),this,BreakBlockStrongClass);
-        
-            for (checkSprite of sprites) {
-                this.sendMessage(checkSprite,'explode',null);
-            }
-            
-            this.delete();
+            this.sendMessageToSpritesWithinBox((this.x+10),(this.y+10),((this.x+this.width)-10),(this.y+20),this,BreakBlockStrongClass,'explode',null);
+            this.kill();
         }
     }
     
     onCollideTile(tileX,tileY,tileIdx) {
-        this.delete();
+        this.kill();
     }
     
     onRun(tick) {
-        // constant speed
-        this.y+=this.SPEED;
-
-        // collisions
-        this.checkCollision();        
+        this.y+=this.SPEED; // constant speed
+        this.checkCollision();
+        
+        if (this.isInLiquid()) {
+            this.kill();
+        }
     }
 }

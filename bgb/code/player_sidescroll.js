@@ -18,6 +18,7 @@ import EyeClass from './eye.js';
 import KingGhastlyClass from '../code/king_ghastly.js';
 
 export default class PlayerSideScrollClass extends SpriteClass {
+
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
@@ -35,6 +36,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.INVINCIBLE_TICK=60;
         this.WARP_TICK=40;
         this.WALK_FRAME_TICK=3;
+        this.MAX_HEALTH=4;
         
         this.WALK_ANIMATION=['sprites/billy_walk_1','sprites/billy_walk_2','sprites/billy_walk_3','sprites/billy_walk_2'];
         
@@ -94,6 +96,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
     }
     
     mapStartup() {
+        this.health=this.MAX_HEALTH;
         // add the ball sprite
         this.ballSprite=new BallClass(this.game,0,0,null);
         this.addSprite(this.ballSprite);
@@ -103,15 +106,12 @@ export default class PlayerSideScrollClass extends SpriteClass {
     }
     
     hurtPlayer() {
-        let health;
-        
         if ((this.invincibleCount>0) || (this.shieldCount>0) || (this.warpCount>0) || (this.deathCount>0)) return;
         
         this.playSound('hurt');
         
-        health=this.game.getData('player_health')-1;
-        this.game.setData('player_health',health);
-        if (health===0) {
+        this.health--;
+        if (this.health===0) {
             this.killPlayer();
             return;
         }
@@ -134,7 +134,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.game.musicList.stop();
         this.playSound('funeral_march');
         
-        this.game.setData('player_health',0);
+        this.health=0;
         this.deathCount=this.DEATH_TICK;
     }
     

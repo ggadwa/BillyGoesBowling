@@ -53,8 +53,8 @@ export default class MapSpotClass extends SpriteClass {
         // if space than jump to map
         // save the X/Y so we can restore when we exit
         if (this.game.input.isKeyDown("Space")) {
-            this.game.setData('worldXPos',playerSprite.x);
-            this.game.setData('worldYPos',playerSprite.y);
+            this.setGameData('worldXPos',playerSprite.x);
+            this.setGameData('worldYPos',playerSprite.y);
             this.game.gotoMap(this.getData('map'));
         }
     }

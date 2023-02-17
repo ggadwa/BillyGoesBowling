@@ -5,21 +5,18 @@ import ShurikinClass from './shurikin.js';
 import BombClass from './bomb.js';
 import FishClass from './fish.js';
 
-export default class CloudBlockClass extends SpriteClass
-{
-    constructor(game,x,y,data)
-    {
+export default class CloudBlockClass extends SpriteClass {
+
+    constructor(game,x,y,data) {
         super(game,x,y,data);
         
         this.POP_TICK=20;
         this.REAPPEAR_TICK=40;
         
-            // variables
-            
+        // variables
         this.countDown=-1;
         
-            // setup
-            
+        // setup
         this.addImage('sprites/cloud_block');
         this.setCurrentImage('sprites/cloud_block');
         
@@ -34,8 +31,7 @@ export default class CloudBlockClass extends SpriteClass
         Object.seal(this);
     }
     
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
         return(new CloudBlockClass(this.game,x,y,this.data));
     }
     
@@ -43,7 +39,7 @@ export default class CloudBlockClass extends SpriteClass
         this.show=false;
         this.countDown=this.REAPPEAR_TICK;
         this.playSound('pop');
-        this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,500);
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,500);
     }
     
     onCollideSprite(sprite) {
@@ -62,6 +58,12 @@ export default class CloudBlockClass extends SpriteClass
     onStoodOnSprite(sprite) {
         // if stood on and not alredy counting down, start pop countdown
         if (this.countDown===-1) this.countDown=this.POP_TICK;
+    }
+    
+    onMessage(fromSprite,cmd,data) {
+        if (cmd==='pop') {
+            this.pop();
+        }
     }
 
     onRun(tick) {

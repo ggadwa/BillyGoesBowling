@@ -51,9 +51,8 @@ export default class MrCPUClass extends SpriteClass {
     }
    
     onRun(tick) {
-        let time, oldTime;
         let map=this.game.map;
-        let sprites,sprite,speed,mx;
+        let speed,mx;
         let playerSprite=this.getPlayerSprite();
         
             // the first time we get called is
@@ -74,7 +73,7 @@ export default class MrCPUClass extends SpriteClass {
             if (!this.grounded) return;
             
             this.isDropping=false;
-            map.shake(10);
+            this.shakeMap(10);
             this.playSound('thud');
         }
         
@@ -89,21 +88,13 @@ export default class MrCPUClass extends SpriteClass {
         if (this.isInLiquid()) {
             this.isDead=true;
             this.stopAllGravity();
-            this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
+            this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
             this.playSound('boss_dead');
             
             // update the state
-            this.game.setData(('boss_'+map.name),true);
-            this.game.setData(('boss_explode_'+map.name),true);
-            this.game.setData(('time_'+map.name),1000000);
-        
-            // update the time
-            time=this.game.stopCompletionTimer();
-            oldTime=this.game.getData('time_'+map.name);
-            if (time<oldTime) this.game.setData(('time_'+map.name),time);
-
-            // save the data
-            this.game.persistData();
+            this.setGameData(('boss_'+this.getMapName()),true);
+            this.setGameData(('boss_explode_'+this.getMapName()),true);
+            this.setGameDataIfLess(('time_'+this.getMapName()),this.game.stopCompletionTimer());
             
             map.forceCameraSprite=this;
             
@@ -146,11 +137,7 @@ export default class MrCPUClass extends SpriteClass {
             
         if (this.standSprite!==null) {
             if (this.standSprite instanceof ExplodeBlockClass) {
-                sprites=map.getSpritesWithinBox((this.x-32),(this.y-32),((this.x+this.width)+32),(this.y+64),this,ExplodeBlockClass);
-
-                for (sprite of sprites) {
-                    sprite.interactWithSprite(this,null);
-                }
+                this.sendMessageToSpritesWithinBox((this.x-32),(this.y-32),((this.x+this.width)+32),(this.y+64),this,ExplodeBlockClass,'explode',null);
             }
         }
 
@@ -160,13 +147,9 @@ export default class MrCPUClass extends SpriteClass {
         if (!(this.standSprite instanceof BreakBlockStrongClass)) return;
 
         mx=this.x+Math.trunc(this.width*0.4);
-        sprites=map.getSpritesWithinBox((mx-120),(this.y+10),(mx+120),(this.y+20),this,BreakBlockStrongClass);
+        this.sendMessageToSpritesWithinBox((mx-120),(this.y+10),(mx+120),(this.y+20),this,BreakBlockStrongClass,'explode',null);
         
-        for (sprite of sprites) {
-            sprite.interactWithSprite(this,null);
-        }
-        
-        map.shake(4);
+        this.shakeMap(4);
         this.playSound('thud');
 
             // jump back up

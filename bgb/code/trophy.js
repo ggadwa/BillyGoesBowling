@@ -25,18 +25,12 @@ export default class TrophyClass extends SpriteClass {
 
     mapStartup() {
         // if trophy has been picked up once, then make it transparent
-        if (this.game.getData('trophy_'+this.game.map.name)!==null) this.alpha=0.4;
+        if (this.getGameData('trophy_'+this.getMapName())!==null) this.alpha=0.4;
     }
     
     pickup() {
-        if (this.game.getData('trophy_'+this.game.map.name)===null) {
-            this.game.setData('trophies',(this.game.getData('trophies')+1));
-            this.game.setData(('trophy_'+this.game.map.name),true);
-            this.game.persistData();
-        }
-
+        this.setGameData(('trophy_'+this.getMapName()),true);
         this.playSound('pickup');
-
         this.delete();
     }
     

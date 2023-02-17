@@ -27,7 +27,7 @@ export default class MapCastleClass extends SpriteClass {
     }
     
     isUnlocked() {
-        return((parseInt(this.getData('pin'))<=parseInt(this.game.getData('pins')))||(this.game.isUnlocked()));
+        return((parseInt(this.getData('pin'))<=parseInt(this.game.getGameDataCountForPrefix('pin_')))||(this.game.isUnlocked()));
     }
     
     mapStartup() {
@@ -37,7 +37,7 @@ export default class MapCastleClass extends SpriteClass {
             // if just defeated, explode
             if (this.game.getData('boss_explode_'+this.getData('map'))) {
                 this.game.deleteData('boss_explode_'+this.getData('map'));      // only happens once
-                this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),10,10,1.0,0.1,5,0.04,'particles/castle',40,0.5,false,1500);
+                this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),10,10,1.0,0.1,5,0.04,'particles/castle',40,0.5,false,1500);
                 this.playSoundGlobal('explode');
             }
 
@@ -68,8 +68,8 @@ export default class MapCastleClass extends SpriteClass {
                 this.playSoundGlobal('locked_castle');
             }
             else {
-                this.game.setData('worldXPos',playerSprite.x);
-                this.game.setData('worldYPos',playerSprite.y);
+                this.setGameData('worldXPos',playerSprite.x);
+                this.setGameData('worldYPos',playerSprite.y);
                 this.game.gotoMap(this.getData('map'));
             }
         }

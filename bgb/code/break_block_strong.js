@@ -4,10 +4,9 @@ import AxeClass from './axe.js';
 import MrCPUClass from './mr_cpu.js';
 import EyeClass from './eye.js';
 
-export default class BreakBlockStrongClass extends SpriteClass
-{
-    constructor(game,x,y,data)
-    {
+export default class BreakBlockStrongClass extends SpriteClass {
+
+    constructor(game,x,y,data) {
         super(game,x,y,data);
         
         this.addImage('sprites/break_block_strong');
@@ -23,8 +22,7 @@ export default class BreakBlockStrongClass extends SpriteClass
         Object.seal(this);
     }
     
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
         return(new BreakBlockStrongClass(this.game,x,y,this.data));
     }
     
@@ -33,7 +31,7 @@ export default class BreakBlockStrongClass extends SpriteClass
         
         cx=this.x+Math.trunc(this.width*0.5);
         cy=this.y-Math.trunc(this.height*0.5);
-        this.game.map.addParticle(cx,cy,16,16,1.0,0.1,0.08,5,'particles/block',10,0.5,false,800);
+        this.addParticle(cx,cy,16,16,1.0,0.1,0.08,5,'particles/block',10,0.5,false,800);
         this.playSound('crack');
         this.delete();
     }
@@ -48,7 +46,7 @@ export default class BreakBlockStrongClass extends SpriteClass
                 return;
         }
     }
-    
+
     onMessage(fromSprite,cmd,data) {
         if (cmd==='explode') {
             this.breakBlock();

@@ -37,15 +37,13 @@ export default class EyeClass extends SpriteClass {
     }
     
     killEye() {
-        this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,600);
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,600);
         this.playSound('pop');
         this.delete();
     }
     
     onRun(tick) {
         let x,y,f;
-        let sprite,sprites;
-        let map=this.game.map;
         let playerSprite=this.getPlayerSprite();
         
             // if first call, then aim at player
@@ -78,18 +76,10 @@ export default class EyeClass extends SpriteClass {
         if (this.checkCollision()) {
             
             if (this.collideSprite!=null) {
-                if (this.collideSprite instanceof BoneyOneEyeClass) return;         // never hits firing skull
-                
-                this.collideSprite.interactWithSprite(this,null);
-            
                 if (this.collideSprite instanceof BreakBlockStrongClass) {
-                    sprites=map.getSpritesWithinBox((this.x-10),((this.y-this.height)-10),((this.x+this.width)+10),(this.y+10),this,BreakBlockStrongClass);
-        
-                    for (sprite of sprites) {
-                        sprite.interactWithSprite(this,null);
-                    }
+                    this.sendMessageToSpritesWithinBox((this.x-10),((this.y-this.height)-10),((this.x+this.width)+10),(this.y+10),this,BreakBlockStrongClass,'explode',null);
                 }
-             }
+            }
 
             this.killEye();
         }

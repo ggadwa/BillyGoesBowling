@@ -1,10 +1,9 @@
 import MapClass from '../../rpjs/engine/map.js';
 import PlayerWorldClass from '../code/player_world.js';
 
-export default class WorldBaseMapClass extends MapClass
-{
-    constructor(game)
-    {
+export default class WorldBaseMapClass extends MapClass {
+
+    constructor(game) {
         super(game);
         
         this.TILE_IDX_ROAD_VERTICAL=46;
@@ -13,8 +12,7 @@ export default class WorldBaseMapClass extends MapClass
         this.currentMapY=0;
     }
     
-    calcOffset()
-    {
+    calcOffset() {
         let sprite;
         let offX,offY;
         let wid=this.game.canvasWidth;
@@ -22,8 +20,7 @@ export default class WorldBaseMapClass extends MapClass
         let high=this.game.canvasHeight;
         let bot=this.game.map.height-high;
         
-            // the offset tries to center on the player
-            
+        // the offset tries to center on the player
         sprite=this.sprites[this.playerIdx];
         
         offX=sprite.x-Math.trunc(wid*0.5);
@@ -39,23 +36,17 @@ export default class WorldBaseMapClass extends MapClass
         this.offsetY=offY;
     }
     
-    mapStartup()
-    {
+    mapStartup() {
         let x,y,playerSprite;
         
-        this.game.setData('player_health',4);   // world map resets health
-        
-            // background
-            
+        // background
         this.addTileBackground(this.game.imageList.get('backgrounds/water'),1.0,1.0,0.01,0.005);
         
-            // music
-            
+        // music
         this.game.musicList.start('world');
         
-            // spots record where the player went into a map
-            // so we can reset position coming out
-            
+        // spots record where the player went into a map
+        // so we can reset position coming out
         x=this.game.getData('worldXPos');
         y=this.game.getData('worldYPos');
         if ((x===null) || (y===null)) return;

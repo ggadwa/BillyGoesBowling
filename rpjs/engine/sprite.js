@@ -54,6 +54,8 @@ export default class SpriteClass {
         this.spriteClassIgnoreList=null;
         this.tileIndexIgnoreList=null;
         
+        this.health=0;
+        
         this.removeFlag=false; // make this private
         
         this.eventCollideSprite=null;
@@ -149,6 +151,20 @@ export default class SpriteClass {
     
     sendMessage(toSprite,cmd,data) {
         toSprite.onMessage(this,cmd,data);
+    }
+    
+    sendMessageToSpritesWithinBox(lft,top,rgt,bot,ignoreSprite,filterClass,cmd,data) {
+        let sprites, sprite;
+        
+        sprites=this.game.map.getSpritesWithinBox(lft,top,rgt,bot,ignoreSprite,filterClass);
+        
+        for (sprite of sprites) {
+            this.sendMessage(sprite,cmd,data);
+        }
+    }
+    
+    getMapName() {
+        return(this.game.map.name);
     }
     
     setCollideSpriteClassIgnoreList(spriteClassIgnoreList) {
@@ -308,6 +324,10 @@ export default class SpriteClass {
         return((this.y-this.height)>=liquidY);
     }
     
+    shakeMap(tickCount) {
+        this.game.map.shake(tickCount);
+    }
+    
     runGravity() {
         let y;
         
@@ -403,6 +423,35 @@ export default class SpriteClass {
         this.data.set(name,value);
     }
     
+    getGameData(name) {
+        return(this.game.getData(name));
+    }
+    
+    setGameData(name,value) {
+        this.game.setData(name,value);
+        this.game.persistData();
+    }
+    
+    getGameDataCountForPrefix(prefix) {
+        return(this.game.getGameDataCountForPrefix(prefix));
+    }
+    
+    setGameDataIfLess(name,value) {
+        let oldValue;
+        
+        oldValue=this.game.getData(name);
+        if (oldValue==null) {
+            this.game.setData(name,value);
+            this.game.persistData();
+            return;
+        }
+        
+        if (value<oldValue) {
+            this.game.setData(name,value);
+            this.game.persistData();
+        }
+    }
+    
     // event staging
     // we need to stage events so they only get called after the run, otherwise
     // they can interfere with the internal state during a run
@@ -457,7 +506,7 @@ export default class SpriteClass {
     stageEventRiseIntoTile(x,y,tileIdx) {
         this.eventRiseIntoTileX=x;
         this.eventRiseIntoTileY=y;
-        this.eventRiseIntoTileIdx=idx;
+        this.eventRiseIntoTileIdx=tileIdx;
     }
     
     // draw sprite

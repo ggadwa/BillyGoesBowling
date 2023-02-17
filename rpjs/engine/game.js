@@ -359,6 +359,17 @@ export default class GameClass {
         return((val===undefined)?null:val);
     }
     
+    getGameDataCountForPrefix(prefix) {
+        let name;
+        let count=0;
+        
+        for (name of this.data.keys()) {
+            if (name.startsWith(prefix)) count++;
+        }
+        
+        return(count);
+    }
+    
     /**
      * Data set on the game is the only persistant data for the
      * game.  Anything you set here can be restored or saved into

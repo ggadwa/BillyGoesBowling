@@ -56,27 +56,14 @@ export default class KingGhastlyClass extends SpriteClass
     
     smashBlocks()
     {
-        let map=this.game.map;
-        let sprite,sprites;
+        this.sendMessageToSpritesWithinBox(this.x,((this.y-this.height)-64),((this.x+this.width)+256),(this.y+64),this,BreakBlockClass,'explode',null);
+        this.sendMessageToSpritesWithinBox(this.x,((this.y-this.height)-64),((this.x+this.width)+256),(this.y+64),this,ExplodeBlockClass,'explode',null);
         
-        sprites=map.getSpritesWithinBox(this.x,((this.y-this.height)-64),((this.x+this.width)+256),(this.y+64),this,BreakBlockClass);
-        
-        for (sprite of sprites) {
-            sprite.interactWithSprite(this,null);
-        }
-        
-        sprites=map.getSpritesWithinBox(this.x,((this.y-this.height)-64),((this.x+this.width)+256),(this.y+64),this,ExplodeBlockClass);
-        
-        for (sprite of sprites) {
-            sprite.interactWithSprite(this,null);
-        }
-        
-        map.shake(4);
+        this.shakeMap(4);
         this.playSound('thud');
     }
     
     onRun(tick) {
-        let time, oldTime;
         let map=this.game.map;
         
             // the first time we get called is
@@ -97,7 +84,7 @@ export default class KingGhastlyClass extends SpriteClass
             if (!this.grounded) return;
             
             this.isDropping=false;
-            map.shake(10);
+            this.shakeMap(10);
             this.playSound('thud');
         }
         
@@ -112,21 +99,13 @@ export default class KingGhastlyClass extends SpriteClass
         if (this.isInLiquid()) {
             this.isDead=true;
             this.gravityFactor=0.0;
-            this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
+            this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
             this.playSound('boss_dead');
             
             // update the state
-            this.game.setData(('boss_'+map.name),true);
-            this.game.setData(('boss_explode_'+map.name),true);
-            this.game.setData(('time_'+map.name),1000000);
-        
-            // update the time
-            time=this.game.stopCompletionTimer();
-            oldTime=this.game.getData('time_'+map.name);
-            if (time<oldTime) this.game.setData(('time_'+map.name),time);
-
-            // save the data
-            this.game.persistData();
+            this.setGameData(('boss_'+this.getMapName()),true);
+            this.setGameData(('boss_explode_'+this.getMapName()),true);
+            this.setGameDataIfLess(('time_'+this.getMapName()),this.game.stopCompletionTimer());
             
             map.forceCameraSprite=this;
             

@@ -14,9 +14,8 @@ export default class ExecutionerClass extends SpriteClass {
         this.ACCELERATION=1.0;
         this.MAX_SPEED=8;
         this.JUMP_HEIGHT=-40;
-        this.FIRE_AXE_DISTANCE=1000;
-        this.AXE_COOL_DOWN_TICK=45;
-        this.AXE_START_COOL_DOWN_TICK=90;
+        this.AXE_COOL_DOWN_TICK=35;
+        this.AXE_START_COOL_DOWN_TICK=45;
         this.AXE_Y_OFFSET=800;
         
         // variables
@@ -33,6 +32,7 @@ export default class ExecutionerClass extends SpriteClass {
         this.inAir=false;
         this.isDead=false;
         this.isFirstShow=true;
+        this.imageToggle=true;
         
         // setup
         this.addImage('sprites/executioner_1');
@@ -70,12 +70,13 @@ export default class ExecutionerClass extends SpriteClass {
         this.inAir=false;
         this.isDead=false;
         this.isFirstShow=true;
+        this.imageToggle=true;
         
         this.game.startCompletionTimer();
     }
     
     fireAxe() {
-        let sx,sy;
+        let sx;
         let playerSprite=this.getPlayerSprite();
         
         // are we in cool down?
@@ -85,54 +86,41 @@ export default class ExecutionerClass extends SpriteClass {
         }
         
         // fire axe
-        sx=this.axeLaunchPositions[this.axeLaunchIndex]*this.game.map.MAP_TILE_SIZE;
-        this.game.map.addSprite(new AxeClass(this.game,sx,(playerSprite.y-this.AXE_Y_OFFSET),null));
+        this.game.map.addSprite(new AxeClass(this.game,this.axeLaunchPositions[this.axeLaunchIndex],(playerSprite.y-this.AXE_Y_OFFSET),null));
                 
         this.playSound('jump');
         
         this.axeLaunchIndex++;
-        if (this.axeLaunchIndex>this.axeLaunchPositions.length) this.axeLaunchIndex=0;
+        if (this.axeLaunchIndex>=this.axeLaunchPositions.length) this.axeLaunchIndex=0;
         this.axeCoolDownCount=this.AXE_COOL_DOWN_TICK;
-        
-        /*
-            // time to switch to other list?
-            
-        if (this.launchPos.length===0) {
-            this.launchPos=this.launchLeft?this.launchXPositionsRight.slice():this.launchXPositionsLeft.slice();
-            this.launchLeft=!this.launchLeft;
-        }
-        
-            // are we at the next launch position
-            
-        ex=Math.trunc((this.x+Math.trunc(this.width*0.5))/this.game.map.MAP_TILE_SIZE);
-        
-        for (n=0;n!=this.launchPos.length;n++) {
-            launchX=this.launchPos[n];
-            
-            if (ex===launchX) {
-                
-                    // only fire one at a time
-                    
-                this.launchPos.splice(n,1);
-                
-                    // fire
-                    
-                sx=(launchX*this.game.map.MAP_TILE_SIZE)+Math.trunc(this.game.map.MAP_TILE_SIZE*0.5);
-                sy=this.y-Math.trunc(this.height*0.5);
+    }
+    
+    land() {
+        this.shakeMap(10);
+        this.playSound('thud');
+               
+        // pop any clouds
+        this.sendMessageToSpritesWithinBox((this.x-32),(this.y+10),((this.x+this.width)+32),(this.y+20),this,CloudBlockClass,'pop',null);
+    }
+    
+    kill() {
+        this.isDead=true;
+        this.gravityFactor=0.0;
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
+        this.playSound('boss_dead');
 
-                this.game.map.addSprite(new AxeClass(this.game,sx,sy,null));
-                
-                this.playSound('jump');
-                return;
-            }
-        }
-            */
+        // update the state
+        this.setGameData(('boss_'+this.getMapName()),true);
+        this.setGameData(('boss_explode_'+this.getMapName()),true);
+        this.setGameDataIfLess(('time_'+this.getMapName()),this.game.stopCompletionTimer());
+
+        this.game.map.forceCameraSprite=this;
+
+        // warp player out
+        this.sendMessage(this.getPlayerSprite(),'warp_out',null);
     }
     
     onRun(tick) {
-        let time, oldTime;
-        let map=this.game.map;
-        
         // do nothing if we aren't shown
         if (!this.show) return;
         
@@ -151,8 +139,8 @@ export default class ExecutionerClass extends SpriteClass {
             if (this.inAir) {
                 this.firstDrop=false;
                 this.inAir=false;
-                map.shake(10);
-                this.playSound('thud');
+                
+                this.land();
             }
         }
         
@@ -162,18 +150,8 @@ export default class ExecutionerClass extends SpriteClass {
             return;
         }
         
-            // image
-            
-        if ((Math.trunc(this.game.timestamp/200)&0x1)===0) {
-            this.setCurrentImage('sprites/executioner_1');
-        }
-        else {
-            this.setCurrentImage('sprites/executioner_2');
-        }
-        
-            // always follow the player, but with
-            // an acceleration
-
+        // always follow the player, but with
+        // an acceleration
         if (this.firstDrop) {
             this.executionerSpeed=0;
         }
@@ -182,33 +160,15 @@ export default class ExecutionerClass extends SpriteClass {
         }
         if (this.executionerSpeed>this.MAX_SPEED) this.executionerSpeed=this.MAX_SPEED;
             
-            /*
-        if ((playerSprite.x+Math.trunc(playerSprite.width*0.5))<(this.x+Math.trunc(this.width*0.5))) {
-            if (this.executionerSpeed>-this.MAX_SPEED) {
-                this.executionerSpeed-=0.5;
-            }
-            else {
-                this.executionerSpeed=-this.MAX_SPEED;
-            }
-        }
-        else {
-            if (this.executionerSpeed<this.MAX_SPEED) {
-                this.executionerSpeed+=0.5;
-            }
-            else {
-                this.executionerSpeed=this.MAX_SPEED;
-            }
-        }
-        */
-
         if (this.grounded) {
             this.executionerSpeed=0;
             this.addGravity(this.JUMP_HEIGHT,0);
+
+            this.imageToggle=!this.imageToggle;
+            this.setCurrentImage(this.imageToggle?'sprites/executioner_1':'sprites/executioner_2');
         }
 
-            // we need to bump up at collisions to get the
-            // executioner can get out of holes he's digging
-        
+        // move
         this.moveWithCollision((this.executionerSpeed*this.executionerDirection),0);
         
         // turn around at edges
@@ -223,61 +183,14 @@ export default class ExecutionerClass extends SpriteClass {
             this.executionerDirection=-1;
         }
 
-        
-        /*
-        if (this.checkCollision()) {
-            this.x-=speed;
-
-                // run collisions
-
-            bumpUp=false;
-
-            if (this.collideSprite!==null) {
-                if (this.collideSprite instanceof BreakBlockStrongClass) bumpUp=true;
-                this.collideSprite.interactWithSprite(this,null);
-             }
-
-                // only check for bumping if we are in the air, otherwise
-                // just complete the jump
-
-            if (this.grounded) {
-                bumpUp=bumpUp||(this.collideTileIdx===this.TILE_IDX_BUMP);
-                if (bumpUp) this.addGravity(this.JUMP_HEIGHT,0);
-            }
-                 
-
-        }
-        */
         this.runGravity();
         
-            // time to fire axe?
-
+        // time to fire axe?
         this.fireAxe();
         
         // hit the liquid?
         if (this.isInLiquid()) {
-            this.isDead=true;
-            this.gravityFactor=0.0;
-            this.game.map.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
-            this.playSound('boss_dead');
-            
-            // update the state
-            this.game.setData(('boss_'+map.name),true);
-            this.game.setData(('boss_explode_'+map.name),true);
-            this.game.setData(('time_'+map.name),1000000);
-        
-            // update the time
-            time=this.game.stopCompletionTimer();
-            oldTime=this.game.getData('time_'+map.name);
-            if (time<oldTime) this.game.setData(('time_'+map.name),time);
-
-            // save the data
-            this.game.persistData();
-            
-            map.forceCameraSprite=this;
-            
-            // warp player out
-            this.sendMessage(this.getPlayerSprite(),'warp_out',null);
+            this.kill();
         }
     }
     

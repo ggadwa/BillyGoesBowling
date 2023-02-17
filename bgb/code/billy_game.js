@@ -283,9 +283,6 @@ export default class BillyGameClass extends GameClass
             // restore that otherwise we create a default set
         
         if (!this.restorePersistedData()) {
-            this.setData('pins',0); // number of pins
-            this.setData('trophies',0); // number of trophies
-            this.setData('player_health',4);
             this.setData('banner_title_text',''); // banner map title
             this.setData('banner_map_name',null); // banner map name
             this.setData('banner_fade_count',-1); // banner fade count
@@ -365,8 +362,7 @@ export default class BillyGameClass extends GameClass
         
         // side scrolling UI 
         if (playerSprite instanceof PlayerSideScrollClass) {
-            health=this.getData('player_health');
-            if (health>0) this.drawUIImage(this.HEALTH_IMAGE_LIST[health-1],5,5);
+            if (playerSprite.health>0) this.drawUIImage(this.HEALTH_IMAGE_LIST[playerSprite.health-1],5,5);
         }
         
         // world UI  
@@ -375,11 +371,11 @@ export default class BillyGameClass extends GameClass
             
             this.drawUIImage('ui/score_box',10,(this.canvasHeight-74));
             this.drawUIImage('ui/pin',20,(this.canvasHeight-67));
-            this.drawUIText((this.getData('pins')+'/21'),110,(this.canvasHeight-33));
+            this.drawUIText((this.getGameDataCountForPrefix('pin_')+'/21'),110,(this.canvasHeight-33));
             
             this.drawUIImage('ui/score_box',(this.canvasWidth-120),(this.canvasHeight-74));
             this.drawUIImage('ui/trophy',(this.canvasWidth-110),(this.canvasHeight-68));
-            this.drawUIText((this.getData('trophies')+'/21'),(this.canvasWidth-20),(this.canvasHeight-33));
+            this.drawUIText((this.getGameDataCountForPrefix('trophy_')+'/21'),(this.canvasWidth-20),(this.canvasHeight-33));
         }
         
         // banners
