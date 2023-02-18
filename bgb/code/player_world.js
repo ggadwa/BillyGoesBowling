@@ -147,6 +147,11 @@ export default class PlayerWorldClass extends SpriteClass {
                 if (this.hasRoadDown()) this.moveToY=this.y+map.MAP_TILE_SIZE;
                 this.moving=true;
             }
+            
+            // change UI when we start moving
+            if (this.moving) {
+                this.sendMessageToGame('banner_clear',null);
+            }
         }
         
         // movement

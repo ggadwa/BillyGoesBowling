@@ -83,12 +83,8 @@ export default class InputClass {
         return((down==null)?false:down);
     }
     
-    isKeyDownAndClear(keyName) {
-        let down;
-                
-        down=this.isKeyDown(keyName);
-        if (down) this.keyMap.set(keyName,false);
-        return(down);
+    keyClearSingle(keyName) {
+        this.keyMap.set(keyName,false);
     }
 
 }

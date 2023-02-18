@@ -42,6 +42,8 @@ export default class SpriteClass {
         this.grounded=false;
         this.collideSprite=null;
         this.collideTileIdx=-1;
+        this.collideTileLeft=0;
+        this.collideTileRight=0;
         this.standSprite=null;
         this.standTileIdx=-1;
         this.riseSprite=null;
@@ -243,7 +245,25 @@ export default class SpriteClass {
         this.x+=mx;
         this.y+=my;
         if (this.game.map.checkCollision(this)) {
-            this.x-=mx;
+            
+            // if we collided with a tile, move the x so we are next to tile
+            if (this.collideTileIdx!==-1) {
+                if (mx>0) {
+                    this.x=this.collideTileLeft-this.width;
+                }
+                else {
+                    if (mx<0) {
+                        this.x=this.collideTileRight;
+                    }
+                    else {
+                        this.x-=mx;
+                    }
+                }
+            }
+            else {
+                this.x-=mx;
+            }
+
             this.y-=my;
             return(true);
         }

@@ -10,6 +10,8 @@ export default class MapCastleClass extends SpriteClass {
         this.addImage('sprites/world_map_castle_wreck');
         this.setCurrentImage('sprites/world_map_castle');
         
+        this.bannerHit=false;
+        
         this.show=true;
         this.gravityFactor=0.0;
         this.gravityMinValue=0;
@@ -50,16 +52,24 @@ export default class MapCastleClass extends SpriteClass {
                 this.setCurrentImage('sprites/world_map_castle_locked');
             }
         }
+        
+        // only send banner message once
+        this.bannerHit=false;
     }
     
     onRun(tick) {
         let playerSprite=this.getPlayerSprite();
         
-        // are we colliding with player?
-        if (!playerSprite.collide(this)) return;
+        if (!playerSprite.collide(this)) {
+            this.bannerHit=false;
+            return;
+        }
             
         // change UI
-        this.sendMessageToGame('banner',{"title":this.getData('title'),"map":this.getData('map'),"pin":this.getData('pin')});
+        if (!this.bannerHit) {
+            this.sendMessageToGame('banner_set',{"title":this.getData('title'),"map":this.getData('map'),"pin":this.getData('pin')});
+            this.bannerHit=true;
+        }
         
         // if space than jump to map
         // save the X/Y so we can restore when we exit

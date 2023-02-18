@@ -23,6 +23,8 @@ import EasterHeadClass from './easter_head.js';
 import ExecutionerClass from './executioner.js';
 import MrCPUClass from './mr_cpu.js';
 import BoneyOneEyeClass from './boney_one_eye.js';
+import KangarangClass from './kangarang.js';
+import BoomerangClass from './boomerang.js';
 import KingGhastlyClass from './king_ghastly.js';
 import WorldMainMapClass from '../maps/world_main.js';
 import SnakesOnAPlainMapClass from '../maps/snakes_on_a_plain.js';
@@ -58,13 +60,21 @@ export default class BillyGameClass extends GameClass {
         super();
         
         // constants
+        this.BANNER_MODE_FADE_IN=0;
+        this.BANNER_MODE_FADE_OUT=1;
+        this.BANNER_MODE_SHOW=2;
+        this.BANNER_MODE_NONE=3;
+        
+        this.BANNER_FADE_TICK=10;
+        
         this.HEALTH_IMAGE_LIST=['ui/health_25','ui/health_50','ui/health_75','ui/health_100'];
         
         // variables
         this.bannerTitleText='';
         this.bannerMapName='';
         this.bannerMapRequiredPinCount=0;
-        this.bannerFadeCount=-1;
+        this.bannerMode=this.BANNER_MODE_NONE;
+        this.bannerFadeCount=0;
         
         Object.seal(this);
     }
@@ -173,9 +183,12 @@ export default class BillyGameClass extends GameClass {
         this.addImage('sprites/fish');
         this.addImage('sprites/executioner_1');
         this.addImage('sprites/axe');
-        this.addImage('sprites/mr_cpu');
+        this.addImage('sprites/mr_cpu_1');
+        this.addImage('sprites/mr_cpu_2');
         this.addImage('sprites/boney_one_eye');
         this.addImage('sprites/eye');
+        this.addImage('sprites/kangarang');
+        this.addImage('sprites/boomerang');
         this.addImage('sprites/king_ghastly_1');
         this.addImage('sprites/king_ghastly_2');
         this.addImage('sprites/world_map_spot_red');
@@ -238,6 +251,7 @@ export default class BillyGameClass extends GameClass {
         this.addSound('door');
         this.addSound('pickup');
         this.addSound('splash');
+        this.addSound('jet');
         this.addSound('funeral_march');
         
         // music
@@ -308,6 +322,7 @@ export default class BillyGameClass extends GameClass {
             new ExecutionerClass(this,0,0,null),
             new MrCPUClass(this,0,0,null),
             new BoneyOneEyeClass(this,0,0,null),
+            new KangarangClass(this,0,0,null),
             new KingGhastlyClass(this,0,0,null),
             new MapSpotClass(this,0,0,null),
             new MapCastleClass(this,0,0,null),
@@ -319,38 +334,39 @@ export default class BillyGameClass extends GameClass {
         return('world_main');
     }
     
-    setBanner(mapTitle,mapName,requiredPinCount) {
-        // change fade
-        if (this.bannerFadeCount===-1) {
-            this.bannerFadeCount=0;
-        }
-        else {
-            if (this.bannerFadeCount>=10) this.bannerFadeCount=10;
-        }
-
-        // set new banner
-        this.bannerTitleText=mapTitle;
-        this.bannerMapName=mapName;
-        this.bannerMapRequiredPinCount=requiredPinCount;
-    }
-    
     onMessage(fromSprite,cmd,data) {
         switch (cmd) {
-            case 'banner':
-                this.setBanner(data.title,data.map,data.pin);
+            case 'banner_set':
+                this.bannerTitleText=data.title;
+                this.bannerMapName=data.map;
+                this.bannerMapRequiredPinCount=data.pin;
+                this.bannerMode=this.BANNER_MODE_FADE_IN;
+                this.bannerFadeCount=this.BANNER_FADE_TICK;
+                break;
+            case 'banner_clear':
+                if ((this.bannerMode!==this.BANNER_MODE_FADE_OUT) && (this.bannerMode!==this.BANNER_MODE_NONE)) { // if already fading or gone, do nothing
+                    this.bannerMode=this.BANNER_MODE_FADE_OUT;
+                    this.bannerFadeCount=this.BANNER_FADE_TICK;
+                }
                 break;
         }
     }
     
     onRun(tick) {
-        if (this.bannerFadeCount!==-1) {
-            this.bannerFadeCount++;
-            if (this.bannerCount>=20) this.bannerFadeCount=-1;
+        switch (this.bannerMode) {
+            case this.BANNER_MODE_FADE_IN:
+                this.bannerFadeCount--;
+                if (this.bannerFadeCount===0) this.bannerMode=this.BANNER_MODE_SHOW;
+                break;
+            case this.BANNER_MODE_FADE_OUT:
+                this.bannerFadeCount--;
+                if (this.bannerFadeCount===0) this.bannerMode=this.BANNER_MODE_NONE;
+                break; 
         }
     }
     
     drawUI() {
-        let mx,lx,rx,dx,wid,health;
+        let mx,lx,rx,dx,wid;
         let time,min,sec,timeStr;
         let playerSprite=this.map.getPlayerSprite();
         
@@ -371,14 +387,16 @@ export default class BillyGameClass extends GameClass {
             this.drawUIImage('ui/trophy',(this.canvasWidth-110),(this.canvasHeight-68));
             this.drawUIText((this.getGameDataCountForPrefix('trophy_')+'/21'),(this.canvasWidth-20),(this.canvasHeight-33));
 
-            if (this.bannerFadeCount!==-1) {
+            if (this.bannerMode!==this.BANNER_MODE_NONE) {
             
-                // the alpha 
-                if (this.bannerFadeCount<10) {
-                    this.drawSetAlpha(this.bannerFadeCount/10);
-                }
-                else {
-                    if (this.bannerFadeCount>10) this.drawSetAlpha(1.0-((this.bannerFadeCount-10)/10));
+                // the alpha
+                switch (this.bannerMode) {
+                    case this.BANNER_MODE_FADE_IN:
+                        this.drawSetAlpha(1.0-(this.bannerFadeCount/this.BANNER_FADE_TICK));
+                        break;
+                    case this.BANNER_MODE_FADE_OUT:
+                        this.drawSetAlpha(this.bannerFadeCount/this.BANNER_FADE_TICK);
+                        break;
                 }
 
                 // special win banner

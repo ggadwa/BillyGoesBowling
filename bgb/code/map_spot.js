@@ -2,6 +2,7 @@ import SpriteClass from '../../rpjs/engine/sprite.js';
 import PlayerWorldClass from './player_world.js';
 
 export default class MapSpotClass extends SpriteClass {
+
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
@@ -9,6 +10,8 @@ export default class MapSpotClass extends SpriteClass {
         this.addImage('sprites/world_map_spot_yellow');
         this.addImage('sprites/world_map_spot_green');
         this.setCurrentImage('sprites/world_map_spot_red');
+        
+        this.bannerHit=false;
         
         this.show=true;
         this.gravityFactor=0.0;
@@ -22,8 +25,7 @@ export default class MapSpotClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
         return(new MapSpotClass(this.game,x,y,this.data));
     }
     
@@ -39,16 +41,25 @@ export default class MapSpotClass extends SpriteClass {
         }
         
         if (hasPin) this.setCurrentImage('sprites/world_map_spot_yellow');
+        
+        // only send banner message once
+        this.bannerHit=false;
     }
 
     onRun(tick) {
         let playerSprite=this.getPlayerSprite();
         
         // are we colliding with player?
-        if (!playerSprite.collide(this)) return;
+        if (!playerSprite.collide(this)) {
+            this.bannerHit=false;
+            return;
+        }
             
         // change UI
-        this.sendMessageToGame('banner',{"title":this.getData('title'),"map":this.getData('map'),"pin":-1});
+        if (!this.bannerHit) {
+            this.sendMessageToGame('banner_set',{"title":this.getData('title'),"map":this.getData('map'),"pin":-1});
+            this.bannerHit=true;
+        }
         
         // if space than jump to map
         // save the X/Y so we can restore when we exit

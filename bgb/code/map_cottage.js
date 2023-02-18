@@ -1,14 +1,15 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import PlayerWorldClass from './player_world.js';
 
-export default class MapCottageClass extends SpriteClass
-{
-    constructor(game,x,y,data)
-    {
+export default class MapCottageClass extends SpriteClass {
+
+    constructor(game,x,y,data) {
         super(game,x,y,data);
         
         this.addImage('sprites/world_map_cottage');
         this.setCurrentImage('sprites/world_map_cottage');
+        
+        this.bannerHit=false;
         
         this.show=true;
         this.gravityFactor=0.0;
@@ -18,15 +19,17 @@ export default class MapCottageClass extends SpriteClass
         this.canStandOn=false;
         
         this.layer=this.BACKGROUND_LAYER; // drawn in background
-        
-        this.canFireParticles=true;
 
         Object.seal(this);
     }
     
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
         return(new MapCottageClass(this.game,x,y,this.data));
+    }
+    
+    mapStartup() {
+        // only send banner message once
+        this.bannerHit=false;
     }
         
     onRun(tick) {
@@ -34,30 +37,26 @@ export default class MapCottageClass extends SpriteClass
         let playerSprite=this.getPlayerSprite();
         
         // are we colliding with player?
-            
         if (!playerSprite.collide(this)) {
-            this.canFireParticles=true;
+            this.bannerHit=false;
             return;
         }
         
-        // trigger the win banner
-        this.sendMessageToGame('banner',{"title":null,"map":null,"pin":this.getData('pin')});
+        // trigger the win banner and fireworks
+        if (!this.bannerHit) {
+            this.sendMessageToGame('banner_set',{"title":null,"map":null,"pin":this.getData('pin')});
+            this.bannerHit=true;
         
-            // if we just landed here, we can fire
-            // random particles
-            
-        if (!this.canFireParticles) return;
-        
-        this.canFireParticles=false;
-        
-        for (n=0;n!==10;n++) {
-            cx=this.x+((100+Math.trunc(Math.random()*150))*((Math.random()>0.5)?-1:1));
-            cy=this.y+((100+Math.trunc(Math.random()*150))*((Math.random()>0.5)?-1:1));
+            // fireworks
+            for (n=0;n!==10;n++) {
+                cx=this.x+((100+Math.trunc(Math.random()*150))*((Math.random()>0.5)?-1:1));
+                cy=this.y+((100+Math.trunc(Math.random()*150))*((Math.random()>0.5)?-1:1));
 
-            this.addParticle(cx,cy,32,128,0.8,0.1,8,0.015,'particles/explode_red',10,0.4,false,550);
-            this.addParticle(cx,cy,10,10,1.0,0.1,5,0.06,'particles/block',40,0.4,false,1500);
+                this.addParticle(cx,cy,32,128,0.8,0.1,8,0.015,'particles/explode_red',10,0.4,false,550);
+                this.addParticle(cx,cy,10,10,1.0,0.1,5,0.06,'particles/block',40,0.4,false,1500);
+            }
+
+            this.playSoundGlobal('pickup');
         }
-        
-        this.playSoundGlobal('pickup');
     }
 }

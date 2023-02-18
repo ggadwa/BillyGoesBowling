@@ -1,29 +1,25 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import CloudBlockClass from './cloud_block.js';
-import BreakBlockClass from '../code/break_block.js';
-import ExplodeBlockClass from '../code/explode_block.js';
-import BallClass from './ball.js';
+import BreakBlockStrongClass from '../code/break_block_strong.js';
+import BoomerangClass from './eye.js';
 
-export default class KingGhastlyClass extends SpriteClass {
-
+export default class KangarangClass extends SpriteClass {
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        this.TILE_IDX_BUMP=18;
-        this.GHASTLY_SPEED=8;
-        this.JUMP_HEIGHT=-40;
-        this.BACKUP_TICK=10;
+        // constants
+        this.FIRE_TICK=55;
         
         // variables
-        this.backupCount=-1;
-        this.inAir=true;
+        this.fireWait=0;
+        this.inAir=false;
+        this.isFalling=false;
         this.isDead=false;
         this.isFirstShow=true;
         
         // setup
-        this.addImage('sprites/king_ghastly_1');
-        this.addImage('sprites/king_ghastly_2');
-        this.setCurrentImage('sprites/king_ghastly_1');
+        this.addImage('sprites/kangarang');
+        this.setCurrentImage('sprites/kangarang');
         
         this.show=false; // start with it not shown, button starts it
         this.gravityFactor=0.15;
@@ -32,29 +28,39 @@ export default class KingGhastlyClass extends SpriteClass {
         this.canCollide=true;
         this.canStandOn=true;
         
-        this.setCollideTileIndexIgnoreList([22,23]);
+        this.setCollideSpriteClassIgnoreList([BoomerangClass]);
         
         Object.seal(this);
     }
     
     duplicate(x,y) {
-        return(new KingGhastlyClass(this.game,x,y,this.data));
+        return(new KangarangClass(this.game,x,y,this.data));
     }
     
     mapStartup() {
-        this.inAir=true;
+        this.fireWait=this.FIRE_TICK;
+        this.inAir=false;
         this.isDead=false;
         this.isFirstShow=true;
         
         this.game.startCompletionTimer();
     }
     
-    smashBlocks() {
-        this.sendMessageToSpritesAroundSprite(-32,-32,32,32,BreakBlockClass,'explode',null);
-        this.sendMessageToSpritesAroundSprite(-32,-32,32,32,ExplodeBlockClass,'explode',null);
+    fireEye() {
+        let x,y;
         
-        this.shakeMap(4);
-        this.playSound('thud');
+        this.fireWait--;
+        if (this.fireWait>0) return;
+        
+        this.fireWait=this.FIRE_TICK;
+
+        // are we at the next launch position
+        x=this.x+Math.trunc(this.width*0.6);
+        y=this.y-Math.trunc(this.height*0.5);
+
+        this.game.map.addSprite(new EyeClass(this.game,x,y,null));
+
+        this.playSound('jump');
     }
 
     land() {
@@ -83,14 +89,12 @@ export default class KingGhastlyClass extends SpriteClass {
     }
     
     onRun(tick) {
-        let map=this.game.map;
-        
         // do nothing if we aren't shown
         if (!this.show) return;
         
         // dead, just sink 
         if (this.isDead) {
-            this.y+=6;
+            this.y+=4;
             this.alpha-=0.05;
             if (this.alpha<0.0) this.alpha=0.0;
             return;
@@ -114,51 +118,11 @@ export default class KingGhastlyClass extends SpriteClass {
             }
         }
         
-            // are we backing up?
-
-        if (this.backupCount!==-1) {
-            this.backupCount--;
-            
-            this.x-=this.GHASTLY_SPEED;
-            if (this.checkCollision()) this.x+=this.GHASTLY_SPEED;
-            return;
-        }
-        
-            // image
-            
-        if ((Math.trunc(this.game.timestamp/200)&0x1)===0) {
-            this.setCurrentImage('sprites/king_ghastly_1');
-        }
-        else {
-            this.setCurrentImage('sprites/king_ghastly_2');
-        }
-        
-            // always head towards the player
-        
-        this.x+=this.GHASTLY_SPEED;
-        
-            // any collisions with breaking blocks forces
-            // ghastly back, any other up
-        
-        if (this.checkCollision()) {
-            this.x-=this.GHASTLY_SPEED;
-            
-            if (this.grounded) {
-                this.addGravity(this.JUMP_HEIGHT,0);
-                
-                if (this.collideSprite!==null) {
-                    if (this.collideSprite instanceof BreakBlockClass) this.backupCount=this.BACKUP_TICK;
-                }
-                
-                this.smashBlocks();
-            }
-            
-            //if (this.collideSprite!==null) this.collideSprite.interactWithSprite(this,null);
-            //if (this.standSprite!==null) this.standSprite.interactWithSprite(this,null);        // instant death if he stands on you so you can't cross under him
-        }
-        
         this.runGravity();
         
+        // time to fire?
+        //this.fireEye();
+
         // hit the liquid?
         if (this.isInLiquid()) {
             this.kill();

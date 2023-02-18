@@ -183,7 +183,7 @@ export default class WorldMainMapClass extends WorldBaseMapClass {
             this.changeTile(41,20,this.TILE_IDX_ROAD_VERTICAL);
             this.changeTile(48,16,this.TILE_IDX_ROAD_HORIZONTAL);
             this.changeTile(52,16,this.TILE_IDX_ROAD_HORIZONTAL);
-            this.changeTile(64,18,this.TILE_IDX_ROAD_HORIZONTAL);
+            this.changeTile(65,18,this.TILE_IDX_ROAD_HORIZONTAL);
             return;
         }
         
@@ -196,6 +196,6 @@ export default class WorldMainMapClass extends WorldBaseMapClass {
         }
         if (this.game.getData('boss_boney_one_eye_castle')!==null) this.changeTile(48,16,this.TILE_IDX_ROAD_HORIZONTAL); // win castle 3
         if (this.game.getData('boss_kangarang_castle')!==null) this.changeTile(52,16,this.TILE_IDX_ROAD_HORIZONTAL); // win castle 4
-        if (this.game.getData('boss_king_ghastly_castle')!==null) this.changeTile(64,18,this.TILE_IDX_ROAD_HORIZONTAL); // win castle 5
+        if (this.game.getData('boss_king_ghastly_castle')!==null) this.changeTile(65,18,this.TILE_IDX_ROAD_HORIZONTAL); // win castle 5
     }
 }

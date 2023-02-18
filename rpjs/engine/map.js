@@ -326,6 +326,8 @@ export default class MapClass {
                 
                 // tile contact
                 checkSprite.collideTileIdx=tileIdx;
+                checkSprite.collideTileLeft=dx;
+                checkSprite.collideTileRight=dx+this.MAP_TILE_SIZE;
                 checkSprite.stageEventCollideTile(gx,gy,tileIdx);
                 
                 return(true);

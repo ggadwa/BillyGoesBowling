@@ -1,25 +1,18 @@
 //// TO DO
 
-- give banners a mode (fade in, fade out, show, none)
-- makes doors work
 
-- fix the mr cpu
-   - lands, runs towards player, then jetpacks up and explosions break blocks
-   - needs one flipping walk cycle
-- fix one eye
+- ball script needs to use events
+- ball slamming down misses first breakable block
+
 - fix ghastly
 - add kangaroo
-
-- boney one eye faces you X wise (and fires eye from different location)
-- boney one eye forms eye by alpha before firing (maybe doesn't have eye on sprite?)
 
 - both game and sprite still have some non-"on" events
 
 
 
 - editor: need x erase block
-
-- what's with snake underwater in snakes on a plain (by trophy)
+- editor: like to get rid of duplicate
 
 - pendant tile for castle levels (next to bush tile)
 

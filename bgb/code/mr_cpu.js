@@ -10,27 +10,36 @@ export default class MrCPUClass extends SpriteClass {
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        this.SPEEDS=[20,15,18,13,18];
-        this.JUMP_HEIGHT=-50;
-        this.TILE_IDX_BUMP_1=17;
-        this.TILE_IDX_BUMP_2=18;
-       
-            // variables
-            
-        this.speedIdx=(Date.now()%this.SPEEDS.length);  // start with random speed
-        this.direction=1;
-        this.inAir=true;
+        // constants
+        this.CPU_MODE_FALL=0;
+        this.CPU_MODE_WALK=1;
+        this.CPU_MODE_JETPACK=2;
+        
+        this.MAX_SPEED=8;
+        this.MIN_WALK_TICK=30;
+        this.RANDOM_WALK_TICK=30;
+        
+        this.JETPACK_FLY_SPEED=-10;
+        this.JETPACK_MOVE_SPEED=5;
+        this.JET_TICK=40;
+        
+        // variables
+        this.mode=this.CPU_MODE_FALL;
+        this.walkCount=0;
+        this.jetCount=0;
+        this.moveX=0;
+        
         this.isDead=false;
         this.isFirstShow=true;
         
-            // setup
-        
-        this.addImage('sprites/mr_cpu');
-        this.setCurrentImage('sprites/mr_cpu');
+        // setup
+        this.addImage('sprites/mr_cpu_1');
+        this.addImage('sprites/mr_cpu_2');
+        this.setCurrentImage('sprites/mr_cpu_1');
         
         this.show=false; // start with it not shown, button starts it
-        this.gravityFactor=0.15;
-        this.gravityMinValue=3;
+        this.gravityFactor=0.25;
+        this.gravityMinValue=8;
         this.gravityMaxValue=30;
         this.canCollide=true;
         this.canStandOn=true;
@@ -43,7 +52,8 @@ export default class MrCPUClass extends SpriteClass {
     }
     
     mapStartup() {
-        this.inAir=true;
+        this.mode=this.CPU_MODE_FALL;
+        
         this.isDead=false;
         this.isFirstShow=true;
         
@@ -56,6 +66,9 @@ export default class MrCPUClass extends SpriteClass {
                
         // pop any clouds
         this.sendMessageToSpritesAroundSprite(0,0,0,32,CloudBlockClass,'pop',null);
+        
+        // break any strong blocks on sides
+        this.sendMessageToSpritesAroundSprite(0,0,0,-64,BreakBlockStrongClass,'explode',null);
     }
     
     kill() {
@@ -97,78 +110,78 @@ export default class MrCPUClass extends SpriteClass {
             this.isFirstShow=false;
             this.playSound('boss_appear');
         }
-
-        // shake map when hitting ground
-        if (!this.grounded) {
-            this.inAir=true;
-        }
-        else {
-            if (this.inAir) {
-                this.inAir=false;
-                this.land();
-            }
-        }
-        
-             
-            // move
-            // if we hit something, back off, and if it's
-            // a wall, turn around
-        
-        speed=this.SPEEDS[this.speedIdx]*this.direction;
-        //this.x+=speed;
-        
-        if (this.checkCollision()) {
-            //this.x-=speed;
-            //if (this.collideSprite!=null) this.collideSprite.interactWithSprite(this,null);
-            
-            if ((this.collideTileIdx===this.TILE_IDX_BUMP_1) || (this.collideTileIdx===this.TILE_IDX_BUMP_2)) {
-                //this.direction=-this.direction;
-                //this.addGravity(this.JUMP_HEIGHT,0);
-                
-                //return;
-            }
-        }
-        
-        this.runGravity();
-        
-            // standing on player hurts him and
-            // change direction and jump backward
-            /*
-        if (this.standSprite===playerSprite) {
-            //this.standSprite.interactWithSprite(this,null);
-            this.direction=-this.direction;
-            this.addGravity(this.JUMP_HEIGHT);
-            
-            return;
-        }
-        
-            // activate any exploding blocks
-            
-        if (this.standSprite!==null) {
-            if (this.standSprite instanceof ExplodeBlockClass) {
-                this.sendMessageToSpritesAroundSprite(-32,-32,32,32,ExplodeBlockClass,'explode',null);
-            }
-        }
-
-            // if grounded, then we need to smash
-            // the blocks at the bottom of the cpu
-            
-        if (!(this.standSprite instanceof BreakBlockStrongClass)) return;
-
-        this.sendMessageToSpritesAroundSprite(-32,-32,32,32,BreakBlockStrongClass,'explode',null);
-        
-        this.shakeMap(4);
-        this.playSound('thud');
-*/
-            // jump back up
-        
-        //this.addGravity(this.JUMP_HEIGHT);
-        //this.speedIdx++;
-        //if (this.speedIdx>=this.SPEEDS.length) this.speedIdx=0;
         
         // hit the liquid?
         if (this.isInLiquid()) {
             this.kill();
+        }
+
+        // falling mode, not much to do but land
+        if (this.mode===this.CPU_MODE_FALL) {
+            this.setCurrentImage('sprites/mr_cpu_1');
+            this.flipX=false;
+            
+            this.checkCollision();
+            this.runGravity();
+            
+            if (this.grounded) {
+                this.mode=this.CPU_MODE_WALK;
+                this.walkCount=this.MIN_WALK_TICK+Math.trunc(this.RANDOM_WALK_TICK*Math.random());
+                this.moveX=((playerSprite.x<this.x)?-this.MAX_SPEED:this.MAX_SPEED);
+                this.land();
+            }
+            
+            return;
+        }
+        
+        // walk mode, walk towards player
+        if (this.mode===this.CPU_MODE_WALK) {
+            this.setCurrentImage('sprites/mr_cpu_2');
+            this.flipX=(((tick/10)&0x1)===0);
+            
+            this.moveWithCollision(this.moveX,0);
+            this.runGravity();
+            
+            this.walkCount--;
+            if (this.walkCount===0) {
+                this.mode=this.CPU_MODE_JETPACK;
+                this.jetCount=this.JET_TICK;
+                this.moveX=this.JETPACK_MOVE_SPEED*((Math.random()<0.5)?-1:1);
+                this.playSound('jet');
+            }
+            
+            return;
+        }
+        
+        // jetpack mode
+        this.setCurrentImage('sprites/mr_cpu_1');
+        this.flipX=false;
+        
+        if (this.jetCount===this.JET_TICK) {
+            this.addGravity(this.JETPACK_FLY_SPEED,this.JET_TICK);
+            this.sendMessageToSpritesAroundSprite(0,0,0,32,BreakBlockStrongClass,'explode',null); // jet breaks blocks
+            this.sendMessageToSpritesAroundSprite(0,0,0,32,ExplodeBlockClass,'explode',null); // jet breaks blocks
+        }
+        
+        this.moveWithCollision(this.moveX,0);
+        this.runGravity();
+        
+        mx=this.x+Math.trunc(this.width*Math.random());
+        switch (tick%4) {
+            case 0:
+                this.addParticle(mx,this.y,100,35,0.6,0.01,8,0.02,'particles/explode_red',16,0.3,false,500);
+                break;
+            case 1:
+                this.addParticle(mx,this.y,90,25,0.6,0.01,8,0.02,'particles/explode_orange',16,0.4,false,600);
+                break;
+            case 2:
+                this.addParticle(mx,this.y,80,15,0.6,0.01,8,0.02,'particles/explode_yellow',16,0.5,false,700);
+                break;
+        }
+        
+        this.jetCount--;
+        if (this.jetCount===0) {
+            this.mode=this.CPU_MODE_FALL;
         }
     }
     

@@ -29,19 +29,21 @@ export default class DoorClass extends SpriteClass {
         let playerSprite=this.getPlayerSprite();
         
         // up jumps to other door
-        // we always clear this so you don't bounce between doors
-        if (!this.game.input.isKeyDownAndClear("KeyW")) return;
+        if (!this.game.input.isKeyDown("KeyW")) return;
         
         // are we colliding with player?
         if (!this.collide(playerSprite)) return;
+        
+        // always clear the key so doesn't open next door
+        this.game.input.keyClearSingle("KeyW");
+        
+        this.playSound('door');
         
         door=this.game.map.getFirstSpriteWithData('name',this.getData('goto'));
         playerSprite.x=door.x;
         playerSprite.y=door.y;
         
         this.game.map.resetOffsetY();
-        
-        this.playSound('door');
     }
     
 }

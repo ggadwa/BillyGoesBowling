@@ -18,10 +18,9 @@ import RotoCarrotClass from '../code/roto_carrot.js';
 import EasterHeadClass from '../code/easter_head.js';
 import MrCPUClass from '../code/mr_cpu.js';
 
-export default class MrCPUCastleMapClass extends SideScrollCastleBaseMapClass
-{
-    create()
-    {
+export default class MrCPUCastleMapClass extends SideScrollCastleBaseMapClass {
+
+    create() {
         this.createTileData=new Uint16Array([
             18,18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,18,18,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             17,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17,17,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -274,7 +273,57 @@ export default class MrCPUCastleMapClass extends SideScrollCastleBaseMapClass
             new ExplodeBlockClass(this.game,1408,2048,new Map([])),
             new ExplodeBlockClass(this.game,1472,2048,new Map([])),
             new ExplodeBlockClass(this.game,1536,2048,new Map([])),
-            new ExplodeBlockClass(this.game,1600,2048,new Map([]))
+            new ExplodeBlockClass(this.game,1600,2048,new Map([])),
+            new BreakBlockStrongClass(this.game,320,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,384,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,448,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,512,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,576,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,640,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,704,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,768,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,832,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,896,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,960,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,1024,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,1088,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,1152,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,1216,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,1280,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,1344,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,1408,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,1472,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,1536,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,1600,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,1664,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,1728,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,1792,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,1856,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,1920,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,1984,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,2048,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,2112,1088,new Map([])),
+            new BreakBlockStrongClass(this.game,1856,1600,new Map([])),
+            new BreakBlockStrongClass(this.game,1792,1600,new Map([])),
+            new BreakBlockStrongClass(this.game,1728,1600,new Map([])),
+            new BreakBlockStrongClass(this.game,1664,1600,new Map([])),
+            new BreakBlockStrongClass(this.game,1600,1600,new Map([])),
+            new BreakBlockStrongClass(this.game,1536,1600,new Map([])),
+            new BreakBlockStrongClass(this.game,1472,1600,new Map([])),
+            new BreakBlockStrongClass(this.game,1408,1600,new Map([])),
+            new BreakBlockStrongClass(this.game,1344,1600,new Map([])),
+            new BreakBlockStrongClass(this.game,1280,1600,new Map([])),
+            new BreakBlockStrongClass(this.game,1216,1600,new Map([])),
+            new BreakBlockStrongClass(this.game,1152,1600,new Map([])),
+            new BreakBlockStrongClass(this.game,1088,1600,new Map([])),
+            new BreakBlockStrongClass(this.game,1024,1600,new Map([])),
+            new BreakBlockStrongClass(this.game,960,1600,new Map([])),
+            new BreakBlockStrongClass(this.game,896,1600,new Map([])),
+            new BreakBlockStrongClass(this.game,832,1600,new Map([])),
+            new BreakBlockStrongClass(this.game,768,1600,new Map([])),
+            new BreakBlockStrongClass(this.game,704,1600,new Map([])),
+            new BreakBlockStrongClass(this.game,640,1600,new Map([])),
+            new BreakBlockStrongClass(this.game,576,1600,new Map([]))
         ];
     }
     

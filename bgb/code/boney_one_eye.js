@@ -1,47 +1,43 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import CloudBlockClass from './cloud_block.js';
 import BreakBlockStrongClass from '../code/break_block_strong.js';
-import BallClass from './ball.js';
 import EyeClass from './eye.js';
 
-export default class BoneyOneEyeClass extends SpriteClass
-{
-    constructor(game,x,y,data)
-    {
+export default class BoneyOneEyeClass extends SpriteClass {
+    constructor(game,x,y,data) {
         super(game,x,y,data);
         
+        // constants
         this.FIRE_TICK=55;
         
-            // variables
-            
+        // variables
         this.fireWait=0;
         this.inAir=false;
         this.isFalling=false;
         this.isDead=false;
         this.isFirstShow=true;
         
-            // setup
-        
+        // setup
         this.addImage('sprites/boney_one_eye');
         this.setCurrentImage('sprites/boney_one_eye');
         
-        this.show=false;            // start with it not shown, button starts it
+        this.show=false; // start with it not shown, button starts it
         this.gravityFactor=0.15;
         this.gravityMinValue=3;
         this.gravityMaxValue=30;
         this.canCollide=true;
         this.canStandOn=true;
         
+        this.setCollideSpriteClassIgnoreList([EyeClass]);
+        
         Object.seal(this);
     }
     
-    duplicate(x,y)
-    {
+    duplicate(x,y) {
         return(new BoneyOneEyeClass(this.game,x,y,this.data));
     }
     
-    mapStartup()
-    {
+    mapStartup() {
         this.fireWait=this.FIRE_TICK;
         this.inAir=false;
         this.isDead=false;
@@ -50,17 +46,25 @@ export default class BoneyOneEyeClass extends SpriteClass
         this.game.startCompletionTimer();
     }
     
-    fireEye()
-    {
+    fireEye() {
         let x,y;
         
-            // are we at the next launch position
-            
-        x=this.x+Math.trunc(this.width*0.6);
-        y=this.y-Math.trunc(this.height*0.5);
+        this.fireWait--;
+        if (this.fireWait>0) return;
         
+        this.fireWait=this.FIRE_TICK;
+
+        // pick the eye side closest to player
+        if (this.flipX) {
+            x=this.x+Math.trunc(this.width*0.25);
+        }
+        else {
+            x=this.x+Math.trunc(this.width*0.6);
+        }
+        y=this.y-Math.trunc(this.height*0.45);
+
         this.game.map.addSprite(new EyeClass(this.game,x,y,null));
-        
+
         this.playSound('jump');
     }
 
@@ -90,8 +94,6 @@ export default class BoneyOneEyeClass extends SpriteClass
     }
     
     onRun(tick) {
-        let map=this.game.map;
-        
         // do nothing if we aren't shown
         if (!this.show) return;
         
@@ -121,36 +123,13 @@ export default class BoneyOneEyeClass extends SpriteClass
             }
         }
         
-            // special check if we are falling
-            // after breaking blocks
-            
-        if (!this.isFalling) {
-            this.isFalling=!this.grounded;
-        }
-        else {
-            if (this.grounded) {
-                this.isFalling=false;
-                this.shakeMap(4);
-                this.playSound('thud');
-            }
-        }
+        this.runGravity();
         
-            // stand on clouds?  If so break all clouds
-            // around him to fall into liquid
-            
-        if (this.standSprite!==null) {
-            if (this.standSprite instanceof CloudBlockClass) {
-                this.sendMessageToSpritesAroundSprite(0,0,0,32,CloudBlockClass,'pop',null);
-            }
-        }
+        // always face player
+        this.flipX=(this.getPlayerSprite().x<this.x);
         
-            // time to fire?
-            
-        this.fireWait--;
-        if (this.fireWait===0) {
-            this.fireWait=this.FIRE_TICK;
-            this.fireEye();
-        }
+        // time to fire?
+        this.fireEye();
 
         // hit the liquid?
         if (this.isInLiquid()) {
