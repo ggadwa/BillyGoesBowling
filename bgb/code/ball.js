@@ -1,10 +1,18 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import PlayerSideScrollClass from './player_sidescroll.js';
 import ShieldClass from './shield.js';
 import BlockClass from './block.js';
 import BreakBlockStrongClass from './break_block_strong.js';
 import ExplodeBlockClass from './explode_block.js';
 import EasterHeadClass from './easter_head.js';
 import ExecutionerClass from './executioner.js';
+import AxeClass from './axe.js';
+import MrCPUClass from '../code/mr_cpu.js';
+import BoneyOneEyeClass from '../code/boney_one_eye.js';
+import EyeClass from './eye.js';
+import KangarangClass from '../code/kangarang.js';
+import BoomerangClass from './boomerang.js';
+import KingGhastlyClass from '../code/king_ghastly.js';
 
 export default class BallClass extends SpriteClass {
     constructor(game,x,y,data) {
@@ -23,6 +31,10 @@ export default class BallClass extends SpriteClass {
         
         this.REFORM_COUNT=12;
         this.REFORM_BALL_SHOW_COUNT=6;
+        
+        this.BOWL_SPEED=30;
+        this.SLAM_UP_SPEED=35;
+        this.SLAM_DOWN_SPEED=40;
         
         this.BALL_CIRCLE_SPEED=10;
         this.BALL_CIRCLE_OFFSET_X=8;
@@ -50,11 +62,11 @@ export default class BallClass extends SpriteClass {
         this.gravityFactor=0.0;
         this.gravityMinValue=0;
         this.gravityMaxValue=0;
-        this.canCollide=false;
+        this.canCollide=true;
         this.canStandOn=false;
         this.canRiseBlock=false;
         
-        this.setCollideSpriteClassIgnoreList([ShieldClass]);
+        this.setCollideSpriteClassIgnoreList([PlayerSideScrollClass,ShieldClass]);
         this.setCollideTileIndexIgnoreList([22,23]);
         
         Object.seal(this);
@@ -84,6 +96,28 @@ export default class BallClass extends SpriteClass {
         this.reformParticle=this.addParticle((this.x+halfWid),(this.y-halfHigh),8,16,1.0,0.1,6,0.03,'particles/ball',16,0.5,true,(this.REFORM_COUNT*33));
         
         this.playSound('ball_reform');
+    }
+    
+    onCollideSprite(sprite) {
+        if (
+            (sprite instanceof BlockClass) ||
+            (sprite instanceof BreakBlockStrongClass) ||
+            (sprite instanceof ExplodeBlockClass) ||
+            (sprite instanceof EasterHeadClass) ||
+            (sprite instanceof ExecutionerClass) ||
+            (sprite instanceof AxeClass) ||
+            (sprite instanceof MrCPUClass) ||
+            (sprite instanceof BoneyOneEyeClass) ||
+            (sprite instanceof EyeClass) ||
+            (sprite instanceof KangarangClass) ||
+            (sprite instanceof BoomerangClass) ||
+            (sprite instanceof KingGhastlyClass)) {
+                this.returnBall(true);
+        }
+    }
+    
+    onCollideTile(tileX,tileY,tileIdx) {
+        if (this.travelMode!==this.TRAVEL_MODE_CIRCLE) this.returnBall(true);
     }
     
     onRun(tick) {
@@ -137,7 +171,7 @@ export default class BallClass extends SpriteClass {
         switch (this.travelMode) {
             
             case this.TRAVEL_MODE_BOWL_DOWN:
-                this.travelY+=30;
+                this.travelY+=this.BOWL_SPEED;
                 if ((py+this.travelY)>=this.travelYBottom) {
                     this.travelX=0;
                     this.travelYAcross=this.travelYBottom;
@@ -154,7 +188,7 @@ export default class BallClass extends SpriteClass {
                 py=this.travelYAcross;
                 
                 if (this.travelXDirection<0) {
-                    this.travelX-=30;
+                    this.travelX-=this.BOWL_SPEED;
                     lftEdge=map.getMapViewportLeftEdge();
                     if (((px+this.travelX)+this.width)<lftEdge) {
                         this.travelX=lftEdge-(px+this.width);
@@ -163,7 +197,7 @@ export default class BallClass extends SpriteClass {
                     }
                 }
                 else {
-                    this.travelX+=30;
+                    this.travelX+=this.BOWL_SPEED;
                     rgtEdge=map.getMapViewportRightEdge();
                     if ((px+this.travelX)>rgtEdge) {
                         this.travelX=rgtEdge-px;
@@ -177,7 +211,7 @@ export default class BallClass extends SpriteClass {
                 
             case this.TRAVEL_MODE_SLAM_UP:
                 px=this.travelX;
-                this.travelY-=35;
+                this.travelY-=this.SLAM_UP_SPEED;
                 topEdge=map.getMapViewportTopEdge();
                 if (this.travelY<=(topEdge-this.height)) {
                     this.travelMode=this.TRAVEL_MODE_SLAM_DOWN;
@@ -187,7 +221,7 @@ export default class BallClass extends SpriteClass {
                 
             case this.TRAVEL_MODE_SLAM_DOWN:
                 px=this.travelX;
-                this.travelY+=40;
+                this.travelY+=this.SLAM_DOWN_SPEED;
                 botEdge=map.getMapViewportBottomEdge();
                 if ((this.travelY-this.height)>botEdge) {
                     this.travelY=0;
@@ -214,23 +248,7 @@ export default class BallClass extends SpriteClass {
         this.y=py;
             
         if ((this.travelMode===this.TRAVEL_MODE_BOWL_ACROSS) || (this.travelMode===this.TRAVEL_MODE_SLAM_UP) || (this.travelMode===this.TRAVEL_MODE_SLAM_DOWN) || (this.travelMode===this.TRAVEL_MODE_CIRCLE)) {
-            
-            if (this.checkCollision()) {
-                
-                // colliding with map, return ball
-                // unless it's a defensive circle
-                if (this.collideSprite===null) {
-                    if (this.travelMode!==this.TRAVEL_MODE_CIRCLE) this.returnBall(true);
-                    return;
-                }
-                
-                // stop ball for certain sprites
-                if ((this.collideSprite instanceof BlockClass) || (this.collideSprite instanceof BreakBlockStrongClass) || (this.collideSprite instanceof ExplodeBlockClass) || (this.collideSprite instanceof EasterHeadClass) || (this.collideSprite instanceof ExecutionerClass)) {
-                    this.returnBall(true);
-                }
-                
-                return;
-            }
+            this.checkCollision();
         }
         
         // hitting water auto returns the ball

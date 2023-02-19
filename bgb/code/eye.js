@@ -42,18 +42,34 @@ export default class EyeClass extends SpriteClass {
         this.delete();
     }
     
+    onCollideSprite(sprite) {
+        // if a strong block, break them around the eye
+        if (sprite instanceof BreakBlockStrongClass) {
+            this.sendMessageToSpritesAroundSprite(-32,-32,32,32,BreakBlockStrongClass,'explode',null);
+            this.killEye();
+            return;
+        }
+        
+        if (sprite instanceof PlayerSideScrollClass) {
+            this.killEye();
+            return;
+        }
+    }
+    
+    onCollideTile(tileX,tileY,tileIdx) {
+        this.killEye();
+    }
+    
     onRun(tick) {
         let x,y,f;
         let playerSprite=this.getPlayerSprite();
         
-            // if first call, then aim at player
-            
+        // if first call, then aim at player
         if (this.needReset) {
             
             this.needReset=false;
             
-                // get the distance to player and normalize
-                
+            // get the distance to player and normalize
             x=playerSprite.x-this.x;
             y=playerSprite.y-this.y;
             
@@ -69,19 +85,7 @@ export default class EyeClass extends SpriteClass {
         
         this.x+=this.xAdd;
         this.y+=this.yAdd;
-
-            // destroy eye on any collision, and if
-            // it's a strong break block, break a couple around it
-            
-        if (this.checkCollision()) {
-            
-            if (this.collideSprite!=null) {
-                if (this.collideSprite instanceof BreakBlockStrongClass) {
-                    this.sendMessageToSpritesAroundSprite(-32,-32,32,32,BreakBlockStrongClass,'explode',null);
-                }
-            }
-
-            this.killEye();
-        }
+        
+        this.checkCollision();
     }
 }

@@ -1,11 +1,12 @@
 //// TO DO
 
 
-- ball script needs to use events
-- ball slamming down misses first breakable block
 
-- fix ghastly
 - add kangaroo
+- easter heads and fish
+
+
+- move game time to 60 fps
 
 - both game and sprite still have some non-"on" events
 
@@ -30,7 +31,7 @@
 
 
 
-- move game time to 60 fps
+
 - particles by tick (just for the sprite call, convert them to timestamp after that)
 
 - platforms need to push with API (and anything that stands on them)
@@ -42,8 +43,7 @@
 - get rid of all map. or game.
 
 
-- redo all scripts first before 60 fps
-- find (and remove) all timestamp in scripts (use tick)
+
 
 - need transitions between worlds (closing squares)
 - make game & map private in sprite and map private in game?

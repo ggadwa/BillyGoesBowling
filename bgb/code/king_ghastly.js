@@ -1,5 +1,6 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import CloudBlockClass from './cloud_block.js';
+import BlockClass from './block.js';
 import BreakBlockClass from '../code/break_block.js';
 import ExplodeBlockClass from '../code/explode_block.js';
 import BallClass from './ball.js';
@@ -8,14 +9,14 @@ export default class KingGhastlyClass extends SpriteClass {
 
     constructor(game,x,y,data) {
         super(game,x,y,data);
-        
-        this.TILE_IDX_BUMP=18;
+
         this.GHASTLY_SPEED=8;
-        this.JUMP_HEIGHT=-40;
-        this.BACKUP_TICK=10;
+        this.JUMP_HEIGHT=-20;
+        this.BACKUP_TICK=30;
         
         // variables
         this.backupCount=-1;
+        this.firstDrop=true;
         this.inAir=true;
         this.isDead=false;
         this.isFirstShow=true;
@@ -42,6 +43,7 @@ export default class KingGhastlyClass extends SpriteClass {
     }
     
     mapStartup() {
+        this.firstDrop=true;
         this.inAir=true;
         this.isDead=false;
         this.isFirstShow=true;
@@ -82,9 +84,23 @@ export default class KingGhastlyClass extends SpriteClass {
         this.sendMessage(this.getPlayerSprite(),'warp_out',null);
     }
     
-    onRun(tick) {
-        let map=this.game.map;
+    onCollideSprite(sprite) {
+        // certain types of blocks back up ghastly
+        if ((sprite instanceof BreakBlockClass) || (sprite instanceof BlockClass)) this.backupCount=this.BACKUP_TICK;
         
+        // smash any blocks
+        this.smashBlocks();
+
+        // try to jump
+        if (this.grounded) this.addGravity(this.JUMP_HEIGHT,0);
+    }
+    
+    onCollideTile(tileX,tileY,tileIdx) {
+        // jump up if blocked by a tile
+        if (this.grounded) this.addGravity(this.JUMP_HEIGHT,0);
+    }
+
+    onRun(tick) {
         // do nothing if we aren't shown
         if (!this.show) return;
         
@@ -109,52 +125,31 @@ export default class KingGhastlyClass extends SpriteClass {
         }
         else {
             if (this.inAir) {
+                this.firstDrop=false;
                 this.inAir=false;
                 this.land();
             }
         }
         
-            // are we backing up?
-
-        if (this.backupCount!==-1) {
-            this.backupCount--;
-            
-            this.x-=this.GHASTLY_SPEED;
-            if (this.checkCollision()) this.x+=this.GHASTLY_SPEED;
-            return;
-        }
-        
-            // image
-            
-        if ((Math.trunc(this.game.timestamp/200)&0x1)===0) {
+        // image
+        if (((tick/10)&0x1)===0) {
             this.setCurrentImage('sprites/king_ghastly_1');
         }
         else {
             this.setCurrentImage('sprites/king_ghastly_2');
         }
         
-            // always head towards the player
+        // are we backing up?
+        if (this.backupCount!==-1) {
+            this.backupCount--;
+            this.moveWithCollision(-this.GHASTLY_SPEED,0);
+        }
         
-        this.x+=this.GHASTLY_SPEED;
-        
-            // any collisions with breaking blocks forces
-            // ghastly back, any other up
-        
-        if (this.checkCollision()) {
-            this.x-=this.GHASTLY_SPEED;
-            
-            if (this.grounded) {
-                this.addGravity(this.JUMP_HEIGHT,0);
-                
-                if (this.collideSprite!==null) {
-                    if (this.collideSprite instanceof BreakBlockClass) this.backupCount=this.BACKUP_TICK;
-                }
-                
-                this.smashBlocks();
-            }
-            
-            //if (this.collideSprite!==null) this.collideSprite.interactWithSprite(this,null);
-            //if (this.standSprite!==null) this.standSprite.interactWithSprite(this,null);        // instant death if he stands on you so you can't cross under him
+        // always head towards the player
+        // don't run this on first drop as ghastly falls through tiles and will
+        // get instantly ejected from the map
+        else {
+            if (!this.firstDrop) this.moveWithCollision(this.GHASTLY_SPEED,0);
         }
         
         this.runGravity();

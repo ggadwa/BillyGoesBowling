@@ -11,14 +11,14 @@ export default class EasterHeadClass extends SpriteClass {
         this.FIRE_RANDOM_TICK_OFFSET=25;
         this.FIRE_MIN_DISTANCE=64*3;
         this.FIRE_MAX_DISTANCE=64*15;
-        this.THROW_MARGIN_X=-5;
-        this.THROW_MARGIN_Y=32;
-        this.FIRE_FRAME_TICK=300;
+        this.THROW_MARGIN_X=-16;
+        this.THROW_MARGIN_Y=45;
+        this.EYE_TICK=10;
         this.SINK_MAX_DISTANCE=20;
         
         // variables
         this.fireCount=this.FIRE_TICK+Math.trunc(Math.random()*this.FIRE_RANDOM_TICK_OFFSET); // random firing times
-        this.fireFrameStartTick=0;
+        this.eyeCount=0;
         this.sinkY=0;
         this.originalY=y;
         
@@ -36,6 +36,8 @@ export default class EasterHeadClass extends SpriteClass {
         
         this.layer=this.UNDER_MAP_TILES_LAYER; // so it can sink below map tiles
         
+        this.setCollideSpriteClassIgnoreList([FishClass]);
+        
         Object.seal(this);
     }
     
@@ -51,19 +53,14 @@ export default class EasterHeadClass extends SpriteClass {
         dist=this.distanceToSprite(playerSprite);
         if ((dist<this.FIRE_MIN_DISTANCE) || (dist>this.FIRE_MAX_DISTANCE)) return; // only fire if close, and stop firing if two close
         
-        if (this.x>playerSprite.x) {
-            sx=this.x-(32+this.THROW_MARGIN_X);
-        }
-        else {
-            sx=(this.x+this.width)+this.THROW_MARGIN_X;
-        }
+        sx=(this.x+(this.width/2))+this.THROW_MARGIN_X;
         sy=(this.y-this.height)+this.THROW_MARGIN_Y;
 
         this.game.map.addSprite(new FishClass(this.game,sx,sy,null));
         this.playSound('pipe_break');
         
         // show eyes
-        this.fireFrameStartTick=this.game.timestamp;
+        this.eyeCount=this.EYE_TICK;
     }
     
     onRun(tick) {
@@ -84,10 +81,8 @@ export default class EasterHeadClass extends SpriteClass {
         // get correct image
         this.flipX=playerSprite.x<this.x;
         
-        if (this.fireFrameStartTick!==0) {
-            if ((this.fireFrameStartTick+this.FIRE_FRAME_TICK)<this.game.timestamp) {
-                this.fireFrameStartTick=0;
-            }
+        if (this.eyeCount!==0) {
+            this.eyeCount--;
             this.setCurrentImage('sprites/easter_head_fire');
         }
         else {

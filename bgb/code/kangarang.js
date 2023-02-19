@@ -1,7 +1,7 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import CloudBlockClass from './cloud_block.js';
 import BreakBlockStrongClass from '../code/break_block_strong.js';
-import BoomerangClass from './eye.js';
+import BoomerangClass from './boomerang.js';
 
 export default class KangarangClass extends SpriteClass {
     constructor(game,x,y,data) {

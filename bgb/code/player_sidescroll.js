@@ -15,6 +15,8 @@ import AxeClass from './axe.js';
 import MrCPUClass from './mr_cpu.js';
 import BoneyOneEyeClass from '../code/boney_one_eye.js';
 import EyeClass from './eye.js';
+import KangarangClass from '../code/kangarang.js';
+import BoomerangClass from './boomerang.js';
 import KingGhastlyClass from '../code/king_ghastly.js';
 
 export default class PlayerSideScrollClass extends SpriteClass {
@@ -161,9 +163,15 @@ export default class PlayerSideScrollClass extends SpriteClass {
             (sprite instanceof MrCPUClass) ||
             (sprite instanceof BoneyOneEyeClass) ||
             (sprite instanceof EyeClass) ||
-            (sprite instanceof KingGhastlyClass)) {
+            (sprite instanceof KangarangClass)||
+            (sprite instanceof BoomerangClass)) {
                 this.hurtPlayer();
                 return;
+        }
+        
+        // ghastly insta-kills
+        if (sprite instanceof KingGhastlyClass) {
+            this.killPlayer();
         }
     }
     
@@ -173,9 +181,14 @@ export default class PlayerSideScrollClass extends SpriteClass {
             (sprite instanceof ExecutionerClass) ||
             (sprite instanceof MrCPUClass) ||
             (sprite instanceof BoneyOneEyeClass) ||
-            (sprite instanceof KingGhastlyClass)) {
+            (sprite instanceof KangarangClass)) {
                 this.hurtPlayer();
                 return;
+        }
+        
+        // ghastly insta-kills
+        if (sprite instanceof KingGhastlyClass) {
+            this.killPlayer();
         }
     }
     

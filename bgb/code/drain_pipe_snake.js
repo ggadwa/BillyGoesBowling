@@ -150,7 +150,7 @@ export default class DrainPipeSnakeClass extends SpriteClass {
         
         // image
         if (this.snakeHasPipe) {
-            if ((Math.trunc(this.game.timestamp/200)&0x1)===0) {
+            if (((tick/8)&0x1)===0) {
                 this.setCurrentImage('sprites/snake_pipe_1');
             }
             else {
@@ -158,7 +158,7 @@ export default class DrainPipeSnakeClass extends SpriteClass {
             }
         }
         else {
-            if ((Math.trunc(this.game.timestamp/100)&0x1)===0) {
+            if (((tick/5)&0x1)===0) {
                 this.setCurrentImage('sprites/snake_1');
             }
             else {
