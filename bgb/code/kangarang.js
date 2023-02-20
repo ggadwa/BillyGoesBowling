@@ -5,11 +5,11 @@ import BreakBlockStrongClass from '../code/break_block_strong.js';
 import BoomerangClass from './boomerang.js';
 
 export default class KangarangClass extends SpriteClass {
+   
+    static FIRE_TICK=55;
+
     constructor(game,x,y,data) {
         super(game,x,y,data);
-        
-        // constants
-        this.FIRE_TICK=55;
         
         // variables
         this.fireWait=0;
@@ -39,7 +39,7 @@ export default class KangarangClass extends SpriteClass {
     }
     
     mapStartup() {
-        this.fireWait=this.FIRE_TICK;
+        this.fireWait=KangarangClass.FIRE_TICK;
         this.inAir=false;
         this.isDead=false;
         this.isFirstShow=true;
@@ -47,19 +47,19 @@ export default class KangarangClass extends SpriteClass {
         this.game.startCompletionTimer();
     }
     
-    fireEye() {
+    fireBoomerang() {
         let x,y;
         
         this.fireWait--;
         if (this.fireWait>0) return;
         
-        this.fireWait=this.FIRE_TICK;
+        this.fireWait=KangarangClass.FIRE_TICK;
 
         // are we at the next launch position
         x=this.x+Math.trunc(this.width*0.6);
         y=this.y-Math.trunc(this.height*0.5);
 
-        this.game.map.addSprite(new EyeClass(this.game,x,y,null));
+        this.game.map.addSprite(new BoomerangClass(this.game,x,y,null));
 
         this.playSound('jump');
     }
@@ -122,7 +122,7 @@ export default class KangarangClass extends SpriteClass {
         this.runGravity();
         
         // time to fire?
-        //this.fireEye();
+        this.fireBoomerang();
 
         // hit the liquid?
         if (this.isInLiquid()) {

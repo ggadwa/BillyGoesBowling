@@ -1,18 +1,14 @@
 //// TO DO
 
 
-5616.39999999851
-1771.5
-1692.6000000089407
-
-- image/sound loading threaded
-
-
 
 - move all constants to statics
 
 - add kangaroo
-- easter heads and fish
+  - boomerang always appears behind player
+  - only have 3 on screen at once (might need a sprite count)
+  - only breaks on string blocks
+- fish
 
 
 - clean up all unused imports

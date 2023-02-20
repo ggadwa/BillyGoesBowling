@@ -89,8 +89,6 @@ export default class GameClass {
         // load the maps list
         this.mapList.initialize();
         
-        let c=performance.now();
-        
         // load the image list
         try {
             await this.imageList.initialize();
@@ -113,15 +111,13 @@ export default class GameClass {
         }
 
         // initialize and load the music list
-        try {   
+        try {
             await this.musicList.initialize();
         }
         catch (e) {
             alert(e);
             return;
         }
-        
-        console.info(performance.now()-c);
 
         // initial input
         this.input.initialize();
@@ -257,38 +253,6 @@ export default class GameClass {
     }
     
     // misc game UIs
-    drawProgress(title,count,maxCount) {
-        let lx=10;
-        let rx=this.canvasWidth-10;
-        let ty=this.canvasHeight-40;
-        let by=this.canvasHeight-10;
-        let fx;
-        
-        if (this.backCTX===null) return;        // means we are in the editor
-        
-        // erase the back canvas 
-        this.backCTX.fillStyle='#000000';
-        this.backCTX.fillRect(0,0,this.canvasWidth,this.canvasHeight);
-        
-        // the progress bar
-        fx=lx+Math.trunc(((rx-lx)*count)/maxCount);
-        
-        this.backCTX.fillStyle='#33FF33';
-        this.backCTX.fillRect(lx,ty,(fx-lx),(by-ty));
-            
-        this.backCTX.strokeStyle='#EEFFEE';
-        this.backCTX.strokeRect(lx,ty,(rx-lx),(by-ty));
-
-        this.backCTX.font='24px Arial';
-        this.backCTX.fillStyle='#000000';
-        this.backCTX.textAlign='left';
-        this.backCTX.textBaseline='alphabetic';
-        this.backCTX.fillText(title,(lx+5),(by-8));
-        
-        // swap to forground
-        this.ctx.drawImage(this.backCanvas,0,0);
-    }
-    
     drawPause() {
         let mx=Math.trunc(this.canvasWidth*0.5);
         let my=Math.trunc(this.canvasHeight*0.5);

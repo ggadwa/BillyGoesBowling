@@ -1,21 +1,21 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 
 export default class SpringClass extends SpriteClass {
+
+    static SPRING_JUMP_HEIGHT=-80;
+    static SPRING_MAX_MOVE=32;
+    static SPRING_MOVE=4;
+        
+    static SPRING_NONE=0;
+    static SPRING_UP=1;
+    static SPRING_DOWN=2; 
         
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
         // constants
-        this.SPRING_JUMP_HEIGHT=-70;
-        this.SPRING_MAX_MOVE=32;
-        this.SPRING_MOVE=4;
-        
-        this.SPRING_NONE=0;
-        this.SPRING_UP=1;
-        this.SPRING_DOWN=2;
-        
         // variables
-        this.springMode=this.SPRING_NONE;
+        this.springMode=SpringClass.SPRING_NONE;
         
         // setup
         this.addImage('sprites/spring_close');
@@ -43,13 +43,13 @@ export default class SpringClass extends SpriteClass {
     
     onStoodOnSprite(sprite) {
         // already moving, do nothing
-        if (this.springMode!==this.SPRING_NONE) return;
+        if (this.springMode!==SpringClass.SPRING_NONE) return;
         
-        sprite.addGravity(this.SPRING_JUMP_HEIGHT,0);
+        sprite.addGravity(SpringClass.SPRING_JUMP_HEIGHT,0);
 
         this.playSound('boing');
         
-        this.springMode=this.SPRING_UP;
+        this.springMode=SpringClass.SPRING_UP;
     }
 
     onRun(tick) {
@@ -58,21 +58,21 @@ export default class SpringClass extends SpriteClass {
         
         // run any modes
         switch (this.springMode) {
-            case this.SPRING_NONE:
+            case SpringClass.SPRING_NONE:
                 this.drawOffsetY=0;
                 this.setCurrentImage('sprites/spring_close');
                 return;
-            case this.SPRING_UP:
-                this.drawOffsetY-=this.SPRING_MOVE;
-                if (this.drawOffsetY===-this.SPRING_MAX_MOVE) {
-                    this.springMode=this.SPRING_DOWN;
+            case SpringClass.SPRING_UP:
+                this.drawOffsetY-=SpringClass.SPRING_MOVE;
+                if (this.drawOffsetY===-SpringClass.SPRING_MAX_MOVE) {
+                    this.springMode=SpringClass.SPRING_DOWN;
                 }
                 this.setCurrentImage('sprites/spring_open');
                 break;
-            case this.SPRING_DOWN:
-                this.drawOffsetY+=this.SPRING_MOVE;
+            case SpringClass.SPRING_DOWN:
+                this.drawOffsetY+=SpringClass.SPRING_MOVE;
                 if (this.drawOffsetY===0) {
-                    this.springMode=this.SPRING_NONE;
+                    this.springMode=SpringClass.SPRING_NONE;
                 }
                 this.setCurrentImage('sprites/spring_close');
                 break;

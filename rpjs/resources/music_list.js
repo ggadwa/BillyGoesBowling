@@ -1,3 +1,4 @@
+import MusicClass from './music.js';
 import SetupClass from '../engine/setup.js';
 
 export default class MusicListClass {
@@ -5,58 +6,36 @@ export default class MusicListClass {
     constructor(game) {
         this.game=game;
         
-        this.buffers=new Map();
+        this.musics=new Map();
         this.currentSource=null;
         
         Object.seal(this);
     }
     
     async initialize() {
-        let name,resp,url,data;
-        let count;
-        
-        count=0;
-        
-        for (name of this.buffers.keys()) {
-            this.game.drawProgress('Loading Music',count,(this.buffers.size-1));
+        let name,promises;
 
-            // get the wav
-            url=this.game.resourceBasePath+'music/'+name+'.mp3';
-            
-            resp=await fetch(url);
-            if (!resp.ok) throw new Error('Unable to load '+url+'; '+resp.statusText);
-            data=await resp.arrayBuffer();
-            
-            await this.game.audioContext.decodeAudioData(data)
-                .then(
-                    // resolved
-                    decodedData=>{
-                        this.buffers.set(name,decodedData);
-                    },    
-                    // rejected
-                    ()=>{
-                        throw new Error('Unable to decode mp3 file '+url);
-                    }
-                );
-
-            count++;
+        promises=[];
+        
+        for (name of this.musics.keys()) {
+            promises.push(this.musics.get(name).getLoadPromise(this.game.resourceBasePath));
         }
+        
+        await Promise.all(promises);
     }
     
     add(name) {
-        this.buffers.set(name,null);
+        this.musics.set(name,new MusicClass(this.game.audioContext,name));
     }
     
     /**
      * Starts music
      */
     start(name) {
-        let ctx=this.game.audioContext;
-        let gain;
-        let buffer=this.buffers.get(name);
+        let music=this.musics.get(name);
         
         // just a warning if no music
-        if ((buffer===undefined) || (buffer===null)) {
+        if ((music===undefined) || (music===null)) {
             console.log('Unknown music: '+name);
             return;
         }
@@ -65,16 +44,7 @@ export default class MusicListClass {
         this.stop();
         
         // now start new music
-        this.currentSource=ctx.createBufferSource();
-        this.currentSource.loop=true;
-        this.currentSource.buffer=buffer;
-        
-        gain=ctx.createGain();
-        gain.gain.value=SetupClass.MUSIC_VOLUME;
-
-        this.currentSource.connect(gain);
-        gain.connect(ctx.destination);
-        this.currentSource.start(0);
+        this.currentSource=music.play();
     }
     
     /**

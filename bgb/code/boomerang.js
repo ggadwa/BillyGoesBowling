@@ -6,11 +6,10 @@ import BoneyOneEyeClass from '../code/boney_one_eye.js';
 
 export default class BoomerangClass extends SpriteClass {
         
+    static BOOMERANG_SPEED=15;
+    
     constructor(game,x,y,data) {
         super(game,x,y,data);
-        
-        // constants  
-        this.EYE_SPEED=15;
         
         // variables
         this.needReset=true;
@@ -18,8 +17,8 @@ export default class BoomerangClass extends SpriteClass {
         this.yAdd=0;
         
         // setup
-        this.addImage('sprites/eye');
-        this.setCurrentImage('sprites/eye');
+        this.addImage('sprites/boomerang');
+        this.setCurrentImage('sprites/boomerang');
         
         this.show=true;
         this.gravityFactor=0.0;
@@ -64,8 +63,8 @@ export default class BoomerangClass extends SpriteClass {
             x*=f;
             y*=f;
 
-            this.xAdd=x*this.EYE_SPEED;
-            this.yAdd=y*this.EYE_SPEED;
+            this.xAdd=x*this.BOOMERANG_SPEED;
+            this.yAdd=y*this.BOOMERANG_SPEED;
         }
         
         this.x+=this.xAdd;
