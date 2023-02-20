@@ -693,12 +693,12 @@ export default class MapClass {
             
             this.offsetY+=(5-(Math.random()*10));
         }
-        
+
         // backgrounds
         for (background of this.backgrounds) {
             background.draw(ctx);
         }
-        
+
         // draw the under the map sprites
         for (sprite of this.sprites) {
             if ((sprite.show) && (sprite.layer===sprite.UNDER_MAP_TILES_LAYER)) sprite.draw(ctx,this.offsetX,this.offsetY);

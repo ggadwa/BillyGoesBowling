@@ -9,25 +9,26 @@ export default class ImageListClass {
     }
     
     async initialize() {
-        let name,img;
-        let count;
-        
-        count=0;
+        let name,url,img,promises;
+
+        // gather all image loads into promises
+        promises=[];
         
         for (name of this.images.keys()) {
-            this.game.drawProgress('Loading Images',count,(this.images.size-1));
+            url=this.game.resourceBasePath+'images/'+name+'.png';
             
             img=this.images.get(name);
-            img.src=this.game.resourceBasePath+'images/'+name+'.png';
-            try {
-                await img.decode();
-            }
-            catch (e) {
-                throw new Error('Missing image png: '+img.src);
-            }
-            
-            count++;
+            img.src=url;
+            promises.push(
+                img.decode()
+                    .then(
+                        ()=>{},
+                        ()=>{ throw new Error('File not found: '+url) }
+                    )
+                );
         }
+        
+        await Promise.all(promises);
     }
     
     add(name) {

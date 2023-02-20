@@ -19,35 +19,37 @@ import BoomerangClass from './boomerang.js';
 import KingGhastlyClass from '../code/king_ghastly.js';
 
 export default class BallClass extends SpriteClass {
+        
+    static TRAVEL_MODE_FLOATING=0;
+    static TRAVEL_MODE_BOWL_DOWN=1;
+    static TRAVEL_MODE_BOWL_ACROSS=2;
+    static TRAVEL_MODE_REFORM=3;
+    static TRAVEL_MODE_SLAM_UP=4;
+    static TRAVEL_MODE_SLAM_DOWN=5;
+    static TRAVEL_MODE_CIRCLE=6;
+        
+    static HEAD_PIXEL_DISTANCE=10;
+        
+    static REFORM_COUNT=12;
+    static REFORM_BALL_SHOW_COUNT=6;
+        
+    static BOWL_SPEED=30;
+    static SLAM_UP_SPEED=35;
+    static SLAM_DOWN_SPEED=40;
+        
+    static BALL_CIRCLE_SPEED=10;
+    static BALL_CIRCLE_OFFSET_X=8;
+    static BALL_CIRCLE_RADIUS_X=45;
+    static BALL_CIRCLE_OFFSET_Y=50;
+    static BALL_CIRCLE_RADIUS_Y=100;
+
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
         // constants
-        this.TRAVEL_MODE_FLOATING=0;
-        this.TRAVEL_MODE_BOWL_DOWN=1;
-        this.TRAVEL_MODE_BOWL_ACROSS=2;
-        this.TRAVEL_MODE_REFORM=3;
-        this.TRAVEL_MODE_SLAM_UP=4;
-        this.TRAVEL_MODE_SLAM_DOWN=5;
-        this.TRAVEL_MODE_CIRCLE=6;
-        
-        this.HEAD_PIXEL_DISTANCE=10;
-        
-        this.REFORM_COUNT=12;
-        this.REFORM_BALL_SHOW_COUNT=6;
-        
-        this.BOWL_SPEED=30;
-        this.SLAM_UP_SPEED=35;
-        this.SLAM_DOWN_SPEED=40;
-        
-        this.BALL_CIRCLE_SPEED=10;
-        this.BALL_CIRCLE_OFFSET_X=8;
-        this.BALL_CIRCLE_RADIUS_X=45;
-        this.BALL_CIRCLE_OFFSET_Y=50;
-        this.BALL_CIRCLE_RADIUS_Y=100;
         
         // variables
-        this.travelMode=this.TRAVEL_MODE_FLOATING;
+        this.travelMode=BallClass.TRAVEL_MODE_FLOATING;
         this.travelX=0;
         this.travelY=0;
         this.travelXDirection=1;
@@ -92,12 +94,12 @@ export default class BallClass extends SpriteClass {
         }
         
         // reset position and reform
-        this.travelMode=this.TRAVEL_MODE_REFORM;
-        this.reformTick=this.REFORM_COUNT;
+        this.travelMode=BallClass.TRAVEL_MODE_REFORM;
+        this.reformTick=BallClass.REFORM_COUNT;
         
         this.x=playerSprite.x+Math.trunc((playerSprite.width-this.width)*0.5);
-        this.y=(playerSprite.y-playerSprite.height)-this.HEAD_PIXEL_DISTANCE;
-        this.reformParticle=this.addParticle((this.x+halfWid),(this.y-halfHigh),ParticleClass.AFTER_SPRITES_LAYER,8,16,1.0,0.1,6,0.03,'particles/ball',16,0.5,true,(this.REFORM_COUNT*33));
+        this.y=(playerSprite.y-playerSprite.height)-BallClass.HEAD_PIXEL_DISTANCE;
+        this.reformParticle=this.addParticle((this.x+halfWid),(this.y-halfHigh),ParticleClass.AFTER_SPRITES_LAYER,8,16,1.0,0.1,6,0.03,'particles/ball',16,0.5,true,(BallClass.REFORM_COUNT*33));
         
         this.playSound('ball_reform');
     }
@@ -122,7 +124,7 @@ export default class BallClass extends SpriteClass {
     }
     
     onCollideTile(tileX,tileY,tileIdx) {
-        if (this.travelMode!==this.TRAVEL_MODE_CIRCLE) this.returnBall(true);
+        if (this.travelMode!==BallClass.TRAVEL_MODE_CIRCLE) this.returnBall(true);
     }
     
     onRun(tick) {
@@ -137,31 +139,31 @@ export default class BallClass extends SpriteClass {
         
         // get the position by the mode
         xOffset=Math.trunc((playerSprite.width-this.width)*0.5);
-        yOffset=-(playerSprite.height+this.HEAD_PIXEL_DISTANCE);
+        yOffset=-(playerSprite.height+BallClass.HEAD_PIXEL_DISTANCE);
         
         px=playerSprite.x+xOffset;
         py=playerSprite.y+yOffset;
         
-        if (this.travelMode===this.TRAVEL_MODE_FLOATING) this.flipX=playerSprite.flipX;
+        if (this.travelMode===BallClass.TRAVEL_MODE_FLOATING) this.flipX=playerSprite.flipX;
         
         // reforming is a special case
-        if (this.travelMode===this.TRAVEL_MODE_REFORM) {
+        if (this.travelMode===BallClass.TRAVEL_MODE_REFORM) {
             
             // are we done reforming?
             this.reformTick--;
             if (this.reformTick===0) {
                 this.alpha=1.0;
-                this.travelMode=this.TRAVEL_MODE_FLOATING;
+                this.travelMode=BallClass.TRAVEL_MODE_FLOATING;
             }
             // otherwise fade in with particles
             else {
                 this.x=px;
                 this.y=py;
-                if (this.reformTick>this.REFORM_BALL_SHOW_COUNT) {
+                if (this.reformTick>BallClass.REFORM_BALL_SHOW_COUNT) {
                     this.alpha=0.0;
                 }
                 else {
-                    this.alpha=1.0-(this.reformTick/this.REFORM_BALL_SHOW_COUNT);
+                    this.alpha=1.0-(this.reformTick/BallClass.REFORM_BALL_SHOW_COUNT);
                 }
                         
                 if (this.reformParticle!=null) {
@@ -175,12 +177,12 @@ export default class BallClass extends SpriteClass {
         // other movement modes
         switch (this.travelMode) {
             
-            case this.TRAVEL_MODE_BOWL_DOWN:
-                this.travelY+=this.BOWL_SPEED;
+            case BallClass.TRAVEL_MODE_BOWL_DOWN:
+                this.travelY+=BallClass.BOWL_SPEED;
                 if ((py+this.travelY)>=this.travelYBottom) {
                     this.travelX=0;
                     this.travelYAcross=this.travelYBottom;
-                    this.travelMode=this.TRAVEL_MODE_BOWL_ACROSS;
+                    this.travelMode=BallClass.TRAVEL_MODE_BOWL_ACROSS;
                     
                     py=this.travelYBottom;
                 }
@@ -189,11 +191,11 @@ export default class BallClass extends SpriteClass {
                 }
                 break;
                 
-            case this.TRAVEL_MODE_BOWL_ACROSS:
+            case BallClass.TRAVEL_MODE_BOWL_ACROSS:
                 py=this.travelYAcross;
                 
                 if (this.travelXDirection<0) {
-                    this.travelX-=this.BOWL_SPEED;
+                    this.travelX-=BallClass.BOWL_SPEED;
                     lftEdge=map.getMapViewportLeftEdge();
                     if (((px+this.travelX)+this.width)<lftEdge) {
                         this.travelX=lftEdge-(px+this.width);
@@ -202,7 +204,7 @@ export default class BallClass extends SpriteClass {
                     }
                 }
                 else {
-                    this.travelX+=this.BOWL_SPEED;
+                    this.travelX+=BallClass.BOWL_SPEED;
                     rgtEdge=map.getMapViewportRightEdge();
                     if ((px+this.travelX)>rgtEdge) {
                         this.travelX=rgtEdge-px;
@@ -214,19 +216,19 @@ export default class BallClass extends SpriteClass {
                 px+=this.travelX;
                 break;
                 
-            case this.TRAVEL_MODE_SLAM_UP:
+            case BallClass.TRAVEL_MODE_SLAM_UP:
                 px=this.travelX;
-                this.travelY-=this.SLAM_UP_SPEED;
+                this.travelY-=BallClass.SLAM_UP_SPEED;
                 topEdge=map.getMapViewportTopEdge();
                 if (this.travelY<=(topEdge-this.height)) {
-                    this.travelMode=this.TRAVEL_MODE_SLAM_DOWN;
+                    this.travelMode=BallClass.TRAVEL_MODE_SLAM_DOWN;
                 }
                 py=this.travelY;
                 break;
                 
-            case this.TRAVEL_MODE_SLAM_DOWN:
+            case BallClass.TRAVEL_MODE_SLAM_DOWN:
                 px=this.travelX;
-                this.travelY+=this.SLAM_DOWN_SPEED;
+                this.travelY+=BallClass.SLAM_DOWN_SPEED;
                 botEdge=map.getMapViewportBottomEdge();
                 if ((this.travelY-this.height)>botEdge) {
                     this.travelY=0;
@@ -235,15 +237,15 @@ export default class BallClass extends SpriteClass {
                 py=this.travelY;
                 break;
                 
-            case this.TRAVEL_MODE_CIRCLE:
-                this.travelAngle+=this.BALL_CIRCLE_SPEED;
+            case BallClass.TRAVEL_MODE_CIRCLE:
+                this.travelAngle+=BallClass.BALL_CIRCLE_SPEED;
                 if (this.travelAngle===360) {
                     this.returnBall(false);
                 }
                 else {
                     rad=(Math.PI/180.0)*this.travelAngle;
-                    px=(playerSprite.x+this.BALL_CIRCLE_OFFSET_X)+(Math.sin(rad)*this.BALL_CIRCLE_RADIUS_X);
-                    py=(playerSprite.y-this.BALL_CIRCLE_OFFSET_Y)-(Math.cos(rad)*this.BALL_CIRCLE_RADIUS_Y);
+                    px=(playerSprite.x+BallClass.BALL_CIRCLE_OFFSET_X)+(Math.sin(rad)*BallClass.BALL_CIRCLE_RADIUS_X);
+                    py=(playerSprite.y-BallClass.BALL_CIRCLE_OFFSET_Y)-(Math.cos(rad)*BallClass.BALL_CIRCLE_RADIUS_Y);
                 }
                 break;
         }
@@ -252,7 +254,7 @@ export default class BallClass extends SpriteClass {
         this.x=px;
         this.y=py;
             
-        if ((this.travelMode===this.TRAVEL_MODE_BOWL_ACROSS) || (this.travelMode===this.TRAVEL_MODE_SLAM_UP) || (this.travelMode===this.TRAVEL_MODE_SLAM_DOWN) || (this.travelMode===this.TRAVEL_MODE_CIRCLE)) {
+        if ((this.travelMode===BallClass.TRAVEL_MODE_BOWL_ACROSS) || (this.travelMode===BallClass.TRAVEL_MODE_SLAM_UP) || (this.travelMode===BallClass.TRAVEL_MODE_SLAM_DOWN) || (this.travelMode===BallClass.TRAVEL_MODE_CIRCLE)) {
             this.checkCollision();
         }
         
@@ -263,7 +265,7 @@ export default class BallClass extends SpriteClass {
         }
         
         // change any travel mode
-        if (this.travelMode===this.TRAVEL_MODE_FLOATING) {
+        if (this.travelMode===BallClass.TRAVEL_MODE_FLOATING) {
             
             // bowls down and across
             // we get the Y we will be bowling at from
@@ -271,7 +273,7 @@ export default class BallClass extends SpriteClass {
             // at the tile line above, or if on ground, fire at current
             // tile line
             if (this.getInputStateBoolean(InputClass.BUTTON_B)) {
-                this.travelMode=this.TRAVEL_MODE_BOWL_DOWN;
+                this.travelMode=BallClass.TRAVEL_MODE_BOWL_DOWN;
                 this.travelX=0;
                 this.travelY=0;
                 this.travelXDirection=playerSprite.flipX?-1:1;
@@ -283,9 +285,9 @@ export default class BallClass extends SpriteClass {
             
             // bowls up and back down  
             if (this.getInputStateBoolean(InputClass.BUTTON_Y)) {
-                this.travelMode=this.TRAVEL_MODE_SLAM_UP;
+                this.travelMode=BallClass.TRAVEL_MODE_SLAM_UP;
                 this.travelX=playerSprite.x+xOffset;
-                this.travelY=(playerSprite.y-playerSprite.height)-this.HEAD_PIXEL_DISTANCE;
+                this.travelY=(playerSprite.y-playerSprite.height)-BallClass.HEAD_PIXEL_DISTANCE;
                 
                 this.playSound('bowl');
             }
@@ -294,7 +296,7 @@ export default class BallClass extends SpriteClass {
             // and the player sprite check for this key and active their parts
             // we chain this so only ball in right state can activate
             if (this.getInputStateBoolean(InputClass.BUTTON_X)) {
-                this.travelMode=this.TRAVEL_MODE_CIRCLE;
+                this.travelMode=BallClass.TRAVEL_MODE_CIRCLE;
                 this.travelAngle=0.0;
                 this.sendMessage(playerSprite,'start_shield',null);
                 

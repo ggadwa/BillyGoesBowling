@@ -56,24 +56,25 @@ import KingGhastlyCastleMapClass from '../maps/king_ghastly_castle.js';
 
 export default class BillyGameClass extends GameClass {
 
+    static BANNER_MODE_FADE_IN=0;
+    static BANNER_MODE_FADE_OUT=1;
+    static BANNER_MODE_SHOW=2;
+    static BANNER_MODE_NONE=3;
+        
+    static BANNER_FADE_TICK=10;
+        
+    static HEALTH_IMAGE_LIST=['ui/health_25','ui/health_50','ui/health_75','ui/health_100'];
+
     constructor() {
         super();
         
         // constants
-        this.BANNER_MODE_FADE_IN=0;
-        this.BANNER_MODE_FADE_OUT=1;
-        this.BANNER_MODE_SHOW=2;
-        this.BANNER_MODE_NONE=3;
-        
-        this.BANNER_FADE_TICK=10;
-        
-        this.HEALTH_IMAGE_LIST=['ui/health_25','ui/health_50','ui/health_75','ui/health_100'];
         
         // variables
         this.bannerTitleText='';
         this.bannerMapName='';
         this.bannerMapRequiredPinCount=0;
-        this.bannerMode=this.BANNER_MODE_NONE;
+        this.bannerMode=BillyGameClass.BANNER_MODE_NONE;
         this.bannerFadeCount=0;
         
         Object.seal(this);
@@ -340,13 +341,13 @@ export default class BillyGameClass extends GameClass {
                 this.bannerTitleText=data.title;
                 this.bannerMapName=data.map;
                 this.bannerMapRequiredPinCount=data.pin;
-                this.bannerMode=this.BANNER_MODE_FADE_IN;
-                this.bannerFadeCount=this.BANNER_FADE_TICK;
+                this.bannerMode=BillyGameClass.BANNER_MODE_FADE_IN;
+                this.bannerFadeCount=BillyGameClass.BANNER_FADE_TICK;
                 break;
             case 'banner_clear':
-                if ((this.bannerMode!==this.BANNER_MODE_FADE_OUT) && (this.bannerMode!==this.BANNER_MODE_NONE)) { // if already fading or gone, do nothing
-                    this.bannerMode=this.BANNER_MODE_FADE_OUT;
-                    this.bannerFadeCount=this.BANNER_FADE_TICK;
+                if ((this.bannerMode!==BillyGameClass.BANNER_MODE_FADE_OUT) && (this.bannerMode!==BillyGameClass.BANNER_MODE_NONE)) { // if already fading or gone, do nothing
+                    this.bannerMode=BillyGameClass.BANNER_MODE_FADE_OUT;
+                    this.bannerFadeCount=BillyGameClass.BANNER_FADE_TICK;
                 }
                 break;
         }
@@ -354,13 +355,13 @@ export default class BillyGameClass extends GameClass {
     
     onRun(tick) {
         switch (this.bannerMode) {
-            case this.BANNER_MODE_FADE_IN:
+            case BillyGameClass.BANNER_MODE_FADE_IN:
                 this.bannerFadeCount--;
-                if (this.bannerFadeCount===0) this.bannerMode=this.BANNER_MODE_SHOW;
+                if (this.bannerFadeCount===0) this.bannerMode=BillyGameClass.BANNER_MODE_SHOW;
                 break;
-            case this.BANNER_MODE_FADE_OUT:
+            case BillyGameClass.BANNER_MODE_FADE_OUT:
                 this.bannerFadeCount--;
-                if (this.bannerFadeCount===0) this.bannerMode=this.BANNER_MODE_NONE;
+                if (this.bannerFadeCount===0) this.bannerMode=BillyGameClass.BANNER_MODE_NONE;
                 break; 
         }
     }
@@ -372,7 +373,7 @@ export default class BillyGameClass extends GameClass {
         
         // side scrolling UI 
         if (playerSprite instanceof PlayerSideScrollClass) {
-            if (playerSprite.health>0) this.drawUIImage(this.HEALTH_IMAGE_LIST[playerSprite.health-1],5,5);
+            if (playerSprite.health>0) this.drawUIImage(BillyGameClass.HEALTH_IMAGE_LIST[playerSprite.health-1],5,5);
         }
         
         // world UI  
@@ -387,15 +388,15 @@ export default class BillyGameClass extends GameClass {
             this.drawUIImage('ui/trophy',(this.canvasWidth-110),(this.canvasHeight-68));
             this.drawUIText((this.getGameDataCountForPrefix('trophy_')+'/21'),(this.canvasWidth-20),(this.canvasHeight-33));
 
-            if (this.bannerMode!==this.BANNER_MODE_NONE) {
+            if (this.bannerMode!==BillyGameClass.BANNER_MODE_NONE) {
             
                 // the alpha
                 switch (this.bannerMode) {
-                    case this.BANNER_MODE_FADE_IN:
-                        this.drawSetAlpha(1.0-(this.bannerFadeCount/this.BANNER_FADE_TICK));
+                    case BillyGameClass.BANNER_MODE_FADE_IN:
+                        this.drawSetAlpha(1.0-(this.bannerFadeCount/BillyGameClass.BANNER_FADE_TICK));
                         break;
-                    case this.BANNER_MODE_FADE_OUT:
-                        this.drawSetAlpha(this.bannerFadeCount/this.BANNER_FADE_TICK);
+                    case BillyGameClass.BANNER_MODE_FADE_OUT:
+                        this.drawSetAlpha(this.bannerFadeCount/BillyGameClass.BANNER_FADE_TICK);
                         break;
                 }
 

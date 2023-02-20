@@ -1,6 +1,6 @@
-export default class MusicListClass {
+import SetupClass from '../engine/setup.js';
 
-    static MAIN_VOLUME=0.15;
+export default class MusicListClass {
 
     constructor(game) {
         this.game=game;
@@ -70,7 +70,7 @@ export default class MusicListClass {
         this.currentSource.buffer=buffer;
         
         gain=ctx.createGain();
-        gain.gain.value=MusicListClass.MAIN_VOLUME;
+        gain.gain.value=SetupClass.MUSIC_VOLUME;
 
         this.currentSource.connect(gain);
         gain.connect(ctx.destination);

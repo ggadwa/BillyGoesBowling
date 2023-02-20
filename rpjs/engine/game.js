@@ -89,6 +89,8 @@ export default class GameClass {
         // load the maps list
         this.mapList.initialize();
         
+        let c=performance.now();
+        
         // load the image list
         try {
             await this.imageList.initialize();
@@ -118,6 +120,8 @@ export default class GameClass {
             alert(e);
             return;
         }
+        
+        console.info(performance.now()-c);
 
         // initial input
         this.input.initialize();
@@ -131,7 +135,7 @@ export default class GameClass {
             alert('Unknown start map: '+this.getStartMap());
             return;
         }
-        
+
         this.map.initialize();
         
         // the liquid object
@@ -496,7 +500,7 @@ export default class GameClass {
     
     runLoop(systemTimestamp) {
         let id;
-
+        
         systemTimestamp=Math.trunc(systemTimestamp);
 
         // next frame

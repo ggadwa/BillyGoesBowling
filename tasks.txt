@@ -1,13 +1,23 @@
 //// TO DO
 
 
+5616.39999999851
+1771.5
+1692.6000000089407
+
+- image/sound loading threaded
+
+
+
+- move all constants to statics
+
 - add kangaroo
 - easter heads and fish
 
-- move all constants to statics
+
 - clean up all unused imports
 
-- image/sound loading threaded
+
 
 - move game time to 60 fps
 
