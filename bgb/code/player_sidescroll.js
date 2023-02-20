@@ -1,4 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import InputClass from '../../rpjs/engine/input.js';
 import BallClass from './ball.js';
 import ShieldClass from './shield.js';
 import CloudBlockClass from './cloud_block.js';
@@ -214,7 +215,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
     }
     
     onRun(tick) {
-        let goLeft,goRight,jump;
+        let stickX,jump;
         
         // warping? 
         if (this.warpCount!==0) {
@@ -250,16 +251,17 @@ export default class PlayerSideScrollClass extends SpriteClass {
         // when shield is on, you can't move
         if (this.shieldCount!==0) {
             this.shieldCount--;
+            stickX=0.0;
+            jump=false;
         }
         else {
-            goLeft=this.game.input.isKeyDown("KeyA");
-            goRight=this.game.input.isKeyDown("KeyD");
-            jump=this.game.input.isKeyDown("Space")
+            stickX=this.getInputState(InputClass.LEFT_STICK_X);
+            jump=(this.getInputState(InputClass.BUTTON_A)!==0.0);
         }
         
         // if we just started going left and right, reset walking
         // animation to frame 0
-        if ((goLeft) || (goRight)) {
+        if (stickX!==0.0) {
             if (!this.walking) {
                 this.walkAnimationFrame=0;
                 this.walkAnimationFrameCount=this.WALK_FRAME_TICK;
@@ -270,7 +272,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
             this.walking=false;
         }
         
-        if (goLeft) {
+        if (stickX<0.0) {
             if (this.grounded) this.flipX=true;
             
             if (this.grounded) {
@@ -288,7 +290,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         }
         
         // walk right
-        if (goRight) {
+        if (stickX>0.0) {
             if (this.grounded) this.flipX=false;
             
             if (this.grounded) {

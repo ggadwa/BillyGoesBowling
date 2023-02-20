@@ -1,7 +1,6 @@
-export default class ImageListClass
-{
-    constructor(game)
-    {
+export default class ImageListClass {
+
+    constructor(game) {
         this.game=game;
         
         this.images=new Map();
@@ -9,31 +8,23 @@ export default class ImageListClass
         Object.seal(this);
     }
     
-    initialize(callback)
-    {
+    initialize(callback) {
         this.create();
         this.load(callback);
     }
     
-    /**
-     * Override this to build the list of images this game will need.
-     */
-    create()
-    {
+    create() {
     }
     
-    add(name)
-    {
+    add(name) {
         this.images.set(name,new Image());
     }
     
-    get(name)
-    {
+    get(name) {
         return(this.images.get(name));
     }
     
-    getArrayOfImageByPrefix(prefix)
-    {
+    getArrayOfImageByPrefix(prefix) {
         let typeImages=[];
         
         this.images.forEach(function(value,key,map) {
@@ -43,18 +34,15 @@ export default class ImageListClass
         return(typeImages);
     }
     
-    loadProcessError(path,keyIter,count,callback)
-    {
+    loadProcessError(path,keyIter,count,callback) {
         console.log('Missing image png: '+path);
         this.loadProcess(keyIter,count,callback);
     }
     
-    loadProcess(keyIter,count,callback)
-    {
+    loadProcess(keyIter,count,callback) {
         let rtn,name,img,path;
         
-            // get next key
-            
+        // get next key
         rtn=keyIter.next();
         if (rtn.done) {
             callback();
@@ -72,8 +60,7 @@ export default class ImageListClass
         img.src=path;
     }
     
-    load(callback)
-    {
+    load(callback) {
         this.loadProcess(this.images.keys(),0,callback);
     }
     

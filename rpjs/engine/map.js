@@ -3,18 +3,18 @@ import SpriteClass from './sprite.js';
 import ParticleClass from './particle.js';
 
 export default class MapClass {
+
+    static MAP_TILE_WIDTH=256;
+    static MAP_TILE_HEIGHT=128;
+    static MAP_TILE_SIZE=64;
+
     constructor(game) {
         this.game=game;
         this.name='';
         
-        // constants
-        this.MAP_TILE_WIDTH=256; // todo -- these are here until we can have static class fields (replace with Map.X)
-        this.MAP_TILE_HEIGHT=128;
-        this.MAP_TILE_SIZE=64;
-        
         // variables
-        this.width=this.MAP_TILE_WIDTH*this.MAP_TILE_SIZE;
-        this.height=this.MAP_TILE_HEIGHT*this.MAP_TILE_SIZE;
+        this.width=MapClass.MAP_TILE_WIDTH*MapClass.MAP_TILE_SIZE;
+        this.height=MapClass.MAP_TILE_HEIGHT*MapClass.MAP_TILE_SIZE;
         this.rightEdge=0;
         
         this.offsetX=0;
@@ -71,10 +71,10 @@ export default class MapClass {
         // find the right edge of map
         this.rightEdge=0;
         
-        for (y=0;y!==this.MAP_TILE_HEIGHT;y++) {
-            for (x=(this.MAP_TILE_WIDTH-1);x>0;x--) {
-                if (this.tileData[(y*this.MAP_TILE_WIDTH)+x]!==0) {
-                    edgeX=x*this.MAP_TILE_SIZE;
+        for (y=0;y!==MapClass.MAP_TILE_HEIGHT;y++) {
+            for (x=(MapClass.MAP_TILE_WIDTH-1);x>0;x--) {
+                if (this.tileData[(y*MapClass.MAP_TILE_WIDTH)+x]!==0) {
+                    edgeX=x*MapClass.MAP_TILE_SIZE;
                     if (edgeX>this.rightEdge) this.rightEdge=edgeX;
                     break;
                 }
@@ -148,7 +148,7 @@ export default class MapClass {
         return(null);
     }
     
-    addParticle(x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,imageName,count,rotateFactor,reverse,lifeTick) {
+    addParticle(x,y,layer,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,imageName,count,rotateFactor,reverse,lifeTick) {
         let img,particle;
         
         img=this.game.imageList.get(imageName);
@@ -157,14 +157,14 @@ export default class MapClass {
             return;
         }
         
-        particle=new ParticleClass(this.game,x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,img,count,rotateFactor,reverse,lifeTick);
+        particle=new ParticleClass(this.game,x,y,layer,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,img,count,rotateFactor,reverse,lifeTick);
         this.particles.push(particle);
         
         return(particle);
     }
     
     changeTile(x,y,tileIdx) {
-        this.tileData[(y*this.MAP_TILE_WIDTH)+x]=tileIdx;
+        this.tileData[(y*MapClass.MAP_TILE_WIDTH)+x]=tileIdx;
     }
     
     shake(tickCount) {
@@ -287,28 +287,28 @@ export default class MapClass {
         rgt=checkSprite.x+checkSprite.width;
         bot=checkSprite.y;
             
-        lx=Math.trunc(lft/this.MAP_TILE_SIZE);
+        lx=Math.trunc(lft/MapClass.MAP_TILE_SIZE);
         if (lx<0) lx=0;
-        rx=Math.trunc(rgt/this.MAP_TILE_SIZE)+1;
-        if (rx>this.MAP_TILE_WIDTH) rx=this.MAP_TILE_WIDTH;
+        rx=Math.trunc(rgt/MapClass.MAP_TILE_SIZE)+1;
+        if (rx>MapClass.MAP_TILE_WIDTH) rx=MapClass.MAP_TILE_WIDTH;
         
-        ty=Math.trunc(top/this.MAP_TILE_SIZE);
+        ty=Math.trunc(top/MapClass.MAP_TILE_SIZE);
         if (ty<0) ty=0;
         
-        by=Math.trunc(bot/this.MAP_TILE_SIZE);
-        if (by>this.MAP_TILE_HEIGHT) by=this.MAP_TILE_HEIGHT;
+        by=Math.trunc(bot/MapClass.MAP_TILE_SIZE);
+        if (by>MapClass.MAP_TILE_HEIGHT) by=MapClass.MAP_TILE_HEIGHT;
         
         for (gy=ty;gy<=by;gy++) {
                 
-            dy=gy*this.MAP_TILE_SIZE;
-            if ((bot<=dy) || (top>(dy+this.MAP_TILE_SIZE))) continue;
+            dy=gy*MapClass.MAP_TILE_SIZE;
+            if ((bot<=dy) || (top>(dy+MapClass.MAP_TILE_SIZE))) continue;
 
             for (gx=lx;gx<=rx;gx++) {
-                tileIdx=this.tileData[(gy*this.MAP_TILE_WIDTH)+gx];
+                tileIdx=this.tileData[(gy*MapClass.MAP_TILE_WIDTH)+gx];
                 if (tileIdx===0) continue;
                 
-                dx=gx*this.MAP_TILE_SIZE;
-                if ((rgt<=dx) || (lft>=(dx+this.MAP_TILE_SIZE))) continue;
+                dx=gx*MapClass.MAP_TILE_SIZE;
+                if ((rgt<=dx) || (lft>=(dx+MapClass.MAP_TILE_SIZE))) continue;
                 
                 // now check ignore list
                 if (checkSprite.tileIndexIgnoreList!=null) {
@@ -327,7 +327,7 @@ export default class MapClass {
                 // tile contact
                 checkSprite.collideTileIdx=tileIdx;
                 checkSprite.collideTileLeft=dx;
-                checkSprite.collideTileRight=dx+this.MAP_TILE_SIZE;
+                checkSprite.collideTileRight=dx+MapClass.MAP_TILE_SIZE;
                 checkSprite.stageEventCollideTile(gx,gy,tileIdx);
                 
                 return(true);
@@ -396,26 +396,26 @@ export default class MapClass {
         rgt=checkSprite.x+checkSprite.width;
         bot=checkSprite.y+dist;
         
-        leftTileX=Math.trunc(lft/this.MAP_TILE_SIZE)-1;
-        rightTileX=Math.trunc(rgt/this.MAP_TILE_SIZE)+1;
-        y=Math.trunc(bot/this.MAP_TILE_SIZE);
+        leftTileX=Math.trunc(lft/MapClass.MAP_TILE_SIZE)-1;
+        rightTileX=Math.trunc(rgt/MapClass.MAP_TILE_SIZE)+1;
+        y=Math.trunc(bot/MapClass.MAP_TILE_SIZE);
         
         if (leftTileX<0) leftTileX=0;
         if (y<0) y=0;
-        if (rightTileX>this.MAP_TILE_WIDTH) rightTileX=this.MAP_TILE_WIDTH-1;
-        if ((y+2)>this.MAP_TILE_HEIGHT) y=this.MAP_TILE_HEIGHT-2;
+        if (rightTileX>MapClass.MAP_TILE_WIDTH) rightTileX=MapClass.MAP_TILE_WIDTH-1;
+        if ((y+2)>MapClass.MAP_TILE_HEIGHT) y=MapClass.MAP_TILE_HEIGHT-2;
         
         for (gy=y;gy!==(y+2);gy++) {
             
-            dy=gy*this.MAP_TILE_SIZE;
-            if ((bot<dy) || (bot>((dy+this.MAP_TILE_SIZE)+dist))) continue;              
+            dy=gy*MapClass.MAP_TILE_SIZE;
+            if ((bot<dy) || (bot>((dy+MapClass.MAP_TILE_SIZE)+dist))) continue;              
 
             for (gx=leftTileX;gx<rightTileX;gx++) {
-                tileIdx=this.tileData[(gy*this.MAP_TILE_WIDTH)+gx];
+                tileIdx=this.tileData[(gy*MapClass.MAP_TILE_WIDTH)+gx];
                 if (tileIdx===0) continue;
                 
-                dx=gx*this.MAP_TILE_SIZE;
-                if ((rgt<=dx) || (lft>=(dx+this.MAP_TILE_SIZE))) continue;
+                dx=gx*MapClass.MAP_TILE_SIZE;
+                if ((rgt<=dx) || (lft>=(dx+MapClass.MAP_TILE_SIZE))) continue;
                 
                 if ((dy<ty) || (ty===-1)) {
                     
@@ -499,26 +499,26 @@ export default class MapClass {
         rgt=checkSprite.x+checkSprite.width;
         bot=checkSprite.y+dist;
         
-        leftTileX=Math.trunc(lft/this.MAP_TILE_SIZE)-1;
-        rightTileX=Math.trunc(rgt/this.MAP_TILE_SIZE)+1;
-        y=Math.trunc(top/this.MAP_TILE_SIZE);
+        leftTileX=Math.trunc(lft/MapClass.MAP_TILE_SIZE)-1;
+        rightTileX=Math.trunc(rgt/MapClass.MAP_TILE_SIZE)+1;
+        y=Math.trunc(top/MapClass.MAP_TILE_SIZE);
         
         if (leftTileX<0) leftTileX=0;
         if (y<0) y=0;
-        rightTileX=Math.trunc(rgt/this.MAP_TILE_SIZE)+1;
-        if ((y+2)>this.MAP_TILE_HEIGHT) y=this.MAP_TILE_HEIGHT-2;
+        rightTileX=Math.trunc(rgt/MapClass.MAP_TILE_SIZE)+1;
+        if ((y+2)>MapClass.MAP_TILE_HEIGHT) y=MapClass.MAP_TILE_HEIGHT-2;
         
         for (gy=y;gy!==(y+2);gy++) {
             
-            dy=gy*this.MAP_TILE_SIZE;
-            if ((top<(dy+dist)) || (top>(dy+this.MAP_TILE_SIZE))) continue;              
+            dy=gy*MapClass.MAP_TILE_SIZE;
+            if ((top<(dy+dist)) || (top>(dy+MapClass.MAP_TILE_SIZE))) continue;              
 
             for (gx=leftTileX;gx<rightTileX;gx++) {
-                tileIdx=this.tileData[(gy*this.MAP_TILE_WIDTH)+gx];
+                tileIdx=this.tileData[(gy*MapClass.MAP_TILE_WIDTH)+gx];
                 if (tileIdx===0) continue;
                 
-                dx=gx*this.MAP_TILE_SIZE;
-                if ((rgt<=dx) || (lft>=(dx+this.MAP_TILE_SIZE))) continue;
+                dx=gx*MapClass.MAP_TILE_SIZE;
+                if ((rgt<=dx) || (lft>=(dx+MapClass.MAP_TILE_SIZE))) continue;
                 
                 if ((dy<ty) || (ty===-1)) {
                     // now check ignore list
@@ -539,7 +539,7 @@ export default class MapClass {
                     checkSprite.riseSprite=null;
                     checkSprite.riseTileIdx=tileIdx;
                     checkSprite.stageEventRiseIntoTile(gx,gy,tileIdx);
-                    ty=dy+this.MAP_TILE_SIZE;
+                    ty=dy+MapClass.MAP_TILE_SIZE;
                 }
             }
         }
@@ -579,10 +579,10 @@ export default class MapClass {
     }
     
     getTileUnderSprite(checkSprite) {
-        let x=Math.trunc((checkSprite.x+Math.trunc(checkSprite.width*0.5))/this.MAP_TILE_SIZE);
-        let y=Math.trunc((checkSprite.y+1)/this.MAP_TILE_SIZE);
+        let x=Math.trunc((checkSprite.x+Math.trunc(checkSprite.width*0.5))/MapClass.MAP_TILE_SIZE);
+        let y=Math.trunc((checkSprite.y+1)/MapClass.MAP_TILE_SIZE);
         
-        return(this.tileData[(y*this.MAP_TILE_WIDTH)+x]);
+        return(this.tileData[(y*MapClass.MAP_TILE_WIDTH)+x]);
     }
     
     getMapViewportLeftEdge() {
@@ -705,30 +705,35 @@ export default class MapClass {
         }
         
         // draw size
-        tilePerWidth=Math.trunc(this.game.canvasWidth/this.MAP_TILE_SIZE);
-        tilePerHeight=Math.trunc(this.game.canvasHeight/this.MAP_TILE_SIZE);
+        tilePerWidth=Math.trunc(this.game.canvasWidth/MapClass.MAP_TILE_SIZE);
+        tilePerHeight=Math.trunc(this.game.canvasHeight/MapClass.MAP_TILE_SIZE);
             
         // draw the map
-        lx=Math.trunc(this.offsetX/this.MAP_TILE_SIZE)-1;
+        lx=Math.trunc(this.offsetX/MapClass.MAP_TILE_SIZE)-1;
         if (lx<0) lx=0;
         
         rx=(lx+tilePerWidth)+2;
-        if (rx>this.MAP_TILE_WIDTH) rx=this.MAP_TILE_WIDTH;
+        if (rx>MapClass.MAP_TILE_WIDTH) rx=MapClass.MAP_TILE_WIDTH;
         
-        ty=Math.trunc(this.offsetY/this.MAP_TILE_SIZE)-1;
+        ty=Math.trunc(this.offsetY/MapClass.MAP_TILE_SIZE)-1;
         if (ty<0) ty=0;
         
         by=(ty+tilePerHeight)+2;
-        if (by>this.MAP_TILE_HEIGHT) by=this.MAP_TILE_HEIGHT;
+        if (by>MapClass.MAP_TILE_HEIGHT) by=MapClass.MAP_TILE_HEIGHT;
         
         for (y=ty;y<by;y++) {
             
             for (x=lx;x<rx;x++) {
-                tile=this.tileData[(y*this.MAP_TILE_WIDTH)+x];
+                tile=this.tileData[(y*MapClass.MAP_TILE_WIDTH)+x];
                 if (tile===0) continue;
                 
-                ctx.drawImage(this.game.tileImageList[tile-1],((x*this.MAP_TILE_SIZE)-this.offsetX),((y*this.MAP_TILE_SIZE)-this.offsetY));
+                ctx.drawImage(this.game.tileImageList[tile-1],((x*MapClass.MAP_TILE_SIZE)-this.offsetX),((y*MapClass.MAP_TILE_SIZE)-this.offsetY));
             }
+        }
+        
+        // draw the before sprite particles
+        for (particle of this.particles) {
+            if (particle.layer===ParticleClass.BEFORE_SPRITES_LAYER) particle.draw(ctx,this.offsetX,this.offsetY);
         }
         
         // draw the background sprites
@@ -741,9 +746,9 @@ export default class MapClass {
             if ((sprite.show) && (sprite.layer===sprite.FOREGROUND_LAYER)) sprite.draw(ctx,this.offsetX,this.offsetY);
         }
         
-        // draw the particles
+        // draw the after sprite particles
         for (particle of this.particles) {
-            particle.draw(ctx,this.offsetX,this.offsetY);
+            if (particle.layer===ParticleClass.AFTER_SPRITES_LAYER) particle.draw(ctx,this.offsetX,this.offsetY);
         }
     }
     

@@ -1,33 +1,25 @@
-export default class MapListClass
-{
-    constructor(game)
-    {
+export default class MapListClass {
+
+    constructor(game) {
         this.game=game;
         this.maps=new Map();
         
         Object.seal(this);
     }
     
-    initialize()
-    {
+    initialize() {
         this.create();
     }
     
-    /**
-     * Override this to build the list of maps this game will need.
-     */
-    create()
-    {
+    create() {
     }
     
-    add(name,map)
-    {
+    add(name,map) {
         map.name=name;
         this.maps.set(name,map);
     }
     
-    get(name)
-    {
+    get(name) {
         return(this.maps.get(name));
     }
     

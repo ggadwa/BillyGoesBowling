@@ -1,4 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import ParticleClass from '../../rpjs/engine/particle.js';
 import BallClass from './ball.js';
 import ShieldClass from './shield.js';
 import ShurikinClass from './shurikin.js';
@@ -39,7 +40,7 @@ export default class CloudBlockClass extends SpriteClass {
         this.show=false;
         this.countDown=this.REAPPEAR_TICK;
         this.playSound('pop');
-        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,500);
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),ParticleClass.AFTER_SPRITES_LAYER,64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,500);
     }
     
     onCollideSprite(sprite) {

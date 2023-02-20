@@ -1,4 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import ParticleClass from '../../rpjs/engine/particle.js';
 import BallClass from './ball.js';
 import EasterHeadClass from './easter_head.js';
 
@@ -39,7 +40,7 @@ export default class FishClass extends SpriteClass {
     }
     
     kill() {
-        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),8,8,1.0,0.1,2,0.03,'particles/fish',8,0.5,false,500);
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),ParticleClass.AFTER_SPRITES_LAYER,8,8,1.0,0.1,2,0.03,'particles/fish',8,0.5,false,500);
         this.playSound('ball_break');
         this.delete();
     }

@@ -1,4 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import ParticleClass from '../../rpjs/engine/particle.js';
 import ExplodeBlockClass from './explode_block.js';
 import AxeClass from './axe.js';
 import MrCPUClass from './mr_cpu.js';
@@ -31,7 +32,7 @@ export default class BreakBlockStrongClass extends SpriteClass {
         
         cx=this.x+Math.trunc(this.width*0.5);
         cy=this.y-Math.trunc(this.height*0.5);
-        this.addParticle(cx,cy,16,16,1.0,0.1,0.08,5,'particles/block',10,0.5,false,800);
+        this.addParticle(cx,cy,ParticleClass.AFTER_SPRITES_LAYER,16,16,1.0,0.1,0.08,5,'particles/block',10,0.5,false,800);
         this.playSound('crack');
         this.delete();
     }

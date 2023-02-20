@@ -1,4 +1,6 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import ParticleClass from '../../rpjs/engine/particle.js';
+import InputClass from '../../rpjs/engine/input.js';
 import PlayerWorldClass from './player_world.js';
 
 export default class MapCastleClass extends SpriteClass {
@@ -39,7 +41,7 @@ export default class MapCastleClass extends SpriteClass {
             // if just defeated, explode
             if (this.game.getData('boss_explode_'+this.getData('map'))) {
                 this.game.deleteData('boss_explode_'+this.getData('map'));      // only happens once
-                this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),10,10,1.0,0.1,5,0.04,'particles/castle',40,0.5,false,1500);
+                this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),ParticleClass.AFTER_SPRITES_LAYER,10,10,1.0,0.1,5,0.04,'particles/castle',40,0.5,false,1500);
                 this.playSoundGlobal('explode');
             }
 
@@ -73,7 +75,7 @@ export default class MapCastleClass extends SpriteClass {
         
         // if space than jump to map
         // save the X/Y so we can restore when we exit
-        if (this.game.input.isKeyDown("Space")) {
+        if (this.getInputState(InputClass.BUTTON_A)) {
             if (!this.isUnlocked()) {
                 this.playSoundGlobal('locked_castle');
             }

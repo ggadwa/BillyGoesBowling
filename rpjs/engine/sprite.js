@@ -201,8 +201,8 @@ export default class SpriteClass {
         return(this.game.map.addSprite(sprite));
     }
     
-    addParticle(x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,imageName,count,rotateFactor,reverse,lifeTick) {
-        return(this.game.map.addParticle(x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,imageName,count,rotateFactor,reverse,lifeTick));
+    addParticle(x,y,layer,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,imageName,count,rotateFactor,reverse,lifeTick) {
+        return(this.game.map.addParticle(x,y,layer,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,imageName,count,rotateFactor,reverse,lifeTick));
     }
     
     collide(hitSprite) {
@@ -421,6 +421,10 @@ export default class SpriteClass {
         this.gravityFactor=0.0
         this.gravityMoveY=0;
         this.gravityPauseTick=0;
+    }
+    
+    getInputState(inputConstant) {
+        return(this.game.input.getInputState(inputConstant));
     }
     
     delete() {

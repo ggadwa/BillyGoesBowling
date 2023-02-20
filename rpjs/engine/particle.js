@@ -1,10 +1,17 @@
 export default class ParticleClass {
-    constructor(game,x,y,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,image,count,rotateFactor,reverse,lifeTick) {
+    
+    static BEFORE_SPRITES_LAYER=0;
+    static AFTER_SPRITES_LAYER=1;
+
+    static ROTATE_TO_TICK_FACTOR=150.0;
+
+    constructor(game,x,y,layer,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,image,count,rotateFactor,reverse,lifeTick) {
         let n,rad;
         
         this.game=game;
         this.x=x;
         this.y=y;
+        this.layer=layer;
         this.startSize=startSize;
         this.endSize=endSize;
         this.startAlpha=startAlpha;
@@ -15,8 +22,6 @@ export default class ParticleClass {
         this.rotateFactor=rotateFactor;
         this.reverse=reverse;
         this.lifeTick=lifeTick;
-        
-        this.ROTATE_TO_TICK_FACTOR=150.0;
         
         this.startTimestamp=game.timestamp;
         
@@ -87,7 +92,7 @@ export default class ParticleClass {
             
             // random rotation
             ctx.setTransform(1, 0, 0, 1, dx, dy);
-            ctx.rotate(this.rot[n]+(this.rotAdd[n]*(tick/this.ROTATE_TO_TICK_FACTOR)));
+            ctx.rotate(this.rot[n]+(this.rotAdd[n]*(tick/ParticleClass.ROTATE_TO_TICK_FACTOR)));
 
             // draw particle
             ctx.drawImage(this.image,-halfSize,-halfSize,sz,sz);

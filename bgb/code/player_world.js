@@ -1,4 +1,6 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import InputClass from '../../rpjs/engine/input.js';
+import MapClass from '../../rpjs/engine/map.js';
 
 export default class PlayerWorldClass extends SpriteClass {
 
@@ -44,7 +46,7 @@ export default class PlayerWorldClass extends SpriteClass {
     }
     
     mapStartup() {
-        this.drawOffsetX=Math.trunc((this.game.map.MAP_TILE_SIZE-this.width)*0.5); // so world player draws in the center of tiles
+        this.drawOffsetX=Math.trunc((MapClass.MAP_TILE_SIZE-this.width)*0.5); // so world player draws in the center of tiles
     }
     
     duplicate(x,y) {
@@ -59,13 +61,13 @@ export default class PlayerWorldClass extends SpriteClass {
         let tx,ty;
         let map=this.game.map;
         
-        tx=Math.trunc((this.x+(this.width*0.5))/map.MAP_TILE_SIZE)+xOff;
-        ty=Math.trunc((this.y-(this.height*0.5))/map.MAP_TILE_SIZE)+yOff;
+        tx=Math.trunc((this.x+(this.width*0.5))/MapClass.MAP_TILE_SIZE)+xOff;
+        ty=Math.trunc((this.y-(this.height*0.5))/MapClass.MAP_TILE_SIZE)+yOff;
         
-        if ((tx<0) || (tx>=map.MAP_TILE_WIDTH)) return(-1);
-        if ((ty<0) || (ty>=map.MAP_TILE_HEIGHT)) return(-1);
+        if ((tx<0) || (tx>=MapClass.MAP_TILE_WIDTH)) return(-1);
+        if ((ty<0) || (ty>=MapClass.MAP_TILE_HEIGHT)) return(-1);
         
-        return(map.tileData[(ty*map.MAP_TILE_WIDTH)+tx]);
+        return(map.tileData[(ty*MapClass.MAP_TILE_WIDTH)+tx]);
     }
     
     isTileIdxRoad(tileIdx) {
@@ -129,22 +131,22 @@ export default class PlayerWorldClass extends SpriteClass {
             this.moveToY=this.lastToY=this.y;
             
             if (this.game.input.isKeyDown("KeyA")) {
-                if (this.hasRoadLeft()) this.moveToX=this.x-map.MAP_TILE_SIZE;
+                if (this.hasRoadLeft()) this.moveToX=this.x-MapClass.MAP_TILE_SIZE;
                 this.moving=true;
             }
 
             if (this.game.input.isKeyDown("KeyD")) {
-                if (this.hasRoadRight()) this.moveToX=this.x+map.MAP_TILE_SIZE;
+                if (this.hasRoadRight()) this.moveToX=this.x+MapClass.MAP_TILE_SIZE;
                 this.moving=true;
             }
 
             if (this.game.input.isKeyDown("KeyW")) {
-                if (this.hasRoadUp()) this.moveToY=this.y-map.MAP_TILE_SIZE;
+                if (this.hasRoadUp()) this.moveToY=this.y-MapClass.MAP_TILE_SIZE;
                 this.moving=true;
             }
 
             if (this.game.input.isKeyDown("KeyS")) {
-                if (this.hasRoadDown()) this.moveToY=this.y+map.MAP_TILE_SIZE;
+                if (this.hasRoadDown()) this.moveToY=this.y+MapClass.MAP_TILE_SIZE;
                 this.moving=true;
             }
             
@@ -186,21 +188,21 @@ export default class PlayerWorldClass extends SpriteClass {
                 
             case this.TILE_IDX_ROAD_HORIZONTAL:
             case this.TILE_IDX_BRIDGE_HORIZONTAL:
-                this.moveToX=this.x+(Math.sign(xDir)*map.MAP_TILE_SIZE);
+                this.moveToX=this.x+(Math.sign(xDir)*MapClass.MAP_TILE_SIZE);
                 break;
                 
             case this.TILE_IDX_ROAD_VERTICAL:
             case this.TILE_IDX_BRIDGE_VERTICAL:
-                this.moveToY=this.y+(Math.sign(yDir)*map.MAP_TILE_SIZE);
+                this.moveToY=this.y+(Math.sign(yDir)*MapClass.MAP_TILE_SIZE);
                 break;
             
             case this.TILE_IDX_ROAD_TOP_LEFT_CORNER:
                 if (Math.sign(xDir)<0) {
                     this.moveToX=this.x;
-                    this.moveToY=this.y+map.MAP_TILE_SIZE;
+                    this.moveToY=this.y+MapClass.MAP_TILE_SIZE;
                 }
                 else {
-                    this.moveToX=this.x+map.MAP_TILE_SIZE;
+                    this.moveToX=this.x+MapClass.MAP_TILE_SIZE;
                     this.moveToY=this.y;
                 }
                 break;
@@ -208,10 +210,10 @@ export default class PlayerWorldClass extends SpriteClass {
             case this.TILE_IDX_ROAD_TOP_RIGHT_CORNER:
                 if (Math.sign(xDir)>0) {
                     this.moveToX=this.x;
-                    this.moveToY=this.y+map.MAP_TILE_SIZE;
+                    this.moveToY=this.y+MapClass.MAP_TILE_SIZE;
                 }
                 else {
-                    this.moveToX=this.x-map.MAP_TILE_SIZE;
+                    this.moveToX=this.x-MapClass.MAP_TILE_SIZE;
                     this.moveToY=this.y;
                 }
                 break;
@@ -219,10 +221,10 @@ export default class PlayerWorldClass extends SpriteClass {
             case this.TILE_IDX_ROAD_BOTTOM_LEFT_CORNER:
                 if (Math.sign(xDir)<0) {
                     this.moveToX=this.x;
-                    this.moveToY=this.y-map.MAP_TILE_SIZE;
+                    this.moveToY=this.y-MapClass.MAP_TILE_SIZE;
                 }
                 else {
-                    this.moveToX=this.x+map.MAP_TILE_SIZE;
+                    this.moveToX=this.x+MapClass.MAP_TILE_SIZE;
                     this.moveToY=this.y;
                 }
                 break;
@@ -230,10 +232,10 @@ export default class PlayerWorldClass extends SpriteClass {
             case this.TILE_IDX_ROAD_BOTTOM_RIGHT_CORNER:
                 if (Math.sign(xDir)>0) {
                     this.moveToX=this.x;
-                    this.moveToY=this.y-map.MAP_TILE_SIZE;
+                    this.moveToY=this.y-MapClass.MAP_TILE_SIZE;
                 }
                 else {
-                    this.moveToX=this.x-map.MAP_TILE_SIZE;
+                    this.moveToX=this.x-MapClass.MAP_TILE_SIZE;
                     this.moveToY=this.y;
                 }
                 break;

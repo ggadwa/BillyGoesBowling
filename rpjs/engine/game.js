@@ -7,6 +7,9 @@ import MapListClass from '../resources/map_list.js';
 import InputClass from './input.js';
 
 export default class GameClass {
+        
+    static PHYSICS_TICK_FREQUENCY=33;
+    static DRAW_TICK_FREQUENCY=16;
 
     constructor() {
         // canvas and sound contexts
@@ -31,9 +34,6 @@ export default class GameClass {
         
         // input and timing
         this.input=new InputClass(this);
-        
-        this.PHYSICS_TICK_FREQUENCY=33;
-        this.DRAW_TICK_FREQUENCY=16;
 
         this.timestamp=0;
         this.lastTimestamp=0;
@@ -468,9 +468,9 @@ export default class GameClass {
         // continue to run physics until we've caught up
         while (true) {
             physicTime=this.timestamp-this.physicsTimestamp;
-            if (physicTime<this.PHYSICS_TICK_FREQUENCY) return;
+            if (physicTime<GameClass.PHYSICS_TICK_FREQUENCY) return;
             
-            this.physicsTimestamp+=this.PHYSICS_TICK_FREQUENCY;
+            this.physicsTimestamp+=GameClass.PHYSICS_TICK_FREQUENCY;
             
             // no map gotos
             this.gotoMapName=null;
@@ -483,6 +483,7 @@ export default class GameClass {
             // check for map goto triggers 
             if (this.gotoMapName!==null) {
                 this.input.keyClear();
+                this.input.clearInputState();
                 this.map=this.mapList.get(this.gotoMapName);
                 this.map.initialize();
             }
@@ -495,7 +496,7 @@ export default class GameClass {
     draw(paused) {
         // if paused, it's a single draw so we ignore the timing
         if (!paused) {
-            if ((this.timestamp-this.drawTimestamp)<this.DRAW_TICK_FREQUENCY) return;
+            if ((this.timestamp-this.drawTimestamp)<GameClass.DRAW_TICK_FREQUENCY) return;
             this.drawTimestamp=this.timestamp;
         }
         

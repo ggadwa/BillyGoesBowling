@@ -1,4 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import ParticleClass from '../../rpjs/engine/particle.js';
 import CloudBlockClass from './cloud_block.js';
 import BreakBlockStrongClass from '../code/break_block_strong.js';
 import ExplodeBlockClass from '../code/explode_block.js';
@@ -74,7 +75,7 @@ export default class MrCPUClass extends SpriteClass {
     kill() {
         this.isDead=true;
         this.gravityFactor=0.0;
-        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),ParticleClass.AFTER_SPRITES_LAYER,64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
         this.playSound('boss_dead');
 
         // update the state
@@ -89,8 +90,7 @@ export default class MrCPUClass extends SpriteClass {
     }
    
     onRun(tick) {
-        let map=this.game.map;
-        let speed,mx;
+        let mx;
         let playerSprite=this.getPlayerSprite();
         
         // do nothing if we aren't shown
@@ -169,13 +169,13 @@ export default class MrCPUClass extends SpriteClass {
         mx=this.x+Math.trunc(this.width*Math.random());
         switch (tick%4) {
             case 0:
-                this.addParticle(mx,this.y,100,35,0.6,0.01,8,0.02,'particles/explode_red',16,0.3,false,500);
+                this.addParticle(mx,this.y,ParticleClass.BEFORE_SPRITES_LAYER,100,35,0.6,0.01,8,0.02,'particles/explode_red',16,0.3,false,500);
                 break;
             case 1:
-                this.addParticle(mx,this.y,90,25,0.6,0.01,8,0.02,'particles/explode_orange',16,0.4,false,600);
+                this.addParticle(mx,this.y,ParticleClass.BEFORE_SPRITES_LAYER,90,25,0.6,0.01,8,0.02,'particles/explode_orange',16,0.4,false,600);
                 break;
             case 2:
-                this.addParticle(mx,this.y,80,15,0.6,0.01,8,0.02,'particles/explode_yellow',16,0.5,false,700);
+                this.addParticle(mx,this.y,ParticleClass.BEFORE_SPRITES_LAYER,80,15,0.6,0.01,8,0.02,'particles/explode_yellow',16,0.5,false,700);
                 break;
         }
         

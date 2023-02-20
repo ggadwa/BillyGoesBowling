@@ -1,4 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import InputClass from '../../rpjs/engine/input.js';
 import PlayerWorldClass from './player_world.js';
 
 export default class MapSpotClass extends SpriteClass {
@@ -63,7 +64,7 @@ export default class MapSpotClass extends SpriteClass {
         
         // if space than jump to map
         // save the X/Y so we can restore when we exit
-        if (this.game.input.isKeyDown("Space")) {
+        if (this.getInputState(InputClass.BUTTON_A)) {
             this.setGameData('worldXPos',playerSprite.x);
             this.setGameData('worldYPos',playerSprite.y);
             this.game.gotoMap(this.getData('map'));

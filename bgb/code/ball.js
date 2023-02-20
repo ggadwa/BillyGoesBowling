@@ -1,4 +1,7 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import InputClass from '../../rpjs/engine/input.js';
+import MapClass from '../../rpjs/engine/map.js';
+import ParticleClass from '../../rpjs/engine/particle.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
 import ShieldClass from './shield.js';
 import BlockClass from './block.js';
@@ -83,7 +86,7 @@ export default class BallClass extends SpriteClass {
         
         // ball destroyed
         if (showDestroy) {
-            this.addParticle((this.x+halfWid),(this.y-halfHigh),8,8,1.0,0.1,4,0.03,'particles/ball',16,0.5,false,500);
+            this.addParticle((this.x+halfWid),(this.y-halfHigh),ParticleClass.AFTER_SPRITES_LAYER,8,8,1.0,0.1,4,0.03,'particles/ball',16,0.5,false,500);
             this.playSound('ball_break');
         }
         
@@ -93,7 +96,7 @@ export default class BallClass extends SpriteClass {
         
         this.x=playerSprite.x+Math.trunc((playerSprite.width-this.width)*0.5);
         this.y=(playerSprite.y-playerSprite.height)-this.HEAD_PIXEL_DISTANCE;
-        this.reformParticle=this.addParticle((this.x+halfWid),(this.y-halfHigh),8,16,1.0,0.1,6,0.03,'particles/ball',16,0.5,true,(this.REFORM_COUNT*33));
+        this.reformParticle=this.addParticle((this.x+halfWid),(this.y-halfHigh),ParticleClass.AFTER_SPRITES_LAYER,8,16,1.0,0.1,6,0.03,'particles/ball',16,0.5,true,(this.REFORM_COUNT*33));
         
         this.playSound('ball_reform');
     }
@@ -265,19 +268,19 @@ export default class BallClass extends SpriteClass {
             // the last ground contact, if in the air, then fire
             // at the tile line above, or if on ground, fire at current
             // tile line
-            if (this.game.input.isKeyDown("ArrowRight")) {
+            if (this.getInputState(InputClass.BUTTON_B)) {
                 this.travelMode=this.TRAVEL_MODE_BOWL_DOWN;
                 this.travelX=0;
                 this.travelY=0;
                 this.travelXDirection=playerSprite.flipX?-1:1;
-                this.travelYBottom=(Math.trunc(playerSprite.lastGroundY/map.MAP_TILE_SIZE)*map.MAP_TILE_SIZE)-Math.trunc((map.MAP_TILE_SIZE-this.height)*0.5);
-                if (!playerSprite.grounded) this.travelYBottom-=map.MAP_TILE_SIZE;
+                this.travelYBottom=(Math.trunc(playerSprite.lastGroundY/MapClass.MAP_TILE_SIZE)*MapClass.MAP_TILE_SIZE)-Math.trunc((MapClass.MAP_TILE_SIZE-this.height)*0.5);
+                if (!playerSprite.grounded) this.travelYBottom-=MapClass.MAP_TILE_SIZE;
                 
                 this.playSound('bowl');
             }
             
             // bowls up and back down  
-            if (this.game.input.isKeyDown("ArrowUp")) {
+            if (this.getInputState(InputClass.BUTTON_Y)) {
                 this.travelMode=this.TRAVEL_MODE_SLAM_UP;
                 this.travelX=playerSprite.x+xOffset;
                 this.travelY=(playerSprite.y-playerSprite.height)-this.HEAD_PIXEL_DISTANCE;
@@ -288,7 +291,7 @@ export default class BallClass extends SpriteClass {
             // bowls in a circle around player, both the shield sprite
             // and the player sprite check for this key and active their parts
             // we chain this so only ball in right state can activate
-            if (this.game.input.isKeyDown("ArrowDown")) {
+            if (this.getInputState(InputClass.BUTTON_X)) {
                 this.travelMode=this.TRAVEL_MODE_CIRCLE;
                 this.travelAngle=0.0;
                 this.sendMessage(playerSprite,'start_shield',null);

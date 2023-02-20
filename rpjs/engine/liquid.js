@@ -1,4 +1,5 @@
 export default class LiquidClass {
+
     constructor(game) {
         this.game=game;
     }

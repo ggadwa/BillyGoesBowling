@@ -1,4 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import ParticleClass from '../../rpjs/engine/particle.js';
 import PlayerWorldClass from './player_world.js';
 
 export default class MapCottageClass extends SpriteClass {
@@ -52,8 +53,8 @@ export default class MapCottageClass extends SpriteClass {
                 cx=this.x+((100+Math.trunc(Math.random()*150))*((Math.random()>0.5)?-1:1));
                 cy=this.y+((100+Math.trunc(Math.random()*150))*((Math.random()>0.5)?-1:1));
 
-                this.addParticle(cx,cy,32,128,0.8,0.1,8,0.015,'particles/explode_red',10,0.4,false,550);
-                this.addParticle(cx,cy,10,10,1.0,0.1,5,0.06,'particles/block',40,0.4,false,1500);
+                this.addParticle(cx,cy,ParticleClass.AFTER_SPRITES_LAYER,32,128,0.8,0.1,8,0.015,'particles/explode_red',10,0.4,false,550);
+                this.addParticle(cx,cy,ParticleClass.AFTER_SPRITES_LAYER,10,10,1.0,0.1,5,0.06,'particles/block',40,0.4,false,1500);
             }
 
             this.playSoundGlobal('pickup');

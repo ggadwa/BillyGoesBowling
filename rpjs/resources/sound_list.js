@@ -1,7 +1,6 @@
-export default class SoundListClass
-{
-    constructor(game)
-    {
+export default class SoundListClass {
+
+    constructor(game) {
         this.game=game;
         
         this.MAIN_VOLUME=0.3;
@@ -12,30 +11,22 @@ export default class SoundListClass
         Object.seal(this);
     }
     
-    initialize(callback)
-    {
+    initialize(callback) {
         this.create();
         this.load(callback);
     }
     
-    /**
-     * Override this to fill the list of sounds this game will need.
-     * Format will be wav and inside a sounds folder of the resource base path.
-     */
-    create()
-    {
+    create() {
     }
     
-    add(name)
-    {
+    add(name) {
         this.buffers.set(name,null);
     }
     
     /**
      * Plays a sound at full volume.
      */
-    play(name)
-    {
+    play(name) {
         let ctx=this.game.audioContext;
         let source,gain;
         let buffer=this.buffers.get(name);
@@ -87,8 +78,7 @@ export default class SoundListClass
         source.start(0);
     }
     
-    loadProcessLoaded(req,name,keyIter,count,callback)
-    {
+    loadProcessLoaded(req,name,keyIter,count,callback) {
         let buffers=this.buffers;
         let thisRef=this;
         
@@ -116,8 +106,7 @@ export default class SoundListClass
                         );
     }
     
-    loadProcess(keyIter,count,callback)
-    {
+    loadProcess(keyIter,count,callback) {
         let req,rtn,name,path;
         
             // get next key
@@ -140,11 +129,9 @@ export default class SoundListClass
         req.send();
     }
     
-    load(callback)
-    {
+    load(callback) {
         this.loadProcess(this.buffers.keys(),0,callback);
     }
-    
     
 }
 

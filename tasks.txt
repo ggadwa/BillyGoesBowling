@@ -1,10 +1,13 @@
 //// TO DO
 
 
-
 - add kangaroo
 - easter heads and fish
 
+- move all constants to statics
+- input: do abstraction and get rid of maps
+- clean up all unused imports
+- is create() in the resources/*_list even used?
 
 - move game time to 60 fps
 

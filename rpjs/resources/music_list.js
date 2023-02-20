@@ -1,7 +1,6 @@
-export default class MusicListClass
-{
-    constructor(game)
-    {
+export default class MusicListClass {
+
+    constructor(game) {
         this.game=game;
         
         this.MAIN_VOLUME=0.15;
@@ -12,31 +11,22 @@ export default class MusicListClass
         Object.seal(this);
     }
     
-    initialize(callback)
-    {
+    initialize(callback) {
         this.create();
         this.load(callback);
     }
     
-    /**
-     * Override this to fill the list of music this game will need.
-     * Format will be mp3 and inside a music folder in the resources
-     * base path.
-     */
-    create()
-    {
+    create() {
     }
     
-    add(name)
-    {
+    add(name) {
         this.buffers.set(name,null);
     }
     
     /**
      * Starts music
      */
-    start(name)
-    {
+    start(name) {
         let ctx=this.game.audioContext;
         let gain;
         let buffer=this.buffers.get(name);
@@ -69,16 +59,14 @@ export default class MusicListClass
     /**
      * Stops the music
      */
-    stop()
-    {
+    stop() {
         if (this.currentSource!==null) {
             this.currentSource.stop(0);
             this.currentSource=null;
         }
     }
     
-    loadProcessLoaded(req,name,keyIter,count,callback)
-    {
+    loadProcessLoaded(req,name,keyIter,count,callback) {
         let buffers=this.buffers;
         let thisRef=this;
         
@@ -106,8 +94,7 @@ export default class MusicListClass
                         );
     }
     
-    loadProcess(keyIter,count,callback)
-    {
+    loadProcess(keyIter,count,callback) {
         let req,rtn,name,path;
         
             // get next key
@@ -130,8 +117,7 @@ export default class MusicListClass
         req.send();
     }
     
-    load(callback)
-    {
+    load(callback) {
         this.loadProcess(this.buffers.keys(),0,callback);
     }
     

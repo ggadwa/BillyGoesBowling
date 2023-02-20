@@ -1,4 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import ParticleClass from '../../rpjs/engine/particle.js';
 import CloudBlockClass from './cloud_block.js';
 import BreakBlockStrongClass from '../code/break_block_strong.js';
 import BallClass from './ball.js';
@@ -103,7 +104,7 @@ export default class ExecutionerClass extends SpriteClass {
     kill() {
         this.isDead=true;
         this.gravityFactor=0.0;
-        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),ParticleClass.AFTER_SPRITES_LAYER,64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
         this.playSound('boss_dead');
 
         // update the state
