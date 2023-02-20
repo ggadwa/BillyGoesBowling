@@ -8,10 +8,6 @@ export default class MapListClass {
     }
     
     initialize() {
-        this.create();
-    }
-    
-    create() {
     }
     
     add(name,map) {

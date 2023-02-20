@@ -5,11 +5,11 @@ import BreakBlockStrongClass from '../code/break_block_strong.js';
 import EyeClass from './eye.js';
 
 export default class BoneyOneEyeClass extends SpriteClass {
+        
+    static FIRE_TICK=55;
+
     constructor(game,x,y,data) {
         super(game,x,y,data);
-        
-        // constants
-        this.FIRE_TICK=55;
         
         // variables
         this.fireWait=0;
@@ -39,7 +39,7 @@ export default class BoneyOneEyeClass extends SpriteClass {
     }
     
     mapStartup() {
-        this.fireWait=this.FIRE_TICK;
+        this.fireWait=BoneyOneEyeClass.FIRE_TICK;
         this.inAir=false;
         this.isDead=false;
         this.isFirstShow=true;
@@ -53,7 +53,7 @@ export default class BoneyOneEyeClass extends SpriteClass {
         this.fireWait--;
         if (this.fireWait>0) return;
         
-        this.fireWait=this.FIRE_TICK;
+        this.fireWait=BoneyOneEyeClass.FIRE_TICK;
 
         // pick the eye side closest to player
         if (this.flipX) {

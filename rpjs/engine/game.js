@@ -45,6 +45,7 @@ export default class GameClass {
         this.tick=0;
         this.completionTimer=0;
         this.paused=true;
+        this.canvasClicked=false;
         
         // game data
         this.data=new Map();
@@ -55,17 +56,13 @@ export default class GameClass {
         this.urlParams=null;
     }
     
-    initialize() {
+    async initialize() {
         let initAudioContext;
         
-            // we use some parameters to setup the game
-            // so decode them here
-        
+        // we use some URL parameters to setup the game
         this.urlParams=new URLSearchParams(window.location.search);
     
-            // get references to all the canvases
-            // we need to draw
-            
+        // the canvases
         this.canvas=document.getElementById('mainCanvas');
         this.ctx=this.canvas.getContext('2d');
         
@@ -77,8 +74,7 @@ export default class GameClass {
         this.backCanvas.height=this.canvasHeight;
         this.backCTX=this.backCanvas.getContext('2d');
         
-            // sound context
-            
+        // sound context
         initAudioContext=window.AudioContext||window.webkitAudioContext;
         this.audioContext=new initAudioContext();
         
@@ -87,69 +83,61 @@ export default class GameClass {
             return;
         }
         
-            // get the resource names
-            
+        // get the resource names
         this.attachResources();
         
-            // load the maps list
-            
+        // load the maps list
         this.mapList.initialize();
         
-            // initialize and load the image list
-        
-        this.imageList.initialize(this.initialize2.bind(this));
-    }
-    
-    initialize2() {
-            // get a list of tile images
-            
-        this.tileImageList=this.imageList.getArrayOfImageByPrefix('tiles/');
-        
-            // initialize and load the sound list
-            
-        this.soundList.initialize(this.initialize3.bind(this));
-    }
-    
-    initialize3() {
-            // initialize and load the music list
-            
-        this.musicList.initialize(this.initialize4.bind(this));
-    }
-   
-    initialize4() {
-        this.input.initialize();
-        
-            // initialize any game specific
-            // data
-            
-        this.createData();
-        
-            // load the starting map
-            
-        this.map=this.mapList.get(this.getStartMap());
-        if (this.map===undefined) {
-            console.log('Unknown start map: '+this.getStartMap());
+        // load the image list
+        try {
+            await this.imageList.initialize();
+        }
+        catch (e) {
+            alert(e);
             return;
         }
+
+        // get a list of tile images
+        this.tileImageList=this.imageList.getArrayOfImageByPrefix('tiles/');
+        
+        // load the sound list
+        try {
+            await this.soundList.initialize();
+        }
+        catch (e) {
+            alert(e);
+            return;
+        }
+
+        // initialize and load the music list
+        try {   
+            await this.musicList.initialize();
+        }
+        catch (e) {
+            alert(e);
+            return;
+        }
+
+        // initial input
+        this.input.initialize();
+        
+        // initialize any game specific data
+        this.createData();
+        
+        // load the starting map
+        this.map=this.mapList.get(this.getStartMap());
+        if (this.map===undefined) {
+            alert('Unknown start map: '+this.getStartMap());
+            return;
+        }
+        
         this.map.initialize();
         
-            // the liquid object
-            
+        // the liquid object
         this.liquid=new LiquidClass(this);
         
-            // we call a single animation frame
-            // loop so we can get a starting timestamp
-            
-        window.requestAnimationFrame(this.initialize5.bind(this));
-    }
-        
-    initialize5(systemTimestamp) {
-            // setup the timing and
-            // game states, because of audio
-            // APIs game needs to start in
-            // paused state so click can active
-            // webaudio API
-            
+        // setup the timing and game states
         this.timestamp=0;
         this.physicsTimestamp=0;
         this.drawTimestamp=0;
@@ -159,38 +147,25 @@ export default class GameClass {
         this.tick=0;
         
         this.paused=true;
-        this.lastTimestamp=Math.trunc(systemTimestamp);
+        this.canvasClicked=false;
         
         this.audioContext.suspend();
         
-            // force a first draw as game starts paused
-
+        // force a first draw as game starts paused
         this.draw(true);
         
-            // now run the game loop
+        // on click for resuming
+        this.canvas.onclick=this.clickCanvas.bind(this);
         
+        // now run the game loop
+        this.lastTimestamp=Math.trunc(performance.now());
         window.requestAnimationFrame(this.runLoop.bind(this));
     }
     
-        //
-        // start and pause
-        //
-     
-    start() {
-        this.initialize();
+    clickCanvas(event) {
+        this.canvasClicked=true;
     }
     
-    resumeFromPause() {
-            // thanks to idiots misusing the web we have to
-            // do all this funny work to get the audio to work
-            
-        if (this.audioContext.state==='suspended') this.audioContext.resume();
-    }
-    
-        //
-        // resources
-        //
-     
     /**
      * Override this to add in all the resources for this game
      * (images, sounds, music, maps)
@@ -218,10 +193,7 @@ export default class GameClass {
         this.mapList.add(name,map);
     }
     
-        //
-        // save slots
-        //
-    
+    // save slots
     getSaveSlotName(paramName) {
         let slotStr;
         let slot=0;
@@ -280,10 +252,7 @@ export default class GameClass {
         window.localStorage.setItem(this.getSaveSlotName('saveSlot'),JSON.stringify([...this.data]));
     }
     
-        //
-        // misc game UIs
-        //
-    
+    // misc game UIs
     drawProgress(title,count,maxCount) {
         let lx=10;
         let rx=this.canvasWidth-10;
@@ -293,13 +262,11 @@ export default class GameClass {
         
         if (this.backCTX===null) return;        // means we are in the editor
         
-            // erase the back canvas
-            
+        // erase the back canvas 
         this.backCTX.fillStyle='#000000';
         this.backCTX.fillRect(0,0,this.canvasWidth,this.canvasHeight);
         
-            // the progress bar
-            
+        // the progress bar
         fx=lx+Math.trunc(((rx-lx)*count)/maxCount);
         
         this.backCTX.fillStyle='#33FF33';
@@ -314,8 +281,7 @@ export default class GameClass {
         this.backCTX.textBaseline='alphabetic';
         this.backCTX.fillText(title,(lx+5),(by-8));
         
-            // swap to forground
-
+        // swap to forground
         this.ctx.drawImage(this.backCanvas,0,0);
     }
     
@@ -482,8 +448,7 @@ export default class GameClass {
             
             // check for map goto triggers 
             if (this.gotoMapName!==null) {
-                this.input.keyClear();
-                this.input.clearInputState();
+                this.input.clearInputState(null);
                 this.map=this.mapList.get(this.gotoMapName);
                 this.map.initialize();
             }
@@ -539,8 +504,9 @@ export default class GameClass {
 
         // pausing?
         if (!this.paused) {
-            if (this.input.isKeyDown("Escape")) {
+            if (this.input.getInputStateBoolean(InputClass.START)) {
                 this.paused=true;
+                this.canvasClicked=false;
                 this.audioContext.suspend();
                 this.draw(true);
                 return;
@@ -548,8 +514,9 @@ export default class GameClass {
         }
         else {
             this.lastTimestamp=systemTimestamp;
-            if (this.input.isLeftMouseDown()) {
+            if (this.canvasClicked) {
                 this.paused=false;
+                this.canvasClicked=false;
                 this.audioContext.resume();
             }
 

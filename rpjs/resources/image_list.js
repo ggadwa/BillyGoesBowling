@@ -8,12 +8,26 @@ export default class ImageListClass {
         Object.seal(this);
     }
     
-    initialize(callback) {
-        this.create();
-        this.load(callback);
-    }
-    
-    create() {
+    async initialize() {
+        let name,img;
+        let count;
+        
+        count=0;
+        
+        for (name of this.images.keys()) {
+            this.game.drawProgress('Loading Images',count,(this.images.size-1));
+            
+            img=this.images.get(name);
+            img.src=this.game.resourceBasePath+'images/'+name+'.png';
+            try {
+                await img.decode();
+            }
+            catch (e) {
+                throw new Error('Missing image png: '+img.src);
+            }
+            
+            count++;
+        }
     }
     
     add(name) {
@@ -33,35 +47,4 @@ export default class ImageListClass {
         
         return(typeImages);
     }
-    
-    loadProcessError(path,keyIter,count,callback) {
-        console.log('Missing image png: '+path);
-        this.loadProcess(keyIter,count,callback);
-    }
-    
-    loadProcess(keyIter,count,callback) {
-        let rtn,name,img,path;
-        
-        // get next key
-        rtn=keyIter.next();
-        if (rtn.done) {
-            callback();
-            return;
-        }
-        
-        this.game.drawProgress('Loading Images',count,(this.images.size-1));
-
-        name=rtn.value;
-        path=this.game.resourceBasePath+'images/'+name+'.png';
-        img=this.images.get(name);
-        
-        img.onload=this.loadProcess.bind(this,keyIter,(count+1),callback);
-        img.onerror=this.loadProcessError.bind(this,path,keyIter,(count+1),callback);
-        img.src=path;
-    }
-    
-    load(callback) {
-        this.loadProcess(this.images.keys(),0,callback);
-    }
-    
 }

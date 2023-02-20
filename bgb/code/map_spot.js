@@ -64,7 +64,7 @@ export default class MapSpotClass extends SpriteClass {
         
         // if space than jump to map
         // save the X/Y so we can restore when we exit
-        if (this.getInputState(InputClass.BUTTON_A)) {
+        if ((this.getInputStateBoolean(InputClass.BUTTON_A)) || (this.getInputStateBoolean(InputClass.BUTTON_B))) {
             this.setGameData('worldXPos',playerSprite.x);
             this.setGameData('worldYPos',playerSprite.y);
             this.game.gotoMap(this.getData('map'));

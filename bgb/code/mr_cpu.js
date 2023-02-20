@@ -159,8 +159,12 @@ export default class MrCPUClass extends SpriteClass {
         
         if (this.jetCount===this.JET_TICK) {
             this.addGravity(this.JETPACK_FLY_SPEED,this.JET_TICK);
-            this.sendMessageToSpritesAroundSprite(0,0,0,32,BreakBlockStrongClass,'explode',null); // jet breaks blocks
-            this.sendMessageToSpritesAroundSprite(0,0,0,32,ExplodeBlockClass,'explode',null); // jet breaks blocks
+            this.sendMessageToSpritesAroundSprite(0,0,0,32,BreakBlockStrongClass,'explode',null); // jet start breaks blocks
+            this.sendMessageToSpritesAroundSprite(0,0,0,32,ExplodeBlockClass,'explode',null);
+        }
+        else {
+            this.sendMessageToSpritesAroundSprite(0,-32,0,-this.height,BreakBlockStrongClass,'explode',null); // when jetting, break blocks above head
+            this.sendMessageToSpritesAroundSprite(0,-32,0,-this.height,ExplodeBlockClass,'explode',null);
         }
         
         this.moveWithCollision(this.moveX,0);

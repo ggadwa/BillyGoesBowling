@@ -1,4 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import InputClass from '../../rpjs/engine/input.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
 
 export default class DoorClass extends SpriteClass {
@@ -28,14 +29,14 @@ export default class DoorClass extends SpriteClass {
         let door;
         let playerSprite=this.getPlayerSprite();
         
-        // up jumps to other door
-        if (!this.game.input.isKeyDown("KeyW")) return;
+        // up on direction enters door
+        if (!this.getInputStateIsNegative(InputClass.LEFT_STICK_Y)) return;
         
         // are we colliding with player?
         if (!this.collide(playerSprite)) return;
         
         // always clear the key so doesn't open next door
-        this.game.input.keyClearSingle("KeyW");
+        this.clearInputState(InputClass.LEFT_STICK_Y);
         
         this.playSound('door');
         

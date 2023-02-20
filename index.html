@@ -12,7 +12,8 @@
 <script type="module">
     import BillyGameClass from './bgb/code/billy_game.js';
     
-    new BillyGameClass().start();
+    let game=new BillyGameClass();
+    await game.initialize();
 </script>
 
 </head>

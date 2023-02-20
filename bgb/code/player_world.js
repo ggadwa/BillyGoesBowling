@@ -108,7 +108,6 @@ export default class PlayerWorldClass extends SpriteClass {
     
     onRun(tick) {
         let tileIdx,xDir,yDir;
-        let map=this.game.map;
         
         // when walking, we just update the animation frame,
         // when not walking, we animate until we hit 0 and stop
@@ -130,22 +129,22 @@ export default class PlayerWorldClass extends SpriteClass {
             this.moveToX=this.lastToX=this.x;
             this.moveToY=this.lastToY=this.y;
             
-            if (this.game.input.isKeyDown("KeyA")) {
+            if (this.getInputStateIsNegative(InputClass.LEFT_STICK_X)) {
                 if (this.hasRoadLeft()) this.moveToX=this.x-MapClass.MAP_TILE_SIZE;
                 this.moving=true;
             }
 
-            if (this.game.input.isKeyDown("KeyD")) {
+            if (this.getInputStateIsPositive(InputClass.LEFT_STICK_X)) {
                 if (this.hasRoadRight()) this.moveToX=this.x+MapClass.MAP_TILE_SIZE;
                 this.moving=true;
             }
 
-            if (this.game.input.isKeyDown("KeyW")) {
+            if (this.getInputStateIsNegative(InputClass.LEFT_STICK_Y)) {
                 if (this.hasRoadUp()) this.moveToY=this.y-MapClass.MAP_TILE_SIZE;
                 this.moving=true;
             }
 
-            if (this.game.input.isKeyDown("KeyS")) {
+            if (this.getInputStateIsPositive(InputClass.LEFT_STICK_Y)) {
                 if (this.hasRoadDown()) this.moveToY=this.y+MapClass.MAP_TILE_SIZE;
                 this.moving=true;
             }

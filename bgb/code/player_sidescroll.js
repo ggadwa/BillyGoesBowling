@@ -215,7 +215,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
     }
     
     onRun(tick) {
-        let stickX,jump;
+        let walkLeft,walkRight,jump;
         
         // warping? 
         if (this.warpCount!==0) {
@@ -251,17 +251,19 @@ export default class PlayerSideScrollClass extends SpriteClass {
         // when shield is on, you can't move
         if (this.shieldCount!==0) {
             this.shieldCount--;
-            stickX=0.0;
+            walkLeft=false;
+            walkRight=false;
             jump=false;
         }
         else {
-            stickX=this.getInputState(InputClass.LEFT_STICK_X);
-            jump=(this.getInputState(InputClass.BUTTON_A)!==0.0);
+            walkLeft=this.getInputStateIsNegative(InputClass.LEFT_STICK_X);
+            walkRight=this.getInputStateIsPositive(InputClass.LEFT_STICK_X);
+            jump=this.getInputStateBoolean(InputClass.BUTTON_A);
         }
         
         // if we just started going left and right, reset walking
         // animation to frame 0
-        if (stickX!==0.0) {
+        if ((walkLeft) || (walkRight)) {
             if (!this.walking) {
                 this.walkAnimationFrame=0;
                 this.walkAnimationFrameCount=this.WALK_FRAME_TICK;
@@ -272,7 +274,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
             this.walking=false;
         }
         
-        if (stickX<0.0) {
+        if (walkLeft) {
             if (this.grounded) this.flipX=true;
             
             if (this.grounded) {
@@ -290,7 +292,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         }
         
         // walk right
-        if (stickX>0.0) {
+        if (walkRight) {
             if (this.grounded) this.flipX=false;
             
             if (this.grounded) {

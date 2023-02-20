@@ -1,22 +1,46 @@
 export default class SoundListClass {
+        
+    static MAIN_VOLUME=0.3;
+    static DISTANCE_ATTUATION=0.0002;
 
     constructor(game) {
         this.game=game;
-        
-        this.MAIN_VOLUME=0.3;
-        this.DISTANCE_ATTUATION=0.0002;
         
         this.buffers=new Map();
         
         Object.seal(this);
     }
     
-    initialize(callback) {
-        this.create();
-        this.load(callback);
-    }
-    
-    create() {
+    async initialize() {
+        let name,resp,url,data;
+        let count;
+        
+        count=0;
+        
+        for (name of this.buffers.keys()) {
+            this.game.drawProgress('Loading Sounds',count,(this.buffers.size-1));
+
+            // get the wav
+            url=this.game.resourceBasePath+'sounds/'+name+'.wav';
+            
+            resp=await fetch(url);
+            if (!resp.ok) throw new Error('Unable to load '+url+'; '+resp.statusText);
+            data=await resp.arrayBuffer();
+            
+            await this.game.audioContext.decodeAudioData(data)
+                .then(
+                    // resolved
+                    decodedData=>{
+                        this.buffers.set(name,decodedData);
+                    },    
+                    // rejected
+                    ()=>{
+                        throw new Error('Unable to decode wav file '+url);
+                    }
+                );
+
+            count++;
+        }
     }
     
     add(name) {
@@ -44,7 +68,7 @@ export default class SoundListClass {
         source.buffer=buffer;
         
         gain=ctx.createGain();
-        gain.gain.value=this.MAIN_VOLUME;
+        gain.gain.value=SoundListClass.MAIN_VOLUME;
 
         source.connect(gain);
         gain.connect(ctx.destination);
@@ -63,7 +87,7 @@ export default class SoundListClass {
         let y=sprite.y-playerSprite.y;
         
         // attenuate, and if <= 0, don't play sound 
-        vol=this.MAIN_VOLUME-(Math.sqrt((x*x)+(y*y))*this.DISTANCE_ATTUATION);
+        vol=SoundListClass.MAIN_VOLUME-(Math.sqrt((x*x)+(y*y))*SoundListClass.DISTANCE_ATTUATION);
         if (vol<=0.0) return;
         
         // play sound  
@@ -76,62 +100,6 @@ export default class SoundListClass {
         source.connect(gain);
         gain.connect(ctx.destination);
         source.start(0);
-    }
-    
-    loadProcessLoaded(req,name,keyIter,count,callback) {
-        let buffers=this.buffers;
-        let thisRef=this;
-        
-            // error
-            
-        if (req.status!==200) {
-            console.log('Missing sound wav: '+name);        // this will abort the game loading process
-            this.loadProcess(keyIter,(count+1),callback);
-            return;
-        }
-        
-            // need to decode the sound
-            
-        buffers=this.buffers;
-        
-        this.game.audioContext.decodeAudioData(req.response,
-                            function(buffer) {
-                                buffers.set(name,buffer);
-                                thisRef.loadProcess(keyIter,(count+1),callback);
-                            },
-                            function(err) {
-                                console.log('Unable to process music: '+name+': '+err);
-                                thisRef.loadProcess(keyIter,(count+1),callback);
-                            }
-                        );
-    }
-    
-    loadProcess(keyIter,count,callback) {
-        let req,rtn,name,path;
-        
-            // get next key
-            
-        rtn=keyIter.next();
-        if (rtn.done) {
-            callback();
-            return;
-        }
-        
-        this.game.drawProgress('Loading Sounds',count,(this.buffers.size-1));
-
-        name=rtn.value;
-        path=this.game.resourceBasePath+'sounds/'+name+'.wav';
-        
-        req=new XMLHttpRequest();
-        req.open('GET',path,true);
-        req.responseType='arraybuffer';
-        req.onload=this.loadProcessLoaded.bind(this,req,name,keyIter,count,callback);
-        req.send();
-    }
-    
-    load(callback) {
-        this.loadProcess(this.buffers.keys(),0,callback);
-    }
-    
+    }    
 }
 

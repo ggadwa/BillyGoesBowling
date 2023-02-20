@@ -1,9 +1,9 @@
 export default class MusicListClass {
 
+    static MAIN_VOLUME=0.15;
+
     constructor(game) {
         this.game=game;
-        
-        this.MAIN_VOLUME=0.15;
         
         this.buffers=new Map();
         this.currentSource=null;
@@ -11,12 +11,36 @@ export default class MusicListClass {
         Object.seal(this);
     }
     
-    initialize(callback) {
-        this.create();
-        this.load(callback);
-    }
-    
-    create() {
+    async initialize() {
+        let name,resp,url,data;
+        let count;
+        
+        count=0;
+        
+        for (name of this.buffers.keys()) {
+            this.game.drawProgress('Loading Music',count,(this.buffers.size-1));
+
+            // get the wav
+            url=this.game.resourceBasePath+'music/'+name+'.mp3';
+            
+            resp=await fetch(url);
+            if (!resp.ok) throw new Error('Unable to load '+url+'; '+resp.statusText);
+            data=await resp.arrayBuffer();
+            
+            await this.game.audioContext.decodeAudioData(data)
+                .then(
+                    // resolved
+                    decodedData=>{
+                        this.buffers.set(name,decodedData);
+                    },    
+                    // rejected
+                    ()=>{
+                        throw new Error('Unable to decode mp3 file '+url);
+                    }
+                );
+
+            count++;
+        }
     }
     
     add(name) {
@@ -31,25 +55,22 @@ export default class MusicListClass {
         let gain;
         let buffer=this.buffers.get(name);
         
-            // just a warning if no music
-            
+        // just a warning if no music
         if ((buffer===undefined) || (buffer===null)) {
             console.log('Unknown music: '+name);
             return;
         }
         
-            // stop any playing music
-            
+        // stop any playing music
         this.stop();
         
-            // now start new music
-        
+        // now start new music
         this.currentSource=ctx.createBufferSource();
         this.currentSource.loop=true;
         this.currentSource.buffer=buffer;
         
         gain=ctx.createGain();
-        gain.gain.value=this.MAIN_VOLUME;
+        gain.gain.value=MusicListClass.MAIN_VOLUME;
 
         this.currentSource.connect(gain);
         gain.connect(ctx.destination);
@@ -65,62 +86,5 @@ export default class MusicListClass {
             this.currentSource=null;
         }
     }
-    
-    loadProcessLoaded(req,name,keyIter,count,callback) {
-        let buffers=this.buffers;
-        let thisRef=this;
-        
-            // error
-            
-        if (req.status!==200) {
-            console.log('Missing music mp3: '+name);        // this will abort the game loading process
-            this.loadProcess(keyIter,(count+1),callback);
-            return;
-        }
-        
-            // need to decode the sound
-            
-        buffers=this.buffers;
-        
-        this.game.audioContext.decodeAudioData(req.response,
-                            function(buffer) {
-                                buffers.set(name,buffer);
-                                thisRef.loadProcess(keyIter,(count+1),callback);
-                            },
-                            function(err) {
-                                console.log('Unable to process music: '+name+': '+err);
-                                thisRef.loadProcess(keyIter,(count+1),callback);
-                            }
-                        );
-    }
-    
-    loadProcess(keyIter,count,callback) {
-        let req,rtn,name,path;
-        
-            // get next key
-            
-        rtn=keyIter.next();
-        if (rtn.done) {
-            callback();
-            return;
-        }
-        
-        this.game.drawProgress('Loading Music',count,(this.buffers.size-1));
-
-        name=rtn.value;
-        path=this.game.resourceBasePath+'music/'+name+'.mp3';
-        
-        req=new XMLHttpRequest();
-        req.open('GET',path,true);
-        req.responseType='arraybuffer';
-        req.onload=this.loadProcessLoaded.bind(this,req,name,keyIter,count,callback);
-        req.send();
-    }
-    
-    load(callback) {
-        this.loadProcess(this.buffers.keys(),0,callback);
-    }
-    
-    
 }
 

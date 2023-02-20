@@ -423,8 +423,24 @@ export default class SpriteClass {
         this.gravityPauseTick=0;
     }
     
-    getInputState(inputConstant) {
-        return(this.game.input.getInputState(inputConstant));
+    clearInputState(inputConstant) {
+        this.game.input.clearInputState(inputConstant);
+    }
+    
+    getInputStateFloat(inputConstant) {
+        return(this.game.input.getInputStateFloat(inputConstant));
+    }
+    
+    getInputStateIsNegative(inputConstant) {
+        return(this.game.input.getInputStateIsNegative(inputConstant));
+    }
+    
+    getInputStateIsPositive(inputConstant) {
+        return(this.game.input.getInputStateIsPositive(inputConstant));
+    }
+    
+    getInputStateBoolean(inputConstant) {
+        return(this.game.input.getInputStateBoolean(inputConstant));
     }
     
     delete() {

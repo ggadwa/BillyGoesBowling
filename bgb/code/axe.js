@@ -6,11 +6,10 @@ import ExecutionerClass from './executioner.js';
 
 export default class AxeClass extends SpriteClass {
         
+    static AXE_SPEED=6;
+        
     constructor(game,x,y,data) {
         super(game,x,y,data);
-        
-        // constants
-        this.SPEED=6;
         
         // setup
         this.addImage('sprites/axe');
@@ -59,7 +58,7 @@ export default class AxeClass extends SpriteClass {
     }
     
     onRun(tick) {
-        this.y+=this.SPEED; // constant speed
+        this.y+=AxeClass.AXE_SPEED; // falls at constant rate
         this.checkCollision();
         
         if (this.isInLiquid()) {

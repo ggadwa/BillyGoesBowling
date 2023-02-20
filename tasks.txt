@@ -5,15 +5,15 @@
 - easter heads and fish
 
 - move all constants to statics
-- input: do abstraction and get rid of maps
 - clean up all unused imports
-- is create() in the resources/*_list even used?
+
+- image/sound loading threaded
 
 - move game time to 60 fps
 
 - both game and sprite still have some non-"on" events
 
-
+- music needs a loop point, give music opening bars
 
 - editor: need x erase block
 - editor: like to get rid of duplicate
@@ -22,16 +22,7 @@
 
 
 
-
-- input might need to be different -- with isLeft(maxSpeed) (keyboard returns maxspeed, sticks %)
-
-
 - Ninja HQ (tall girder skyscraper)
-
-
-- do awaits on all the initialization loops in game.js and editor
-
-
 
 
 
@@ -40,12 +31,7 @@
 - platforms need to push with API (and anything that stands on them)
 
 
-
-
-
 - get rid of all map. or game.
-
-
 
 
 - need transitions between worlds (closing squares)
@@ -61,18 +47,12 @@
 
 
 
-
-
-
-
-
 - need to use controllers
 - last boss can kill billy multiple times when grave
 
 - better water on world map?
 
 - snakes are the worst art, update them
-- add keys/secret exits (one could be having to race explosives throughout level for key at end before it falls in water)
 - carrot needs shading
 
 

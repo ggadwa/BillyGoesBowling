@@ -45,7 +45,7 @@ export default class EditorClass {
         Object.seal(this);
     }
     
-    initialize() {
+    async initialize() {
         // any resize events
         window.addEventListener('resize',this.resize.bind(this),false);
         
@@ -92,25 +92,24 @@ export default class EditorClass {
         // initialize the map list
         this.game.mapList.initialize(this.game);
         
-        // initialize the image list
-        this.game.imageList.initialize(this.initialize2.bind(this));
-    }
-    
-    initialize2() {
-            // the tile list is a list of all the loaded
-            // images from the tile subdirectory
-            
+        // load the image list
+        try {
+            await this.game.imageList.initialize();
+        }
+        catch (e) {
+            alert(e);
+            return;
+        }
+
+        // the tile list is a list of all the loaded images from the tile subdirectory
         this.game.tileImageList=this.game.imageList.getArrayOfImageByPrefix('tiles/');
 
-            // get a set of classes for the
-            // entities we can put in this map
-            
+        // get a set of classes for the entities we can put in this map
         this.spritePaletteList=this.game.getEditorSpritePaletteList();
         
-            // and get the map to edit
-            
-            let mapName=(new URLSearchParams(window.location.search)).get('map');
-            if (mapName===null) mapName=this.game.getStartMap();
+        // and get the map to edit
+        let mapName=(new URLSearchParams(window.location.search)).get('map');
+        if (mapName===null) mapName=this.game.getStartMap();
             
         this.map=this.game.mapList.get(mapName);
         if (this.map===undefined) {
@@ -120,14 +119,11 @@ export default class EditorClass {
         
         this.map.create();
         
-            // if tileData or sprites are null, then
-            // start with a clear map
-            
+        // if tileData or sprites are null, then start with a clear map
         if (this.map.createTileData===null) this.map.createTileData=new Uint16Array(MapClass.MAP_TILE_WIDTH*MapClass.MAP_TILE_HEIGHT);
         if (this.map.createSprites===null) this.map.createSprites=[];
         
-            // and copy to the working version
-            
+        // and copy to the working version
         this.map.tileData=this.map.createTileData.slice();
         this.map.sprites=this.map.createSprites.slice();
         

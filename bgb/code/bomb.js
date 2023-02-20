@@ -4,11 +4,11 @@ import BallClass from './ball.js';
 import RotoCarrotClass from './roto_carrot.js';
 
 export default class BombClass extends SpriteClass {
+        
+    static BOMB_SPEED=7;
+
     constructor(game,x,y,data) {
         super(game,x,y,data);
-        
-        // constants
-        this.BOMB_SPEED=7;
         
         // setup
         this.addImage('sprites/bomb');

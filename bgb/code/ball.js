@@ -7,6 +7,7 @@ import ShieldClass from './shield.js';
 import BlockClass from './block.js';
 import BreakBlockStrongClass from './break_block_strong.js';
 import ExplodeBlockClass from './explode_block.js';
+import ButtonClass from './button.js';
 import EasterHeadClass from './easter_head.js';
 import ExecutionerClass from './executioner.js';
 import AxeClass from './axe.js';
@@ -106,6 +107,7 @@ export default class BallClass extends SpriteClass {
             (sprite instanceof BlockClass) ||
             (sprite instanceof BreakBlockStrongClass) ||
             (sprite instanceof ExplodeBlockClass) ||
+            (sprite instanceof ButtonClass) ||
             (sprite instanceof EasterHeadClass) ||
             (sprite instanceof ExecutionerClass) ||
             (sprite instanceof AxeClass) ||
@@ -268,7 +270,7 @@ export default class BallClass extends SpriteClass {
             // the last ground contact, if in the air, then fire
             // at the tile line above, or if on ground, fire at current
             // tile line
-            if (this.getInputState(InputClass.BUTTON_B)) {
+            if (this.getInputStateBoolean(InputClass.BUTTON_B)) {
                 this.travelMode=this.TRAVEL_MODE_BOWL_DOWN;
                 this.travelX=0;
                 this.travelY=0;
@@ -280,7 +282,7 @@ export default class BallClass extends SpriteClass {
             }
             
             // bowls up and back down  
-            if (this.getInputState(InputClass.BUTTON_Y)) {
+            if (this.getInputStateBoolean(InputClass.BUTTON_Y)) {
                 this.travelMode=this.TRAVEL_MODE_SLAM_UP;
                 this.travelX=playerSprite.x+xOffset;
                 this.travelY=(playerSprite.y-playerSprite.height)-this.HEAD_PIXEL_DISTANCE;
@@ -291,7 +293,7 @@ export default class BallClass extends SpriteClass {
             // bowls in a circle around player, both the shield sprite
             // and the player sprite check for this key and active their parts
             // we chain this so only ball in right state can activate
-            if (this.getInputState(InputClass.BUTTON_X)) {
+            if (this.getInputStateBoolean(InputClass.BUTTON_X)) {
                 this.travelMode=this.TRAVEL_MODE_CIRCLE;
                 this.travelAngle=0.0;
                 this.sendMessage(playerSprite,'start_shield',null);
