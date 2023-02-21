@@ -5,14 +5,12 @@ import MrCPUClass from '../code/mr_cpu.js';
 import KingGhastlyClass from './king_ghastly.js';
 
 export default class ExplodeBlockClass extends SpriteClass {
+
+    static COUNT_DOWN_TICK_WAIT=5;
         
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        // constants
-        this.COUNT_DOWN_TICK_WAIT=5;
-        
-        // variables
         this.countDown=-1;
         this.countDownTick=0;
          
@@ -41,7 +39,7 @@ export default class ExplodeBlockClass extends SpriteClass {
     startCountdown() {
         if (this.countDown===-1) {
             this.countDown=3;
-            this.countDownTick=this.COUNT_DOWN_TICK_WAIT;
+            this.countDownTick=ExplodeBlockClass.COUNT_DOWN_TICK_WAIT;
             this.setCurrentImage('sprites/explode_block_'+this.countDown);
             this.playSound('bomb_tick');
         }
@@ -75,7 +73,7 @@ export default class ExplodeBlockClass extends SpriteClass {
         
         // countdown has changed
         this.countDown--;
-        this.countDownTick=this.COUNT_DOWN_TICK_WAIT;
+        this.countDownTick=ExplodeBlockClass.COUNT_DOWN_TICK_WAIT;
 
         if (this.countDown>=0) {
             this.setCurrentImage('sprites/explode_block_'+this.countDown);

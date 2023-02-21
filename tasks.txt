@@ -2,7 +2,7 @@
 
 
 
-- move all constants to statics (next> button)
+- move all constants to statics (next> fish)
 
 - fish
 
@@ -51,9 +51,6 @@ Maps:
 
 
 
-
-
-- need to use controllers
 - last boss can kill billy multiple times when grave
 
 - better water on world map?

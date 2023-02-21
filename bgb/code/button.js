@@ -2,13 +2,12 @@ import SpriteClass from '../../rpjs/engine/sprite.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
 
 export default class ButtonClass extends SpriteClass {
+        
+    static SQUISH_TICK=5;
+
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        // constants
-        this.SQUISH_TICK=5;
-        
-        // variables
         this.addImage('sprites/button');
         this.setCurrentImage('sprites/button');
         
@@ -58,7 +57,7 @@ export default class ButtonClass extends SpriteClass {
         this.playSound('click');
         
         // start the squish
-        this.squishCount=this.SQUISH_TICK;
+        this.squishCount=ButtonClass.SQUISH_TICK;
         
         this.canCollide=false;
         this.canStandOn=false;
@@ -71,7 +70,7 @@ export default class ButtonClass extends SpriteClass {
             return;
         }
         
-        this.resizeY=(this.squishCount-1)/this.SQUISH_TICK;
+        this.resizeY=(this.squishCount-1)/ButtonClass.SQUISH_TICK;
         this.squishCount--;
         
         if (this.squishCount===0) {

@@ -11,7 +11,6 @@ export default class BoneyOneEyeClass extends SpriteClass {
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        // variables
         this.fireWait=0;
         this.inAir=false;
         this.isFalling=false;

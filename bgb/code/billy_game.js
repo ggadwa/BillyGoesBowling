@@ -70,9 +70,6 @@ export default class BillyGameClass extends GameClass {
     constructor() {
         super();
         
-        // constants
-        
-        // variables
         this.bannerTitleText='';
         this.bannerMapName='';
         this.bannerMapRequiredPinCount=0;

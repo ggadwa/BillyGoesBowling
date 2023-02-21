@@ -17,7 +17,6 @@ export default class BoomerangClass extends SpriteClass {
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        // variables
         this.needReset=true;
         this.acceleration=0;
         this.speed=0;

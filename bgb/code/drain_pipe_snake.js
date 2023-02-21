@@ -8,19 +8,18 @@ import FishClass from './fish.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
 
 export default class DrainPipeSnakeClass extends SpriteClass {
+
+    static MAX_WALK_SPEED=5.0;
+    static ACCEL_SPEED=1.0;
+    static INVINCIBLE_TICK=30;
+    static TILE_IDX_GROUND_LEFT_END=1;
+    static TILE_IDX_GROUND_RIGHT_END=3;
+    static TILE_IDX_GIRDER_LEFT_END=10;
+    static TILE_IDX_GIRDER_RIGHT_END=12;  
         
     constructor(game,x,y,data) {
         super(game,x,y,data);
-        
-        this.MAX_WALK_SPEED=5.0;
-        this.ACCEL_SPEED=1.0;
-        this.INVINCIBLE_TICK=30;
-        this.TILE_IDX_GROUND_LEFT_END=1;
-        this.TILE_IDX_GROUND_RIGHT_END=3;
-        this.TILE_IDX_GIRDER_LEFT_END=10;
-        this.TILE_IDX_GIRDER_RIGHT_END=12;
-        
-        // variables
+
         this.walkSpeed=0.0;
         this.snakeHasPipe=true;
         this.invincibleCount=0;
@@ -52,7 +51,7 @@ export default class DrainPipeSnakeClass extends SpriteClass {
     
     breakPipe() {
         this.snakeHasPipe=false;
-        this.invincibleCount=this.INVINCIBLE_TICK;
+        this.invincibleCount=DrainPipeSnakeClass.INVINCIBLE_TICK;
         this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),ParticleClass.AFTER_SPRITES_LAYER,16,16,1.0,0.1,5,0.05,'particles/pipe',10,0.5,false,800);
         this.playSound('pipe_break'); 
     }
@@ -108,12 +107,12 @@ export default class DrainPipeSnakeClass extends SpriteClass {
         if (tileIdx===-1) return;
         
         // if we are on edge tiles, then turn around 
-        if (((tileIdx===this.TILE_IDX_GROUND_LEFT_END) || (tileIdx===this.TILE_IDX_GIRDER_LEFT_END)) && (this.flipX)) {
+        if (((tileIdx===DrainPipeSnakeClass.TILE_IDX_GROUND_LEFT_END) || (tileIdx===DrainPipeSnakeClass.TILE_IDX_GIRDER_LEFT_END)) && (this.flipX)) {
             this.flipX=false;
             return;
         }
         
-        if (((tileIdx===this.TILE_IDX_GROUND_RIGHT_END) || (tileIdx===this.TILE_IDX_GIRDER_RIGHT_END)) && (!this.flipX)) {
+        if (((tileIdx===DrainPipeSnakeClass.TILE_IDX_GROUND_RIGHT_END) || (tileIdx===DrainPipeSnakeClass.TILE_IDX_GIRDER_RIGHT_END)) && (!this.flipX)) {
             this.flipX=true;
         }
     }
@@ -128,20 +127,20 @@ export default class DrainPipeSnakeClass extends SpriteClass {
             this.invincibleCount--;
             if (this.invincibleCount>0) {
                 this.flash=true;
-                this.flashRate=(this.invincibleCount>(this.INVINCIBLE_TICK/2))?5:2;
+                this.flashRate=(this.invincibleCount>(DrainPipeSnakeClass.INVINCIBLE_TICK/2))?5:2;
             }
         }
         
         // walk in direction until a collision
-        maxSpeed=this.MAX_WALK_SPEED;
+        maxSpeed=DrainPipeSnakeClass.MAX_WALK_SPEED;
         if (!this.snakeHasPipe) maxSpeed*=2.0;
         
         if (this.flipX) {
-            this.walkSpeed-=this.ACCEL_SPEED;
+            this.walkSpeed-=DrainPipeSnakeClass.ACCEL_SPEED;
             if (this.walkSpeed<-maxSpeed) this.walkSpeed=-maxSpeed;
         }
         else {
-            this.walkSpeed+=this.ACCEL_SPEED;
+            this.walkSpeed+=DrainPipeSnakeClass.ACCEL_SPEED;
             if (this.walkSpeed>maxSpeed) this.walkSpeed=maxSpeed;
         }
         

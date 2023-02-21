@@ -6,20 +6,17 @@ import BallClass from './ball.js';
 import AxeClass from './axe.js';
 
 export default class ExecutionerClass extends SpriteClass {
+
+    static ACCELERATION=1.0;
+    static MAX_SPEED=7;
+    static JUMP_HEIGHT=-40;
+    static AXE_COOL_DOWN_TICK=35;
+    static AXE_START_COOL_DOWN_TICK=45;
+    static AXE_Y_OFFSET=800;
         
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        // constants
-        this.TILE_IDX_BUMP=18;
-        this.ACCELERATION=1.0;
-        this.MAX_SPEED=7;
-        this.JUMP_HEIGHT=-40;
-        this.AXE_COOL_DOWN_TICK=35;
-        this.AXE_START_COOL_DOWN_TICK=45;
-        this.AXE_Y_OFFSET=800;
-        
-        // variables
         this.executionerDirection=-1;
         this.executionerSpeed=0;
         
@@ -56,7 +53,7 @@ export default class ExecutionerClass extends SpriteClass {
         this.executionerDirection=-1;
         this.executionerSpeed=0;
         
-        this.axeCoolDownCount=this.AXE_START_COOL_DOWN_TICK;
+        this.axeCoolDownCount=ExecutionerClass.AXE_START_COOL_DOWN_TICK;
         this.axeLaunchIndex=0;
         this.axeLaunchPositions=this.data.get('axe');
         
@@ -79,13 +76,13 @@ export default class ExecutionerClass extends SpriteClass {
         }
         
         // fire axe
-        this.game.map.addSprite(new AxeClass(this.game,this.axeLaunchPositions[this.axeLaunchIndex],(playerSprite.y-this.AXE_Y_OFFSET),null));
+        this.game.map.addSprite(new AxeClass(this.game,this.axeLaunchPositions[this.axeLaunchIndex],(playerSprite.y-ExecutionerClass.AXE_Y_OFFSET),null));
                 
         this.playSound('jump');
         
         this.axeLaunchIndex++;
         if (this.axeLaunchIndex>=this.axeLaunchPositions.length) this.axeLaunchIndex=0;
-        this.axeCoolDownCount=this.AXE_COOL_DOWN_TICK;
+        this.axeCoolDownCount=ExecutionerClass.AXE_COOL_DOWN_TICK;
     }
     
     onCollideTile(tileX,tileY,tileIdx) {
@@ -156,14 +153,14 @@ export default class ExecutionerClass extends SpriteClass {
             this.executionerSpeed=0;
         }
         else {
-            this.executionerSpeed+=this.ACCELERATION;
+            this.executionerSpeed+=ExecutionerClass.ACCELERATION;
         }
-        if (this.executionerSpeed>this.MAX_SPEED) this.executionerSpeed=this.MAX_SPEED;
+        if (this.executionerSpeed>ExecutionerClass.MAX_SPEED) this.executionerSpeed=ExecutionerClass.MAX_SPEED;
             
         // jump unless the ground we are on is a cloud, then don't jump so we fall through
         if ((this.grounded) && (!(this.standSprite instanceof CloudBlockClass))) {
             this.executionerSpeed=0;
-            this.addGravity(this.JUMP_HEIGHT,0);
+            this.addGravity(ExecutionerClass.JUMP_HEIGHT,0);
 
             this.flipX=!this.flipX;
         }

@@ -48,9 +48,6 @@ export default class BallClass extends SpriteClass {
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        // constants
-        
-        // variables
         this.travelMode=BallClass.TRAVEL_MODE_FLOATING;
         this.travelX=0;
         this.travelY=0;
@@ -310,7 +307,7 @@ export default class BallClass extends SpriteClass {
             // bowls in a circle around player, both the shield sprite
             // and the player sprite check for this key and active their parts
             // we chain this so only ball in right state can activate
-            if (this.getInputStateBoolean(InputClass.BUTTON_X)) {
+            if ((this.getInputStateBoolean(InputClass.BUTTON_X)) || (this.getInputStateBoolean(InputClass.RIGHT_SHOULDER_TOP)) || (this.getInputStateBoolean(InputClass.RIGHT_SHOULDER_BOTTOM))) {
                 this.travelMode=BallClass.TRAVEL_MODE_CIRCLE;
                 this.travelAngle=0.0;
                 this.sendMessage(playerSprite,'start_shield',null);

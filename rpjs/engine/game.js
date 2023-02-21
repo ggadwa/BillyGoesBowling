@@ -411,6 +411,7 @@ export default class GameClass {
             
             // run game and map logic
             // which runs the sprite logic
+            this.input.onRun(this.tick);
             this.onRun(this.tick);
             this.map.onRun(this.tick);
             

@@ -5,14 +5,12 @@ import BreakBlockStrongClass from '../code/break_block_strong.js';
 import BoneyOneEyeClass from '../code/boney_one_eye.js';
 
 export default class EyeClass extends SpriteClass {
+
+    static EYE_SPEED=15;
         
     constructor(game,x,y,data) {
         super(game,x,y,data);
-        
-        // constants  
-        this.EYE_SPEED=15;
-        
-        // variables
+
         this.needReset=true;
         this.xAdd=0;
         this.yAdd=0;
@@ -80,8 +78,8 @@ export default class EyeClass extends SpriteClass {
             x*=f;
             y*=f;
 
-            this.xAdd=x*this.EYE_SPEED;
-            this.yAdd=y*this.EYE_SPEED;
+            this.xAdd=x*EyeClass.EYE_SPEED;
+            this.yAdd=y*EyeClass.EYE_SPEED;
         }
         
         this.x+=this.xAdd;
