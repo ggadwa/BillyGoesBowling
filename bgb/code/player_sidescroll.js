@@ -194,6 +194,11 @@ export default class PlayerSideScrollClass extends SpriteClass {
     }
     
     onStandOnSprite(sprite) {
+        if (sprite instanceof KangarangClass) {
+            this.hurtPlayer();
+            return;
+        }
+        
         // special case so you can't stand on ghastly to get around him
         if (sprite instanceof KingGhastlyClass) {
             this.killPlayer();

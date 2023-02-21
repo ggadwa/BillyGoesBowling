@@ -17,6 +17,10 @@ export default class InputClass {
         
         // input flags
         this.inputStates=new Float32Array(InputClass.INPUT_COUNT);
+        this.keyA=false;
+        this.keyD=false;
+        this.keyW=false;
+        this.keyS=false;
         
         // listeners 
         this.keyDownListener=this.keyDownEvent.bind(this);
@@ -44,16 +48,20 @@ export default class InputClass {
         
         switch (event.code) {
             case 'KeyA':
-                this.inputStates[InputClass.LEFT_STICK_X]=-1.0;
+                this.keyA=true;
+                this.keysToStick();
                 break;
             case 'KeyD':
-                this.inputStates[InputClass.LEFT_STICK_X]=1.0;
+                this.keyD=true;
+                this.keysToStick();
                 break;
             case 'KeyW':
-                this.inputStates[InputClass.LEFT_STICK_Y]=-1.0;
+                this.keyW=true;
+                this.keysToStick();
                 break;
             case 'KeyS':
-                this.inputStates[InputClass.LEFT_STICK_Y]=1.0;
+                this.keyS=true;
+                this.keysToStick();
                 break;
             case 'ArrowLeft':
                 this.inputStates[InputClass.BUTTON_X]=1.0;
@@ -77,12 +85,20 @@ export default class InputClass {
     keyUpEvent(event) {
         switch (event.code) {
             case 'KeyA':
+                this.keyA=false;
+                this.keysToStick();
+                break;
             case 'KeyD':
-                this.inputStates[InputClass.LEFT_STICK_X]=0.0;
+                this.keyD=false;
+                this.keysToStick();
                 break;
             case 'KeyW':
+                this.keyW=false;
+                this.keysToStick();
+                break;
             case 'KeyS':
-                this.inputStates[InputClass.LEFT_STICK_Y]=0.0;
+                this.keyS=false;
+                this.keysToStick();
                 break;
             case 'ArrowLeft':
                 this.inputStates[InputClass.BUTTON_X]=0.0;
@@ -103,10 +119,53 @@ export default class InputClass {
         }
     }
     
+    // this exists because if you hit A/D (for example) at once, you will
+    // get either A or D, and the release could miss one depending on the
+    // order, this forces if both keys are down the stick is in the middle,
+    // and fixes the lose of a up
+    keysToStick() {
+        if ((this.keyA) && (this.keyD)) {
+            this.inputStates[InputClass.LEFT_STICK_X]=0.0;
+        }
+        else {
+            if (this.keyA) {
+                this.inputStates[InputClass.LEFT_STICK_X]=-1.0;
+            }
+            else {
+                if (this.keyD) {
+                    this.inputStates[InputClass.LEFT_STICK_X]=1.0;
+                }
+                else {
+                    this.inputStates[InputClass.LEFT_STICK_X]=0.0;
+                }
+            }
+        }
+        if ((this.keyW) && (this.keyS)) {
+            this.inputStates[InputClass.LEFT_STICK_Y]=0.0;
+        }
+        else {
+            if (this.keyW) {
+                this.inputStates[InputClass.LEFT_STICK_Y]=-1.0;
+            }
+            else {
+                if (this.keyS) {
+                    this.inputStates[InputClass.LEFT_STICK_Y]=1.0;
+                }
+                else {
+                    this.inputStates[InputClass.LEFT_STICK_Y]=0.0;
+                }
+            }
+        }
+    }
+    
     // input states
     clearInputState(inputConstant) {
         if (inputConstant==null) {
             this.inputStates.fill(0.0);
+            this.keyA=false;
+            this.keyD=false;
+            this.keyW=false;
+            this.keyS=false;
         }
         else {
             this.inputStates[inputConstant]=0.0;

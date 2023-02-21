@@ -1,18 +1,21 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import ParticleClass from '../../rpjs/engine/particle.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
+import BallClass from './ball.js';
+import ShieldClass from './shield.js';
 import BreakBlockStrongClass from '../code/break_block_strong.js';
-import BoneyOneEyeClass from '../code/boney_one_eye.js';
+import KangarangClass from '../code/kangarang.js';
+import SpringClass from '../code/spring.js';
 
 export default class BoomerangClass extends SpriteClass {
         
-    static BOOMERANG_SPEED=15;
+    static BOOMERANG_ACCELERATION=0.25;
+    static MAX_BOOMERANG_SPEED=3;
     
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
         // variables
-        this.needReset=true;
         this.xAdd=0;
         this.yAdd=0;
         
@@ -27,7 +30,7 @@ export default class BoomerangClass extends SpriteClass {
         this.canCollide=false;
         this.canStandOn=false;
         
-        this.setCollideSpriteClassIgnoreList([BoneyOneEyeClass]);
+        this.setCollideSpriteClassIgnoreList([KangarangClass,SpringClass]);
         
         Object.seal(this);
     }
@@ -36,52 +39,39 @@ export default class BoomerangClass extends SpriteClass {
         return(new BoomerangClass(this.game,x,y,this.data));
     }
     
-    killEye() {
+    killBoomerang() {
         this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),ParticleClass.AFTER_SPRITES_LAYER,64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,600);
         this.playSound('pop');
         this.delete();
     }
     
+    onCollideSprite(sprite) {
+        if (
+            (sprite instanceof PlayerSideScrollClass) ||
+            (sprite instanceof BallClass) ||
+            (sprite instanceof ShieldClass)) {
+                this.killBoomerang();
+                return;
+        }
+    }
+    
     onRun(tick) {
-        let x,y,f;
         let playerSprite=this.getPlayerSprite();
         
-            // if first call, then aim at player
-            
-        if (this.needReset) {
-            
-            this.needReset=false;
-            
-                // get the distance to player and normalize
-                
-            x=playerSprite.x-this.x;
-            y=playerSprite.y-this.y;
-            
-            f=Math.sqrt((x*x)+(y*y));
-            if (f!==0.0) f=1.0/f;
+        // accelerate towards player
+        this.xAdd+=((playerSprite.x<this.x)?-BoomerangClass.BOOMERANG_ACCELERATION:BoomerangClass.BOOMERANG_ACCELERATION);
+        if (this.xAdd<-this.MAX_BOOMERANG_SPEED) this.xAdd=-this.MAX_BOOMERANG_SPEED;
+        if (this.xAdd>this.MAX_BOOMERANG_SPEED) this.xAdd=this.MAX_BOOMERANG_SPEED;
         
-            x*=f;
-            y*=f;
+        this.yAdd+=((playerSprite.y<this.y)?-BoomerangClass.BOOMERANG_ACCELERATION:BoomerangClass.BOOMERANG_ACCELERATION);
+        if (this.yAdd<-this.MAX_BOOMERANG_SPEED) this.yAdd=-this.MAX_BOOMERANG_SPEED;
+        if (this.yAdd>this.MAX_BOOMERANG_SPEED) this.yAdd=this.MAX_BOOMERANG_SPEED;
 
-            this.xAdd=x*this.BOOMERANG_SPEED;
-            this.yAdd=y*this.BOOMERANG_SPEED;
-        }
-        
+        // move
         this.x+=this.xAdd;
         this.y+=this.yAdd;
-
-            // destroy eye on any collision, and if
-            // it's a strong break block, break a couple around it
-            
-        if (this.checkCollision()) {
-            
-            if (this.collideSprite!=null) {
-                if (this.collideSprite instanceof BreakBlockStrongClass) {
-                    this.sendMessageToSpritesAroundSprite(-32,-32,32,32,BreakBlockStrongClass,'explode',null);
-                }
-            }
-
-            this.killEye();
-        }
+        
+        // check collision
+        this.checkCollision();
     }
 }

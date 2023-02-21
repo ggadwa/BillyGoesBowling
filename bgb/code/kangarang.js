@@ -1,4 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import PlayerSideScrollClass from './player_sidescroll.js';
 import ParticleClass from '../../rpjs/engine/particle.js';
 import CloudBlockClass from './cloud_block.js';
 import BreakBlockStrongClass from '../code/break_block_strong.js';
@@ -6,7 +7,10 @@ import BoomerangClass from './boomerang.js';
 
 export default class KangarangClass extends SpriteClass {
    
-    static FIRE_TICK=55;
+    static FIRE_TICK=100;
+    static MAX_BOOMERANG=3;
+    static BOOMERANG_SPAWN_DISTANCE=256;
+    static BOOMERANGE_SIZE=64;
 
     constructor(game,x,y,data) {
         super(game,x,y,data);
@@ -50,14 +54,17 @@ export default class KangarangClass extends SpriteClass {
     fireBoomerang() {
         let x,y;
         
+        // wait until fire
         this.fireWait--;
         if (this.fireWait>0) return;
         
         this.fireWait=KangarangClass.FIRE_TICK;
-
-        // are we at the next launch position
-        x=this.x+Math.trunc(this.width*0.6);
-        y=this.y-Math.trunc(this.height*0.5);
+        
+        // don't fire but just wait again if too many boomerangs out
+        if (this.countSpriteOfType(BoomerangClass)>KangarangClass.MAX_BOOMERANG) return;
+        
+        x=(this.x+(this.width/2))-(KangarangClass.BOOMERANGE_SIZE/2);
+        y=(this.y-(this.height/2))+(KangarangClass.BOOMERANGE_SIZE/2);
 
         this.game.map.addSprite(new BoomerangClass(this.game,x,y,null));
 

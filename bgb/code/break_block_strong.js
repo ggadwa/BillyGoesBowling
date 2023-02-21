@@ -16,7 +16,7 @@ export default class BreakBlockStrongClass extends SpriteClass {
         this.show=true;
         this.gravityFactor=0.0;
         this.gravityMinValue=0;
-        this.gravityMaxValue=0;     // break blocks don't fall
+        this.gravityMaxValue=0; // break blocks don't fall
         this.canCollide=true;
         this.canStandOn=true;
         

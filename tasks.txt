@@ -2,13 +2,14 @@
 
 
 
-- move all constants to statics
+- move all constants to statics (next> button)
 
+- shield does NOT break blocks
 - add kangaroo
-  - boomerang always appears behind player
-  - only have 3 on screen at once (might need a sprite count)
-  - only breaks on string blocks
+  - teleport block that has left and right, if you are on the right of left, then switch to right???
 - fish
+
+
 
 
 - clean up all unused imports
@@ -27,8 +28,10 @@
 - pendant tile for castle levels (next to bush tile)
 
 
-
-- Ninja HQ (tall girder skyscraper)
+Maps:
+  - Ninja HQ (tall girder skyscraper)
+  - Bunnies Love Carrots (carrots on top, bunnies on bottom, trophy at start need to cross what's left of break blocks between carrots and bunnies)
+  - That Sinking Feeling (tower with raising water)
 
 
 

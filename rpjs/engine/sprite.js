@@ -307,6 +307,10 @@ export default class SpriteClass {
         return(this.game.map.getTileUnderSprite(this));
     }
     
+    countSpriteOfType(spriteClass) {
+        return(this.game.map.countSpriteOfType(spriteClass));
+    }
+    
     playSound(name) {
         this.game.soundList.playAtSprite(name,this);
     }

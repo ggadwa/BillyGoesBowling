@@ -585,6 +585,17 @@ export default class MapClass {
         return(this.tileData[(y*MapClass.MAP_TILE_WIDTH)+x]);
     }
     
+    countSpriteOfType(spriteClass) {
+        let sprite;
+        let count=0;
+
+        for (sprite of this.sprites) {
+            if (sprite instanceof spriteClass) count++;
+        }
+        
+        return(count);
+    }
+    
     getMapViewportLeftEdge() {
         let sprite,x;
         let wid=this.game.canvasWidth;
