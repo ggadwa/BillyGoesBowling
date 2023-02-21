@@ -9,13 +9,18 @@ import SpringClass from '../code/spring.js';
 
 export default class BoomerangClass extends SpriteClass {
         
-    static BOOMERANG_ACCELERATION=0.25;
-    static MAX_BOOMERANG_SPEED=3;
+    static BOOMERANG_ACCELERATION_MIN=0.2;
+    static BOOMERANG_ACCELERATION_ADD=0.5;
+    static MAX_BOOMERANG_SPEED_MIN=2;
+    static MAX_BOOMERANG_SPEED_ADD=3;
     
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
         // variables
+        this.needReset=true;
+        this.acceleration=0;
+        this.speed=0;
         this.xAdd=0;
         this.yAdd=0;
         
@@ -27,7 +32,7 @@ export default class BoomerangClass extends SpriteClass {
         this.gravityFactor=0.0;
         this.gravityMinValue=0;
         this.gravityMaxValue=0;
-        this.canCollide=false;
+        this.canCollide=true;
         this.canStandOn=false;
         
         this.setCollideSpriteClassIgnoreList([KangarangClass,SpringClass]);
@@ -46,10 +51,12 @@ export default class BoomerangClass extends SpriteClass {
     }
     
     onCollideSprite(sprite) {
+        // boomerangs kill each other so they don't stack up
         if (
             (sprite instanceof PlayerSideScrollClass) ||
             (sprite instanceof BallClass) ||
-            (sprite instanceof ShieldClass)) {
+            (sprite instanceof ShieldClass) ||
+            (sprite instanceof BoomerangClass)) {
                 this.killBoomerang();
                 return;
         }
@@ -58,14 +65,22 @@ export default class BoomerangClass extends SpriteClass {
     onRun(tick) {
         let playerSprite=this.getPlayerSprite();
         
-        // accelerate towards player
-        this.xAdd+=((playerSprite.x<this.x)?-BoomerangClass.BOOMERANG_ACCELERATION:BoomerangClass.BOOMERANG_ACCELERATION);
-        if (this.xAdd<-this.MAX_BOOMERANG_SPEED) this.xAdd=-this.MAX_BOOMERANG_SPEED;
-        if (this.xAdd>this.MAX_BOOMERANG_SPEED) this.xAdd=this.MAX_BOOMERANG_SPEED;
+        // first time, get random flight variables so they don't bunch up
+        if (this.needReset) {
+            this.needReset=false;
+            
+            this.acceleration=BoomerangClass.BOOMERANG_ACCELERATION_MIN+(Math.random()*BoomerangClass.BOOMERANG_ACCELERATION_ADD);
+            this.speed=BoomerangClass.MAX_BOOMERANG_SPEED_MIN+(Math.random()*BoomerangClass.MAX_BOOMERANG_SPEED_ADD);
+        }
         
-        this.yAdd+=((playerSprite.y<this.y)?-BoomerangClass.BOOMERANG_ACCELERATION:BoomerangClass.BOOMERANG_ACCELERATION);
-        if (this.yAdd<-this.MAX_BOOMERANG_SPEED) this.yAdd=-this.MAX_BOOMERANG_SPEED;
-        if (this.yAdd>this.MAX_BOOMERANG_SPEED) this.yAdd=this.MAX_BOOMERANG_SPEED;
+        // accelerate towards player
+        this.xAdd+=((playerSprite.x<this.x)?-this.acceleration:this.acceleration);
+        if (this.xAdd<-this.speed) this.xAdd=-this.speed;
+        if (this.xAdd>this.speed) this.xAdd=this.speed;
+        
+        this.yAdd+=((playerSprite.y<this.y)?-this.acceleration:this.acceleration);
+        if (this.yAdd<-this.speed) this.yAdd=-this.speed;
+        if (this.yAdd>this.speed) this.yAdd=this.speed;
 
         // move
         this.x+=this.xAdd;

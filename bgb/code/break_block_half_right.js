@@ -1,20 +1,18 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import ParticleClass from '../../rpjs/engine/particle.js';
 import BallClass from './ball.js';
-import ShieldClass from './shield.js';
 import ShurikinClass from './shurikin.js';
 import BombClass from './bomb.js';
 import FishClass from './fish.js';
 import ExplodeBlockClass from './explode_block.js';
-import KingGhastlyClass from './king_ghastly.js';
 
-export default class BreakBlockClass extends SpriteClass {
+export default class BreakBlockHalfRightClass extends SpriteClass {
         
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        this.addImage('sprites/break_block')
-        this.setCurrentImage('sprites/break_block');
+        this.addImage('sprites/break_block_half_right')
+        this.setCurrentImage('sprites/break_block_half_right');
         
         this.show=true;
         this.gravityFactor=0.2;
@@ -27,7 +25,7 @@ export default class BreakBlockClass extends SpriteClass {
     }
     
     duplicate(x,y) {
-        return(new BreakBlockClass(this.game,x,y,this.data));
+        return(new BreakBlockHalfRightClass(this.game,x,y,this.data));
     }
     
     breakBlock() {
@@ -41,14 +39,14 @@ export default class BreakBlockClass extends SpriteClass {
     }
     
     onCollideSprite(sprite) {
-        // colliding with ball, shurikin, bomb, fish, or king ghastly breaks block
+        // can only be broken from right side
+        // colliding with ball, shurikin, bomb, or fish breaks block
         if (
                 (sprite instanceof BallClass) ||
                 (sprite instanceof ShurikinClass) ||
                 (sprite instanceof BombClass) ||
-                (sprite instanceof FishClass) ||
-                (sprite instanceof KingGhastlyClass)) {
-                    this.breakBlock();
+                (sprite instanceof FishClass)) {
+                    if (sprite.x>(this.x+(this.width/2))) this.breakBlock();
                     return;
         }
     }

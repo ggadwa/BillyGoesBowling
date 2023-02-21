@@ -158,6 +158,14 @@ export default class SpriteClass {
         }
     }
     
+    sendMessageToAllSpritesOfType(spriteClass,cmd,data) {
+        let sprite;
+        
+        for (sprite of this.game.map.sprites) {
+            if (sprite instanceof spriteClass) this.sendMessage(sprite,cmd,data);
+        }
+    }
+    
     sendMessageToGame(cmd,data) {
         this.game.onMessage(this,cmd,data);
     }

@@ -45,11 +45,13 @@ export default class SpringClass extends SpriteClass {
         // already moving, do nothing
         if (this.springMode!==SpringClass.SPRING_NONE) return;
         
-        sprite.addGravity(SpringClass.SPRING_JUMP_HEIGHT,0);
-
-        this.playSound('boing');
+        // we only spring is sprite is almost fully on spring
+        if (Math.abs(((sprite.x+(sprite.width/2))-(this.x+(this.width/2))))<(this.width/4)) {
+            sprite.addGravity(SpringClass.SPRING_JUMP_HEIGHT,0);
+            this.playSound('boing');
         
-        this.springMode=SpringClass.SPRING_UP;
+            this.springMode=SpringClass.SPRING_UP;
+        }
     }
 
     onRun(tick) {

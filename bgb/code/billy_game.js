@@ -4,6 +4,8 @@ import PlayerSideScrollClass from './player_sidescroll.js';
 import BlockClass from './block.js';
 import BreakBlockClass from './break_block.js';
 import BreakBlockStrongClass from './break_block_strong.js';
+import BreakBlockHalfLeftClass from './break_block_half_left.js';
+import BreakBlockHalfRightClass from './break_block_half_right.js';
 import CloudBlockClass from './cloud_block.js';
 import ExplodeBlockClass from './explode_block.js';
 import PlatformClass from './platform.js';
@@ -200,6 +202,8 @@ export default class BillyGameClass extends GameClass {
         this.addImage('sprites/world_map_castle_wreck');
         this.addImage('sprites/world_map_cottage');
         this.addImage('sprites/world_map_block');
+        this.addImage('sprites/break_block_half_left');
+        this.addImage('sprites/break_block_half_right');
         
         this.addImage('particles/block');
         this.addImage('particles/pipe');
@@ -327,7 +331,9 @@ export default class BillyGameClass extends GameClass {
             new KingGhastlyClass(this,0,0,null),
             new MapSpotClass(this,0,0,null),
             new MapCastleClass(this,0,0,null),
-            new MapCottageClass(this,0,0,null)
+            new MapCottageClass(this,0,0,null),
+            new BreakBlockHalfLeftClass(this,0,0,null),
+            new BreakBlockHalfRightClass(this,0,0,null)
         ]);
     }
    

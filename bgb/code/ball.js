@@ -6,6 +6,8 @@ import PlayerSideScrollClass from './player_sidescroll.js';
 import ShieldClass from './shield.js';
 import BlockClass from './block.js';
 import BreakBlockStrongClass from './break_block_strong.js';
+import BreakBlockHalfLeftClass from './break_block_half_left.js';
+import BreakBlockHalfRightClass from './break_block_half_right.js';
 import ExplodeBlockClass from './explode_block.js';
 import ButtonClass from './button.js';
 import EasterHeadClass from './easter_head.js';
@@ -56,6 +58,8 @@ export default class BallClass extends SpriteClass {
         this.travelYAcross=0;
         this.travelYBottom=0;
         this.travelAngle=0;
+        this.travelLeftEdge=0;
+        this.travelRightEdge=0;
         
         this.reformTick=0;
         this.reformParticle=null;
@@ -105,6 +109,7 @@ export default class BallClass extends SpriteClass {
     }
     
     onCollideSprite(sprite) {
+        // these break the ball
         if (
             (sprite instanceof BlockClass) ||
             (sprite instanceof BreakBlockStrongClass) ||
@@ -120,6 +125,17 @@ export default class BallClass extends SpriteClass {
             (sprite instanceof BoomerangClass) ||
             (sprite instanceof KingGhastlyClass)) {
                 this.returnBall(true);
+                return;
+        }
+        
+        // half blocks break only on red side
+        if (sprite instanceof BreakBlockHalfLeftClass) {
+            if (this.travelXDirection<0) this.returnBall(true);
+            return;
+        }
+        if (sprite instanceof BreakBlockHalfRightClass) {
+            if (this.travelXDirection>0) this.returnBall(true);
+            return;
         }
     }
     
@@ -130,8 +146,8 @@ export default class BallClass extends SpriteClass {
     onRun(tick) {
         let map=this.game.map;
         let playerSprite=this.getPlayerSprite();
-        let px,py,lftEdge,rgtEdge,topEdge,botEdge;
-        let xOffset, yOffset, rad;
+        let px,py,topEdge,botEdge;
+        let xOffset,yOffset,rad;
         
         // if the ball is hidden, it means the player
         // is dead or warping out, so do nothing here
@@ -183,7 +199,8 @@ export default class BallClass extends SpriteClass {
                     this.travelX=0;
                     this.travelYAcross=this.travelYBottom;
                     this.travelMode=BallClass.TRAVEL_MODE_BOWL_ACROSS;
-                    
+                    this.travelLeftEdge=map.getMapViewportLeftEdge(); // we determine left & right edge when starting the bowl, so if we move stuff offscreen it still gets hit
+                    this.travelRightEdge=map.getMapViewportRightEdge();
                     py=this.travelYBottom;
                 }
                 else {
@@ -196,18 +213,16 @@ export default class BallClass extends SpriteClass {
                 
                 if (this.travelXDirection<0) {
                     this.travelX-=BallClass.BOWL_SPEED;
-                    lftEdge=map.getMapViewportLeftEdge();
-                    if (((px+this.travelX)+this.width)<lftEdge) {
-                        this.travelX=lftEdge-(px+this.width);
+                    if (((px+this.travelX)+this.width)<this.travelLeftEdge) {
+                        this.travelX=this.travelLeftEdge-(px+this.width);
                         this.travelY=map.getMapViewportTopEdge()-this.height;
                         this.returnBall(false);
                     }
                 }
                 else {
                     this.travelX+=BallClass.BOWL_SPEED;
-                    rgtEdge=map.getMapViewportRightEdge();
-                    if ((px+this.travelX)>rgtEdge) {
-                        this.travelX=rgtEdge-px;
+                    if ((px+this.travelX)>this.travelRightEdge) {
+                        this.travelX=this.travelRightEdge-px;
                         this.travelY=map.getMapViewportTopEdge()-this.height;
                         this.returnBall(false);
                     }

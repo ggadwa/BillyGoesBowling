@@ -44,10 +44,9 @@ export default class CloudBlockClass extends SpriteClass {
     }
     
     onCollideSprite(sprite) {
-        // colliding with ball, shield, shurikin, bomb, or fish instantly pops cloud
+        // colliding with ball, shurikin, bomb, or fish instantly pops cloud
         if (
                 (sprite instanceof BallClass) ||
-                (sprite instanceof ShieldClass) ||
                 (sprite instanceof ShurikinClass) ||
                 (sprite instanceof BombClass) ||
                 (sprite instanceof FishClass)) {

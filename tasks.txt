@@ -4,9 +4,6 @@
 
 - move all constants to statics (next> button)
 
-- shield does NOT break blocks
-- add kangaroo
-  - teleport block that has left and right, if you are on the right of left, then switch to right???
 - fish
 
 

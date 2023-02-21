@@ -1,8 +1,9 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
-import PlayerSideScrollClass from './player_sidescroll.js';
 import ParticleClass from '../../rpjs/engine/particle.js';
+import PlayerSideScrollClass from './player_sidescroll.js';
 import CloudBlockClass from './cloud_block.js';
-import BreakBlockStrongClass from '../code/break_block_strong.js';
+import BreakBlockStrongClass from './break_block_strong.js';
+import ExplodeBlockClass from './explode_block.js';
 import BoomerangClass from './boomerang.js';
 
 export default class KangarangClass extends SpriteClass {
@@ -74,9 +75,13 @@ export default class KangarangClass extends SpriteClass {
     land() {
         this.shakeMap(10);
         this.playSound('thud');
+        
+        // clear the blocks that don't allow the player to cheat and knock down pile early
+        this.sendMessageToAllSpritesOfType(BreakBlockStrongClass,'explode',null);
                
-        // pop any clouds
+        // pop any clouds and explode any explosion blocks
         this.sendMessageToSpritesAroundSprite(0,0,0,32,CloudBlockClass,'pop',null);
+        this.sendMessageToSpritesAroundSprite(0,0,0,32,ExplodeBlockClass,'explode',null);
     }
     
     kill() {
