@@ -2,9 +2,9 @@
 
 
 
-- move all constants to statics (next> fish)
+- move all constants to statics (next> playerworld)
 
-- fish
+- go over every map
 
 
 
@@ -21,6 +21,7 @@
 
 - editor: need x erase block
 - editor: like to get rid of duplicate
+- editor: scrolling down to fall erases sprites
 
 - pendant tile for castle levels (next to bush tile)
 

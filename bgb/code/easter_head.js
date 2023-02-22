@@ -4,8 +4,8 @@ import BallClass from './ball.js';
 
 export default class EasterHeadClass extends SpriteClass {
 
-    static FIRE_TICK=100;
-    static FIRE_RANDOM_TICK_OFFSET=25;
+    static FIRE_TICK=150;
+    static FIRE_RANDOM_TICK_ADD=100;
     static FIRE_MIN_DISTANCE=64*3;
     static FIRE_MAX_DISTANCE=64*15;
     static THROW_MARGIN_X=-16;
@@ -16,7 +16,7 @@ export default class EasterHeadClass extends SpriteClass {
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        this.fireCount=EasterHeadClass.FIRE_TICK+Math.trunc(Math.random()*EasterHeadClass.FIRE_RANDOM_TICK_OFFSET); // random firing times
+        this.fireCount=EasterHeadClass.FIRE_TICK+Math.trunc(Math.random()*EasterHeadClass.FIRE_RANDOM_TICK_ADD); // random firing times
         this.eyeCount=0;
         this.sinkY=0;
         this.originalY=y;
@@ -91,7 +91,7 @@ export default class EasterHeadClass extends SpriteClass {
         // time to fire? 
         this.fireCount--;
         if (this.fireCount===0) {
-            this.fireCount=EasterHeadClass.FIRE_TICK+Math.trunc(Math.random()*EasterHeadClass.FIRE_RANDOM_TICK_OFFSET); // random firing times;
+            this.fireCount=EasterHeadClass.FIRE_TICK+Math.trunc(Math.random()*EasterHeadClass.FIRE_RANDOM_TICK_ADD); // random firing times;
             this.throwFish();
         }
     }

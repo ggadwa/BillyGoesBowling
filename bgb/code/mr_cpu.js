@@ -8,24 +8,22 @@ import PlayerSideScroll from './player_sidescroll.js';
 
 export default class MrCPUClass extends SpriteClass {
 
+    static CPU_MODE_FALL=0;
+    static CPU_MODE_WALK=1;
+    static CPU_MODE_JETPACK=2;
+        
+    static MAX_SPEED=8;
+    static MIN_WALK_TICK=30;
+    static RANDOM_WALK_TICK=30;
+        
+    static JETPACK_FLY_SPEED=-10;
+    static JETPACK_MOVE_SPEED=5;
+    static JET_TICK=40;
+        
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        // constants
-        this.CPU_MODE_FALL=0;
-        this.CPU_MODE_WALK=1;
-        this.CPU_MODE_JETPACK=2;
-        
-        this.MAX_SPEED=8;
-        this.MIN_WALK_TICK=30;
-        this.RANDOM_WALK_TICK=30;
-        
-        this.JETPACK_FLY_SPEED=-10;
-        this.JETPACK_MOVE_SPEED=5;
-        this.JET_TICK=40;
-        
-        // variables
-        this.mode=this.CPU_MODE_FALL;
+        this.mode=MrCPUClass.CPU_MODE_FALL;
         this.walkCount=0;
         this.jetCount=0;
         this.moveX=0;
@@ -53,7 +51,7 @@ export default class MrCPUClass extends SpriteClass {
     }
     
     mapStartup() {
-        this.mode=this.CPU_MODE_FALL;
+        this.mode=MrCPUClass.CPU_MODE_FALL;
         
         this.isDead=false;
         this.isFirstShow=true;
@@ -117,7 +115,7 @@ export default class MrCPUClass extends SpriteClass {
         }
 
         // falling mode, not much to do but land
-        if (this.mode===this.CPU_MODE_FALL) {
+        if (this.mode===MrCPUClass.CPU_MODE_FALL) {
             this.setCurrentImage('sprites/mr_cpu_1');
             this.flipX=false;
             
@@ -125,9 +123,9 @@ export default class MrCPUClass extends SpriteClass {
             this.runGravity();
             
             if (this.grounded) {
-                this.mode=this.CPU_MODE_WALK;
-                this.walkCount=this.MIN_WALK_TICK+Math.trunc(this.RANDOM_WALK_TICK*Math.random());
-                this.moveX=((playerSprite.x<this.x)?-this.MAX_SPEED:this.MAX_SPEED);
+                this.mode=MrCPUClass.CPU_MODE_WALK;
+                this.walkCount=MrCPUClass.MIN_WALK_TICK+Math.trunc(MrCPUClass.RANDOM_WALK_TICK*Math.random());
+                this.moveX=((playerSprite.x<this.x)?-MrCPUClass.MAX_SPEED:MrCPUClass.MAX_SPEED);
                 this.land();
             }
             
@@ -135,7 +133,7 @@ export default class MrCPUClass extends SpriteClass {
         }
         
         // walk mode, walk towards player
-        if (this.mode===this.CPU_MODE_WALK) {
+        if (this.mode===MrCPUClass.CPU_MODE_WALK) {
             this.setCurrentImage('sprites/mr_cpu_2');
             this.flipX=(((tick/10)&0x1)===0);
             
@@ -144,9 +142,9 @@ export default class MrCPUClass extends SpriteClass {
             
             this.walkCount--;
             if (this.walkCount===0) {
-                this.mode=this.CPU_MODE_JETPACK;
-                this.jetCount=this.JET_TICK;
-                this.moveX=this.JETPACK_MOVE_SPEED*((Math.random()<0.5)?-1:1);
+                this.mode=MrCPUClass.CPU_MODE_JETPACK;
+                this.jetCount=MrCPUClass.JET_TICK;
+                this.moveX=MrCPUClass.JETPACK_MOVE_SPEED*((Math.random()<0.5)?-1:1);
                 this.playSound('jet');
             }
             
@@ -157,8 +155,8 @@ export default class MrCPUClass extends SpriteClass {
         this.setCurrentImage('sprites/mr_cpu_1');
         this.flipX=false;
         
-        if (this.jetCount===this.JET_TICK) {
-            this.addGravity(this.JETPACK_FLY_SPEED,this.JET_TICK);
+        if (this.jetCount===MrCPUClass.JET_TICK) {
+            this.addGravity(MrCPUClass.JETPACK_FLY_SPEED,MrCPUClass.JET_TICK);
             this.sendMessageToSpritesAroundSprite(0,0,0,32,BreakBlockStrongClass,'explode',null); // jet start breaks blocks
             this.sendMessageToSpritesAroundSprite(0,0,0,32,ExplodeBlockClass,'explode',null);
         }
@@ -185,7 +183,7 @@ export default class MrCPUClass extends SpriteClass {
         
         this.jetCount--;
         if (this.jetCount===0) {
-            this.mode=this.CPU_MODE_FALL;
+            this.mode=MrCPUClass.CPU_MODE_FALL;
         }
     }
     

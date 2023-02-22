@@ -1,21 +1,19 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import ParticleClass from '../../rpjs/engine/particle.js';
 import BallClass from './ball.js';
+import BreakBlockClass from './break_block.js';
 import EasterHeadClass from './easter_head.js';
 
 export default class FishClass extends SpriteClass {
 
+    static FISH_SPEED=10;
+    static FISH_INITIAL_ARC=-10;
+    static MAX_BOUNCE=4;
+    static FISH_BOUNCE_ARC=-5;
+
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        // constants
-        this.FISH_SPEED=12;
-        this.FISH_INITIAL_ARC=-10;
-        this.MAX_BOUNCE=4;
-        this.BOUNCE_FACTOR=1.5;
-        this.FISH_BOUNCE_ARC=-5;
-        
-        // variables
         this.moveX=0;
         this.bounceCount=0;
         
@@ -25,8 +23,8 @@ export default class FishClass extends SpriteClass {
         
         this.show=true;
         this.gravityFactor=0.1;
-        this.gravityMinValue=0.5;
-        this.gravityMaxValue=9;
+        this.gravityMinValue=1.5;
+        this.gravityMaxValue=15;
         this.canStandOn=true;
         
         this.setCollideSpriteClassIgnoreList([EasterHeadClass]);
@@ -46,18 +44,28 @@ export default class FishClass extends SpriteClass {
     }
     
     onCollideSprite(sprite) {
-        this.sendMessage(sprite,'hurt',null);
+        if (sprite instanceof  BreakBlockClass) {
+            this.sendMessage(sprite,'explode',null);
+        }
+        else {
+            this.sendMessage(sprite,'hurt',null);
+        }
         this.kill();
     }
     
     onStandOnSprite(sprite) {
-        this.sendMessage(sprite,'hurt',null);
+        if (sprite instanceof  BreakBlockClass) {
+            this.sendMessage(sprite,'explode',null);
+        }
+        else {
+            this.sendMessage(sprite,'hurt',null);
+        }
         this.kill();
     }
     
     onCollideTile(tileX,tileY,tileIdx) {
         this.bounceCount++;
-        if (this.bounceCount>this.MAX_BOUNCE) {
+        if (this.bounceCount>FishClass.MAX_BOUNCE) {
             this.kill();
             return;
         }
@@ -68,12 +76,12 @@ export default class FishClass extends SpriteClass {
     
     onStandOnTile(tileX,tileY,tileIdx) {
         this.bounceCount++;
-        if (this.bounceCount>this.MAX_BOUNCE) {
+        if (this.bounceCount>FishClass.MAX_BOUNCE) {
             this.kill();
             return;
         }
         
-        this.addGravity(this.FISH_BOUNCE_ARC,0);
+        this.addGravity(FishClass.FISH_BOUNCE_ARC,0);
     }
     
     onRun(tick) {
@@ -81,8 +89,8 @@ export default class FishClass extends SpriteClass {
         
         // if first call, then we need to setup the fish
         if (this.moveX===0) {
-            this.moveX=(playerSprite.x<this.x)?-this.FISH_SPEED:this.FISH_SPEED;
-            this.addGravity(this.FISH_INITIAL_ARC,0);
+            this.moveX=(playerSprite.x<this.x)?-FishClass.FISH_SPEED:FishClass.FISH_SPEED;
+            this.addGravity(FishClass.FISH_INITIAL_ARC,0);
             this.flipX=(this.moveX<0);
             this.bounceCount=0;
         }

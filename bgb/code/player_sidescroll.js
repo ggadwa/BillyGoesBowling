@@ -22,26 +22,37 @@ import KingGhastlyClass from '../code/king_ghastly.js';
 
 export default class PlayerSideScrollClass extends SpriteClass {
 
+    static WALK_MAX_SPEED=12;
+    static WALK_ACCEL=2.1;
+    static WALK_DECEL=2.5;
+    static AIR_DECEL=2.0;
+    static JUMP_START_SPEED=16;
+    static JUMP_HEIGHT=-20;
+    static JUMP_GRAVITY_PAUSE=4;
+    static DEATH_TICK=100;
+    static INVINCIBLE_TICK=60;
+    static WARP_TICK=40;
+    static WALK_FRAME_TICK=3;
+    static MAX_HEALTH=4;
+        
+    static WALK_ANIMATION=['sprites/billy_walk_1','sprites/billy_walk_2','sprites/billy_walk_3','sprites/billy_walk_2'];   
+
     constructor(game,x,y,data) {
         super(game,x,y,data);
+
+        this.moveX=0;
+        this.walking=false;
+        this.walkAnimationFrame=0;
+        this.walkAnimationFrameCount=-1;
+        this.lastGroundY=0;
         
-        // constants
-        this.WALK_MAX_SPEED=12;
-        this.WALK_ACCEL=2.1;
-        this.WALK_DECEL=2.5;
-        this.JUMP_START_SPEED=16;
-        this.AIR_MAX_SPEED=12;
-        this.AIR_ACCEL=2.5;
-        this.AIR_DECEL=2.0;
-        this.JUMP_HEIGHT=-20;
-        this.JUMP_GRAVITY_PAUSE=4;
-        this.DEATH_TICK=100;
-        this.INVINCIBLE_TICK=60;
-        this.WARP_TICK=40;
-        this.WALK_FRAME_TICK=3;
-        this.MAX_HEALTH=4;
+        this.invincibleCount=0;
+        this.shieldCount=0;
+        this.deathCount=0;
+        this.warpCount=0;
         
-        this.WALK_ANIMATION=['sprites/billy_walk_1','sprites/billy_walk_2','sprites/billy_walk_3','sprites/billy_walk_2'];
+        this.ballSprite=null;
+        this.shieldSprite=null;
         
         // setup
         this.addImage('sprites/billy_walk_1');
@@ -72,21 +83,6 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.setCollideSpriteClassIgnoreList([BallClass,ShieldClass]);
         this.setCollideTileIndexIgnoreList([22,23]);
         
-        // variables
-        this.moveX=0;
-        this.walking=false;
-        this.walkAnimationFrame=0;
-        this.walkAnimationFrameCount=-1;
-        this.lastGroundY=0;
-        
-        this.invincibleCount=0;
-        this.shieldCount=0;
-        this.deathCount=0;
-        this.warpCount=0;
-        
-        this.ballSprite=null;
-        this.shieldSprite=null;
-        
         Object.seal(this);
     }
     
@@ -99,7 +95,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
     }
     
     mapStartup() {
-        this.health=this.MAX_HEALTH;
+        this.health=PlayerSideScrollClass.MAX_HEALTH;
         // add the ball sprite
         this.ballSprite=new BallClass(this.game,0,0,null);
         this.addSprite(this.ballSprite);
@@ -119,7 +115,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
             return;
         }
         
-        this.invincibleCount=this.INVINCIBLE_TICK;
+        this.invincibleCount=PlayerSideScrollClass.INVINCIBLE_TICK;
     }
     
     killPlayer() {
@@ -138,11 +134,11 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.playSound('funeral_march');
         
         this.health=0;
-        this.deathCount=this.DEATH_TICK;
+        this.deathCount=PlayerSideScrollClass.DEATH_TICK;
     }
     
     warpOut() {
-        this.warpCount=this.WARP_TICK;
+        this.warpCount=PlayerSideScrollClass.WARP_TICK;
         
         this.ballSprite.show=false;
         
@@ -222,7 +218,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         // warping? 
         if (this.warpCount!==0) {
             this.setCurrentImage('sprites/billy_walk_1');
-            this.resizeX=this.resizeY=this.alpha=(this.warpCount-1)/this.WARP_TICK;
+            this.resizeX=this.resizeY=this.alpha=(this.warpCount-1)/PlayerSideScrollClass.WARP_TICK;
             this.warpCount--;
             if (this.warpCount===0) this.game.gotoMap('world_main');
             return;
@@ -246,7 +242,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
             this.invincibleCount--;
             if (this.invincibleCount>0) {
                 this.flash=true;
-                this.flashRate=(this.invincibleCount>(this.INVINCIBLE_TICK/2))?5:2;
+                this.flashRate=(this.invincibleCount>(PlayerSideScrollClass.INVINCIBLE_TICK/2))?5:2;
             }
         }
         
@@ -268,7 +264,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         if ((walkLeft) || (walkRight)) {
             if (!this.walking) {
                 this.walkAnimationFrame=0;
-                this.walkAnimationFrameCount=this.WALK_FRAME_TICK;
+                this.walkAnimationFrameCount=PlayerSideScrollClass.WALK_FRAME_TICK;
                 this.walking=true;
             }
         }
@@ -314,11 +310,11 @@ export default class PlayerSideScrollClass extends SpriteClass {
         // any deceleration -- we don't decelerate if walking but always decel in air
         if (((!this.walking) || (!this.grounded)) && (this.moveX!==0.0)) {
             if (this.moveX<0.0) {
-                this.moveX+=(this.grounded?this.WALK_DECEL:this.AIR_DECEL);
+                this.moveX+=(this.grounded?PlayerSideScrollClass.WALK_DECEL:PlayerSideScrollClass.AIR_DECEL);
                 if (this.moveX>=0.0) this.moveX=0.0;
             }
             else {
-                this.moveX-=(this.grounded?this.WALK_DECEL:this.AIR_DECEL);
+                this.moveX-=(this.grounded?PlayerSideScrollClass.WALK_DECEL:PlayerSideScrollClass.AIR_DECEL);
                 if (this.moveX<=0.0) this.moveX=0.0;
             }
         }
@@ -331,12 +327,12 @@ export default class PlayerSideScrollClass extends SpriteClass {
         // jumping
         if ((jump) && (this.grounded)) {
             if (this.moveX<0.0) {
-                this.moveX=-this.JUMP_START_SPEED;
+                this.moveX=-PlayerSideScrollClass.JUMP_START_SPEED;
             }
             if (this.moveX>0.0) {
-                this.moveX=this.JUMP_START_SPEED;
+                this.moveX=PlayerSideScrollClass.JUMP_START_SPEED;
             }
-            this.addGravity(this.JUMP_HEIGHT,this.JUMP_GRAVITY_PAUSE);
+            this.addGravity(PlayerSideScrollClass.JUMP_HEIGHT,PlayerSideScrollClass.JUMP_GRAVITY_PAUSE);
         }
         
         this.runGravity();
@@ -351,7 +347,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         else {
             this.walkAnimationFrameCount--;
             if (this.walkAnimationFrameCount<0) {
-                this.walkAnimationFrameCount=this.WALK_FRAME_TICK;
+                this.walkAnimationFrameCount=PlayerSideScrollClass.WALK_FRAME_TICK;
 
                 if (this.walking) {
                     this.walkAnimationFrame=(this.walkAnimationFrame+1)%4;
@@ -360,7 +356,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
                     if (this.walkAnimationFrame!==0) this.walkAnimationFrame=(this.walkAnimationFrame+1)%4;
                 }
             }
-            this.setCurrentImage(this.WALK_ANIMATION[this.walkAnimationFrame]);
+            this.setCurrentImage(PlayerSideScrollClass.WALK_ANIMATION[this.walkAnimationFrame]);
         }
         
         // remember the last ground because

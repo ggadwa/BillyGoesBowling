@@ -8,14 +8,13 @@ import BallClass from './ball.js';
 
 export default class KingGhastlyClass extends SpriteClass {
 
+    static GHASTLY_SPEED=8;
+    static JUMP_HEIGHT=-20;
+    static BACKUP_TICK=30;
+
     constructor(game,x,y,data) {
         super(game,x,y,data);
 
-        this.GHASTLY_SPEED=8;
-        this.JUMP_HEIGHT=-20;
-        this.BACKUP_TICK=30;
-        
-        // variables
         this.backupCount=-1;
         this.firstDrop=true;
         this.inAir=true;
@@ -87,18 +86,18 @@ export default class KingGhastlyClass extends SpriteClass {
     
     onCollideSprite(sprite) {
         // certain types of blocks back up ghastly
-        if ((sprite instanceof BreakBlockClass) || (sprite instanceof BlockClass)) this.backupCount=this.BACKUP_TICK;
+        if ((sprite instanceof BreakBlockClass) || (sprite instanceof BlockClass)) this.backupCount=KingGhastlyClass.BACKUP_TICK;
         
         // smash any blocks
         this.smashBlocks();
 
         // try to jump
-        if (this.grounded) this.addGravity(this.JUMP_HEIGHT,0);
+        if (this.grounded) this.addGravity(KingGhastlyClass.JUMP_HEIGHT,0);
     }
     
     onCollideTile(tileX,tileY,tileIdx) {
         // jump up if blocked by a tile
-        if (this.grounded) this.addGravity(this.JUMP_HEIGHT,0);
+        if (this.grounded) this.addGravity(KingGhastlyClass.JUMP_HEIGHT,0);
     }
 
     onRun(tick) {
@@ -143,14 +142,14 @@ export default class KingGhastlyClass extends SpriteClass {
         // are we backing up?
         if (this.backupCount!==-1) {
             this.backupCount--;
-            this.moveWithCollision(-this.GHASTLY_SPEED,0);
+            this.moveWithCollision(-KingGhastlyClass.GHASTLY_SPEED,0);
         }
         
         // always head towards the player
         // don't run this on first drop as ghastly falls through tiles and will
         // get instantly ejected from the map
         else {
-            if (!this.firstDrop) this.moveWithCollision(this.GHASTLY_SPEED,0);
+            if (!this.firstDrop) this.moveWithCollision(KingGhastlyClass.GHASTLY_SPEED,0);
         }
         
         this.runGravity();

@@ -69,7 +69,7 @@ export default class BallClass extends SpriteClass {
         this.gravityFactor=0.0;
         this.gravityMinValue=0;
         this.gravityMaxValue=0;
-        this.canCollide=true;
+        this.canCollide=false; // only collide when moving
         this.canStandOn=false;
         this.canRiseBlock=false;
         
@@ -103,6 +103,8 @@ export default class BallClass extends SpriteClass {
         this.reformParticle=this.addParticle((this.x+halfWid),(this.y-halfHigh),ParticleClass.AFTER_SPRITES_LAYER,8,16,1.0,0.1,6,0.03,'particles/ball',16,0.5,true,(BallClass.REFORM_COUNT*33));
         
         this.playSound('ball_reform');
+        
+        this.canCollide=false;
     }
     
     onCollideSprite(sprite) {
@@ -293,6 +295,7 @@ export default class BallClass extends SpriteClass {
                 if (!playerSprite.grounded) this.travelYBottom-=MapClass.MAP_TILE_SIZE;
                 
                 this.playSound('bowl');
+                this.canCollide=true;
             }
             
             // bowls up and back down  
@@ -302,6 +305,7 @@ export default class BallClass extends SpriteClass {
                 this.travelY=(playerSprite.y-playerSprite.height)-BallClass.HEAD_PIXEL_DISTANCE;
                 
                 this.playSound('bowl');
+                this.canCollide=true;
             }
             
             // bowls in a circle around player, both the shield sprite
@@ -313,6 +317,7 @@ export default class BallClass extends SpriteClass {
                 this.sendMessage(playerSprite,'start_shield',null);
                 
                 this.playSound('bowl');
+                this.canCollide=true;
             }
         }
     }

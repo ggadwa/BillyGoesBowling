@@ -8,16 +8,15 @@ import PlayerSideScrollClass from './player_sidescroll.js';
 import ShurikinClass from './shurikin.js';
 
 export default class NinjaBunnyClass extends SpriteClass {
+
+    static BUNNY_JUMP_HEIGHT=-33;
+    static BUNNY_AIR_SPEED=8;
+    static BUNNY_PAUSE_TICK=45;
+    static BUNNY_ACTIVATE_DISTANCE=800;
+
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        // constants
-        this.BUNNY_JUMP_HEIGHT=-33;
-        this.BUNNY_AIR_SPEED=8;
-        this.BUNNY_PAUSE_TICK=45;
-        this.BUNNY_ACTIVATE_DISTANCE=800;
-        
-        // variables  
         this.bunnyActive=false;
         this.bunnyPause=0;
         this.bunnyJumpDirection=-1;
@@ -51,7 +50,7 @@ export default class NinjaBunnyClass extends SpriteClass {
     
     jumpTowardsSprite(sprite) {
         this.bunnyJumpDirection=Math.sign(sprite.x-this.x);
-        if (this.getCurrentGravity()>=0) this.addGravity(this.BUNNY_JUMP_HEIGHT,0);
+        if (this.getCurrentGravity()>=0) this.addGravity(NinjaBunnyClass.BUNNY_JUMP_HEIGHT,0);
         
         this.playSound('jump');
     }
@@ -113,12 +112,12 @@ export default class NinjaBunnyClass extends SpriteClass {
         // certain distance from player
         let dist=playerSprite.x-this.x;
         
-        this.bunnyActive=(Math.abs(dist)<this.BUNNY_ACTIVATE_DISTANCE);
+        this.bunnyActive=(Math.abs(dist)<NinjaBunnyClass.BUNNY_ACTIVATE_DISTANCE);
         if (!this.bunnyActive) return;
         
         // only move if jumping, and ignore if we have a shurikin out
         if (!this.grounded) {
-            this.moveWithCollision((this.BUNNY_AIR_SPEED*this.bunnyJumpDirection),0);
+            this.moveWithCollision((NinjaBunnyClass.BUNNY_AIR_SPEED*this.bunnyJumpDirection),0);
         }
         
         // gravity
@@ -146,14 +145,14 @@ export default class NinjaBunnyClass extends SpriteClass {
         // if on the ground, we can jump after a
         // slight pause
         if (!this.grounded) {
-            this.bunnyPause=this.BUNNY_PAUSE_TICK;
+            this.bunnyPause=NinjaBunnyClass.BUNNY_PAUSE_TICK;
             return;
         }
         
         // shake if nearing time to jump
         if (this.bunnyPause>0) {
             this.bunnyPause--;
-            if (this.bunnyPause<(this.BUNNY_PAUSE_TICK/3)) {
+            if (this.bunnyPause<(NinjaBunnyClass.BUNNY_PAUSE_TICK/3)) {
                 this.shake=true;
                 this.shakeSize=2;
                 this.shakePeriodTick=0;

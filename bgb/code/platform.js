@@ -2,18 +2,14 @@ import SpriteClass from '../../rpjs/engine/sprite.js';
 
 export default class PlatformClass extends SpriteClass
 {
+    static PLATFORM_SPEED=10;
+    static PLATFORM_PAUSE_TICK=10; 
+
     constructor(game,x,y,data)
     {
         super(game,x,y,data);
-        
-            // constants
             
-        this.PLATFORM_SPEED=10;
-        this.PLATFORM_PAUSE_TICK=10;
-        
-            // variables
-            
-        this.xAdd=this.PLATFORM_SPEED;
+        this.xAdd=PlatformClass.PLATFORM_SPEED;
         this.pauseCount=0;
         
             // setup
@@ -55,7 +51,7 @@ export default class PlatformClass extends SpriteClass
         if (this.checkCollision()) {
             this.xAdd=-this.xAdd;
             this.x+=this.xAdd;
-            this.pauseCount=this.PLATFORM_PAUSE_TICK;
+            this.pauseCount=PlatformClass.PLATFORM_PAUSE_TICK;
             return;
         }
         
