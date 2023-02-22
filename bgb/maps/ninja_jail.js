@@ -329,6 +329,6 @@ export default class NinjaJailMapClass extends SideScrollNormalBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        this.setLiquidY(3520);
+        this.addLiquid(this.game.imageList.get('liquids/water_top'),this.game.imageList.get('liquids/water_fill'),3520,5);
     }
 }

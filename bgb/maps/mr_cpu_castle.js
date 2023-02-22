@@ -328,6 +328,6 @@ export default class MrCPUCastleMapClass extends SideScrollCastleBaseMapClass {
     mapStartup()
     {
         super.mapStartup();
-        this.setLiquidY(2016);
+        this.addLiquid(this.game.imageList.get('liquids/lava_top'),this.game.imageList.get('liquids/lava_fill'),2016,10);
     }
 }

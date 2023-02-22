@@ -182,6 +182,6 @@ export default class PlatformTroubledWatersMapClass extends SideScrollNormalBase
     mapStartup()
     {
         super.mapStartup();
-        this.setLiquidY(2032);
+        this.addLiquid(this.game.imageList.get('liquids/water_top'),this.game.imageList.get('liquids/water_fill'),2032,5);
     }
 }

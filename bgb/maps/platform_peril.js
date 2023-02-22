@@ -216,6 +216,6 @@ export default class PlatformPerilMapClass extends SideScrollNormalBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        this.setLiquidY(5440);
+        this.addLiquid(this.game.imageList.get('liquids/water_top'),this.game.imageList.get('liquids/water_fill'),5440,5);
     }
 }

@@ -231,6 +231,6 @@ export default class SnakesOnAPlainMapClass extends SideScrollNormalBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        this.setLiquidY(1184);
+        this.addLiquid(this.game.imageList.get('liquids/water_top'),this.game.imageList.get('liquids/water_fill'),1184,5);
     }
 }

@@ -23,7 +23,7 @@ export default class ImageListClass {
                 img.decode()
                     .then(
                         ()=>{},
-                        ()=>{ throw new Error('File not found: '+url) }
+                        ()=>{ throw new Error('File not found: '+img.src) }
                     )
                 );
         }

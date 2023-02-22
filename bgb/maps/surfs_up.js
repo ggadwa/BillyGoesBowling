@@ -167,7 +167,7 @@ export default class SurfsUpMapClass extends SideScrollNormalBaseMapClass
     {
         super.mapStartup();
         
-        this.setLiquidY(7600);
+        this.addLiquid(this.game.imageList.get('liquids/water_top'),this.game.imageList.get('liquids/water_fill'),7600,5);
         this.moveLiquidTo(6112,1);
         this.playSoundGlobal('splash');
     }

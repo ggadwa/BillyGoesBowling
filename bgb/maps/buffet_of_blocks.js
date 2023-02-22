@@ -315,6 +315,6 @@ export default class BuffetOfBlocksMapClass extends SideScrollNormalBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        this.setLiquidY(928);
+        this.addLiquid(this.game.imageList.get('liquids/water_top'),this.game.imageList.get('liquids/water_fill'),928,5);
     }
 }

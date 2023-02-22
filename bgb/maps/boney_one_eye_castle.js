@@ -314,6 +314,6 @@ export default class BoneyOneEyeCastleMapClass extends SideScrollCastleBaseMapCl
     mapStartup()
     {
         super.mapStartup();
-        this.setLiquidY(2848);
+        this.addLiquid(this.game.imageList.get('liquids/lava_top'),this.game.imageList.get('liquids/lava_fill'),2848,10);
     }
 }

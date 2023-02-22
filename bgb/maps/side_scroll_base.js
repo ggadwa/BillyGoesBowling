@@ -1,20 +1,19 @@
 import MapClass from '../../rpjs/engine/map.js';
 import PlayerSideScrollClass from '../code/player_sidescroll.js';
 
-export default class SideScrollBaseMapClass extends MapClass
-{
+export default class SideScrollBaseMapClass extends MapClass {
+
+    static PLAYER_NATURAL_MAP_HEIGHT_OFFSET=0.7;
+    
     constructor(game)
     {
         super(game);
-        
-        this.PLAYER_NATURAL_MAP_HEIGHT_OFFSET=0.7;
 
         this.currentMapY=0;
         this.forceCameraSprite=null;
     }
     
-    calcOffset()
-    {
+    calcOffset() {
         let sprite;
         let offX,offY,playerY;
         let wid=this.game.canvasWidth;
@@ -45,7 +44,7 @@ export default class SideScrollBaseMapClass extends MapClass
         playerY=sprite.y-(sprite.height*2);
         if (playerY<this.currentMapY) this.currentMapY=playerY;
         
-        playerY=sprite.y-Math.trunc(high*this.PLAYER_NATURAL_MAP_HEIGHT_OFFSET);
+        playerY=sprite.y-Math.trunc(high*SideScrollBaseMapClass.PLAYER_NATURAL_MAP_HEIGHT_OFFSET);
         if (playerY>this.currentMapY) this.currentMapY=playerY;
         
         offY=this.currentMapY;
@@ -55,13 +54,11 @@ export default class SideScrollBaseMapClass extends MapClass
         this.offsetY=offY;
     }
     
-    resetOffsetY()
-    {
+    resetOffsetY() {
         let sprite=this.sprites[this.playerIdx];
-        this.currentMapY=sprite.y-Math.trunc(this.game.canvasHeight*this.PLAYER_NATURAL_MAP_HEIGHT_OFFSET);
+        this.currentMapY=sprite.y-Math.trunc(this.game.canvasHeight*SideScrollBaseMapClass.PLAYER_NATURAL_MAP_HEIGHT_OFFSET);
         
         this.forceCameraSprite=null;
     }
-
     
 }

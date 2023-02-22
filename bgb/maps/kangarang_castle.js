@@ -231,6 +231,6 @@ export default class KangarangCastleMapClass extends SideScrollCastleBaseMapClas
     
     mapStartup() {
         super.mapStartup();
-        this.setLiquidY(2240);
+        this.addLiquid(this.game.imageList.get('liquids/lava_top'),this.game.imageList.get('liquids/lava_fill'),2240,10);
     }
 }

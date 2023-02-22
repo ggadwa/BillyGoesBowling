@@ -1,5 +1,4 @@
 import MapClass from './map.js';
-import LiquidClass from './liquid.js';
 import ImageListClass from '../resources/image_list.js';
 import SoundListClass from '../resources/sound_list.js';
 import MusicListClass from '../resources/music_list.js';
@@ -50,7 +49,6 @@ export default class GameClass {
         // game data
         this.data=new Map();
         this.map=null;
-        this.liquid=null;
         this.gotoMapName=null;
         
         this.urlParams=null;
@@ -133,9 +131,6 @@ export default class GameClass {
         }
 
         this.map.initialize();
-        
-        // the liquid object
-        this.liquid=new LiquidClass(this);
         
         // setup the timing and game states
         this.timestamp=0;
@@ -436,9 +431,6 @@ export default class GameClass {
         
         // draw the map
         this.map.draw(this.backCTX);
-        
-        // draw any liquid
-        this.liquid.draw(this.backCTX);
         
         // draw the UI
         this.drawUI();

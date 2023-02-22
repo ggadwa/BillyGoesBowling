@@ -1,6 +1,7 @@
 import BackgroundClass from './background.js';
 import SpriteClass from './sprite.js';
 import ParticleClass from './particle.js';
+import LiquidClass from './liquid.js';
 
 export default class MapClass {
 
@@ -21,16 +22,8 @@ export default class MapClass {
         this.offsetY=0;
         
         this.backgrounds=[];
-        
-        this.liquidY=-1; // liquid settings of map (-1 for no liquid)
-        this.liquidWaveHeight=5;
-        this.liquidRTintFactor=0.3;
-        this.liquidGTintFactor=0.3;
-        this.liquidBTintFactor=1.0;
-        this.liquidTintDarken=0.001;
-        
-        this.toLiquidY=-1;
-        this.liquidMoveSpeed=0;
+            
+        this.liquid=null;
         
         this.shakeCount=-1;
         
@@ -178,6 +171,10 @@ export default class MapClass {
         this.game.soundList.play(name);
     }
     
+    addLiquid(imgTop,imgFill,y,waveSize) {
+        this.liquid=new LiquidClass(this,imgTop,imgFill,y,waveSize);
+    }
+    
     /**
      * Adds a single parallax background image to this map, to be drawn
      * in add order.  Y is the y offset to draw at, and xFactor is how it moves
@@ -216,22 +213,21 @@ export default class MapClass {
      * Get current liquid height.
      */
     getLiquidY() {
-        return(this.liquidY);
+        return(this.liquid.getY());
     }
     
     /**
      * Set liquid height.
      */
     setLiquidY(y) {
-        this.liquidY=y;
+        this.liquid.setY(y);
     }
     
     /**
      * Start a liquid movement.
      */
-    moveLiquidTo(toLiquidY,liquidMoveSpeed) {
-        this.toLiquidY=toLiquidY;
-        this.liquidMoveSpeed=liquidMoveSpeed;
+    moveLiquidTo(toY,moveSpeed) {
+        this.liquid.moveLiquidTo(toY,moveSpeed);
     }
     
     /**
@@ -630,23 +626,10 @@ export default class MapClass {
         let n;
         let sprite;
         
-        // move any liquid
-        if (this.toLiquidY!==-1) {
-            if (this.toLiquidY<this.liquidY) {
-                this.liquidY-=this.liquidMoveSpeed;
-                if (this.liquidY<this.toLiquidY) {
-                    this.liquidY=this.toLiquidY;
-                    this.toLiquidY=-1;
-                    this.onLiquidMoveDone();
-                }
-            }
-            else {
-                this.liquidY+=this.liquidMoveSpeed;
-                if (this.liquidY>this.toLiquidY) {
-                    this.liquidY=this.toLiquidY;
-                    this.toLiquidY=-1;
-                    this.onLiquidMoveDone();
-                }
+        // liquids
+        if (this.liquid!=null) {
+            if (this.liquid.onRun(tick)) {
+                this.onLiquidMoveDone();
             }
         }
         
@@ -709,6 +692,9 @@ export default class MapClass {
         for (background of this.backgrounds) {
             background.draw(ctx);
         }
+        
+        // liquids
+        if (this.liquid!=null) this.liquid.draw(ctx,this.offsetX,this.offsetY);
 
         // draw the under the map sprites
         for (sprite of this.sprites) {

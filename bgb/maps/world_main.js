@@ -177,25 +177,25 @@ export default class WorldMainMapClass extends WorldBaseMapClass {
         
         // check the unlock flag
         if (this.game.isUnlocked()) {
-            this.changeTile(24,5,this.TILE_IDX_ROAD_VERTICAL);
-            this.changeTile(8,12,this.TILE_IDX_ROAD_VERTICAL);  
-            this.changeTile(41,11,this.TILE_IDX_ROAD_VERTICAL);
-            this.changeTile(41,20,this.TILE_IDX_ROAD_VERTICAL);
-            this.changeTile(48,16,this.TILE_IDX_ROAD_HORIZONTAL);
-            this.changeTile(52,16,this.TILE_IDX_ROAD_HORIZONTAL);
-            this.changeTile(65,18,this.TILE_IDX_ROAD_HORIZONTAL);
+            this.changeTile(24,5,WorldBaseMapClass.TILE_IDX_ROAD_VERTICAL);
+            this.changeTile(8,12,WorldBaseMapClass.TILE_IDX_ROAD_VERTICAL);  
+            this.changeTile(41,11,WorldBaseMapClass.TILE_IDX_ROAD_VERTICAL);
+            this.changeTile(41,20,WorldBaseMapClass.TILE_IDX_ROAD_VERTICAL);
+            this.changeTile(48,16,WorldBaseMapClass.TILE_IDX_ROAD_HORIZONTAL);
+            this.changeTile(52,16,WorldBaseMapClass.TILE_IDX_ROAD_HORIZONTAL);
+            this.changeTile(65,18,WorldBaseMapClass.TILE_IDX_ROAD_HORIZONTAL);
             return;
         }
         
         // otherwise unlock based on castles won
-        if (this.game.getData('boss_executioners_castle')!==null) this.changeTile(24,5,this.TILE_IDX_ROAD_VERTICAL); // win castle 1
+        if (this.game.getData('boss_executioners_castle')!==null) this.changeTile(24,5,WorldBaseMapClass.TILE_IDX_ROAD_VERTICAL); // win castle 1
         if (this.game.getData('boss_mr_cpu_castle')!==null) { // win castle 2
-            this.changeTile(8,12,this.TILE_IDX_ROAD_VERTICAL);  
-            this.changeTile(41,11,this.TILE_IDX_ROAD_VERTICAL);
-            this.changeTile(41,20,this.TILE_IDX_ROAD_VERTICAL);
+            this.changeTile(8,12,WorldBaseMapClass.TILE_IDX_ROAD_VERTICAL);  
+            this.changeTile(41,11,WorldBaseMapClass.TILE_IDX_ROAD_VERTICAL);
+            this.changeTile(41,20,WorldBaseMapClass.TILE_IDX_ROAD_VERTICAL);
         }
-        if (this.game.getData('boss_boney_one_eye_castle')!==null) this.changeTile(48,16,this.TILE_IDX_ROAD_HORIZONTAL); // win castle 3
-        if (this.game.getData('boss_kangarang_castle')!==null) this.changeTile(52,16,this.TILE_IDX_ROAD_HORIZONTAL); // win castle 4
-        if (this.game.getData('boss_king_ghastly_castle')!==null) this.changeTile(65,18,this.TILE_IDX_ROAD_HORIZONTAL); // win castle 5
+        if (this.game.getData('boss_boney_one_eye_castle')!==null) this.changeTile(48,16,WorldBaseMapClass.TILE_IDX_ROAD_HORIZONTAL); // win castle 3
+        if (this.game.getData('boss_kangarang_castle')!==null) this.changeTile(52,16,WorldBaseMapClass.TILE_IDX_ROAD_HORIZONTAL); // win castle 4
+        if (this.game.getData('boss_king_ghastly_castle')!==null) this.changeTile(65,18,WorldBaseMapClass.TILE_IDX_ROAD_HORIZONTAL); // win castle 5
     }
 }

@@ -3,11 +3,11 @@ import PlayerWorldClass from '../code/player_world.js';
 
 export default class WorldBaseMapClass extends MapClass {
 
+    static TILE_IDX_ROAD_VERTICAL=46;
+    static TILE_IDX_ROAD_HORIZONTAL=44;
+
     constructor(game) {
         super(game);
-        
-        this.TILE_IDX_ROAD_VERTICAL=46;
-        this.TILE_IDX_ROAD_HORIZONTAL=44;
 
         this.currentMapY=0;
     }

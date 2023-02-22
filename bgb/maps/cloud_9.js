@@ -497,6 +497,6 @@ export default class Cloud9MapClass extends SideScrollNormalBaseMapClass
     mapStartup()
     {
         super.mapStartup();
-        this.setLiquidY(7584);
+        this.addLiquid(this.game.imageList.get('liquids/water_top'),this.game.imageList.get('liquids/water_fill'),7584,5);
     }
 }

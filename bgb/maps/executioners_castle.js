@@ -295,6 +295,6 @@ export default class ExecutionersCastleMapClass extends SideScrollCastleBaseMapC
     mapStartup()
     {
         super.mapStartup();
-        this.setLiquidY(1632);
+        this.addLiquid(this.game.imageList.get('liquids/lava_top'),this.game.imageList.get('liquids/lava_fill'),1632,10);
     }
 }

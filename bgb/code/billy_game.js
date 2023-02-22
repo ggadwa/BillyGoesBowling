@@ -219,6 +219,11 @@ export default class BillyGameClass extends GameClass {
         this.addImage('backgrounds/castle');
         this.addImage('backgrounds/water');
         
+        this.addImage('liquids/water_top');
+        this.addImage('liquids/water_fill');
+        this.addImage('liquids/lava_top');
+        this.addImage('liquids/lava_fill');
+        
         this.addImage('ui/pin');
         this.addImage('ui/trophy');
         this.addImage('ui/score_box');

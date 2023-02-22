@@ -1,5 +1,5 @@
-export default class BackgroundClass
-{
+export default class BackgroundClass {
+
     constructor(map,img,x,y,xFactor,yFactor,xScroll,yScroll,tileType)
     {
         this.map=map;
@@ -13,8 +13,7 @@ export default class BackgroundClass
         this.tileType=tileType;
     }
     
-    drawTile(ctx)
-    {
+    drawTile(ctx) {
         let x,y,xOff,yOff,dx,dy;
         let img=this.img;
         let map=this.map;
@@ -50,8 +49,7 @@ export default class BackgroundClass
         }
     }
     
-    drawParallax(ctx)
-    {
+    drawParallax(ctx) {
         let imgWid=this.img.width;
         let x=-(Math.trunc(this.map.offsetX*this.xFactor)%imgWid);
         
@@ -60,8 +58,7 @@ export default class BackgroundClass
         
     }
     
-    draw(ctx)
-    {
+    draw(ctx) {
         if (this.tileType) {
             this.drawTile(ctx);
         }

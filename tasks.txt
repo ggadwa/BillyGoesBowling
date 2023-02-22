@@ -1,8 +1,9 @@
 //// TO DO
 
 
-
 - move all constants to statics (next> playerworld)
+- surf down waits at top and bottom
+
 
 - go over every map
 

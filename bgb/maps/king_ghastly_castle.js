@@ -284,6 +284,6 @@ export default class KingGhastlyCastleMapClass extends SideScrollCastleBaseMapCl
     
     mapStartup() {
         super.mapStartup();
-        this.setLiquidY(1952);
+        this.addLiquid(this.game.imageList.get('liquids/lava_top'),this.game.imageList.get('liquids/lava_fill'),1952,10);
     }
 }
