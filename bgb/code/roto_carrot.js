@@ -8,21 +8,21 @@ import FishClass from './fish.js';
 
 export default class RotoCarrotClass extends SpriteClass {
         
+    static CARROT_SPEED=12;
+    static CARROT_Y_ARC=30;
+    static CARROT_PAUSE_TICK=20;
+    static CARROT_ARC_TICK=50;
+    static BOMB_DROP_TICK=100;
+    static BOMB_DROP_TICK_RANDOM_ADD=20;
+    static CARROT_RESET_DISTANCE=500;
+        
+    static COLLIDE_CLASS_IGNORE=[BombClass];
+        
+        // variables
+        
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        // constants          
-        this.CARROT_SPEED=12;
-        this.CARROT_Y_ARC=30;
-        this.CARROT_PAUSE_TICK=20;
-        this.CARROT_ARC_TICK=50;
-        this.BOMB_DROP_TICK=100;
-        this.BOMB_DROP_TICK_RANDOM_ADD=20;
-        this.CARROT_RESET_DISTANCE=500;
-        
-        this.COLLIDE_CLASS_IGNORE=[BombClass];
-        
-        // variables
         this.addImage('sprites/roto_carrot_1');
         this.addImage('sprites/roto_carrot_2');
         this.setCurrentImage('sprites/roto_carrot_1');
@@ -50,7 +50,7 @@ export default class RotoCarrotClass extends SpriteClass {
     
     mapStartup() {
         this.originalY=this.y;
-        this.bombTick=this.BOMB_DROP_TICK+Math.trunc(Math.random()*this.BOMB_DROP_TICK_RANDOM_ADD);
+        this.bombTick=RotoCarrotClass.BOMB_DROP_TICK+Math.trunc(Math.random()*RotoCarrotClass.BOMB_DROP_TICK_RANDOM_ADD);
     }
     
     onCollideSprite(sprite) {
@@ -62,7 +62,7 @@ export default class RotoCarrotClass extends SpriteClass {
                 (sprite instanceof FishClass)) {
                    this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),ParticleClass.AFTER_SPRITES_LAYER,64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,600);
                    this.playSound('monster_die');
-                   this.x=this.game.map.rightEdge+this.CARROT_RESET_DISTANCE;
+                   this.x=this.game.map.rightEdge+RotoCarrotClass.CARROT_RESET_DISTANCE;
                    return;
         }
     }
@@ -91,14 +91,14 @@ export default class RotoCarrotClass extends SpriteClass {
         }
         
         // always travel left to right
-        this.x-=this.CARROT_SPEED;
-        if (this.x<(-this.width)) this.x=map.rightEdge+this.CARROT_RESET_DISTANCE;
+        this.x-=RotoCarrotClass.CARROT_SPEED;
+        if (this.x<(-this.width)) this.x=map.rightEdge+RotoCarrotClass.CARROT_RESET_DISTANCE;
         
         // Y goes in a cos wave
         this.carrotArc++;
         
-        rad=((this.carrotArc%this.CARROT_ARC_TICK)*(2*Math.PI))/this.CARROT_ARC_TICK;
-        this.y=this.originalY+Math.trunc(Math.cos(rad)*this.CARROT_Y_ARC);
+        rad=((this.carrotArc%RotoCarrotClass.CARROT_ARC_TICK)*(2*Math.PI))/RotoCarrotClass.CARROT_ARC_TICK;
+        this.y=this.originalY+Math.trunc(Math.cos(rad)*RotoCarrotClass.CARROT_Y_ARC);
         
         // drop bomb at specific intervals,
         if (this.bombTick>0) {
@@ -106,8 +106,8 @@ export default class RotoCarrotClass extends SpriteClass {
             return;
         }
         
-        this.carrotPause=this.CARROT_PAUSE_TICK;
-        this.bombTick=this.BOMB_DROP_TICK;
+        this.carrotPause=RotoCarrotClass.CARROT_PAUSE_TICK;
+        this.bombTick=RotoCarrotClass.BOMB_DROP_TICK;
         this.dropBomb();
     }
 }

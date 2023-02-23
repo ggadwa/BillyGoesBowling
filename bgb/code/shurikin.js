@@ -5,14 +5,12 @@ import NinjaBunnyClass from './ninja_bunny.js';
 
 export default class ShurikinClass extends SpriteClass {
 
+    static SHURIKIN_X_SPEED=12;
+    static SHURIKIN_Y_SPEED=15;
+
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        // constants
-        this.SHURIKIN_X_SPEED=12;
-        this.SHURIKIN_Y_SPEED=15;
-        
-        // variables
         this.moveX=0;
         
         // setup
@@ -55,9 +53,9 @@ export default class ShurikinClass extends SpriteClass {
         
         // if first call, then we need to setup the travel  
         if (this.moveX===0) {
-            this.moveX=(playerSprite.x<this.x)?-this.SHURIKIN_X_SPEED:this.SHURIKIN_X_SPEED;
+            this.moveX=(playerSprite.x<this.x)?-ShurikinClass.SHURIKIN_X_SPEED:ShurikinClass.SHURIKIN_X_SPEED;
         }
 
-        this.moveWithCollision(this.moveX,this.SHURIKIN_Y_SPEED);
+        this.moveWithCollision(this.moveX,ShurikinClass.SHURIKIN_Y_SPEED);
     }
 }

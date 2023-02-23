@@ -1,10 +1,10 @@
 //// TO DO
 
 
-- move all constants to statics (next> playerworld)
+- move game time to 60 fps
+
+
 - surf down waits at top and bottom
-
-
 - go over every map
 
 
@@ -14,7 +14,7 @@
 
 
 
-- move game time to 60 fps
+
 
 - both game and sprite still have some non-"on" events
 

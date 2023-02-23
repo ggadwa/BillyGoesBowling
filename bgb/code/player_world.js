@@ -4,27 +4,26 @@ import MapClass from '../../rpjs/engine/map.js';
 
 export default class PlayerWorldClass extends SpriteClass {
 
+    static TILE_IDX_CROSS=47;
+    static TILE_IDX_DOT=48;
+    static TILE_IDX_ROAD_HORIZONTAL=44;
+    static TILE_IDX_ROAD_VERTICAL=46;
+    static TILE_IDX_ROAD_TOP_LEFT_CORNER=43;
+    static TILE_IDX_ROAD_TOP_RIGHT_CORNER=45;
+    static TILE_IDX_ROAD_BOTTOM_LEFT_CORNER=49;
+    static TILE_IDX_ROAD_BOTTOM_RIGHT_CORNER=51;
+    static TILE_IDX_BRIDGE_HORIZONTAL=39;
+    static TILE_IDX_BRIDGE_VERTICAL=42;
+    static TILE_IDX_GATE=53;
+    static TILE_IDX_LEFT_T=55;
+    static TILE_IDX_UP_T=56;
+    static TILE_IDX_BRIDGE_CENTER=57;
+    static WALK_FRAME_TICK=3;
+        
+    static WALK_ANIMATION=['sprites/billy_world_1','sprites/billy_world_2','sprites/billy_world_3','sprites/billy_world_2'];
+
     constructor(game,x,y,data) {
         super(game,x,y,data);
-        
-        // constants 
-        this.TILE_IDX_CROSS=47;
-        this.TILE_IDX_DOT=48;
-        this.TILE_IDX_ROAD_HORIZONTAL=44;
-        this.TILE_IDX_ROAD_VERTICAL=46;
-        this.TILE_IDX_ROAD_TOP_LEFT_CORNER=43;
-        this.TILE_IDX_ROAD_TOP_RIGHT_CORNER=45;
-        this.TILE_IDX_ROAD_BOTTOM_LEFT_CORNER=49;
-        this.TILE_IDX_ROAD_BOTTOM_RIGHT_CORNER=51;
-        this.TILE_IDX_BRIDGE_HORIZONTAL=39;
-        this.TILE_IDX_BRIDGE_VERTICAL=42;
-        this.TILE_IDX_GATE=53;
-        this.TILE_IDX_LEFT_T=55;
-        this.TILE_IDX_UP_T=56;
-        this.TILE_IDX_BRIDGE_CENTER=57;
-        this.WALK_FRAME_TICK=3;
-        
-        this.WALK_ANIMATION=['sprites/billy_world_1','sprites/billy_world_2','sprites/billy_world_3','sprites/billy_world_2'];
         
         // setup
         this.addImage('sprites/billy_world_1');
@@ -71,19 +70,19 @@ export default class PlayerWorldClass extends SpriteClass {
     }
     
     isTileIdxRoad(tileIdx) {
-        if (tileIdx===this.TILE_IDX_CROSS) return(true);
-        if (tileIdx===this.TILE_IDX_LEFT_T) return(true);
-        if (tileIdx===this.TILE_IDX_UP_T) return(true);
-        if (tileIdx===this.TILE_IDX_DOT) return(true);
-        if (tileIdx===this.TILE_IDX_BRIDGE_CENTER) return(true);
-        if (tileIdx===this.TILE_IDX_ROAD_HORIZONTAL) return(true);
-        if (tileIdx===this.TILE_IDX_ROAD_VERTICAL) return(true);
-        if (tileIdx===this.TILE_IDX_ROAD_TOP_LEFT_CORNER) return(true);
-        if (tileIdx===this.TILE_IDX_ROAD_TOP_RIGHT_CORNER) return(true);
-        if (tileIdx===this.TILE_IDX_ROAD_BOTTOM_LEFT_CORNER) return(true);
-        if (tileIdx===this.TILE_IDX_ROAD_BOTTOM_RIGHT_CORNER) return(true);
-        if (tileIdx===this.TILE_IDX_BRIDGE_HORIZONTAL) return(true);
-        return(tileIdx===this.TILE_IDX_BRIDGE_VERTICAL);
+        if (tileIdx===PlayerWorldClass.TILE_IDX_CROSS) return(true);
+        if (tileIdx===PlayerWorldClass.TILE_IDX_LEFT_T) return(true);
+        if (tileIdx===PlayerWorldClass.TILE_IDX_UP_T) return(true);
+        if (tileIdx===PlayerWorldClass.TILE_IDX_DOT) return(true);
+        if (tileIdx===PlayerWorldClass.TILE_IDX_BRIDGE_CENTER) return(true);
+        if (tileIdx===PlayerWorldClass.TILE_IDX_ROAD_HORIZONTAL) return(true);
+        if (tileIdx===PlayerWorldClass.TILE_IDX_ROAD_VERTICAL) return(true);
+        if (tileIdx===PlayerWorldClass.TILE_IDX_ROAD_TOP_LEFT_CORNER) return(true);
+        if (tileIdx===PlayerWorldClass.TILE_IDX_ROAD_TOP_RIGHT_CORNER) return(true);
+        if (tileIdx===PlayerWorldClass.TILE_IDX_ROAD_BOTTOM_LEFT_CORNER) return(true);
+        if (tileIdx===PlayerWorldClass.TILE_IDX_ROAD_BOTTOM_RIGHT_CORNER) return(true);
+        if (tileIdx===PlayerWorldClass.TILE_IDX_BRIDGE_HORIZONTAL) return(true);
+        return(tileIdx===PlayerWorldClass.TILE_IDX_BRIDGE_VERTICAL);
     }
     
     hasRoadLeft() {
@@ -113,7 +112,7 @@ export default class PlayerWorldClass extends SpriteClass {
         // when not walking, we animate until we hit 0 and stop
         this.walkAnimationFrameCount--;
         if (this.walkAnimationFrameCount<0) {
-            this.walkAnimationFrameCount=this.WALK_FRAME_TICK;
+            this.walkAnimationFrameCount=PlayerWorldClass.WALK_FRAME_TICK;
 
             if (this.moving) {
                 this.walkAnimationFrame=(this.walkAnimationFrame+1)%4;
@@ -121,7 +120,7 @@ export default class PlayerWorldClass extends SpriteClass {
             else {
                 if (this.walkAnimationFrame!==0) this.walkAnimationFrame=(this.walkAnimationFrame+1)%4;
             }
-            this.setCurrentImage(this.WALK_ANIMATION[this.walkAnimationFrame]);
+            this.setCurrentImage(PlayerWorldClass.WALK_ANIMATION[this.walkAnimationFrame]);
         }
         
         // input 
@@ -172,30 +171,30 @@ export default class PlayerWorldClass extends SpriteClass {
         
         switch (tileIdx) {
             
-            case this.TILE_IDX_CROSS:
-            case this.TILE_IDX_LEFT_T:
-            case this.TILE_IDX_UP_T:
-            case this.TILE_IDX_DOT:
-            case this.TILE_IDX_BRIDGE_CENTER:
+            case PlayerWorldClass.TILE_IDX_CROSS:
+            case PlayerWorldClass.TILE_IDX_LEFT_T:
+            case PlayerWorldClass.TILE_IDX_UP_T:
+            case PlayerWorldClass.TILE_IDX_DOT:
+            case PlayerWorldClass.TILE_IDX_BRIDGE_CENTER:
                 this.moving=false;
                 break;
                 
-            case this.TILE_IDX_GATE:        // gates bounce you back
+            case PlayerWorldClass.TILE_IDX_GATE:        // gates bounce you back
                 this.moveToX=this.lastToX;
                 this.moveToY=this.lastToY;
                 break;
                 
-            case this.TILE_IDX_ROAD_HORIZONTAL:
-            case this.TILE_IDX_BRIDGE_HORIZONTAL:
+            case PlayerWorldClass.TILE_IDX_ROAD_HORIZONTAL:
+            case PlayerWorldClass.TILE_IDX_BRIDGE_HORIZONTAL:
                 this.moveToX=this.x+(Math.sign(xDir)*MapClass.MAP_TILE_SIZE);
                 break;
                 
-            case this.TILE_IDX_ROAD_VERTICAL:
-            case this.TILE_IDX_BRIDGE_VERTICAL:
+            case PlayerWorldClass.TILE_IDX_ROAD_VERTICAL:
+            case PlayerWorldClass.TILE_IDX_BRIDGE_VERTICAL:
                 this.moveToY=this.y+(Math.sign(yDir)*MapClass.MAP_TILE_SIZE);
                 break;
             
-            case this.TILE_IDX_ROAD_TOP_LEFT_CORNER:
+            case PlayerWorldClass.TILE_IDX_ROAD_TOP_LEFT_CORNER:
                 if (Math.sign(xDir)<0) {
                     this.moveToX=this.x;
                     this.moveToY=this.y+MapClass.MAP_TILE_SIZE;
@@ -206,7 +205,7 @@ export default class PlayerWorldClass extends SpriteClass {
                 }
                 break;
                 
-            case this.TILE_IDX_ROAD_TOP_RIGHT_CORNER:
+            case PlayerWorldClass.TILE_IDX_ROAD_TOP_RIGHT_CORNER:
                 if (Math.sign(xDir)>0) {
                     this.moveToX=this.x;
                     this.moveToY=this.y+MapClass.MAP_TILE_SIZE;
@@ -217,7 +216,7 @@ export default class PlayerWorldClass extends SpriteClass {
                 }
                 break;
                 
-            case this.TILE_IDX_ROAD_BOTTOM_LEFT_CORNER:
+            case PlayerWorldClass.TILE_IDX_ROAD_BOTTOM_LEFT_CORNER:
                 if (Math.sign(xDir)<0) {
                     this.moveToX=this.x;
                     this.moveToY=this.y-MapClass.MAP_TILE_SIZE;
@@ -228,7 +227,7 @@ export default class PlayerWorldClass extends SpriteClass {
                 }
                 break;
                 
-            case this.TILE_IDX_ROAD_BOTTOM_RIGHT_CORNER:
+            case PlayerWorldClass.TILE_IDX_ROAD_BOTTOM_RIGHT_CORNER:
                 if (Math.sign(xDir)>0) {
                     this.moveToX=this.x;
                     this.moveToY=this.y-MapClass.MAP_TILE_SIZE;

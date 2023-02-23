@@ -3,15 +3,14 @@ import PlayerSideScrollClass from './player_sidescroll.js';
 import BallClass from './ball.js';
 
 export default class ShieldClass extends SpriteClass {
+
+    static LIFE_TICK=45;
+    static GLOW_RATE=5.0;
+    static SHAKE_SIZE=3.0;
+
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        // constants
-        this.LIFE_TICK=45;
-        this.GLOW_RATE=5.0;
-        this.SHAKE_SIZE=3.0;
-        
-        // variables
         this.lifeCount=-1;
         
         // setup
@@ -42,7 +41,7 @@ export default class ShieldClass extends SpriteClass {
         switch (cmd) {
             case 'start_shield':
                 this.show=true;
-                this.lifeCount=this.LIFE_TICK;
+                this.lifeCount=ShieldClass.LIFE_TICK;
                 this.playSound('shield',this);
                 break;
         }
@@ -59,11 +58,11 @@ export default class ShieldClass extends SpriteClass {
         if (this.lifeCount<=0) this.show=false;
         
         // follow player sprite
-        this.x=(playerSprite.x-Math.trunc((this.width-playerSprite.width)/2))+Math.trunc(Math.random()*this.SHAKE_SIZE);
-        this.y=(playerSprite.y+Math.trunc((this.height-playerSprite.height)/2))+Math.trunc(Math.random()*this.SHAKE_SIZE);
+        this.x=(playerSprite.x-Math.trunc((this.width-playerSprite.width)/2))+Math.trunc(Math.random()*ShieldClass.SHAKE_SIZE);
+        this.y=(playerSprite.y+Math.trunc((this.height-playerSprite.height)/2))+Math.trunc(Math.random()*ShieldClass.SHAKE_SIZE);
         
         // glows
-        this.alpha=0.4+Math.abs(Math.sin(this.lifeCount/this.GLOW_RATE)*0.3);
+        this.alpha=0.4+Math.abs(Math.sin(this.lifeCount/ShieldClass.GLOW_RATE)*0.3);
         
         // check for collisions
         this.checkCollision();
