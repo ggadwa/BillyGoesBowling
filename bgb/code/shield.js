@@ -4,7 +4,7 @@ import BallClass from './ball.js';
 
 export default class ShieldClass extends SpriteClass {
 
-    static LIFE_TICK=45;
+    static LIFE_TICK=90;
     static GLOW_RATE=5.0;
     static SHAKE_SIZE=3.0;
 

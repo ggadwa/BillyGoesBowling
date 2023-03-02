@@ -301,7 +301,7 @@ export default class BuffetOfBlocksMapClass extends SideScrollNormalBaseMapClass
             new BreakBlockClass(this.game,11200,256,new Map([])),
             new BreakBlockClass(this.game,11200,320,new Map([])),
             new BreakBlockClass(this.game,11200,384,new Map([])),
-            new ButtonClass(this.game,10176,576,new Map([["mode","liquid"],["liquid_y",1184],["liquid_move_speed",5]])),
+            new ButtonClass(this.game,10176,576,new Map([["mode","liquid"],["liquid_y",1184],["liquid_move_speed",2.5]])),
             new TrophyClass(this.game,2688,1152,new Map([])),
             new BreakBlockClass(this.game,10112,448,new Map([])),
             new BreakBlockClass(this.game,10176,448,new Map([])),

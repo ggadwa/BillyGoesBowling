@@ -16,8 +16,6 @@ export default class RotoCarrotClass extends SpriteClass {
     static BOMB_DROP_TICK_RANDOM_ADD=20;
     static CARROT_RESET_DISTANCE=500;
         
-    static COLLIDE_CLASS_IGNORE=[BombClass];
-        
         // variables
         
     constructor(game,x,y,data) {
@@ -34,6 +32,7 @@ export default class RotoCarrotClass extends SpriteClass {
         this.canCollide=true;
         this.canStandOn=true;
         
+        this.setCollideSpriteClassIgnoreList([BombClass]);
         this.setCollideTileIndexIgnoreList([22,23]);
         
         this.originalY=0;

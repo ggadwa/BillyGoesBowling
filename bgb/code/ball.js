@@ -32,14 +32,14 @@ export default class BallClass extends SpriteClass {
         
     static HEAD_PIXEL_DISTANCE=10;
         
-    static REFORM_COUNT=12;
-    static REFORM_BALL_SHOW_COUNT=6;
+    static REFORM_COUNT=24;
+    static REFORM_BALL_SHOW_COUNT=12;
         
-    static BOWL_SPEED=30;
-    static SLAM_UP_SPEED=35;
-    static SLAM_DOWN_SPEED=40;
+    static BOWL_SPEED=15;
+    static SLAM_UP_SPEED=15;
+    static SLAM_DOWN_SPEED=20;
         
-    static BALL_CIRCLE_SPEED=10;
+    static BALL_CIRCLE_SPEED=5;
     static BALL_CIRCLE_OFFSET_X=8;
     static BALL_CIRCLE_RADIUS_X=45;
     static BALL_CIRCLE_OFFSET_Y=50;
@@ -100,7 +100,7 @@ export default class BallClass extends SpriteClass {
         
         this.x=playerSprite.x+Math.trunc((playerSprite.width-this.width)*0.5);
         this.y=(playerSprite.y-playerSprite.height)-BallClass.HEAD_PIXEL_DISTANCE;
-        this.reformParticle=this.addParticle((this.x+halfWid),(this.y-halfHigh),ParticleClass.AFTER_SPRITES_LAYER,8,16,1.0,0.1,6,0.03,'particles/ball',16,0.5,true,(BallClass.REFORM_COUNT*33));
+        this.reformParticle=this.addParticle((this.x+halfWid),(this.y-halfHigh),ParticleClass.AFTER_SPRITES_LAYER,8,16,1.0,0.1,6,0.03,'particles/ball',16,0.5,true,(BallClass.REFORM_COUNT*16));
         
         this.playSound('ball_reform');
         

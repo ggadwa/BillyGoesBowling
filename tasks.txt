@@ -2,12 +2,20 @@
 
 
 - move game time to 60 fps
+  * all maps
+  * player_world
+  * billy_game
+  * player_sidescroll
+  * all blocks
+  * buttons, trophy, pin, door
 
 
+- surf up has some bad grass blocks in it
 - surf down waits at top and bottom
 - go over every map
 
-
+- background motion by tick
+- particles by tick
 
 
 - clean up all unused imports

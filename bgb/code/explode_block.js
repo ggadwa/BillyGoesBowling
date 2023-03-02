@@ -6,7 +6,7 @@ import KingGhastlyClass from './king_ghastly.js';
 
 export default class ExplodeBlockClass extends SpriteClass {
 
-    static COUNT_DOWN_TICK_WAIT=5;
+    static COUNT_DOWN_TICK_WAIT=10;
         
     constructor(game,x,y,data) {
         super(game,x,y,data);

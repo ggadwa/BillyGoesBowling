@@ -191,10 +191,10 @@ export default class SurfsDownMapClass extends SideScrollNormalBaseMapClass
     onLiquidMoveDone()
     {
         if (this.getLiquidY()===1056) {
-            this.moveLiquidTo(1984,4);
+            this.moveLiquidTo(1984,2);
         }
         else {
-            this.moveLiquidTo(1056,5);
+            this.moveLiquidTo(1056,2.5);
         }
         
         this.playSoundGlobal('splash');
@@ -205,7 +205,7 @@ export default class SurfsDownMapClass extends SideScrollNormalBaseMapClass
         super.mapStartup();
         
         this.addLiquid(this.game.imageList.get('liquids/water_top'),this.game.imageList.get('liquids/water_fill'),992,5);
-        this.moveLiquidTo(1984,3);
+        this.moveLiquidTo(1984,1.5);
         this.playSoundGlobal('splash');
     }
 }

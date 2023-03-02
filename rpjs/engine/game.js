@@ -7,7 +7,7 @@ import InputClass from './input.js';
 
 export default class GameClass {
         
-    static PHYSICS_TICK_FREQUENCY=33;
+    static PHYSICS_TICK_FREQUENCY=16;
     static DRAW_TICK_FREQUENCY=16;
 
     constructor() {

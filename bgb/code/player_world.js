@@ -18,7 +18,8 @@ export default class PlayerWorldClass extends SpriteClass {
     static TILE_IDX_LEFT_T=55;
     static TILE_IDX_UP_T=56;
     static TILE_IDX_BRIDGE_CENTER=57;
-    static WALK_FRAME_TICK=3;
+    static WALK_FRAME_TICK=6;
+    static SPEED=8;
         
     static WALK_ANIMATION=['sprites/billy_world_1','sprites/billy_world_2','sprites/billy_world_3','sprites/billy_world_2'];
 
@@ -160,8 +161,8 @@ export default class PlayerWorldClass extends SpriteClass {
         xDir=this.moveToX-this.x;
         yDir=this.moveToY-this.y;
         
-        if (this.x!==this.moveToX) this.x+=(Math.sign(xDir)*16);
-        if (this.y!==this.moveToY) this.y+=(Math.sign(yDir)*16);
+        if (this.x!==this.moveToX) this.x+=(Math.sign(xDir)*PlayerWorldClass.SPEED);
+        if (this.y!==this.moveToY) this.y+=(Math.sign(yDir)*PlayerWorldClass.SPEED);
         
         // have we changed tiles?   
         if ((this.x!==this.moveToX) || (this.y!==this.moveToY)) return;

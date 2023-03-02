@@ -8,8 +8,8 @@ import FishClass from './fish.js';
 
 export default class CloudBlockClass extends SpriteClass {
         
-    static POP_TICK=20;
-    static REAPPEAR_TICK=40;
+    static POP_TICK=40;
+    static REAPPEAR_TICK=80;
 
     constructor(game,x,y,data) {
         super(game,x,y,data);

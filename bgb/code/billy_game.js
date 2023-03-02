@@ -63,7 +63,7 @@ export default class BillyGameClass extends GameClass {
     static BANNER_MODE_SHOW=2;
     static BANNER_MODE_NONE=3;
         
-    static BANNER_FADE_TICK=10;
+    static BANNER_FADE_TICK=20;
         
     static HEALTH_IMAGE_LIST=['ui/health_25','ui/health_50','ui/health_75','ui/health_100'];
 

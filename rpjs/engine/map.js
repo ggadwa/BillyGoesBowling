@@ -674,7 +674,7 @@ export default class MapClass {
     }
     
     draw(ctx) {
-        let x,y;
+        let x,y,offX,offY;
         let lx,rx,ty,by;
         let background,tile,sprite,particle;
         let tilePerWidth,tilePerHeight;
@@ -687,18 +687,22 @@ export default class MapClass {
             
             this.offsetY+=(5-(Math.random()*10));
         }
+        
+        // need to make sure stuff lands on pixels
+        offX=Math.trunc(this.offsetX);
+        offY=Math.trunc(this.offsetY);
 
         // backgrounds
         for (background of this.backgrounds) {
-            background.draw(ctx);
+            background.draw(ctx,offX,offY);
         }
         
         // liquids
-        if (this.liquid!=null) this.liquid.draw(ctx,this.offsetX,this.offsetY);
+        if (this.liquid!=null) this.liquid.draw(ctx,offX,offY);
 
         // draw the under the map sprites
         for (sprite of this.sprites) {
-            if ((sprite.show) && (sprite.layer===sprite.UNDER_MAP_TILES_LAYER)) sprite.draw(ctx,this.offsetX,this.offsetY);
+            if ((sprite.show) && (sprite.layer===sprite.UNDER_MAP_TILES_LAYER)) sprite.draw(ctx,offX,offY);
         }
         
         // draw size
@@ -706,13 +710,13 @@ export default class MapClass {
         tilePerHeight=Math.trunc(this.game.canvasHeight/MapClass.MAP_TILE_SIZE);
             
         // draw the map
-        lx=Math.trunc(this.offsetX/MapClass.MAP_TILE_SIZE)-1;
+        lx=Math.trunc(offX/MapClass.MAP_TILE_SIZE)-1;
         if (lx<0) lx=0;
         
         rx=(lx+tilePerWidth)+2;
         if (rx>MapClass.MAP_TILE_WIDTH) rx=MapClass.MAP_TILE_WIDTH;
         
-        ty=Math.trunc(this.offsetY/MapClass.MAP_TILE_SIZE)-1;
+        ty=Math.trunc(offY/MapClass.MAP_TILE_SIZE)-1;
         if (ty<0) ty=0;
         
         by=(ty+tilePerHeight)+2;
@@ -724,28 +728,28 @@ export default class MapClass {
                 tile=this.tileData[(y*MapClass.MAP_TILE_WIDTH)+x];
                 if (tile===0) continue;
                 
-                ctx.drawImage(this.game.tileImageList[tile-1],((x*MapClass.MAP_TILE_SIZE)-this.offsetX),((y*MapClass.MAP_TILE_SIZE)-this.offsetY));
+                ctx.drawImage(this.game.tileImageList[tile-1],((x*MapClass.MAP_TILE_SIZE)-offX),((y*MapClass.MAP_TILE_SIZE)-offY));
             }
         }
         
         // draw the before sprite particles
         for (particle of this.particles) {
-            if (particle.layer===ParticleClass.BEFORE_SPRITES_LAYER) particle.draw(ctx,this.offsetX,this.offsetY);
+            if (particle.layer===ParticleClass.BEFORE_SPRITES_LAYER) particle.draw(ctx,offX,offY);
         }
         
         // draw the background sprites
         for (sprite of this.sprites) {
-            if ((sprite.show) && (sprite.layer===sprite.BACKGROUND_LAYER)) sprite.draw(ctx,this.offsetX,this.offsetY);
+            if ((sprite.show) && (sprite.layer===sprite.BACKGROUND_LAYER)) sprite.draw(ctx,offX,offY);
         }
         
         // draw the foreground sprites
         for (sprite of this.sprites) {
-            if ((sprite.show) && (sprite.layer===sprite.FOREGROUND_LAYER)) sprite.draw(ctx,this.offsetX,this.offsetY);
+            if ((sprite.show) && (sprite.layer===sprite.FOREGROUND_LAYER)) sprite.draw(ctx,offX,offY);
         }
         
         // draw the after sprite particles
         for (particle of this.particles) {
-            if (particle.layer===ParticleClass.AFTER_SPRITES_LAYER) particle.draw(ctx,this.offsetX,this.offsetY);
+            if (particle.layer===ParticleClass.AFTER_SPRITES_LAYER) particle.draw(ctx,offX,offY);
         }
     }
     

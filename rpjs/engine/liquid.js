@@ -49,12 +49,17 @@ export default class LiquidClass {
                     triggerEvent=true;
                 }
             }
+            
+            // no waves when moving as it makes movement look weird
+            this.waveHigh=0;
+        }
+        else {
+            this.waveHigh=Math.sin(((tick%120)/120.0)*(2.0*Math.PI))*this.waveSize;
         }
         
-        // wave height
-        this.waveHigh=Math.sin(((tick%60)/60.0)*(2.0*Math.PI))*this.waveSize;
-        this.waveOffsetX=Math.cos(((tick%80)/80.0)*(2.0*Math.PI))*this.waveSize;
-
+        // wave offset
+        this.waveOffsetX=Math.cos(((tick%160)/160.0)*(2.0*Math.PI))*this.waveSize;
+        
         return(triggerEvent);
     }
     

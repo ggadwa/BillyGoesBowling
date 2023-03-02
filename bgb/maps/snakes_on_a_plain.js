@@ -201,7 +201,7 @@ export default class SnakesOnAPlainMapClass extends SideScrollNormalBaseMapClass
             new BlockClass(this.game,5312,1408,new Map([])),
             new BlockClass(this.game,5376,1408,new Map([])),
             new DoorClass(this.game,2112,1344,new Map([["name","Secret Door"],["goto","Higher Door"]])),
-            new ButtonClass(this.game,3584,1152,new Map([["mode","liquid"],["liquid_y",1632],["liquid_move_speed",5]])),
+            new ButtonClass(this.game,3584,1152,new Map([["mode","liquid"],["liquid_y",1632],["liquid_move_speed",2.5]])),
             new TrophyClass(this.game,1408,1344,new Map([])),
             new BreakBlockClass(this.game,2176,960,new Map([])),
             new BreakBlockClass(this.game,2048,960,new Map([])),

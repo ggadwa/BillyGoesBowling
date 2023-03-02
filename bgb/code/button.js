@@ -3,7 +3,7 @@ import PlayerSideScrollClass from './player_sidescroll.js';
 
 export default class ButtonClass extends SpriteClass {
         
-    static SQUISH_TICK=5;
+    static SQUISH_TICK=10;
 
     constructor(game,x,y,data) {
         super(game,x,y,data);
@@ -14,9 +14,9 @@ export default class ButtonClass extends SpriteClass {
         this.squishCount=0;
         
         this.show=true;
-        this.gravityFactor=0.2;
-        this.gravityMinValue=2;
-        this.gravityMaxValue=15;
+        this.gravityFactor=0.15;
+        this.gravityMinValue=3;
+        this.gravityMaxValue=12;
         this.canCollide=true;
         this.canStandOn=true;
         

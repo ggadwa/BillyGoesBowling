@@ -2,9 +2,9 @@ import SpriteClass from '../../rpjs/engine/sprite.js';
 
 export default class SpringClass extends SpriteClass {
 
-    static SPRING_JUMP_HEIGHT=-80;
+    static SPRING_JUMP_HEIGHT=-40;
     static SPRING_MAX_MOVE=32;
-    static SPRING_MOVE=4;
+    static SPRING_MOVE=2;
         
     static SPRING_NONE=0;
     static SPRING_UP=1;

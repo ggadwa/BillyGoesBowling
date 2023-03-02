@@ -15,9 +15,9 @@ export default class BreakBlockHalfRightClass extends SpriteClass {
         this.setCurrentImage('sprites/break_block_half_right');
         
         this.show=true;
-        this.gravityFactor=0.2;
-        this.gravityMinValue=4;
-        this.gravityMaxValue=15;
+        this.gravityFactor=0.15;
+        this.gravityMinValue=3;
+        this.gravityMaxValue=12;
         this.canCollide=true;
         this.canStandOn=true;
         

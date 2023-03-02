@@ -17,9 +17,9 @@ export default class BreakBlockClass extends SpriteClass {
         this.setCurrentImage('sprites/break_block');
         
         this.show=true;
-        this.gravityFactor=0.2;
-        this.gravityMinValue=4;
-        this.gravityMaxValue=15;
+        this.gravityFactor=0.15;
+        this.gravityMinValue=3;
+        this.gravityMaxValue=12;
         this.canCollide=true;
         this.canStandOn=true;
         

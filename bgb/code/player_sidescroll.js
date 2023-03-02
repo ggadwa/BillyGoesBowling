@@ -22,17 +22,19 @@ import KingGhastlyClass from '../code/king_ghastly.js';
 
 export default class PlayerSideScrollClass extends SpriteClass {
 
-    static WALK_MAX_SPEED=12;
-    static WALK_ACCEL=2.1;
-    static WALK_DECEL=2.5;
-    static AIR_DECEL=2.0;
-    static JUMP_START_SPEED=16;
-    static JUMP_HEIGHT=-20;
-    static JUMP_GRAVITY_PAUSE=4;
-    static DEATH_TICK=100;
-    static INVINCIBLE_TICK=60;
-    static WARP_TICK=40;
-    static WALK_FRAME_TICK=3;
+    static WALK_MAX_SPEED=6;
+    static WALK_ACCEL=1.1;
+    static WALK_DECEL=1.25;
+    static AIR_MAX_SPEED=6;
+    static AIR_ACCEL=1.25;
+    static AIR_DECEL=1.0;
+    static JUMP_START_SPEED=8;
+    static JUMP_HEIGHT=-10;
+    static JUMP_GRAVITY_PAUSE=8;
+    static DEATH_TICK=200;
+    static INVINCIBLE_TICK=120;
+    static WARP_TICK=80;
+    static WALK_FRAME_TICK=8;
     static MAX_HEALTH=4;
         
     static WALK_ANIMATION=['sprites/billy_walk_1','sprites/billy_walk_2','sprites/billy_walk_3','sprites/billy_walk_2'];   
@@ -66,17 +68,10 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.flipX=false;
         
         this.show=true;
-        
-        this.walkMaxSpeed=12.0;
-        this.walkAccel=2.1;
-        this.walkDecel=2.5;
-        this.airMaxSpeed=12.0;
-        this.airAccel=2.5;
-        this.airDecel=2.0;
 
-        this.gravityFactor=0.25;
-        this.gravityMinValue=8;
-        this.gravityMaxValue=30;
+        this.gravityFactor=0.125;
+        this.gravityMinValue=4;
+        this.gravityMaxValue=15;
         this.canCollide=true;
         this.canStandOn=true;
         
@@ -203,7 +198,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
     onMessage(fromSprite,cmd,data) {
         switch (cmd) {
             case 'start_shield':
-                this.shieldCount=this.shieldSprite.LIFE_TICK;
+                this.shieldCount=ShieldClass.LIFE_TICK;
                 this.sendMessage(this.shieldSprite,'start_shield',null);
                 return;
             case 'warp_out':
@@ -276,15 +271,15 @@ export default class PlayerSideScrollClass extends SpriteClass {
             if (this.grounded) this.flipX=true;
             
             if (this.grounded) {
-                if (this.moveX>-this.walkMaxSpeed) {
-                    this.moveX-=this.walkAccel;
-                    if (this.moveX<-this.walkMaxSpeed) this.moveX=-this.walkMaxSpeed;
+                if (this.moveX>-PlayerSideScrollClass.WALK_MAX_SPEED) {
+                    this.moveX-=PlayerSideScrollClass.WALK_ACCEL;
+                    if (this.moveX<-PlayerSideScrollClass.WALK_MAX_SPEED) this.moveX=-PlayerSideScrollClass.WALK_MAX_SPEED;
                 }
             }
             else {
-                if (this.moveX>-this.airMaxSpeed) {
-                    this.moveX-=this.airAccel;
-                    if (this.moveX<-this.airMaxSpeed) this.moveX=-this.airMaxSpeed;
+                if (this.moveX>-PlayerSideScrollClass.AIR_MAX_SPEED) {
+                    this.moveX-=PlayerSideScrollClass.AIR_ACCEL;
+                    if (this.moveX<-PlayerSideScrollClass.AIR_MAX_SPEED) this.moveX=-PlayerSideScrollClass.AIR_MAX_SPEED;
                 }
             }
         }
@@ -294,15 +289,15 @@ export default class PlayerSideScrollClass extends SpriteClass {
             if (this.grounded) this.flipX=false;
             
             if (this.grounded) {
-                if (this.moveX<this.walkMaxSpeed) {
-                    this.moveX+=this.walkAccel;
-                    if (this.moveX>this.walkMaxSpeed) this.moveX=this.walkMaxSpeed;
+                if (this.moveX<PlayerSideScrollClass.WALK_MAX_SPEED) {
+                    this.moveX+=PlayerSideScrollClass.WALK_ACCEL;
+                    if (this.moveX>PlayerSideScrollClass.WALK_MAX_SPEED) this.moveX=PlayerSideScrollClass.WALK_MAX_SPEED;
                 }
             }
             else {
-                if (this.moveX<this.airMaxSpeed) {
-                    this.moveX+=this.airAccel;
-                    if (this.moveX>this.airMaxSpeed) this.moveX=this.airMaxSpeed;
+                if (this.moveX<PlayerSideScrollClass.AIR_MAX_SPEED) {
+                    this.moveX+=PlayerSideScrollClass.AIR_ACCEL;
+                    if (this.moveX>PlayerSideScrollClass.AIR_MAX_SPEED) this.moveX=PlayerSideScrollClass.AIR_MAX_SPEED;
                 }
             }
         }

@@ -2,8 +2,8 @@ import SpriteClass from '../../rpjs/engine/sprite.js';
 
 export default class PlatformClass extends SpriteClass
 {
-    static PLATFORM_SPEED=10;
-    static PLATFORM_PAUSE_TICK=10; 
+    static PLATFORM_SPEED=5;
+    static PLATFORM_PAUSE_TICK=20; 
 
     constructor(game,x,y,data)
     {
