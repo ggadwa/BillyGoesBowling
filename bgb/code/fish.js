@@ -6,9 +6,9 @@ import EasterHeadClass from './easter_head.js';
 
 export default class FishClass extends SpriteClass {
 
-    static FISH_SPEED=10;
-    static FISH_INITIAL_ARC=-10;
-    static MAX_BOUNCE=4;
+    static FISH_SPEED=4;
+    static FISH_INITIAL_ARC=-8;
+    static MAX_BOUNCE=1;
     static FISH_BOUNCE_ARC=-5;
 
     constructor(game,x,y,data) {
@@ -25,7 +25,7 @@ export default class FishClass extends SpriteClass {
         this.gravityFactor=0.1;
         this.gravityMinValue=1.5;
         this.gravityMaxValue=15;
-        this.canStandOn=true;
+        this.canStandOn=false;
         
         this.setCollideSpriteClassIgnoreList([EasterHeadClass]);
         this.setCollideTileIndexIgnoreList([22,23]);

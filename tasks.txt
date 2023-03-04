@@ -8,10 +8,16 @@
   * player_sidescroll
   * all blocks
   * buttons, trophy, pin, door
+  * snake
+  * easter head, fish
 
 
-- surf up has some bad grass blocks in it
-- surf down waits at top and bottom
+
+- editor: like to get rid of duplicate in classes
+
+
+
+
 - go over every map
 
 - background motion by tick
@@ -19,19 +25,8 @@
 
 
 - clean up all unused imports
-
-
-
-
-
 - both game and sprite still have some non-"on" events
-
 - music needs a loop point, give music opening bars
-
-- editor: need x erase block
-- editor: like to get rid of duplicate
-- editor: scrolling down to fall erases sprites
-
 - pendant tile for castle levels (next to bush tile)
 
 

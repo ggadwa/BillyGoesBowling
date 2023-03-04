@@ -9,9 +9,9 @@ import PlayerSideScrollClass from './player_sidescroll.js';
 
 export default class DrainPipeSnakeClass extends SpriteClass {
 
-    static MAX_WALK_SPEED=5.0;
-    static ACCEL_SPEED=1.0;
-    static INVINCIBLE_TICK=30;
+    static MAX_WALK_SPEED=2.5;
+    static ACCEL_SPEED=0.5;
+    static INVINCIBLE_TICK=60;
     static TILE_IDX_GROUND_LEFT_END=1;
     static TILE_IDX_GROUND_RIGHT_END=3;
     static TILE_IDX_GIRDER_LEFT_END=10;
@@ -83,9 +83,14 @@ export default class DrainPipeSnakeClass extends SpriteClass {
         
         // colliding with player breaks pipe and turns snake around
         if (sprite instanceof PlayerSideScrollClass) {
-            if (this.snakeHasPipe) this.breakPipe();
-            this.flipX=!this.flipX;
-            this.walkSpeed=0.0;
+            if (this.snakeHasPipe) {
+                this.breakPipe();
+                this.flipX=!this.flipX;
+                this.walkSpeed=0.0;
+            }
+            else {
+                this.kill();
+            }
             return;
         }
         

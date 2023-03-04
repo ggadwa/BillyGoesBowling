@@ -72,6 +72,7 @@ export default class EditorClass {
         
         // toolbar buttons
         document.getElementById('compileButton').onclick=this.compile.bind(this);
+        document.getElementById('clearSelectionButton').onclick=this.clearSelection.bind(this);
         document.getElementById('mapUpButton').onclick=this.mapUp.bind(this);
         document.getElementById('mapDownButton').onclick=this.mapDown.bind(this);
         document.getElementById('mapLeftButton').onclick=this.mapLeft.bind(this);
@@ -134,6 +135,9 @@ export default class EditorClass {
         }
         */
        
+        // get offset on first visible block
+        this.setOffsetToFirstVisibleBlock();
+       
         this.refresh();
     }
     
@@ -158,6 +162,24 @@ export default class EditorClass {
         this.refresh();
     }
     
+    // find good starting block on first row with blocks
+    setOffsetToFirstVisibleBlock() {
+        let x,y;
+        
+        this.offsetX=0;
+        this.offsetY=0;
+        
+        for (x=0;x!=MapClass.MAP_TILE_WIDTH;x++) {
+            for (y=0;y!=MapClass.MAP_TILE_HEIGHT;y++) {
+                if (this.map.tileData[(y*MapClass.MAP_TILE_WIDTH)+x]!==0) {
+                    this.offsetX=x;
+                    this.offsetY=y;
+                    return;
+                }
+            }
+        }
+    }
+    
     // draw canvases
     drawMapCanvas() {
         let x,y,dx,dy,tileIdx,sprite;
@@ -169,9 +191,11 @@ export default class EditorClass {
         // get the tile draw viewport
         lx=this.offsetX;
         rx=lx+(Math.trunc(this.mapCanvas.width/MapClass.MAP_TILE_SIZE)+1);
+        if (rx>MapClass.MAP_TILE_WIDTH) rx=MapClass.MAP_TILE_WIDTH;
             
         ty=this.offsetY;
         by=ty+(Math.trunc(this.mapCanvas.height/MapClass.MAP_TILE_SIZE)+1);
+        if (by>MapClass.MAP_TILE_HEIGHT) by=MapClass.MAP_TILE_HEIGHT;
         
         // clear
         ctx.fillStyle='#FFFFFF';
@@ -274,7 +298,17 @@ export default class EditorClass {
         x=0;
         y=0;
         
-        // the images
+        // the erase tile
+        
+        ctx.font='48px Material Symbols Outlined';
+        ctx.fillStyle='#000055';
+        ctx.textAlign='center';
+        ctx.textBaseline='middle';
+        ctx.fillText('delete_forever',(x+(MapClass.MAP_TILE_SIZE/2)),(y+((MapClass.MAP_TILE_SIZE/2)+3)));
+         
+        x+=MapClass.MAP_TILE_SIZE;
+        
+        // the tiles
         for (tile of tiles) {
             ctx.drawImage(tile,x,y);
             
@@ -397,7 +431,7 @@ export default class EditorClass {
     }
     
     setSpotTile(x,y,idx) {
-        this.map.tileData[x+(y*MapClass.MAP_TILE_WIDTH)]=idx+1;
+        if (idx!==-1) this.map.tileData[x+(y*MapClass.MAP_TILE_WIDTH)]=idx;
     }
     
     // click map canvas
@@ -423,20 +457,15 @@ export default class EditorClass {
         }
         
         else {
-            
-            // a dropped selection
-            if (this.paletteSelIndex!==-1) {
-            
-                // if it's a sprite in the palette, then drop that and move it
-                if (this.paletteSelType===this.PALETTE_SPRITE) {
-                    spriteIdx=this.setSpotSprite(this.selectX,this.selectY,this.paletteSelIndex);
-                    this.dragSprite=this.map.sprites[spriteIdx];
-                    this.dragMode=EditorClass.DRAG_SPRITE;
-                }
-                else {
-                    this.setSpotTile(this.selectX,this.selectY,this.paletteSelIndex);
-                    this.dragMode=EditorClass.DRAG_DRAW_TILE;
-                }
+            // if it's a sprite in the palette, then drop that and move it
+            if (this.paletteSelType===this.PALETTE_SPRITE) {
+                spriteIdx=this.setSpotSprite(this.selectX,this.selectY,this.paletteSelIndex);
+                this.dragSprite=this.map.sprites[spriteIdx];
+                this.dragMode=EditorClass.DRAG_SPRITE;
+            }
+            else {
+                this.setSpotTile(this.selectX,this.selectY,this.paletteSelIndex);
+                this.dragMode=EditorClass.DRAG_DRAW_TILE;
             }
         }
         
@@ -589,11 +618,21 @@ export default class EditorClass {
         }
     }
     
-    // toolbar buttons
+    // clear selection buttons
+    clearSelection() {
+        this.paletteSelType=this.PALETTE_TILE;
+        this.paletteSelIndex=-1;
+        
+        this.refresh();
+    }
+    
+    // whole map move buttons
     mapUp() {
         let x,y,my,sprite;
         
-        for (y=this.selectY;(y+1)<(MapClass.MAP_TILE_HEIGHT);y++) {
+        if (this.selectY===0) return;
+        
+        for (y=(this.selectY-1);(y+1)<(MapClass.MAP_TILE_HEIGHT);y++) {
             for (x=0;x!=MapClass.MAP_TILE_WIDTH;x++) {
                 this.map.tileData[(y*MapClass.MAP_TILE_WIDTH)+x]=this.map.tileData[((y+1)*MapClass.MAP_TILE_WIDTH)+x];
             }
@@ -606,8 +645,10 @@ export default class EditorClass {
         my=this.selectY*MapClass.MAP_TILE_SIZE;
         
         for (sprite of this.map.sprites) {
-            if (sprite.y>my) sprite.y-=MapClass.MAP_TILE_SIZE;
+            if (sprite.y>=my) sprite.y-=MapClass.MAP_TILE_SIZE;
         }
+        
+        this.selectY--;
         
         this.drawMapCanvas();
     }
@@ -628,7 +669,7 @@ export default class EditorClass {
         my=this.selectY*MapClass.MAP_TILE_SIZE;
         
         for (sprite of this.map.sprites) {
-            if ((sprite.y>my) && (sprite.y<=((MapClass.MAP_TILE_HEIGHT-1)*MapClass.MAP_TILE_SIZE))) sprite.y+=MapClass.MAP_TILE_SIZE;
+            if ((sprite.y>=my) && (sprite.y<=((MapClass.MAP_TILE_HEIGHT-1)*MapClass.MAP_TILE_SIZE))) sprite.y+=MapClass.MAP_TILE_SIZE;
         }
         
         this.drawMapCanvas();
@@ -640,7 +681,7 @@ export default class EditorClass {
         if (this.selectX===0) return;
         
         for (y=0;y!==MapClass.MAP_TILE_HEIGHT;y++) {
-            for (x=this.selectX;x!==(MapClass.MAP_TILE_WIDTH-1);x++) {
+            for (x=(this.selectX-1);x!==(MapClass.MAP_TILE_WIDTH-1);x++) {
                 this.map.tileData[(y*MapClass.MAP_TILE_WIDTH)+x]=this.map.tileData[(y*MapClass.MAP_TILE_WIDTH)+(x+1)];
             }
             this.map.tileData[(y*MapClass.MAP_TILE_WIDTH)+(MapClass.MAP_TILE_WIDTH-1)]=0;
@@ -649,8 +690,10 @@ export default class EditorClass {
         mx=this.selectX*MapClass.MAP_TILE_SIZE;
         
         for (sprite of this.map.sprites) {
-            if (sprite.x>mx) sprite.x-=MapClass.MAP_TILE_SIZE;
+            if (sprite.x>=mx) sprite.x-=MapClass.MAP_TILE_SIZE;
         }
+        
+        this.selectX--;
         
         this.drawMapCanvas();
     }
@@ -668,7 +711,7 @@ export default class EditorClass {
         mx=this.selectX*MapClass.MAP_TILE_SIZE;
         
         for (sprite of this.map.sprites) {
-            if ((sprite.x>mx) && (sprite.x<=(MapClass.MAP_TILE_WIDTH-1)*MapClass.MAP_TILE_SIZE)) sprite.x+=MapClass.MAP_TILE_SIZE;
+            if ((sprite.x>=mx) && (sprite.x<=(MapClass.MAP_TILE_WIDTH-1)*MapClass.MAP_TILE_SIZE)) sprite.x+=MapClass.MAP_TILE_SIZE;
         }
         
         this.drawMapCanvas();
@@ -678,7 +721,10 @@ export default class EditorClass {
     infoOpen() {
         let n,idx;
         let sprite=this.findSpriteForPosition(this.selectX,this.selectY);
-        if (sprite==null) return;
+        if (sprite==null) {
+            alert('No spirte selected');
+            return;
+        }
         
         idx=0;
         
