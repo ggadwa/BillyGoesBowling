@@ -32,10 +32,6 @@ export default class ExplodeBlockClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new ExplodeBlockClass(this.game,x,y,this.data));
-    }
-    
     startCountdown() {
         if (this.countDown===-1) {
             this.countDown=3;

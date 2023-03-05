@@ -17,10 +17,6 @@ export default class BlockClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new BlockClass(this.game,x,y,this.data));
-    }
-    
     onRun(tick) {
         this.runGravity();
     }

@@ -39,10 +39,6 @@ export default class BoomerangClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new BoomerangClass(this.game,x,y,this.data));
-    }
-    
     killBoomerang() {
         this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),ParticleClass.AFTER_SPRITES_LAYER,64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,600);
         this.playSound('pop');

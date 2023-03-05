@@ -29,11 +29,6 @@ export default class PlatformClass extends SpriteClass
         Object.seal(this);
     }
     
-    duplicate(x,y)
-    {
-        return(new PlatformClass(this.game,x,y,this.data));
-    }
-    
     onRun(tick) {
         let playerSprite=this.getPlayerSprite();
         

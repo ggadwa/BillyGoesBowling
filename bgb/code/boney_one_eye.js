@@ -33,10 +33,6 @@ export default class BoneyOneEyeClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new BoneyOneEyeClass(this.game,x,y,this.data));
-    }
-    
     mapStartup() {
         this.fireWait=BoneyOneEyeClass.FIRE_TICK;
         this.inAir=false;

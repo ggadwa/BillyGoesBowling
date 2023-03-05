@@ -18,10 +18,6 @@ export default class TrophyClass extends SpriteClass {
         
         Object.seal(this);
     }
-    
-    duplicate(x,y) {
-        return(new TrophyClass(this.game,x,y,this.data));
-    }
 
     mapStartup() {
         // if trophy has been picked up once, then make it transparent

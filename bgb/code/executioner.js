@@ -45,10 +45,6 @@ export default class ExecutionerClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new ExecutionerClass(this.game,x,y,this.data));
-    }
-    
     mapStartup() {
         this.executionerDirection=-1;
         this.executionerSpeed=0;

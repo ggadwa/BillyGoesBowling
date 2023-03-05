@@ -78,13 +78,6 @@ export default class SpriteClass {
     }
     
     /**
-     * Override this so editor can create another object of this type
-     * at a given position.
-     */
-    duplicate(x,y) {
-    }
-    
-    /**
      * Override and set to true if this sprite is a player
      * sprite.  If there is more than one players sprite, the first
      * one encountered becomes the player.

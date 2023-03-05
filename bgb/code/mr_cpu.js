@@ -46,10 +46,6 @@ export default class MrCPUClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new MrCPUClass(this.game,x,y,this.data));
-    }
-    
     mapStartup() {
         this.mode=MrCPUClass.CPU_MODE_FALL;
         

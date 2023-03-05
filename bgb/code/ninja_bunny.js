@@ -44,10 +44,6 @@ export default class NinjaBunnyClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new NinjaBunnyClass(this.game,x,y,this.data));
-    }
-    
     jumpTowardsSprite(sprite) {
         this.bunnyJumpDirection=Math.sign(sprite.x-this.x);
         if (this.getCurrentGravity()>=0) this.addGravity(NinjaBunnyClass.BUNNY_JUMP_HEIGHT,0);

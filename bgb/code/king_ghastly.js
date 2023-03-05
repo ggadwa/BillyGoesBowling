@@ -38,10 +38,6 @@ export default class KingGhastlyClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new KingGhastlyClass(this.game,x,y,this.data));
-    }
-    
     mapStartup() {
         this.firstDrop=true;
         this.inAir=true;

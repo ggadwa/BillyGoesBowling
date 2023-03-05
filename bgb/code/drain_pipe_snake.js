@@ -45,10 +45,6 @@ export default class DrainPipeSnakeClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new DrainPipeSnakeClass(this.game,x,y,this.data));
-    }
-    
     breakPipe() {
         this.snakeHasPipe=false;
         this.invincibleCount=DrainPipeSnakeClass.INVINCIBLE_TICK;

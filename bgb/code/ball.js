@@ -79,10 +79,6 @@ export default class BallClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new BallClass(this.game,x,y,this.data));
-    }
-    
     returnBall(showDestroy) {
         let playerSprite=this.getPlayerSprite();
         let halfWid=Math.trunc(this.width*0.5);

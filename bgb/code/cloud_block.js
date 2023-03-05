@@ -31,10 +31,6 @@ export default class CloudBlockClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new CloudBlockClass(this.game,x,y,this.data));
-    }
-    
     pop() {
         this.show=false;
         this.countDown=CloudBlockClass.REAPPEAR_TICK;

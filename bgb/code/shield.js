@@ -29,10 +29,6 @@ export default class ShieldClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new ShieldClass(this.game,x,y,this.data));
-    }
-    
     onCollideSprite(sprite) {
         this.sendMessage(sprite,'hurt',null);
     }

@@ -21,10 +21,6 @@ export default class DoorClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new DoorClass(this.game,x,y,this.data));
-    }
-    
     onRun(tick) {
         let door;
         let playerSprite=this.getPlayerSprite();

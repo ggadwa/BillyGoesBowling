@@ -21,9 +21,4 @@ export default class MapBlockClass extends SpriteClass
 
         Object.seal(this);
     }
-    
-    duplicate(x,y)
-    {
-        return(new MapBlockClass(this.game,x,y,this.data));
-    }
 }

@@ -20,10 +20,6 @@ export default class PinClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new PinClass(this.game,x,y,this.data));
-    }
-    
     mapStartup() {
         // if pin has been picked up once, then make it transparent
         if (this.getGameData('pin_'+this.getMapName())!==null) this.alpha=0.4;

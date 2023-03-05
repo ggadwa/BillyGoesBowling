@@ -24,10 +24,6 @@ export default class MapCottageClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new MapCottageClass(this.game,x,y,this.data));
-    }
-    
     mapStartup() {
         // only send banner message once
         this.bannerHit=false;

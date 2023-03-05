@@ -30,8 +30,8 @@ export default class MapClass {
         this.tileData=null; // tile data for map
         this.sprites=null; // sprites in map
         
-        this.createTileData=null;
-        this.createSpriteData=null; // we have a creation copy (the editor makes) and a working copy, as game play changes these
+        this.createTileData=null; // these are used to make the initial tile and sprite data, and moved to a working copy as they can change
+        this.createSpriteData=null;
         
         this.playerIdx=-1;
         

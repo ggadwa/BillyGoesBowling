@@ -33,10 +33,6 @@ export default class FishClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new FishClass(this.game,x,y,this.data));
-    }
-    
     kill() {
         this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),ParticleClass.AFTER_SPRITES_LAYER,8,8,1.0,0.1,2,0.03,'particles/fish',8,0.5,false,500);
         this.playSound('ball_break');

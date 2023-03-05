@@ -26,10 +26,6 @@ export default class MapCastleClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new MapCastleClass(this.game,x,y,this.data));
-    }
-    
     isUnlocked() {
         return((parseInt(this.getData('pin'))<=parseInt(this.game.getGameDataCountForPrefix('pin_')))||(this.game.isUnlocked()));
     }

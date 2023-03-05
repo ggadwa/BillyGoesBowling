@@ -49,10 +49,6 @@ export default class PlayerWorldClass extends SpriteClass {
         this.drawOffsetX=Math.trunc((MapClass.MAP_TILE_SIZE-this.width)*0.5); // so world player draws in the center of tiles
     }
     
-    duplicate(x,y) {
-        return(new PlayerWorldClass(this.game,x,y,this.data));
-    }
-    
     isPlayer() {
         return(true);
     }

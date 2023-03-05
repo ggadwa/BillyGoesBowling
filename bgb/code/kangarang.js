@@ -39,10 +39,6 @@ export default class KangarangClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new KangarangClass(this.game,x,y,this.data));
-    }
-    
     mapStartup() {
         this.fireWait=KangarangClass.FIRE_TICK;
         this.inAir=false;

@@ -23,10 +23,6 @@ export default class ButtonClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new ButtonClass(this.game,x,y,this.data));
-    }
-    
     onStoodOnSprite(sprite) {
         let mode;
         

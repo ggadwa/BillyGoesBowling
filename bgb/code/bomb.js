@@ -25,10 +25,6 @@ export default class BombClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new BonbClass(this.game,x,y,this.data));
-    }
-    
     explode() {
         let cx,cy;
         

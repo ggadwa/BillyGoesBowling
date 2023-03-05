@@ -13,10 +13,6 @@
 
 
 
-- editor: like to get rid of duplicate in classes
-
-
-
 
 - go over every map
 
@@ -38,10 +34,7 @@ Maps:
 
 
 - particles by tick (just for the sprite call, convert them to timestamp after that)
-
 - platforms need to push with API (and anything that stands on them)
-
-
 - get rid of all map. or game.
 
 

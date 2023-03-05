@@ -37,10 +37,6 @@ export default class SpringClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new SpringClass(this.game,x,y,this.data));
-    }
-    
     onStoodOnSprite(sprite) {
         // already moving, do nothing
         if (this.springMode!==SpringClass.SPRING_NONE) return;

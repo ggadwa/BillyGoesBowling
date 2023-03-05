@@ -29,10 +29,6 @@ export default class ShurikinClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new ShurikinClass(this.game,x,y,this.data));
-    }
-    
     kill() {
         this.playSound('ball_break');
         this.addParticle((this.x+(this.width/2)),(this.y-(this.height/2)),ParticleClass.AFTER_SPRITES_LAYER,8,2,1.0,0.1,2,0.02,'particles/ball',8,0.7,false,500);

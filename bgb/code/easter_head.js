@@ -41,10 +41,6 @@ export default class EasterHeadClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new EasterHeadClass(this.game,x,y,this.data));
-    }
-    
     throwFish() {
         let sx,sy,dist;
         let playerSprite=this.getPlayerSprite();

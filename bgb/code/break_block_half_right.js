@@ -24,10 +24,6 @@ export default class BreakBlockHalfRightClass extends SpriteClass {
         Object.seal(this);
     }
     
-    duplicate(x,y) {
-        return(new BreakBlockHalfRightClass(this.game,x,y,this.data));
-    }
-    
     breakBlock() {
         let cx,cy;
         
