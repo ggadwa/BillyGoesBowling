@@ -73,7 +73,7 @@ export default class BallClass extends SpriteClass {
         this.canStandOn=false;
         this.canRiseBlock=false;
         
-        this.setCollideSpriteClassIgnoreList([PlayerSideScrollClass,ShieldClass]);
+        this.setCollideSpriteClassCollideIgnoreList([PlayerSideScrollClass,ShieldClass]);
         this.setCollideTileIndexIgnoreList([22,23]);
         
         Object.seal(this);

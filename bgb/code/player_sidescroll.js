@@ -75,7 +75,8 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.canCollide=true;
         this.canStandOn=true;
         
-        this.setCollideSpriteClassIgnoreList([BallClass,ShieldClass]);
+        this.setCollideSpriteClassCollideIgnoreList([BallClass,ShieldClass]);
+        this.setCollideSpriteClassStandOnIgnoreList([BallClass,ShieldClass]);
         this.setCollideTileIndexIgnoreList([22,23]);
         
         Object.seal(this);

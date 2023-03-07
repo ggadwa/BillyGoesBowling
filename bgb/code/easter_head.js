@@ -36,7 +36,7 @@ export default class EasterHeadClass extends SpriteClass {
         
         this.layer=this.UNDER_MAP_TILES_LAYER; // so it can sink below map tiles
         
-        this.setCollideSpriteClassIgnoreList([FishClass]);
+        this.setCollideSpriteClassCollideIgnoreList([FishClass]);
         
         Object.seal(this);
     }

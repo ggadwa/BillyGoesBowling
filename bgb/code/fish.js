@@ -27,7 +27,8 @@ export default class FishClass extends SpriteClass {
         this.gravityMaxValue=15;
         this.canStandOn=false;
         
-        this.setCollideSpriteClassIgnoreList([EasterHeadClass]);
+        this.setCollideSpriteClassCollideIgnoreList([EasterHeadClass]);
+        this.setCollideSpriteClassStandOnIgnoreList([EasterHeadClass]);
         this.setCollideTileIndexIgnoreList([22,23]);
         
         Object.seal(this);

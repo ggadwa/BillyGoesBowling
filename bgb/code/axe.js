@@ -23,7 +23,8 @@ export default class AxeClass extends SpriteClass {
         this.canStandOn=false;
         this.canRiseBlock=false;
 
-        this.setCollideSpriteClassIgnoreList([ExecutionerClass]);
+        this.setCollideSpriteClassCollideIgnoreList([ExecutionerClass]);
+        this.setCollideSpriteClassStandOnIgnoreList([ExecutionerClass]);
         this.setCollideTileIndexIgnoreList([22,23]);
         
         Object.seal(this);

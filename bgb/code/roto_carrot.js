@@ -19,6 +19,7 @@ export default class RotoCarrotClass extends SpriteClass {
     static BOMB_DROP_TICK=200;
     static BOMB_DROP_TICK_RANDOM_ADD=40;
     static CARROT_RESET_DISTANCE=500;
+    static ANIMATION_TICK_FRAME=4;
         
         // variables
         
@@ -36,7 +37,8 @@ export default class RotoCarrotClass extends SpriteClass {
         this.canCollide=true;
         this.canStandOn=true;
         
-        this.setCollideSpriteClassIgnoreList([BombClass,CloudBlockClass,DoorClass,PinClass,TrophyClass]);
+        this.setCollideSpriteClassCollideIgnoreList([BombClass,CloudBlockClass,DoorClass,PinClass,TrophyClass]);
+        this.setCollideSpriteClassStandOnIgnoreList([BombClass,CloudBlockClass,DoorClass,PinClass,TrophyClass]);
         this.setCollideTileIndexIgnoreList([22,23]);
         
         this.originalY=0;
@@ -81,7 +83,7 @@ export default class RotoCarrotClass extends SpriteClass {
             return;
         }
         else {
-            if ((Math.trunc(tick/2)&0x1)===0) {
+            if ((Math.trunc(tick/RotoCarrotClass.ANIMATION_TICK_FRAME)&0x1)===0) {
                 this.setCurrentImage('sprites/roto_carrot_1');
             }
             else {

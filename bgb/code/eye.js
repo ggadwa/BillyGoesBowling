@@ -26,7 +26,8 @@ export default class EyeClass extends SpriteClass {
         this.canCollide=false;
         this.canStandOn=false;
         
-        this.setCollideSpriteClassIgnoreList([BoneyOneEyeClass]);
+        this.setCollideSpriteClassCollideIgnoreList([BoneyOneEyeClass]);
+        this.setCollideSpriteClassStandOnIgnoreList([BoneyOneEyeClass]);
         
         Object.seal(this);
     }

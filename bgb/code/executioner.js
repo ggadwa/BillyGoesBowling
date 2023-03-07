@@ -40,7 +40,8 @@ export default class ExecutionerClass extends SpriteClass {
         this.canCollide=true;
         this.canStandOn=true;
         
-        this.setCollideSpriteClassIgnoreList([AxeClass]);
+        this.setCollideSpriteClassCollideIgnoreList([AxeClass]);
+        this.setCollideSpriteClassStandOnIgnoreList([AxeClass]);
         
         Object.seal(this);
     }

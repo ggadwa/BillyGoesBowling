@@ -53,7 +53,8 @@ export default class SpriteClass {
         this.canStandOn=true;
         this.canRiseBlock=true;
         
-        this.spriteClassIgnoreList=null;
+        this.spriteClassCollideIgnoreList=null;
+        this.spriteClassStandOnIgnoreList=null;
         this.tileIndexIgnoreList=null;
         
         this.health=0;
@@ -167,8 +168,12 @@ export default class SpriteClass {
         return(this.game.map.name);
     }
     
-    setCollideSpriteClassIgnoreList(spriteClassIgnoreList) {
-        this.spriteClassIgnoreList=spriteClassIgnoreList;
+    setCollideSpriteClassCollideIgnoreList(spriteClassCollideIgnoreList) {
+        this.spriteClassCollideIgnoreList=spriteClassCollideIgnoreList;
+    }
+    
+    setCollideSpriteClassStandOnIgnoreList(spriteClassStandOnIgnoreList) {
+        this.spriteClassStandOnIgnoreList=spriteClassStandOnIgnoreList;
     }
     
     setCollideTileIndexIgnoreList(tileIndexIgnoreList) {

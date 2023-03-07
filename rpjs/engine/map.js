@@ -238,9 +238,23 @@ export default class MapClass {
     onLiquidMoveDone() {
     }
     
+    isInIgnoreList(sprite,ignoreList) {
+        let ignore,ignoreClass;
+        
+        if (ignoreList==null) return(false);
+
+        ignore=false;
+
+        for (ignoreClass of ignoreList) {
+            if (sprite instanceof ignoreClass) return(true);
+        }
+
+        return(false);
+    }
+    
     checkCollision(checkSprite) {
         let sprite,tileIdx,ignoreTileIdx;
-        let ignore,ignoreClass;
+        let ignore;
         let lx,rx,ty,by,dx,dy,gx,gy;
         let lft,top,rgt,bot;
         
@@ -258,19 +272,9 @@ export default class MapClass {
             if (!checkSprite.collide(sprite)) continue;
             
             // now check ignore list
-            if (checkSprite.spriteClassIgnoreList!=null) {
-                ignore=false;
-
-                for (ignoreClass of checkSprite.spriteClassIgnoreList) {
-                    if (sprite instanceof ignoreClass) {
-                        ignore=true;
-                        break;
-                    }
-                }
-
-                if (ignore) continue;
-            }
-            
+            if (this.isInIgnoreList(sprite,checkSprite.spriteClassCollideIgnoreList)) continue;
+            if (this.isInIgnoreList(checkSprite,sprite.spriteClassCollideIgnoreList)) continue;
+             
             // otherwise it is a hit
             checkSprite.collideSprite=sprite;
             sprite.stageEventCollideSprite(checkSprite);
@@ -359,18 +363,8 @@ export default class MapClass {
                 if ((y<ty) || (ty===-1)) {
                     
                     // now check ignore list
-                    if (checkSprite.spriteClassIgnoreList!=null) {
-                        ignore=false;
-
-                        for (ignoreClass of checkSprite.spriteClassIgnoreList) {
-                            if (sprite instanceof ignoreClass) {
-                                ignore=true;
-                                break;
-                            }
-                        }
-
-                        if (ignore) continue;
-                    }
+                    if (this.isInIgnoreList(sprite,checkSprite.spriteClassStandOnIgnoreList)) continue;
+                    if (this.isInIgnoreList(checkSprite,sprite.spriteClassStandOnIgnoreList)) continue;
 
                     // standing on sprite
                     checkSprite.standSprite=sprite;
@@ -443,7 +437,7 @@ export default class MapClass {
     }
     
     checkCollisionRise(checkSprite,dist) {
-        let sprite,tileIdx,ignoreTileIdx,ignoreClass;
+        let sprite,tileIdx,ignoreTileIdx;
         let ignore;
         let ty=-1;
         let x,y,dx,dy,gx,gy,leftTileX,rightTileX;
@@ -462,19 +456,10 @@ export default class MapClass {
             if (checkSprite.collideRise(sprite,dist)) {
                 y=sprite.y;
                 if ((y<ty) || (ty===-1)) {
+                    
                     // now check ignore list
-                    if (checkSprite.spriteClassIgnoreList!=null) {
-                        ignore=false;
-
-                        for (ignoreClass of checkSprite.spriteClassIgnoreList) {
-                            if (sprite instanceof ignoreClass) {
-                                ignore=true;
-                                break;
-                            }
-                        }
-
-                        if (ignore) continue;
-                    }
+                    if (this.isInIgnoreList(sprite,checkSprite.spriteClassCollideIgnoreList)) continue;
+                    if (this.isInIgnoreList(checkSprite,sprite.spriteClassCollideIgnoreList)) continue;
                     
                     // rise collision
                     checkSprite.riseSprite=sprite;

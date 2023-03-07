@@ -23,7 +23,8 @@ export default class ShieldClass extends SpriteClass {
         this.gravityMaxValue=0;
         this.canStandOn=false;
         
-        this.setCollideSpriteClassIgnoreList([BallClass,PlayerSideScrollClass]);
+        this.setCollideSpriteClassCollideIgnoreList([BallClass,PlayerSideScrollClass]);
+        this.setCollideSpriteClassStandOnIgnoreList([BallClass,PlayerSideScrollClass]);
         this.setCollideTileIndexIgnoreList([22,23]);
         
         Object.seal(this);

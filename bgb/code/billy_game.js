@@ -55,6 +55,7 @@ import PlatformPerilMapClass from '../maps/platform_peril.js';
 import NinjaHordeMapClass from '../maps/ninja_horde.js';
 import SprintAThonMapClass from '../maps/spring_a_thon.js';
 import KingGhastlyCastleMapClass from '../maps/king_ghastly_castle.js';
+import TestMapClass from '../maps/test.js';
 
 export default class BillyGameClass extends GameClass {
 
@@ -299,6 +300,8 @@ export default class BillyGameClass extends GameClass {
         this.addMap('ninja_horde',new NinjaHordeMapClass(this));
         this.addMap('spring_a_thon',new SprintAThonMapClass(this));
         this.addMap('king_ghastly_castle',new KingGhastlyCastleMapClass(this));
+        
+        this.addMap('test',new TestMapClass(this));
     }
     
     createData() {

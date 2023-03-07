@@ -20,7 +20,7 @@ export default class BombClass extends SpriteClass {
         this.gravityMaxValue=0;
         this.canStandOn=false;
         
-        this.setCollideSpriteClassIgnoreList([RotoCarrotClass]);
+        this.setCollideSpriteClassCollideIgnoreList([RotoCarrotClass]);
         
         Object.seal(this);
     }

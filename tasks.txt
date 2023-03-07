@@ -10,9 +10,19 @@
   * buttons, trophy, pin, door
   * snake
   * easter head, fish
+  * carrot
 
+- maps
+   snakes_on_a_plain
+   heads_up
+   platform_troubled_waters
+   surfs_up
+   surfs_down
 
-- needs separate collide lists and can stand on list
+- to do
+   
+   hills_ninja_bunny (decorations)
+
 
 - go over every map
 

@@ -141,7 +141,7 @@ export default class WorldMainMapClass extends WorldBaseMapClass {
         ]);
 
         this.createSprites=[
-            new PlayerWorldClass(this.game,128,384,new Map([])),
+            new PlayerWorldClass(this.game,128,384,null),
             new MapSpotClass(this.game,256,384,new Map([["title","Snakes on a Plain"],["map","snakes_on_a_plain"]])),
             new MapSpotClass(this.game,512,704,new Map([["title","Apocalypse Carrot"],["map","apocalypse_carrot"]])),
             new MapSpotClass(this.game,384,256,new Map([["title","The Hills are Alive with the Sound of Ninja Bunnies"],["map","hills_ninja_bunnies"]])),
@@ -167,8 +167,9 @@ export default class WorldMainMapClass extends WorldBaseMapClass {
             new MapSpotClass(this.game,3840,1536,new Map([["title","Ninja Horde"],["map","ninja_horde"]])),
             new MapSpotClass(this.game,4032,1216,new Map([["title","Spring-a-thon"],["map","spring_a_thon"]])),
             new MapCastleClass(this.game,3712,1216,new Map([["title","King Ghastly's Castle"],["map","king_ghastly_castle"],["pin","24"]])),
-            new MapCottageClass(this.game,4608,1216,new Map([])),
-            new MapCastleClass(this.game,4288,2112,new Map([["title","Kangarang's Castle"],["map","kangarang_castle"],["pin","18"]]))
+            new MapCottageClass(this.game,4608,1216,null),
+            new MapCastleClass(this.game,4288,2112,new Map([["title","Kangarang's Castle"],["map","kangarang_castle"],["pin","18"]])),
+            new MapSpotClass(this.game,3136,1088,new Map([["title","Test"],["map","test"]]))
         ];
     }
     

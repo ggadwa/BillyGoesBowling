@@ -42,7 +42,8 @@ export default class NinjaBunnyClass extends SpriteClass {
         this.canCollide=true;
         this.canStandOn=true;
         
-        this.setCollideSpriteClassIgnoreList([ShurikinClass,CloudBlockClass,DoorClass,PinClass,TrophyClass]);
+        this.setCollideSpriteClassCollideIgnoreList([ShurikinClass,CloudBlockClass,DoorClass,PinClass,TrophyClass]);
+        this.setCollideSpriteClassStandOnIgnoreList([ShurikinClass,DoorClass,PinClass,TrophyClass]);
         this.setCollideTileIndexIgnoreList([22,23]);
         
         Object.seal(this);

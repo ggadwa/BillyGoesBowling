@@ -34,7 +34,8 @@ export default class BoomerangClass extends SpriteClass {
         this.canCollide=true;
         this.canStandOn=false;
         
-        this.setCollideSpriteClassIgnoreList([KangarangClass,SpringClass]);
+        this.setCollideSpriteClassCollideIgnoreList([KangarangClass,SpringClass]);
+        this.setCollideSpriteClassStandOnIgnoreList([KangarangClass,SpringClass]);
         
         Object.seal(this);
     }

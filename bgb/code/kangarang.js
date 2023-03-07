@@ -34,7 +34,8 @@ export default class KangarangClass extends SpriteClass {
         this.canCollide=true;
         this.canStandOn=true;
         
-        this.setCollideSpriteClassIgnoreList([BoomerangClass]);
+        this.setCollideSpriteClassCollideIgnoreList([BoomerangClass]);
+        this.setCollideSpriteClassStandOnIgnoreList([BoomerangClass]);
         
         Object.seal(this);
     }

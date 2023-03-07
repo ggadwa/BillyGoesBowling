@@ -23,7 +23,8 @@ export default class ShurikinClass extends SpriteClass {
         this.gravityMaxValue=0;
         this.canStandOn=false;
         
-        this.setCollideSpriteClassIgnoreList([NinjaBunnyClass]);
+        this.setCollideSpriteClassCollideIgnoreList([NinjaBunnyClass]);
+        this.setCollideSpriteClassStandOnIgnoreList([NinjaBunnyClass]);
         this.setCollideTileIndexIgnoreList([22,23]);
         
         Object.seal(this);

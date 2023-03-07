@@ -28,7 +28,7 @@ export default class BoneyOneEyeClass extends SpriteClass {
         this.canCollide=true;
         this.canStandOn=true;
         
-        this.setCollideSpriteClassIgnoreList([EyeClass]);
+        this.setCollideSpriteClassCollideIgnoreList([EyeClass]);
         
         Object.seal(this);
     }
