@@ -6,7 +6,7 @@ import ExecutionerClass from './executioner.js';
 
 export default class AxeClass extends SpriteClass {
         
-    static AXE_SPEED=6;
+    static AXE_SPEED=3;
         
     constructor(game,x,y,data) {
         super(game,x,y,data);

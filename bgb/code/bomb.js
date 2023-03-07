@@ -5,7 +5,7 @@ import RotoCarrotClass from './roto_carrot.js';
 
 export default class BombClass extends SpriteClass {
         
-    static BOMB_SPEED=7;
+    static BOMB_SPEED=3.5;
 
     constructor(game,x,y,data) {
         super(game,x,y,data);

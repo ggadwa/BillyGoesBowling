@@ -19,4 +19,8 @@ export default class MapListClass {
         return(this.maps.get(name));
     }
     
+    sortedNames() {
+        return(Array.from(this.maps.keys()).sort());
+    }
+    
 }

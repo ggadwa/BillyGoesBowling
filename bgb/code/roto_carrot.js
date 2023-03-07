@@ -5,15 +5,19 @@ import ShieldClass from './shield.js';
 import ShurikinClass from './shurikin.js';
 import BombClass from './bomb.js';
 import FishClass from './fish.js';
+import CloudBlockClass from './cloud_block.js';
+import DoorClass from './door.js';
+import PinClass from './pin.js';
+import TrophyClass from './trophy.js';
 
 export default class RotoCarrotClass extends SpriteClass {
         
-    static CARROT_SPEED=12;
+    static CARROT_SPEED=6;
     static CARROT_Y_ARC=30;
-    static CARROT_PAUSE_TICK=20;
-    static CARROT_ARC_TICK=50;
-    static BOMB_DROP_TICK=100;
-    static BOMB_DROP_TICK_RANDOM_ADD=20;
+    static CARROT_PAUSE_TICK=40;
+    static CARROT_ARC_TICK=100;
+    static BOMB_DROP_TICK=200;
+    static BOMB_DROP_TICK_RANDOM_ADD=40;
     static CARROT_RESET_DISTANCE=500;
         
         // variables
@@ -32,7 +36,7 @@ export default class RotoCarrotClass extends SpriteClass {
         this.canCollide=true;
         this.canStandOn=true;
         
-        this.setCollideSpriteClassIgnoreList([BombClass]);
+        this.setCollideSpriteClassIgnoreList([BombClass,CloudBlockClass,DoorClass,PinClass,TrophyClass]);
         this.setCollideTileIndexIgnoreList([22,23]);
         
         this.originalY=0;

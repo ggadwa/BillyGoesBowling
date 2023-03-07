@@ -6,12 +6,16 @@ import BombClass from './bomb.js';
 import FishClass from './fish.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
 import ShurikinClass from './shurikin.js';
+import CloudBlockClass from './cloud_block.js';
+import DoorClass from './door.js';
+import PinClass from './pin.js';
+import TrophyClass from './trophy.js';
 
 export default class NinjaBunnyClass extends SpriteClass {
 
-    static BUNNY_JUMP_HEIGHT=-33;
-    static BUNNY_AIR_SPEED=8;
-    static BUNNY_PAUSE_TICK=45;
+    static BUNNY_JUMP_HEIGHT=-35;
+    static BUNNY_AIR_SPEED=4;
+    static BUNNY_PAUSE_TICK=90;
     static BUNNY_ACTIVATE_DISTANCE=800;
 
     constructor(game,x,y,data) {
@@ -38,7 +42,7 @@ export default class NinjaBunnyClass extends SpriteClass {
         this.canCollide=true;
         this.canStandOn=true;
         
-        this.setCollideSpriteClassIgnoreList([ShurikinClass]);
+        this.setCollideSpriteClassIgnoreList([ShurikinClass,CloudBlockClass,DoorClass,PinClass,TrophyClass]);
         this.setCollideTileIndexIgnoreList([22,23]);
         
         Object.seal(this);
@@ -86,12 +90,16 @@ export default class NinjaBunnyClass extends SpriteClass {
         this.jumpAwayFromSprite(sprite);
     }
     
-    onStoodOnSprite(sprite) {
+    onStandOnSprite(sprite) {
         // standing on player kills bunny
         if (sprite instanceof PlayerSideScrollClass) {
             this.kill();
             return;
         }
+    }
+    
+    onStoodOnSprite(sprite) {
+        this.bunnyPause=NinjaBunnyClass.BUNNY_PAUSE_TICK; // don't jump if stood on
     }
     
     fireShurikin() {

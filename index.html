@@ -1,26 +1,17 @@
 <!DOCTYPE HTML>
-
 <html>
+    <head>
+        <meta charset="utf-8">
+        <title>Billy Goes Bowling</title>
+        <link rel="stylesheet" type="text/css" href="game.css">
+        <script type="module">
+            import BillyGameClass from './bgb/code/billy_game.js';
 
-<head>
-<meta charset="utf-8">
-<title>Billy Goes Bowling</title>
-<link rel="stylesheet" type="text/css" href="common.css">
-
-<!-- the script -->
-
-<script type="module">
-    import BillyGameClass from './bgb/code/billy_game.js';
-    
-    let game=new BillyGameClass();
-    await game.initialize();
-</script>
-
-</head>
-
-<body style="background-color:#000000">
-
-<canvas id="mainCanvas" class="mainCanvas" width="1280" height="640"></canvas>
- 
-</body>
+            let game=new BillyGameClass();
+            await game.initialize();
+        </script>
+    </head>
+    <body style="background-color:#000000">
+        <canvas id="mainCanvas" class="mainCanvas" width="1280" height="640"></canvas>
+    </body>
 </html>

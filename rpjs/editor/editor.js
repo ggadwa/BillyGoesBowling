@@ -51,7 +51,8 @@ export default class EditorClass {
     }
     
     async initialize() {
-        let map,engineSprite;
+        let mapName;
+        let sel,opt;
         
         // any resize events
         window.addEventListener('resize',this.resize.bind(this),false);
@@ -78,13 +79,14 @@ export default class EditorClass {
         this.spritePaletteCanvas.onclick=this.clickSpritePaletteCanvas.bind(this);
         
         // toolbar buttons
-        document.getElementById('compileButton').onclick=this.compile.bind(this);
+        document.getElementById('mapCombo').onchange=this.loadMap.bind(this);
         document.getElementById('clearSelectionButton').onclick=this.clearSelection.bind(this);
         document.getElementById('mapUpButton').onclick=this.mapUp.bind(this);
         document.getElementById('mapDownButton').onclick=this.mapDown.bind(this);
         document.getElementById('mapLeftButton').onclick=this.mapLeft.bind(this);
         document.getElementById('mapRightButton').onclick=this.mapRight.bind(this);
         document.getElementById('spriteInfo').onclick=this.infoOpen.bind(this);
+        document.getElementById('compileButton').onclick=this.compile.bind(this);
         
         // editor info button
         document.getElementById('editorInfoOk').onclick=this.infoOk.bind(this);
@@ -115,41 +117,25 @@ export default class EditorClass {
         // get a set of classes for the entities we can put in this map
         this.spritePaletteList=this.game.getEditorSpritePaletteList();
         
-        // name of map to edit
-        let mapName=(new URLSearchParams(window.location.search)).get('map');
+        // start with blank map
+        this.tileData=new Uint16Array(MapClass.MAP_TILE_WIDTH*MapClass.MAP_TILE_HEIGHT);
+        this.sprites=[];
+
+        // the map combo
+        sel=document.getElementById('mapCombo');
         
-        // if no name it's a blank map
-        if (mapName===null) {
-            this.tileData=new Uint16Array(MapClass.MAP_TILE_WIDTH*MapClass.MAP_TILE_HEIGHT);
-            this.sprites=[];
-        }
-        else {
-            map=this.game.mapList.get(mapName);
-            if (map===undefined) {
-                alert('Unknown map: '+mapName);
-                return;
-            }
+        opt=document.createElement('option');
+        opt.value='';
+        opt.text='[blank map]';
+        sel.add(opt);
         
-            map.create(); // get the create copy to the working copy so we can make changes
-            this.tileData=map.createTileData.slice();
-            
-            // need to turn engine sprites into editor sprites
-            this.sprites=[];
-            
-            for (engineSprite of map.createSprites) {
-                this.sprites.push(new EditorSpriteClass(engineSprite.constructor.name,engineSprite.currentImage,engineSprite.x,engineSprite.y,null));
-            }
+        for (mapName of this.game.mapList.sortedNames()) {
+            opt=document.createElement('option');
+            opt.value=opt.text=mapName;
+            sel.add(opt);
         }
         
-            // temporary, used to fix tiles if I change the tile list
-        /*
-        for (let n=0;n!=this.tileData.length;n++) {
-            this.tileData[n]+=9;
-        }
-        */
-       
-        // get offset on first visible block
-        this.setOffsetToFirstVisibleBlock();
+        sel.selectIndex=0;
        
         this.refresh();
     }
@@ -191,6 +177,42 @@ export default class EditorClass {
                 }
             }
         }
+    }
+    
+    // load a map
+    loadMap() {
+        let map,mapName,engineSprite;
+        
+        mapName=document.getElementById('mapCombo').value;
+        
+        // blank map
+        if (mapName==='') {
+            this.tileData=new Uint16Array(MapClass.MAP_TILE_WIDTH*MapClass.MAP_TILE_HEIGHT);
+            this.sprites=[];
+            
+            this.offsetX=0;
+            this.offsetY=0;
+        }
+        
+        // load map
+        else {
+            map=this.game.mapList.get(mapName);
+        
+            map.create(); // get the create copy to the working copy so we can make changes
+            this.tileData=map.createTileData.slice();
+            
+            // need to turn engine sprites into editor sprites
+            this.sprites=[];
+            
+            for (engineSprite of map.createSprites) {
+                this.sprites.push(new EditorSpriteClass(engineSprite.constructor.name,engineSprite.currentImage,engineSprite.x,engineSprite.y,engineSprite.data));
+            }
+       
+            // get offset on first visible block
+            this.setOffsetToFirstVisibleBlock();
+        }
+        
+        this.refresh();
     }
     
     // draw canvases

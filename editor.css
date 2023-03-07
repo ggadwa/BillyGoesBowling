@@ -1,17 +1,3 @@
-/* game */
-
-.mainCanvas {
-    position: absolute;
-    top: calc( calc(100% - 640px) / 2);
-    left: calc( calc(100% - 1280px) / 2);
-    margin: 0px;
-    padding: 0px;
-    box-sizing: content-box;
-    border: 2px solid #EEEEEE;
-}
-
-/* editor */
-
 .editorBody {
     overflow: hidden;
     box-sizing: border-box;
@@ -20,7 +6,7 @@
 .editorSpritePaletteCanvas {
     position: absolute;
     left: 0px;
-    top: 0px;
+    top: 36px;
     width: 192px;
     height: calc(100% - 192px);
     border-right: 1px solid #333333;
@@ -29,9 +15,9 @@
 .editorMapCanvas {
     position: absolute;
     left: 193px;
-    top: 0px;
-    width: calc(100% - 230px);
-    height: calc(100% - 193px);
+    top: 36px;
+    width: calc(100% - 192px);
+    height: calc(100% - 192px);
 }
 
 .editorTilePaletteCanvas {
@@ -46,25 +32,49 @@
 .editorToolBar {
     position: absolute;
     top: 0px;
-    left: calc(100% - 37px);
-    width: 36px;
-    height: calc(100% - 192px);
+    left: 0px;
+    width: 100%;
+    height: 35px;
     background-color: #AAAAAA;
-    border-left: 1px solid #333333;
+    border-bottom: 1px solid #333333;
 }
 
-.editorToolButton {
+.editorComboLeftDiv {
+    float: left;
+    width: 200px;
+    height: 29px;
+    padding-top: 4px;
+    padding-left: 4px;
+}
+
+.editorCombo {
+    width: 192px;
+    height: 28px;
+    border: 1px solid #9999DD;
+    background-color: #AAAAFF;    
+}
+
+.editorToolButtonLeft, .editorToolButtonRight {
+    float: left;
     width: 34px;
-    height: 34px;
+    height: 29px;
     text-align: center;
-    padding-top: 8px;
+    padding-top: 4px;
     border-radius: 5px;
     cursor: pointer;
     border: 1px solid #9999DD;
     background-color: #AAAAFF;
 }
 
-.editorToolButton:hover {
+.editorToolButtonLeft {
+    float: left;
+}
+
+.editorToolButtonRight {
+    float: right;
+}
+
+.editorToolButtonLeft:hover, .editorToolButtonRight:hover {
     background-color: #CCCCFF;
 }
 

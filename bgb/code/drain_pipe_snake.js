@@ -6,6 +6,10 @@ import ShurikinClass from './shurikin.js';
 import BombClass from './bomb.js';
 import FishClass from './fish.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
+import CloudBlockClass from './cloud_block.js';
+import DoorClass from './door.js';
+import PinClass from './pin.js';
+import TrophyClass from './trophy.js';
 
 export default class DrainPipeSnakeClass extends SpriteClass {
 
@@ -38,6 +42,7 @@ export default class DrainPipeSnakeClass extends SpriteClass {
         this.canCollide=true;
         this.canStandOn=true;
         
+        this.setCollideSpriteClassIgnoreList([CloudBlockClass,DoorClass,PinClass,TrophyClass]);
         this.setCollideTileIndexIgnoreList([22,23]);
         
         this.flipX=(Math.random()>0.5); // start with random direction

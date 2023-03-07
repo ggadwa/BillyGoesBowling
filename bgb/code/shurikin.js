@@ -5,8 +5,8 @@ import NinjaBunnyClass from './ninja_bunny.js';
 
 export default class ShurikinClass extends SpriteClass {
 
-    static SHURIKIN_X_SPEED=12;
-    static SHURIKIN_Y_SPEED=15;
+    static SHURIKIN_X_SPEED=6;
+    static SHURIKIN_Y_SPEED=7.5;
 
     constructor(game,x,y,data) {
         super(game,x,y,data);

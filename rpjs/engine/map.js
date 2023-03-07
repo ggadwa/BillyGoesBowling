@@ -213,6 +213,7 @@ export default class MapClass {
      * Get current liquid height.
      */
     getLiquidY() {
+        if (this.liquid==null) return(-1);
         return(this.liquid.getY());
     }
     
@@ -220,14 +221,14 @@ export default class MapClass {
      * Set liquid height.
      */
     setLiquidY(y) {
-        this.liquid.setY(y);
+        if (this.liquid!=null) this.liquid.setY(y);
     }
     
     /**
      * Start a liquid movement.
      */
     moveLiquidTo(toY,moveSpeed) {
-        this.liquid.moveLiquidTo(toY,moveSpeed);
+        if (this.liquid!=null) this.liquid.moveLiquidTo(toY,moveSpeed);
     }
     
     /**
@@ -337,7 +338,7 @@ export default class MapClass {
         let sprite,tileIdx,ignoreTileIdx,ignoreClass;
         let ignore;
         let ty=-1;
-        let x,y,dx,dy,gx,gy,leftTileX,rightTileX;
+        let y,dx,dy,gx,gy,leftTileX,rightTileX;
         let lft,top,rgt,bot;
         
         // always fall at least 1

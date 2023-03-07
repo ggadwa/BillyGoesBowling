@@ -12,7 +12,7 @@
   * easter head, fish
 
 
-
+- needs separate collide lists and can stand on list
 
 - go over every map
 

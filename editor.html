@@ -1,92 +1,87 @@
 <!DOCTYPE HTML>
-
 <html>
 
-<head>
-<meta charset="utf-8">
-<title>RPJS Editor</title>
-<link rel="stylesheet" type="text/css" href="common.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <head>
+        <meta charset="utf-8">
+        <title>RPJS Editor</title>
+        <link rel="stylesheet" type="text/css" href="editor.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+        <script type="module">
+            import EditorClass from './rpjs/editor/editor.js';
+            import BillyGameClass from './bgb/code/billy_game.js';
 
-<!-- the script -->
+            let editor=new EditorClass(new BillyGameClass());
+            await editor.initialize();
+        </script>
+    </head>
 
-<script type="module">
-    import EditorClass from './rpjs/editor/editor.js';
-    import BillyGameClass from './bgb/code/billy_game.js';
-    
-    let editor=new EditorClass(new BillyGameClass());
-    await editor.initialize();
-</script>
+    <body class="editorBody">
+        <canvas id="editorSpritePaletteCanvas" class="editorSpritePaletteCanvas"></canvas>
+        <canvas id="editorMapCanvas" class="editorMapCanvas"></canvas>
+        <canvas id="editorTilePaletteCanvas" class="editorTilePaletteCanvas"></canvas>
 
-</head>
+        <div id="editorToolBar" class="editorToolBar">
+            <div class="editorComboLeftDiv"><select id="mapCombo" class="editorCombo"></select></div>
+            <div id="clearSelectionButton" class="editorToolButtonLeft" title="Clear Palette Selection"><span class="material-symbols-outlined">block</span></div>
+            <div id="mapUpButton" class="editorToolButtonLeft" title="Insert Push Map Up"><span class="material-symbols-outlined">keyboard_arrow_up</span></div>
+            <div id="mapDownButton" class="editorToolButtonLeft" title="Insert Push map Down"><span class="material-symbols-outlined">keyboard_arrow_down</span></div>
+            <div id="mapLeftButton" class="editorToolButtonLeft" title="Insert Push Map Left"><span class="material-symbols-outlined">keyboard_arrow_left</span></div>
+            <div id="mapRightButton" class="editorToolButtonLeft" title="Insert Push Map Right"><span class="material-symbols-outlined">keyboard_arrow_right</span></div>
+            <div id="spriteInfo" class="editorToolButtonLeft" title="Edit Sprite Info"><span class="material-symbols-outlined">info</span></div>
+            <div id="compileButton" class="editorToolButtonRight" title="Compile"><span class="material-symbols-outlined">settings</span></div>
+        </div>
 
-<body class="editorBody">
+        <div id="editorFade" class="editorFade" style="display:none"></div>
 
-<canvas id="editorSpritePaletteCanvas" class="editorSpritePaletteCanvas"></canvas>
-<canvas id="editorMapCanvas" class="editorMapCanvas"></canvas>
-<canvas id="editorTilePaletteCanvas" class="editorTilePaletteCanvas"></canvas>
+        <div id="editorInfo" class="editorInfo" style="display:none">
+            <table class="editorInfoTable">
+                <tr>
+                    <td class="editorInfoTableNameCol">Name</td>
+                    <td class="editorInfoTableValueCol">Value</td>
+                <tr>
+                    <td><input id="editorInfoName0" type="text" class="editorInfoNameInput"></td>
+                    <td><input id="editorInfoValue0" type="text" class="editorInfoValueInput"></td>
+                </tr>
+                <tr>
+                    <td><input id="editorInfoName1" type="text" class="editorInfoNameInput"></td>
+                    <td><input id="editorInfoValue1" type="text" class="editorInfoValueInput"></td>
+                </tr>
+                <tr>
+                    <td><input id="editorInfoName2" type="text" class="editorInfoNameInput"></td>
+                    <td><input id="editorInfoValue2" type="text" class="editorInfoValueInput"></td>
+                </tr>
+                <tr>
+                    <td><input id="editorInfoName3" type="text" class="editorInfoNameInput"></td>
+                    <td><input id="editorInfoValue3" type="text" class="editorInfoValueInput"></td>
+                </tr>
+                <tr>
+                    <td><input id="editorInfoName4" type="text" class="editorInfoNameInput"></td>
+                    <td><input id="editorInfoValue4" type="text" class="editorInfoValueInput"></td>
+                </tr>
+                <tr>
+                    <td><input id="editorInfoName5" type="text" class="editorInfoNameInput"></td>
+                    <td><input id="editorInfoValue5" type="text" class="editorInfoValueInput"></td>
+                </tr>
+                <tr>
+                    <td><input id="editorInfoName6" type="text" class="editorInfoNameInput"></td>
+                    <td><input id="editorInfoValue6" type="text" class="editorInfoValueInput"></td>
+                </tr>
+                <tr>
+                    <td><input id="editorInfoName7" type="text" class="editorInfoNameInput"></td>
+                    <td><input id="editorInfoValue7" type="text" class="editorInfoValueInput"></td>
+                </tr>
+                <tr>
+                    <td><input id="editorInfoName8" type="text" class="editorInfoNameInput"></td>
+                    <td><input id="editorInfoValue8" type="text" class="editorInfoValueInput"></td>
+                </tr>
+                <tr>
+                    <td><input id="editorInfoName9" type="text" class="editorInfoNameInput"></td>
+                    <td><input id="editorInfoValue9" type="text" class="editorInfoValueInput"></td>
+                </tr>
+            </table>
+            <div id="editorInfoOk" class="editorInfoButtonOk">OK</div>
+            <div id="editorInfoCancel" class="editorInfoButtonCancel">Cancel</div>
+        </div>
 
-<div id="editorToolBar" class="editorToolBar">
-    <div id="compileButton" class="editorToolButton" title="Compile"><span class="material-symbols-outlined">settings</span></div>
-    <div id="clearSelectionButton" class="editorToolButton" title="Clear Palette Selection"><span class="material-symbols-outlined">block</span></div>
-    <div id="mapUpButton" class="editorToolButton" title="Insert Push Map Up"><span class="material-symbols-outlined">keyboard_arrow_up</span></div>
-    <div id="mapDownButton" class="editorToolButton" title="Insert Push map Down"><span class="material-symbols-outlined">keyboard_arrow_down</span></div>
-    <div id="mapLeftButton" class="editorToolButton" title="Insert Push Map Left"><span class="material-symbols-outlined">keyboard_arrow_left</span></div>
-    <div id="mapRightButton" class="editorToolButton" title="Insert Push Map Right"><span class="material-symbols-outlined">keyboard_arrow_right</span></div>
-    <div id="spriteInfo" class="editorToolButton" title="Edit Sprite Info"><span class="material-symbols-outlined">info</span></div>
-</div>
-
-<div id="editorFade" class="editorFade" style="display:none"></div>
-
-<div id="editorInfo" class="editorInfo" style="display:none">
-    <table class="editorInfoTable">
-        <tr>
-            <td class="editorInfoTableNameCol">Name</td>
-            <td class="editorInfoTableValueCol">Value</td>
-        <tr>
-            <td><input id="editorInfoName0" type="text" class="editorInfoNameInput"></td>
-            <td><input id="editorInfoValue0" type="text" class="editorInfoValueInput"></td>
-        </tr>
-        <tr>
-            <td><input id="editorInfoName1" type="text" class="editorInfoNameInput"></td>
-            <td><input id="editorInfoValue1" type="text" class="editorInfoValueInput"></td>
-        </tr>
-        <tr>
-            <td><input id="editorInfoName2" type="text" class="editorInfoNameInput"></td>
-            <td><input id="editorInfoValue2" type="text" class="editorInfoValueInput"></td>
-        </tr>
-        <tr>
-            <td><input id="editorInfoName3" type="text" class="editorInfoNameInput"></td>
-            <td><input id="editorInfoValue3" type="text" class="editorInfoValueInput"></td>
-        </tr>
-        <tr>
-            <td><input id="editorInfoName4" type="text" class="editorInfoNameInput"></td>
-            <td><input id="editorInfoValue4" type="text" class="editorInfoValueInput"></td>
-        </tr>
-        <tr>
-            <td><input id="editorInfoName5" type="text" class="editorInfoNameInput"></td>
-            <td><input id="editorInfoValue5" type="text" class="editorInfoValueInput"></td>
-        </tr>
-        <tr>
-            <td><input id="editorInfoName6" type="text" class="editorInfoNameInput"></td>
-            <td><input id="editorInfoValue6" type="text" class="editorInfoValueInput"></td>
-        </tr>
-        <tr>
-            <td><input id="editorInfoName7" type="text" class="editorInfoNameInput"></td>
-            <td><input id="editorInfoValue7" type="text" class="editorInfoValueInput"></td>
-        </tr>
-        <tr>
-            <td><input id="editorInfoName8" type="text" class="editorInfoNameInput"></td>
-            <td><input id="editorInfoValue8" type="text" class="editorInfoValueInput"></td>
-        </tr>
-        <tr>
-            <td><input id="editorInfoName9" type="text" class="editorInfoNameInput"></td>
-            <td><input id="editorInfoValue9" type="text" class="editorInfoValueInput"></td>
-        </tr>
-    </table>
-    <div id="editorInfoOk" class="editorInfoButtonOk">OK</div>
-    <div id="editorInfoCancel" class="editorInfoButtonCancel">Cancel</div>
-</div>
-    
-</body>
+    </body>
 </html>

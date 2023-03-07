@@ -100,7 +100,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         
         this.playSound('hurt');
         
-        this.health--;
+        //this.health--;
         if (this.health===0) {
             this.killPlayer();
             return;
@@ -166,6 +166,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
     onStoodOnSprite(sprite) {
         // these sprites hurt player if they land on them
         if (
+            (sprite instanceof NinjaBunnyClass) ||
             (sprite instanceof ExecutionerClass) ||
             (sprite instanceof MrCPUClass) ||
             (sprite instanceof BoneyOneEyeClass) ||

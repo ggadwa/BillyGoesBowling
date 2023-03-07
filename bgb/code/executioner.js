@@ -7,11 +7,11 @@ import AxeClass from './axe.js';
 
 export default class ExecutionerClass extends SpriteClass {
 
-    static ACCELERATION=1.0;
-    static MAX_SPEED=7;
-    static JUMP_HEIGHT=-40;
-    static AXE_COOL_DOWN_TICK=35;
-    static AXE_START_COOL_DOWN_TICK=45;
+    static ACCELERATION=0.5;
+    static MAX_SPEED=3.5;
+    static JUMP_HEIGHT=-20;
+    static AXE_COOL_DOWN_TICK=70;
+    static AXE_START_COOL_DOWN_TICK=90;
     static AXE_Y_OFFSET=800;
         
     constructor(game,x,y,data) {
