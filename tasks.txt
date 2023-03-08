@@ -18,12 +18,30 @@
    platform_troubled_waters
    surfs_up
    surfs_down
+   apocalypse_carrot
+   hills_ninja_bunny
+   buffet_of_blcoks
+   executioners_castle
+   puzzling_blocks
+   ninja_jail
+   raining_creeps
+
 
 - to do
+   carrot_catacylism
+   snake_pit
+   ninja_moutain
    
-   hills_ninja_bunny (decorations)
+Maps (need 8):
+  - Ninja HQ (tall girder skyscraper)
+  - Bunnies Love Carrots (carrots on top, bunnies on bottom, trophy at start need to cross what's left of break blocks between carrots and bunnies)
+  - That Sinking Feeling (tower with raising water)
+  - carrot_armageddon
+  - executioner's revenge (have executioner but he just blocks way to pin and trophy below) -- last one on island on the top
+  - blocks of confusion (maybe use left and right here)
 
 
+- can we load items by directory lists?
 - go over every map
 
 - background motion by tick
@@ -35,11 +53,6 @@
 - music needs a loop point, give music opening bars
 - pendant tile for castle levels (next to bush tile)
 
-
-Maps:
-  - Ninja HQ (tall girder skyscraper)
-  - Bunnies Love Carrots (carrots on top, bunnies on bottom, trophy at start need to cross what's left of break blocks between carrots and bunnies)
-  - That Sinking Feeling (tower with raising water)
 
 
 

@@ -8,7 +8,7 @@ import AxeClass from './axe.js';
 export default class ExecutionerClass extends SpriteClass {
 
     static ACCELERATION=0.5;
-    static MAX_SPEED=3.5;
+    static MAX_SPEED=5;
     static JUMP_HEIGHT=-20;
     static AXE_COOL_DOWN_TICK=70;
     static AXE_START_COOL_DOWN_TICK=90;
@@ -34,9 +34,9 @@ export default class ExecutionerClass extends SpriteClass {
         this.setCurrentImage('sprites/executioner_1');
         
         this.show=false; // start with it not shown, button starts it
-        this.gravityFactor=0.15;
+        this.gravityFactor=0.08;
         this.gravityMinValue=3;
-        this.gravityMaxValue=30;
+        this.gravityMaxValue=14;
         this.canCollide=true;
         this.canStandOn=true;
         

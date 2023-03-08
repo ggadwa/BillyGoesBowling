@@ -23,6 +23,8 @@ export default class BreakBlockClass extends SpriteClass {
         this.canCollide=true;
         this.canStandOn=true;
         
+        this.setCollideTileIndexIgnoreList([22,23]);
+        
         Object.seal(this);
     }
     

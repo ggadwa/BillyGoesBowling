@@ -12,12 +12,13 @@ import TrophyClass from './trophy.js';
 
 export default class RotoCarrotClass extends SpriteClass {
         
-    static CARROT_SPEED=6;
+    static CARROT_SPEED=4;
+    static CARROT_SPEED_RANDOM_ADD=4;
     static CARROT_Y_ARC=30;
     static CARROT_PAUSE_TICK=40;
     static CARROT_ARC_TICK=100;
-    static BOMB_DROP_TICK=200;
-    static BOMB_DROP_TICK_RANDOM_ADD=40;
+    static BOMB_DROP_TICK=150;
+    static BOMB_DROP_TICK_RANDOM_ADD=150;
     static CARROT_RESET_DISTANCE=500;
     static ANIMATION_TICK_FRAME=4;
         
@@ -28,6 +29,7 @@ export default class RotoCarrotClass extends SpriteClass {
         
         this.addImage('sprites/roto_carrot_1');
         this.addImage('sprites/roto_carrot_2');
+        this.addImage('sprites/roto_carrot_3');
         this.setCurrentImage('sprites/roto_carrot_1');
         
         this.show=true;
@@ -45,6 +47,8 @@ export default class RotoCarrotClass extends SpriteClass {
         this.bombTick=0;
         this.carrotPause=0;
         this.carrotArc=0;
+        
+        this.speed=RotoCarrotClass.CARROT_SPEED+(Math.random()*RotoCarrotClass.CARROT_SPEED_RANDOM_ADD);
         
         Object.seal(this);
     }
@@ -79,7 +83,7 @@ export default class RotoCarrotClass extends SpriteClass {
         // is carrot paused? 
         if (this.carrotPause>0) {
             this.carrotPause--;
-            this.setCurrentImage('sprites/roto_carrot_1');
+            this.setCurrentImage('sprites/roto_carrot_3');
             return;
         }
         else {
@@ -92,7 +96,7 @@ export default class RotoCarrotClass extends SpriteClass {
         }
         
         // always travel left to right
-        this.x-=RotoCarrotClass.CARROT_SPEED;
+        this.x-=this.speed;
         if (this.x<(-this.width)) this.x=map.rightEdge+RotoCarrotClass.CARROT_RESET_DISTANCE;
         
         // Y goes in a cos wave

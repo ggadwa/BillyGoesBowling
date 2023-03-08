@@ -12,13 +12,13 @@ export default class MrCPUClass extends SpriteClass {
     static CPU_MODE_WALK=1;
     static CPU_MODE_JETPACK=2;
         
-    static MAX_SPEED=8;
-    static MIN_WALK_TICK=30;
-    static RANDOM_WALK_TICK=30;
+    static MAX_SPEED=4;
+    static MIN_WALK_TICK=60;
+    static RANDOM_WALK_TICK=60;
         
-    static JETPACK_FLY_SPEED=-10;
-    static JETPACK_MOVE_SPEED=5;
-    static JET_TICK=40;
+    static JETPACK_FLY_SPEED=-5;
+    static JETPACK_MOVE_SPEED=2.5;
+    static JET_TICK=80;
         
     constructor(game,x,y,data) {
         super(game,x,y,data);
@@ -37,9 +37,9 @@ export default class MrCPUClass extends SpriteClass {
         this.setCurrentImage('sprites/mr_cpu_1');
         
         this.show=false; // start with it not shown, button starts it
-        this.gravityFactor=0.25;
-        this.gravityMinValue=8;
-        this.gravityMaxValue=30;
+        this.gravityFactor=0.12;
+        this.gravityMinValue=4;
+        this.gravityMaxValue=15;
         this.canCollide=true;
         this.canStandOn=true;
         

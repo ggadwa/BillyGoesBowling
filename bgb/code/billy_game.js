@@ -178,6 +178,7 @@ export default class BillyGameClass extends GameClass {
         this.addImage('sprites/snake_pipe_2');
         this.addImage('sprites/roto_carrot_1');
         this.addImage('sprites/roto_carrot_2');
+        this.addImage('sprites/roto_carrot_3');
         this.addImage('sprites/bomb');
         this.addImage('sprites/easter_head');
         this.addImage('sprites/easter_head_fire');

@@ -6,6 +6,7 @@ import RotoCarrotClass from './roto_carrot.js';
 export default class BombClass extends SpriteClass {
         
     static BOMB_SPEED=3.5;
+    static BOMB_SPEED_RANDOM_ADD=0.5;
 
     constructor(game,x,y,data) {
         super(game,x,y,data);
@@ -21,6 +22,8 @@ export default class BombClass extends SpriteClass {
         this.canStandOn=false;
         
         this.setCollideSpriteClassCollideIgnoreList([RotoCarrotClass]);
+        
+        this.speed=BombClass.BOMB_SPEED+(Math.random()*BombClass.BOMB_SPEED_RANDOM_ADD);
         
         Object.seal(this);
     }
@@ -48,7 +51,7 @@ export default class BombClass extends SpriteClass {
     }
     
     onRun(tick) {
-        this.y+=this.BOMB_SPEED; // bomb falls at steady rate
+        this.y+=this.speed; // bomb falls at steady rate
         
         if (this.isInLiquid()) {
             this.explode();
