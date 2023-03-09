@@ -25,12 +25,15 @@
    puzzling_blocks
    ninja_jail
    raining_creeps
+   carrot_catacylism
+   mr_cpu_castle
+   ninja_moutain
 
 
 - to do
-   carrot_catacylism
+   
    snake_pit
-   ninja_moutain
+   
    
 Maps (need 8):
   - Ninja HQ (tall girder skyscraper)
