@@ -1,5 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
-import ParticleClass from '../../rpjs/engine/particle.js';
+import ParticleDefsClass from './particle_defs.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
 import CloudBlockClass from './cloud_block.js';
 import BreakBlockStrongClass from './break_block_strong.js';
@@ -24,6 +24,7 @@ export default class KangarangClass extends SpriteClass {
         this.isFalling=false;
         this.isDead=false;
         this.isFirstShow=true;
+        this.skullParticle=null;
         
         // setup
         this.addImage('sprites/kangarang');
@@ -86,7 +87,7 @@ export default class KangarangClass extends SpriteClass {
     kill() {
         this.isDead=true;
         this.gravityFactor=0.0;
-        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),ParticleClass.AFTER_SPRITES_LAYER,64,256,1.0,0.01,0.1,0.1,8,8,'particles/skull',30,0.0,false,2500);
+        this.skullParticle=this.addParticle2((this.x+(this.width/2)),(this.y-(this.height/2)),ParticleDefsClass.BOSS_KILL_PARTICLE);
         this.playSound('boss_dead');
 
         // update the state
@@ -113,6 +114,9 @@ export default class KangarangClass extends SpriteClass {
             this.y+=KangarangClass.SINK_SPEED;
             this.alpha-=0.01;
             if (this.alpha<0.0) this.alpha=0.0;
+            if (this.skullParticle!=null) {
+                this.skullParticle.resetPosition((this.x+(this.width/2)),(this.y-(this.height/2)));
+            }
             return;
         }
         

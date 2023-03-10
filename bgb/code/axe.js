@@ -1,5 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
-import ParticleClass from '../../rpjs/engine/particle.js';
+import ParticleDefsClass from './particle_defs.js';
 import CloudBlockClass from './cloud_block.js';
 import BreakBlockStrongClass from './break_block_strong.js';
 import ExecutionerClass from './executioner.js';
@@ -7,6 +7,7 @@ import ExecutionerClass from './executioner.js';
 export default class AxeClass extends SpriteClass {
         
     static AXE_SPEED=3;
+    
         
     constructor(game,x,y,data) {
         super(game,x,y,data);
@@ -32,7 +33,7 @@ export default class AxeClass extends SpriteClass {
     
     kill() {
         this.playSound('crack');
-        this.addParticle((this.x+(this.width/2)),(this.y-(this.height/4)),ParticleClass.AFTER_SPRITES_LAYER,50,10,1.0,0.1,8,8,0.05,0.05,'particles/ball',24,0.5,false,300);
+        this.addParticle2((this.x+(this.width/2)),(this.y-(this.height/4)),ParticleDefsClass.AXE_SHATTER_PARTICLE);
         this.delete();
     }
     

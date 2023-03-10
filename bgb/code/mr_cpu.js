@@ -1,5 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
-import ParticleClass from '../../rpjs/engine/particle.js';
+import ParticleDefsClass from './particle_defs.js';
 import CloudBlockClass from './cloud_block.js';
 import BreakBlockStrongClass from '../code/break_block_strong.js';
 import ExplodeBlockClass from '../code/explode_block.js';
@@ -32,6 +32,7 @@ export default class MrCPUClass extends SpriteClass {
         
         this.isDead=false;
         this.isFirstShow=true;
+        this.skullParticle=null;
         
         // setup
         this.addImage('sprites/mr_cpu_1');
@@ -71,7 +72,7 @@ export default class MrCPUClass extends SpriteClass {
     kill() {
         this.isDead=true;
         this.gravityFactor=0.0;
-        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),ParticleClass.AFTER_SPRITES_LAYER,64,256,1.0,0.01,0.1,0.1,8,8,'particles/skull',30,0.0,false,2500);
+        this.skullParticle=this.addParticle2((this.x+(this.width/2)),(this.y-(this.height/2)),ParticleDefsClass.BOSS_KILL_PARTICLE);
         this.playSound('boss_dead');
 
         // update the state
@@ -101,6 +102,9 @@ export default class MrCPUClass extends SpriteClass {
             this.y+=MrCPUClass.SINK_SPEED;
             this.alpha-=0.01;
             if (this.alpha<0.0) this.alpha=0.0;
+            if (this.skullParticle!=null) {
+                this.skullParticle.resetPosition((this.x+(this.width/2)),(this.y-(this.height/2)));
+            }
             return;
         }
         
@@ -178,13 +182,13 @@ export default class MrCPUClass extends SpriteClass {
         mx=this.x+Math.trunc(this.width*Math.random());
         switch (tick%4) {
             case 0:
-                this.addParticle(mx,this.y,ParticleClass.BEFORE_SPRITES_LAYER,100,35,0.6,0.01,8,8,0.02,0.02,'particles/explode_red',16,0.3,false,500);
+                this.addParticle2(mx,this.y,ParticleDefsClass.JET_RED_PARTICLE);
                 break;
             case 1:
-                this.addParticle(mx,this.y,ParticleClass.BEFORE_SPRITES_LAYER,90,25,0.6,0.01,8,8,0.02,0.02,'particles/explode_orange',16,0.4,false,600);
+                this.addParticle2(mx,this.y,ParticleDefsClass.JET_ORANGE_PARTICLE);
                 break;
             case 2:
-                this.addParticle(mx,this.y,ParticleClass.BEFORE_SPRITES_LAYER,80,15,0.6,0.01,8,8,0.02,0.02,'particles/explode_yellow',16,0.5,false,700);
+                this.addParticle2(mx,this.y,ParticleDefsClass.JET_YELLOW_PARTICLE);
                 break;
         }
         

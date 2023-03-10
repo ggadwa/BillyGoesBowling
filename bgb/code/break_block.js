@@ -1,5 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
-import ParticleClass from '../../rpjs/engine/particle.js';
+import ParticleDefsClass from './particle_defs.js';
 import BallClass from './ball.js';
 import ShieldClass from './shield.js';
 import ShurikinClass from './shurikin.js';
@@ -33,7 +33,7 @@ export default class BreakBlockClass extends SpriteClass {
         
         cx=this.x+Math.trunc(this.width*0.5);
         cy=this.y-Math.trunc(this.height*0.5);
-        this.addParticle(cx,cy,ParticleClass.AFTER_SPRITES_LAYER,16,16,1.0,0.1,5,5,0.08,0.08,'particles/block',10,0.5,false,800);
+        this.addParticle2(cx,cy,ParticleDefsClass.BREAK_BLOCK_PARTICLE);
         this.playSound('crack');
         this.delete();
     }

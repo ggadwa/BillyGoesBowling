@@ -1,7 +1,7 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import InputClass from '../../rpjs/engine/input.js';
 import MapClass from '../../rpjs/engine/map.js';
-import ParticleClass from '../../rpjs/engine/particle.js';
+import ParticleDefsClass from './particle_defs.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
 import ShieldClass from './shield.js';
 import BlockClass from './block.js';
@@ -44,39 +44,6 @@ export default class BallClass extends SpriteClass {
     static BALL_CIRCLE_RADIUS_X=45;
     static BALL_CIRCLE_OFFSET_Y=50;
     static BALL_CIRCLE_RADIUS_Y=100;
-    
-    static BALL_BREAK_PARTICLE={
-        layer:ParticleClass.AFTER_SPRITES_LAYER,
-        startSize:8,
-        endSize:8,
-        startAlpha:1.0,
-        endAlpha:0.1,
-        initialMoveX:4,
-        initialMoveY:4,
-        moveXFactor:0.03*16.0,
-        moveYFactor:0.03*16.0,
-        imageName:'particles/ball',
-        count:16,
-        rotateFactor:0.5,
-        reverse:false,
-        lifeTick:30
-    };
-    static BALL_REFORM_PARTICLE={
-        layer:ParticleClass.AFTER_SPRITES_LAYER,
-        startSize:8,
-        endSize:16,
-        startAlpha:1.0,
-        endAlpha:0.1,
-        initialMoveX:6,
-        initialMoveY:6,
-        moveXFactor:0.03*16.0,
-        moveYFactor:0.03*16.0,
-        imageName:'particles/ball',
-        count:16,
-        rotateFactor:0.5,
-        reverse:true,
-        lifeTick:BallClass.REFORM_COUNT
-    };
 
     constructor(game,x,y,data) {
         super(game,x,y,data);
@@ -119,7 +86,7 @@ export default class BallClass extends SpriteClass {
         
         // ball destroyed
         if (showDestroy) {
-            this.addParticle2((this.x+halfWid),(this.y-halfHigh),BallClass.BALL_BREAK_PARTICLE);
+            this.addParticle2((this.x+halfWid),(this.y-halfHigh),ParticleDefsClass.BALL_BREAK_PARTICLE);
             this.playSound('ball_break');
         }
         
@@ -129,7 +96,7 @@ export default class BallClass extends SpriteClass {
         
         this.x=playerSprite.x+Math.trunc((playerSprite.width-this.width)*0.5);
         this.y=(playerSprite.y-playerSprite.height)-BallClass.HEAD_PIXEL_DISTANCE;
-        this.reformParticle=this.addParticle2((this.x+halfWid),(this.y-halfHigh),BallClass.BALL_REFORM_PARTICLE);
+        this.reformParticle=this.addParticle2((this.x+halfWid),(this.y-halfHigh),ParticleDefsClass.BALL_REFORM_PARTICLE);
         
         this.playSound('ball_reform');
         

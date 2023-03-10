@@ -1,6 +1,6 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
-import ParticleClass from '../../rpjs/engine/particle.js';
 import InputClass from '../../rpjs/engine/input.js';
+import ParticleDefsClass from './particle_defs.js';
 import BallClass from './ball.js';
 import ShieldClass from './shield.js';
 import CloudBlockClass from './cloud_block.js';
@@ -40,23 +40,6 @@ export default class PlayerSideScrollClass extends SpriteClass {
     static MAX_HEALTH=4;
         
     static WALK_ANIMATION=['sprites/billy_walk_1','sprites/billy_walk_2','sprites/billy_walk_3','sprites/billy_walk_2'];
-    
-    static WARP_OUT_PARTICLE={
-        layer:ParticleClass.AFTER_SPRITES_LAYER,
-        startSize:8,
-        endSize:8,
-        startAlpha:1.0,
-        endAlpha:0.01,
-        initialMoveX:24,
-        initialMoveY:10,
-        moveXFactor:-0.005,
-        moveYFactor:0.8,
-        imageName:'particles/ball',
-        count:200,
-        rotateFactor:0.5,
-        reverse:false,
-        lifeTick:PlayerSideScrollClass.WARP_TICK
-    };
 
     constructor(game,x,y,data) {
         super(game,x,y,data);
@@ -157,7 +140,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.stopAllGravity();
         
         this.playSound('teleport');
-        this.addParticle2((this.x+(this.width/2)),(this.y-(this.height/2)),PlayerSideScrollClass.WARP_OUT_PARTICLE);
+        this.addParticle2((this.x+(this.width/2)),(this.y-(this.height/2)),ParticleDefsClass.WARP_OUT_PARTICLE);
     }
     
     onCollideSprite(sprite) {

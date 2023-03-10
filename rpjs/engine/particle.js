@@ -15,10 +15,6 @@ export default class ParticleClass {
         
         this.startTick=0;
         
-        // particle middle offsets
-        this.middleOffsetX=0;
-        this.middleOffsetY=0;
-        
         // random particles
         this.xs=new Float32Array(def.count);
         this.ys=new Float32Array(def.count);
@@ -36,10 +32,6 @@ export default class ParticleClass {
         if (this.image===undefined) {
             this.image=null;
             console.log('Unknown particle image png: '+this.def.imageName);
-        }
-        else {
-            this.middleOffsetX=Math.trunc(this.image.width*0.5);
-            this.middleOffsetY=Math.trunc(this.image.height*0.5);
         }
         
         this.startTick=this.game.tick;
@@ -96,15 +88,15 @@ export default class ParticleClass {
         halfSize=Math.trunc(sz*0.5);
         
         for (n=0;n!==this.def.count;n++) {
-            dx=(((this.x+Math.trunc(this.xs[n]*moveX))-this.middleOffsetX)-offX);
-            dy=(((this.y+Math.trunc(this.ys[n]*moveY))-this.middleOffsetY)-offY);
+            dx=(this.x+(this.xs[n]*moveX))-offX;
+            dy=(this.y+(this.ys[n]*moveY))-offY;
             
             // clip anything offscreen
             if ((dx>=this.game.canvasWidth) || ((dx+sz)<=0)) continue;
             if ((dy>=this.game.canvasHeight) || ((dy+sz)<=0)) continue;
             
             // random rotation
-            ctx.setTransform(1, 0, 0, 1, dx, dy);
+            ctx.setTransform(1, 0, 0, 1, Math.trunc(dx), Math.trunc(dy));
             ctx.rotate(this.rot[n]+(this.rotAdd[n]*(tick/ParticleClass.ROTATE_TO_TICK_FACTOR)));
 
             // draw particle
