@@ -1,4 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import ParticleClass from '../../rpjs/engine/particle.js';
 import InputClass from '../../rpjs/engine/input.js';
 import BallClass from './ball.js';
 import ShieldClass from './shield.js';
@@ -33,11 +34,29 @@ export default class PlayerSideScrollClass extends SpriteClass {
     static JUMP_GRAVITY_PAUSE=8;
     static DEATH_TICK=200;
     static INVINCIBLE_TICK=120;
-    static WARP_TICK=80;
+    static WARP_TICK=160;
+    static WARP_FADE_TICK=80;
     static WALK_FRAME_TICK=8;
     static MAX_HEALTH=4;
         
-    static WALK_ANIMATION=['sprites/billy_walk_1','sprites/billy_walk_2','sprites/billy_walk_3','sprites/billy_walk_2'];   
+    static WALK_ANIMATION=['sprites/billy_walk_1','sprites/billy_walk_2','sprites/billy_walk_3','sprites/billy_walk_2'];
+    
+    static WARP_OUT_PARTICLE={
+        layer:ParticleClass.AFTER_SPRITES_LAYER,
+        startSize:8,
+        endSize:8,
+        startAlpha:1.0,
+        endAlpha:0.01,
+        initialMoveX:24,
+        initialMoveY:10,
+        moveXFactor:-0.005,
+        moveYFactor:0.8,
+        imageName:'particles/ball',
+        count:200,
+        rotateFactor:0.5,
+        reverse:false,
+        lifeTick:PlayerSideScrollClass.WARP_TICK
+    };
 
     constructor(game,x,y,data) {
         super(game,x,y,data);
@@ -111,6 +130,8 @@ export default class PlayerSideScrollClass extends SpriteClass {
     }
     
     killPlayer() {
+        if (this.deathCount>0) return; // already dead
+        
         this.moveX=0;
         this.alpha=1.0;
         this.invincibleCount=0;
@@ -133,10 +154,10 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.warpCount=PlayerSideScrollClass.WARP_TICK;
         
         this.ballSprite.show=false;
-        
         this.stopAllGravity();
         
         this.playSound('teleport');
+        this.addParticle2((this.x+(this.width/2)),(this.y-(this.height/2)),PlayerSideScrollClass.WARP_OUT_PARTICLE);
     }
     
     onCollideSprite(sprite) {
@@ -210,8 +231,13 @@ export default class PlayerSideScrollClass extends SpriteClass {
         
         // warping? 
         if (this.warpCount!==0) {
-            this.setCurrentImage('sprites/billy_walk_1');
-            this.resizeX=this.resizeY=this.alpha=(this.warpCount-1)/PlayerSideScrollClass.WARP_TICK;
+            if (this.warpCount>PlayerSideScrollClass.WARP_FADE_TICK) {
+                this.setCurrentImage('sprites/billy_walk_1');
+                this.resizeX=this.alpha=(this.warpCount-(PlayerSideScrollClass.WARP_TICK-PlayerSideScrollClass.WARP_FADE_TICK))/PlayerSideScrollClass.WARP_FADE_TICK;
+            }
+            else {
+                this.show=false;
+            }
             this.warpCount--;
             if (this.warpCount===0) this.game.gotoMap('world_main');
             return;

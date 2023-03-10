@@ -13,6 +13,7 @@ export default class ExecutionerClass extends SpriteClass {
     static AXE_COOL_DOWN_TICK=70;
     static AXE_START_COOL_DOWN_TICK=90;
     static AXE_Y_OFFSET=800;
+    static SINK_SPEED=2;
         
     constructor(game,x,y,data) {
         super(game,x,y,data);
@@ -98,7 +99,7 @@ export default class ExecutionerClass extends SpriteClass {
     kill() {
         this.isDead=true;
         this.gravityFactor=0.0;
-        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),ParticleClass.AFTER_SPRITES_LAYER,64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),ParticleClass.AFTER_SPRITES_LAYER,64,256,1.0,0.01,0.1,0.1,8,8,'particles/skull',30,0.0,false,2500);
         this.playSound('boss_dead');
 
         // update the state
@@ -107,6 +108,10 @@ export default class ExecutionerClass extends SpriteClass {
         this.setGameDataIfLess(('time_'+this.getMapName()),this.game.stopCompletionTimer());
 
         this.game.map.forceCameraSprite=this;
+        
+        this.shake=true;
+        this.shakeSize=5;
+        this.shakePeriodTick=0;
 
         // warp player out
         this.sendMessage(this.getPlayerSprite(),'warp_out',null);
@@ -118,8 +123,8 @@ export default class ExecutionerClass extends SpriteClass {
         
         // dead, just sink 
         if (this.isDead) {
-            this.y+=4;
-            this.alpha-=0.05;
+            this.y+=ExecutionerClass.SINK_SPEED;
+            this.alpha-=0.01;
             if (this.alpha<0.0) this.alpha=0.0;
             return;
         }

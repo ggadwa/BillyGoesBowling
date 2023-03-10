@@ -13,12 +13,14 @@ export default class MrCPUClass extends SpriteClass {
     static CPU_MODE_JETPACK=2;
         
     static MAX_SPEED=4;
-    static MIN_WALK_TICK=60;
-    static RANDOM_WALK_TICK=60;
+    static MIN_WALK_TICK=50;
+    static RANDOM_WALK_TICK=40;
         
     static JETPACK_FLY_SPEED=-5;
     static JETPACK_MOVE_SPEED=2.5;
     static JET_TICK=80;
+    
+    static SINK_SPEED=2;
         
     constructor(game,x,y,data) {
         super(game,x,y,data);
@@ -69,7 +71,7 @@ export default class MrCPUClass extends SpriteClass {
     kill() {
         this.isDead=true;
         this.gravityFactor=0.0;
-        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),ParticleClass.AFTER_SPRITES_LAYER,64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),ParticleClass.AFTER_SPRITES_LAYER,64,256,1.0,0.01,0.1,0.1,8,8,'particles/skull',30,0.0,false,2500);
         this.playSound('boss_dead');
 
         // update the state
@@ -78,6 +80,10 @@ export default class MrCPUClass extends SpriteClass {
         this.setGameDataIfLess(('time_'+this.getMapName()),this.game.stopCompletionTimer());
 
         this.game.map.forceCameraSprite=this;
+        
+        this.shake=true;
+        this.shakeSize=5;
+        this.shakePeriodTick=0;
 
         // warp player out
         this.sendMessage(this.getPlayerSprite(),'warp_out',null);
@@ -92,8 +98,8 @@ export default class MrCPUClass extends SpriteClass {
         
         // dead, just sink 
         if (this.isDead) {
-            this.y+=4;
-            this.alpha-=0.05;
+            this.y+=MrCPUClass.SINK_SPEED;
+            this.alpha-=0.01;
             if (this.alpha<0.0) this.alpha=0.0;
             return;
         }
@@ -138,10 +144,15 @@ export default class MrCPUClass extends SpriteClass {
             
             this.walkCount--;
             if (this.walkCount===0) {
-                this.mode=MrCPUClass.CPU_MODE_JETPACK;
-                this.jetCount=MrCPUClass.JET_TICK;
-                this.moveX=MrCPUClass.JETPACK_MOVE_SPEED*((Math.random()<0.5)?-1:1);
-                this.playSound('jet');
+                if (!this.grounded) {
+                    this.walkCount=Math.trunc(MrCPUClass.RANDOM_WALK_TICK*Math.random()); // much shorter time walking
+                }
+                else {
+                    this.mode=MrCPUClass.CPU_MODE_JETPACK;
+                    this.jetCount=MrCPUClass.JET_TICK;
+                    this.moveX=MrCPUClass.JETPACK_MOVE_SPEED*((Math.random()<0.5)?-1:1);
+                    this.playSound('jet');
+                }
             }
             
             return;
@@ -167,13 +178,13 @@ export default class MrCPUClass extends SpriteClass {
         mx=this.x+Math.trunc(this.width*Math.random());
         switch (tick%4) {
             case 0:
-                this.addParticle(mx,this.y,ParticleClass.BEFORE_SPRITES_LAYER,100,35,0.6,0.01,8,0.02,'particles/explode_red',16,0.3,false,500);
+                this.addParticle(mx,this.y,ParticleClass.BEFORE_SPRITES_LAYER,100,35,0.6,0.01,8,8,0.02,0.02,'particles/explode_red',16,0.3,false,500);
                 break;
             case 1:
-                this.addParticle(mx,this.y,ParticleClass.BEFORE_SPRITES_LAYER,90,25,0.6,0.01,8,0.02,'particles/explode_orange',16,0.4,false,600);
+                this.addParticle(mx,this.y,ParticleClass.BEFORE_SPRITES_LAYER,90,25,0.6,0.01,8,8,0.02,0.02,'particles/explode_orange',16,0.4,false,600);
                 break;
             case 2:
-                this.addParticle(mx,this.y,ParticleClass.BEFORE_SPRITES_LAYER,80,15,0.6,0.01,8,0.02,'particles/explode_yellow',16,0.5,false,700);
+                this.addParticle(mx,this.y,ParticleClass.BEFORE_SPRITES_LAYER,80,15,0.6,0.01,8,8,0.02,0.02,'particles/explode_yellow',16,0.5,false,700);
                 break;
         }
         

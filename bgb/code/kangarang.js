@@ -8,10 +8,12 @@ import BoomerangClass from './boomerang.js';
 
 export default class KangarangClass extends SpriteClass {
    
-    static FIRE_TICK=100;
-    static MAX_BOOMERANG=3;
+    static FIRE_TICK=190;
+    static FIRE_TICK_RANDOM_ADD=20;
+    static MAX_BOOMERANG=4;
     static BOOMERANG_SPAWN_DISTANCE=256;
     static BOOMERANGE_SIZE=64;
+    static SINK_SPEED=2;
 
     constructor(game,x,y,data) {
         super(game,x,y,data);
@@ -28,9 +30,9 @@ export default class KangarangClass extends SpriteClass {
         this.setCurrentImage('sprites/kangarang');
         
         this.show=false; // start with it not shown, button starts it
-        this.gravityFactor=0.15;
+        this.gravityFactor=0.1;
         this.gravityMinValue=3;
-        this.gravityMaxValue=30;
+        this.gravityMaxValue=15;
         this.canCollide=true;
         this.canStandOn=true;
         
@@ -41,7 +43,7 @@ export default class KangarangClass extends SpriteClass {
     }
     
     mapStartup() {
-        this.fireWait=KangarangClass.FIRE_TICK;
+        this.fireWait=KangarangClass.FIRE_TICK+Math.trunc(Math.random()*KangarangClass.FIRE_TICK_RANDOM_ADD);
         this.inAir=false;
         this.isDead=false;
         this.isFirstShow=true;
@@ -56,7 +58,7 @@ export default class KangarangClass extends SpriteClass {
         this.fireWait--;
         if (this.fireWait>0) return;
         
-        this.fireWait=KangarangClass.FIRE_TICK;
+        this.fireWait=KangarangClass.FIRE_TICK+Math.trunc(Math.random()*KangarangClass.FIRE_TICK_RANDOM_ADD);
         
         // don't fire but just wait again if too many boomerangs out
         if (this.countSpriteOfType(BoomerangClass)>KangarangClass.MAX_BOOMERANG) return;
@@ -84,7 +86,7 @@ export default class KangarangClass extends SpriteClass {
     kill() {
         this.isDead=true;
         this.gravityFactor=0.0;
-        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),ParticleClass.AFTER_SPRITES_LAYER,64,256,1.0,0.01,0.1,8,'particles/skull',30,0.0,false,2500);
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),ParticleClass.AFTER_SPRITES_LAYER,64,256,1.0,0.01,0.1,0.1,8,8,'particles/skull',30,0.0,false,2500);
         this.playSound('boss_dead');
 
         // update the state
@@ -93,6 +95,10 @@ export default class KangarangClass extends SpriteClass {
         this.setGameDataIfLess(('time_'+this.getMapName()),this.game.stopCompletionTimer());
 
         this.game.map.forceCameraSprite=this;
+        
+        this.shake=true;
+        this.shakeSize=5;
+        this.shakePeriodTick=0;
 
         // warp player out
         this.sendMessage(this.getPlayerSprite(),'warp_out',null);
@@ -104,8 +110,8 @@ export default class KangarangClass extends SpriteClass {
         
         // dead, just sink 
         if (this.isDead) {
-            this.y+=4;
-            this.alpha-=0.05;
+            this.y+=KangarangClass.SINK_SPEED;
+            this.alpha-=0.01;
             if (this.alpha<0.0) this.alpha=0.0;
             return;
         }

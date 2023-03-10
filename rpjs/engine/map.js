@@ -141,17 +141,12 @@ export default class MapClass {
         return(null);
     }
     
-    addParticle(x,y,layer,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,imageName,count,rotateFactor,reverse,lifeTick) {
-        let img,particle;
+    addParticle(x,y,particleDef) {
+        let particle;
         
-        img=this.game.imageList.get(imageName);
-        if (img===undefined) {
-            console.log('Unknown particle image png: '+imageName);
-            return;
-        }
-        
-        particle=new ParticleClass(this.game,x,y,layer,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,img,count,rotateFactor,reverse,lifeTick);
+        particle=new ParticleClass(this.game,x,y,particleDef);
         this.particles.push(particle);
+        particle.start();
         
         return(particle);
     }
@@ -720,7 +715,7 @@ export default class MapClass {
         
         // draw the before sprite particles
         for (particle of this.particles) {
-            if (particle.layer===ParticleClass.BEFORE_SPRITES_LAYER) particle.draw(ctx,offX,offY);
+            if (particle.def.layer===ParticleClass.BEFORE_SPRITES_LAYER) particle.draw(ctx,offX,offY);
         }
         
         // draw the background sprites
@@ -735,7 +730,7 @@ export default class MapClass {
         
         // draw the after sprite particles
         for (particle of this.particles) {
-            if (particle.layer===ParticleClass.AFTER_SPRITES_LAYER) particle.draw(ctx,offX,offY);
+            if (particle.def.layer===ParticleClass.AFTER_SPRITES_LAYER) particle.draw(ctx,offX,offY);
         }
     }
     

@@ -9,10 +9,10 @@ import SpringClass from '../code/spring.js';
 
 export default class BoomerangClass extends SpriteClass {
         
-    static BOOMERANG_ACCELERATION_MIN=0.2;
-    static BOOMERANG_ACCELERATION_ADD=0.5;
-    static MAX_BOOMERANG_SPEED_MIN=2;
-    static MAX_BOOMERANG_SPEED_ADD=3;
+    static BOOMERANG_ACCELERATION_MIN=0.05;
+    static BOOMERANG_ACCELERATION_ADD=0.05;
+    static MAX_BOOMERANG_SPEED_MIN=1.5;
+    static MAX_BOOMERANG_SPEED_ADD=2;
     
     constructor(game,x,y,data) {
         super(game,x,y,data);
@@ -41,7 +41,7 @@ export default class BoomerangClass extends SpriteClass {
     }
     
     killBoomerang() {
-        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),ParticleClass.AFTER_SPRITES_LAYER,64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,600);
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),ParticleClass.AFTER_SPRITES_LAYER,64,96,0.6,0.001,24,24,0,0,'particles/smoke',8,0.1,false,600);
         this.playSound('pop');
         this.delete();
     }

@@ -64,7 +64,7 @@ export default class NinjaBunnyClass extends SpriteClass {
     }
     
     kill() {
-        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),ParticleClass.AFTER_SPRITES_LAYER,64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,600);
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),ParticleClass.AFTER_SPRITES_LAYER,64,96,0.6,0.001,24,24,0,0,'particles/smoke',8,0.1,false,600);
         this.playSound('monster_die');
         this.delete();
     }

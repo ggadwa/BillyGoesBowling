@@ -31,7 +31,7 @@ export default class BreakBlockHalfRightClass extends SpriteClass {
         
         cx=this.x+Math.trunc(this.width*0.5);
         cy=this.y-Math.trunc(this.height*0.5);
-        this.addParticle(cx,cy,ParticleClass.AFTER_SPRITES_LAYER,16,16,1.0,0.1,5,0.08,'particles/block',10,0.5,false,800);
+        this.addParticle(cx,cy,ParticleClass.AFTER_SPRITES_LAYER,16,16,1.0,0.1,5,5,0.08,0.08,'particles/block',10,0.5,false,800);
         this.playSound('crack');
         this.delete();
     }

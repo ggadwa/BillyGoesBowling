@@ -44,6 +44,39 @@ export default class BallClass extends SpriteClass {
     static BALL_CIRCLE_RADIUS_X=45;
     static BALL_CIRCLE_OFFSET_Y=50;
     static BALL_CIRCLE_RADIUS_Y=100;
+    
+    static BALL_BREAK_PARTICLE={
+        layer:ParticleClass.AFTER_SPRITES_LAYER,
+        startSize:8,
+        endSize:8,
+        startAlpha:1.0,
+        endAlpha:0.1,
+        initialMoveX:4,
+        initialMoveY:4,
+        moveXFactor:0.03*16.0,
+        moveYFactor:0.03*16.0,
+        imageName:'particles/ball',
+        count:16,
+        rotateFactor:0.5,
+        reverse:false,
+        lifeTick:30
+    };
+    static BALL_REFORM_PARTICLE={
+        layer:ParticleClass.AFTER_SPRITES_LAYER,
+        startSize:8,
+        endSize:16,
+        startAlpha:1.0,
+        endAlpha:0.1,
+        initialMoveX:6,
+        initialMoveY:6,
+        moveXFactor:0.03*16.0,
+        moveYFactor:0.03*16.0,
+        imageName:'particles/ball',
+        count:16,
+        rotateFactor:0.5,
+        reverse:true,
+        lifeTick:BallClass.REFORM_COUNT
+    };
 
     constructor(game,x,y,data) {
         super(game,x,y,data);
@@ -86,7 +119,7 @@ export default class BallClass extends SpriteClass {
         
         // ball destroyed
         if (showDestroy) {
-            this.addParticle((this.x+halfWid),(this.y-halfHigh),ParticleClass.AFTER_SPRITES_LAYER,8,8,1.0,0.1,4,0.03,'particles/ball',16,0.5,false,500);
+            this.addParticle2((this.x+halfWid),(this.y-halfHigh),BallClass.BALL_BREAK_PARTICLE);
             this.playSound('ball_break');
         }
         
@@ -96,7 +129,7 @@ export default class BallClass extends SpriteClass {
         
         this.x=playerSprite.x+Math.trunc((playerSprite.width-this.width)*0.5);
         this.y=(playerSprite.y-playerSprite.height)-BallClass.HEAD_PIXEL_DISTANCE;
-        this.reformParticle=this.addParticle((this.x+halfWid),(this.y-halfHigh),ParticleClass.AFTER_SPRITES_LAYER,8,16,1.0,0.1,6,0.03,'particles/ball',16,0.5,true,(BallClass.REFORM_COUNT*16));
+        this.reformParticle=this.addParticle2((this.x+halfWid),(this.y-halfHigh),BallClass.BALL_REFORM_PARTICLE);
         
         this.playSound('ball_reform');
         

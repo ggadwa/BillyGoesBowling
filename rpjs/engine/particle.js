@@ -5,50 +5,58 @@ export default class ParticleClass {
 
     static ROTATE_TO_TICK_FACTOR=150.0;
 
-    constructor(game,x,y,layer,startSize,endSize,startAlpha,endAlpha,initialMoveRadius,moveFactor,image,count,rotateFactor,reverse,lifeTick) {
-        let n,rad;
-        
+    constructor(game,x,y,def) {
         this.game=game;
         this.x=x;
         this.y=y;
-        this.layer=layer;
-        this.startSize=startSize;
-        this.endSize=endSize;
-        this.startAlpha=startAlpha;
-        this.endAlpha=endAlpha;
-        this.moveFactor=moveFactor;
-        this.image=image;
-        this.count=count;
-        this.rotateFactor=rotateFactor;
-        this.reverse=reverse;
-        this.lifeTick=lifeTick;
+        this.def=def;
         
-        this.startTimestamp=game.timestamp;
+        this.image=null;
+        
+        this.startTick=0;
         
         // particle middle offsets
-        this.middleOffsetX=Math.trunc(image.width*0.5);
-        this.middleOffsetY=Math.trunc(image.height*0.5);
+        this.middleOffsetX=0;
+        this.middleOffsetY=0;
         
         // random particles
-        this.xs=new Float32Array(count);
-        this.ys=new Float32Array(count);
-        this.rot=new Float32Array(count);
-        this.rotAdd=new Float32Array(count);
-        
-        rad=Math.PI*2.0;
-            
-        for (n=0;n!==count;n++) {
-            this.xs[n]=(((Math.random()*2.0)-1.0)*initialMoveRadius);
-            this.ys[n]=(((Math.random()*2.0)-1.0)*initialMoveRadius);
-            this.rot[n]=(rotateFactor===0.0)?0.0:(Math.random()*rad);
-            this.rotAdd[n]=Math.random(rotateFactor*2.0)-rotateFactor;
-        }
+        this.xs=new Float32Array(def.count);
+        this.ys=new Float32Array(def.count);
+        this.rot=new Float32Array(def.count);
+        this.rotAdd=new Float32Array(def.count);
         
         Object.seal(this);
     }
     
+    start() {
+        let n,rad;
+        
+        // load up the image
+        this.image=this.game.imageList.get(this.def.imageName);
+        if (this.image===undefined) {
+            this.image=null;
+            console.log('Unknown particle image png: '+this.def.imageName);
+        }
+        else {
+            this.middleOffsetX=Math.trunc(this.image.width*0.5);
+            this.middleOffsetY=Math.trunc(this.image.height*0.5);
+        }
+        
+        this.startTick=this.game.tick;
+        
+        // random particle starts
+        rad=Math.PI*2.0;
+            
+        for (n=0;n!==this.def.count;n++) {
+            this.xs[n]=(((Math.random()*2.0)-1.0)*this.def.initialMoveX);
+            this.ys[n]=(((Math.random()*2.0)-1.0)*this.def.initialMoveY);
+            this.rot[n]=(this.def.rotateFactor===0.0)?0.0:(Math.random()*rad);
+            this.rotAdd[n]=Math.random(this.def.rotateFactor*2.0)-this.def.rotateFactor;
+        }
+    }
+    
     isFinished() {
-        return(this.game.timestamp>(this.startTimestamp+this.lifeTick));
+        return(this.game.tick>(this.startTick+this.def.lifeTick));
     }
     
     resetPosition(x,y) {
@@ -58,33 +66,38 @@ export default class ParticleClass {
     
     draw(ctx,offX,offY) {
         let n,dx,dy,sz,halfSize;
-        let tick,movement;
+        let tick,moveX,moveY;
         
         // are we done?
-        tick=(this.game.timestamp-this.startTimestamp);
-        if (tick>this.lifeTick) return;
+        tick=(this.game.tick-this.startTick);
+        if (tick>this.def.lifeTick) return;
+        
+        // if we couldn't load an image, then skip out on draw
+        if (this.image==null) return;
         
         // save any context changes
         ctx.save();
         
         // the setups
-        if (!this.reverse) {
-            sz=this.startSize+Math.trunc(((this.endSize-this.startSize)*tick)/this.lifeTick);
-            ctx.globalAlpha=this.startAlpha+(((this.endAlpha-this.startAlpha)*tick)/this.lifeTick);
-            movement=1+(tick*this.moveFactor);
+        if (!this.def.reverse) {
+            sz=this.def.startSize+Math.trunc(((this.def.endSize-this.def.startSize)*tick)/this.def.lifeTick);
+            ctx.globalAlpha=this.def.startAlpha+(((this.def.endAlpha-this.def.startAlpha)*tick)/this.def.lifeTick);
+            moveX=1+(tick*this.def.moveXFactor);
+            moveY=1+(tick*this.def.moveYFactor);
         }
         else {
-            sz=this.endSize+Math.trunc(((this.startSize-this.endSize)*tick)/this.lifeTick);
-            ctx.globalAlpha=this.endAlpha+(((this.startAlpha-this.endAlpha)*tick)/this.lifeTick);
-            movement=1+((this.lifeTick-tick)*this.moveFactor);
+            sz=this.def.endSize+Math.trunc(((this.def.startSize-this.def.endSize)*tick)/this.def.lifeTick);
+            ctx.globalAlpha=this.def.endAlpha+(((this.def.startAlpha-this.def.endAlpha)*tick)/this.def.lifeTick);
+            moveX=1+((this.def.lifeTick-tick)*this.def.moveXFactor);
+            moveY=1+((this.def.lifeTick-tick)*this.def.moveYFactor);
         }
             
         // draw it
         halfSize=Math.trunc(sz*0.5);
         
-        for (n=0;n!==this.count;n++) {
-            dx=(((this.x+Math.trunc(this.xs[n]*movement))-this.middleOffsetX)-offX);
-            dy=(((this.y+Math.trunc(this.ys[n]*movement))-this.middleOffsetY)-offY);
+        for (n=0;n!==this.def.count;n++) {
+            dx=(((this.x+Math.trunc(this.xs[n]*moveX))-this.middleOffsetX)-offX);
+            dy=(((this.y+Math.trunc(this.ys[n]*moveY))-this.middleOffsetY)-offY);
             
             // clip anything offscreen
             if ((dx>=this.game.canvasWidth) || ((dx+sz)<=0)) continue;

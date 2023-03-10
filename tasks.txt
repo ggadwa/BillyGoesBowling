@@ -1,16 +1,11 @@
 //// TO DO
 
 
-- move game time to 60 fps
-  * all maps
-  * player_world
-  * billy_game
-  * player_sidescroll
-  * all blocks
-  * buttons, trophy, pin, door
-  * snake
-  * easter head, fish
-  * carrot
+- replace all the particles with structs (add_particle)
+- particles by tick
+
+
+
 
 - maps
    snakes_on_a_plain
@@ -28,6 +23,8 @@
    carrot_catacylism
    mr_cpu_castle
    ninja_moutain
+   boney_one_eye_castle
+   kangarang_castle
 
 
 - to do
@@ -48,7 +45,7 @@ Maps (need 8):
 - go over every map
 
 - background motion by tick
-- particles by tick
+
 
 
 - clean up all unused imports
@@ -56,31 +53,20 @@ Maps (need 8):
 - music needs a loop point, give music opening bars
 - pendant tile for castle levels (next to bush tile)
 
-
-
-
-- particles by tick (just for the sprite call, convert them to timestamp after that)
 - platforms need to push with API (and anything that stands on them)
 - get rid of all map. or game.
 
-
 - need transitions between worlds (closing squares)
 - make game & map private in sprite and map private in game?
-
-- trunc all drawimage coords
-
 
 - smoke on quick turn around (by feet)
 - smoke on jump land
 
 
-
-- last boss can kill billy multiple times when grave
-
 - better water on world map?
 
-- snakes are the worst art, update them
-- carrot needs shading
+- update snake art?
+
 
 
 

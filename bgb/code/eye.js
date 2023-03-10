@@ -6,7 +6,7 @@ import BoneyOneEyeClass from '../code/boney_one_eye.js';
 
 export default class EyeClass extends SpriteClass {
 
-    static EYE_SPEED=15;
+    static EYE_SPEED=7;
         
     constructor(game,x,y,data) {
         super(game,x,y,data);
@@ -33,7 +33,7 @@ export default class EyeClass extends SpriteClass {
     }
     
     killEye() {
-        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),ParticleClass.AFTER_SPRITES_LAYER,64,96,0.6,0.001,24,0,'particles/smoke',8,0.1,false,600);
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),ParticleClass.AFTER_SPRITES_LAYER,64,96,0.6,0.001,24,24,0,0,'particles/smoke',8,0.1,false,600);
         this.playSound('pop');
         this.delete();
     }
