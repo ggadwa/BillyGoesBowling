@@ -1,10 +1,10 @@
 //// TO DO
 
 
-- replace all the particles with structs (add_particle)
-- particles by tick
+- finish all addParticle(
+- addParticle2 -> addParticle
 
-
+- axes should break on player instead of going through
 
 
 - maps
@@ -46,8 +46,6 @@ Maps (need 8):
 
 - background motion by tick
 
-
-
 - clean up all unused imports
 - both game and sprite still have some non-"on" events
 - music needs a loop point, give music opening bars
@@ -61,7 +59,6 @@ Maps (need 8):
 
 - smoke on quick turn around (by feet)
 - smoke on jump land
-
 
 - better water on world map?
 

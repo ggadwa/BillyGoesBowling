@@ -1,5 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
-import ParticleClass from '../../rpjs/engine/particle.js';
+import ParticleDefsClass from './particle_defs.js';
 import BallClass from './ball.js';
 import NinjaBunnyClass from './ninja_bunny.js';
 
@@ -32,7 +32,7 @@ export default class ShurikinClass extends SpriteClass {
     
     kill() {
         this.playSound('ball_break');
-        this.addParticle((this.x+(this.width/2)),(this.y-(this.height/2)),ParticleClass.AFTER_SPRITES_LAYER,8,2,1.0,0.1,2,2,0.02,0.02,'particles/ball',8,0.7,false,500);
+        this.addParticle2((this.x+(this.width/2)),(this.y-(this.height/2)),ParticleDefsClass.SHURIKIN_BREAK_PARTICLE);
         this.delete();
     }
     

@@ -1,5 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
-import ParticleClass from '../../rpjs/engine/particle.js';
+import ParticleDefsClass from './particle_defs.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
 import BallClass from './ball.js';
 import ShieldClass from './shield.js';
@@ -41,7 +41,7 @@ export default class BoomerangClass extends SpriteClass {
     }
     
     killBoomerang() {
-        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),ParticleClass.AFTER_SPRITES_LAYER,64,96,0.6,0.001,24,24,0,0,'particles/smoke',8,0.1,false,600);
+        this.addParticle2((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),ParticleDefsClass.MONSTER_KILL_SMOKE_PARTICLE);
         this.playSound('pop');
         this.delete();
     }

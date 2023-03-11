@@ -87,6 +87,23 @@ export default class ParticleDefsClass {
         lifeTick:48
     };
     
+    static CLOUD_POP_PARTICLE={
+        layer:ParticleClass.AFTER_SPRITES_LAYER,
+        startSize:64,
+        endSize:96,
+        startAlpha:0.6,
+        endAlpha:0.001,
+        initialMoveX:24,
+        initialMoveY:24,
+        moveXFactor:0.0,
+        moveYFactor:0.0,
+        imageName:'particles/smoke',
+        count:8,
+        rotateFactor:0.1,
+        reverse:false,
+        lifeTick:30
+    };
+    
     static WARP_OUT_PARTICLE={
         layer:ParticleClass.AFTER_SPRITES_LAYER,
         startSize:8,
@@ -153,6 +170,39 @@ export default class ParticleDefsClass {
         rotateFactor:0.5,
         reverse:false,
         lifeTick:48
+    };
+    
+    static FISH_KILL_PARTICLE={
+        layer:ParticleClass.AFTER_SPRITES_LAYER,
+        startSize:8,
+        endSize:8,
+        startAlpha:1.0,
+        endAlpha:0.1,
+        initialMoveX:2,
+        initialMoveY:2,
+        moveXFactor:0.5,
+        moveYFactor:0.5,
+        imageName:'particles/fish',
+        count:8,
+        rotateFactor:0.5,
+        reverse:false,
+        lifeTick:30
+    };
+    static SHURIKIN_BREAK_PARTICLE={
+        layer:ParticleClass.AFTER_SPRITES_LAYER,
+        startSize:8,
+        endSize:2,
+        startAlpha:1.0,
+        endAlpha:0.1,
+        initialMoveX:2,
+        initialMoveY:2,
+        moveXFactor:0.3,
+        moveYFactor:0.3,
+        imageName:'particles/ball',
+        count:8,
+        rotateFactor:0.7,
+        reverse:false,
+        lifeTick:30
     };
     
     static MONSTER_KILL_SMOKE_PARTICLE={
