@@ -86,7 +86,7 @@ export default class BallClass extends SpriteClass {
         
         // ball destroyed
         if (showDestroy) {
-            this.addParticle2((this.x+halfWid),(this.y-halfHigh),ParticleDefsClass.BALL_BREAK_PARTICLE);
+            this.addParticle((this.x+halfWid),(this.y-halfHigh),ParticleDefsClass.BALL_BREAK_PARTICLE);
             this.playSound('ball_break');
         }
         
@@ -96,7 +96,7 @@ export default class BallClass extends SpriteClass {
         
         this.x=playerSprite.x+Math.trunc((playerSprite.width-this.width)*0.5);
         this.y=(playerSprite.y-playerSprite.height)-BallClass.HEAD_PIXEL_DISTANCE;
-        this.reformParticle=this.addParticle2((this.x+halfWid),(this.y-halfHigh),ParticleDefsClass.BALL_REFORM_PARTICLE);
+        this.reformParticle=this.addParticle((this.x+halfWid),(this.y-halfHigh),ParticleDefsClass.BALL_REFORM_PARTICLE);
         
         this.playSound('ball_reform');
         

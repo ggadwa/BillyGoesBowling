@@ -41,7 +41,7 @@ export default class BoomerangClass extends SpriteClass {
     }
     
     killBoomerang() {
-        this.addParticle2((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),ParticleDefsClass.MONSTER_KILL_SMOKE_PARTICLE);
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),ParticleDefsClass.MONSTER_KILL_SMOKE_PARTICLE);
         this.playSound('pop');
         this.delete();
     }

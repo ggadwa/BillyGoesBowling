@@ -87,7 +87,7 @@ export default class KangarangClass extends SpriteClass {
     kill() {
         this.isDead=true;
         this.gravityFactor=0.0;
-        this.skullParticle=this.addParticle2((this.x+(this.width/2)),(this.y-(this.height/2)),ParticleDefsClass.BOSS_KILL_PARTICLE);
+        this.skullParticle=this.addParticle((this.x+(this.width/2)),(this.y-(this.height/2)),ParticleDefsClass.BOSS_KILL_PARTICLE);
         this.playSound('boss_dead');
 
         // update the state

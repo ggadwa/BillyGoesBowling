@@ -72,7 +72,7 @@ export default class MrCPUClass extends SpriteClass {
     kill() {
         this.isDead=true;
         this.gravityFactor=0.0;
-        this.skullParticle=this.addParticle2((this.x+(this.width/2)),(this.y-(this.height/2)),ParticleDefsClass.BOSS_KILL_PARTICLE);
+        this.skullParticle=this.addParticle((this.x+(this.width/2)),(this.y-(this.height/2)),ParticleDefsClass.BOSS_KILL_PARTICLE);
         this.playSound('boss_dead');
 
         // update the state
@@ -182,13 +182,13 @@ export default class MrCPUClass extends SpriteClass {
         mx=this.x+Math.trunc(this.width*Math.random());
         switch (tick%4) {
             case 0:
-                this.addParticle2(mx,this.y,ParticleDefsClass.JET_RED_PARTICLE);
+                this.addParticle(mx,this.y,ParticleDefsClass.JET_RED_PARTICLE);
                 break;
             case 1:
-                this.addParticle2(mx,this.y,ParticleDefsClass.JET_ORANGE_PARTICLE);
+                this.addParticle(mx,this.y,ParticleDefsClass.JET_ORANGE_PARTICLE);
                 break;
             case 2:
-                this.addParticle2(mx,this.y,ParticleDefsClass.JET_YELLOW_PARTICLE);
+                this.addParticle(mx,this.y,ParticleDefsClass.JET_YELLOW_PARTICLE);
                 break;
         }
         

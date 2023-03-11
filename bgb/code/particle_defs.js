@@ -306,6 +306,56 @@ export default class ParticleDefsClass {
         reverse:false,
         lifeTick:160
     };
+    
+    static CASTLE_BREAK_PARTICLE={
+        layer:ParticleClass.AFTER_SPRITES_LAYER,
+        startSize:10,
+        endSize:10,
+        startAlpha:1.0,
+        endAlpha:0.1,
+        initialMoveX:5,
+        initialMoveY:5,
+        moveXFactor:0.6,
+        moveYFactor:0.6,
+        imageName:'particles/castle',
+        count:40,
+        rotateFactor:0.5,
+        reverse:false,
+        lifeTick:90
+    };
+    
+    static FIREWORK_1_PARTICLE={
+        layer:ParticleClass.AFTER_SPRITES_LAYER,
+        startSize:32,
+        endSize:128,
+        startAlpha:0.8,
+        endAlpha:0.1,
+        initialMoveX:8,
+        initialMoveY:8,
+        moveXFactor:0.25,
+        moveYFactor:0.25,
+        imageName:'particles/explode_red',
+        count:10,
+        rotateFactor:0.4,
+        reverse:false,
+        lifeTick:35
+    };
 
+    static FIREWORK_2_PARTICLE={
+        layer:ParticleClass.AFTER_SPRITES_LAYER,
+        startSize:10,
+        endSize:10,
+        startAlpha:1.0,
+        endAlpha:0.1,
+        initialMoveX:5,
+        initialMoveY:5,
+        moveXFactor:0.9,
+        moveYFactor:0.9,
+        imageName:'particles/block',
+        count:40,
+        rotateFactor:0.4,
+        reverse:false,
+        lifeTick:90
+    };
 
 }

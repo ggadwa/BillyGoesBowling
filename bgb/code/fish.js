@@ -35,7 +35,7 @@ export default class FishClass extends SpriteClass {
     }
     
     kill() {
-        this.addParticle2((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),ParticleDefsClass.FISH_KILL_PARTICLE);
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),ParticleDefsClass.FISH_KILL_PARTICLE);
         this.playSound('ball_break');
         this.delete();
     }

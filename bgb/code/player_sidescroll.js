@@ -140,7 +140,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.stopAllGravity();
         
         this.playSound('teleport');
-        this.addParticle2((this.x+(this.width/2)),(this.y-(this.height/2)),ParticleDefsClass.WARP_OUT_PARTICLE);
+        this.addParticle((this.x+(this.width/2)),(this.y-(this.height/2)),ParticleDefsClass.WARP_OUT_PARTICLE);
     }
     
     onCollideSprite(sprite) {

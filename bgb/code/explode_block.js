@@ -86,10 +86,10 @@ export default class ExplodeBlockClass extends SpriteClass {
         cx=this.x+Math.trunc(this.width*0.5);
         cy=this.y-Math.trunc(this.height*0.5);
 
-        this.addParticle2(cx,cy,ParticleDefsClass.EXPLODE_SMOKE_PARTICLE);
-        this.addParticle2(cx,cy,ParticleDefsClass.EXPLODE_RED_PARTICLE);
-        this.addParticle2(cx,cy,ParticleDefsClass.EXPLODE_ORANGE_PARTICLE);
-        this.addParticle2(cx,cy,ParticleDefsClass.EXPLODE_YELLOW_PARTICLE);
+        this.addParticle(cx,cy,ParticleDefsClass.EXPLODE_SMOKE_PARTICLE);
+        this.addParticle(cx,cy,ParticleDefsClass.EXPLODE_RED_PARTICLE);
+        this.addParticle(cx,cy,ParticleDefsClass.EXPLODE_ORANGE_PARTICLE);
+        this.addParticle(cx,cy,ParticleDefsClass.EXPLODE_YELLOW_PARTICLE);
         this.playSound('explode');
         
         this.delete();

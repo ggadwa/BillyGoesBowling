@@ -1,12 +1,6 @@
 //// TO DO
 
 
-- finish all addParticle(
-- addParticle2 -> addParticle
-
-- axes should break on player instead of going through
-
-
 - maps
    snakes_on_a_plain
    heads_up
@@ -25,24 +19,22 @@
    ninja_moutain
    boney_one_eye_castle
    kangarang_castle
-
+   executioner's revenge
 
 - to do
    
    snake_pit
+
    
    
 Maps (need 8):
+  - working in a coal mine (break blocks in mine - use left/right blocks)
   - Ninja HQ (tall girder skyscraper)
   - Bunnies Love Carrots (carrots on top, bunnies on bottom, trophy at start need to cross what's left of break blocks between carrots and bunnies)
   - That Sinking Feeling (tower with raising water)
   - carrot_armageddon
-  - executioner's revenge (have executioner but he just blocks way to pin and trophy below) -- last one on island on the top
   - blocks of confusion (maybe use left and right here)
 
-
-- can we load items by directory lists?
-- go over every map
 
 - background motion by tick
 

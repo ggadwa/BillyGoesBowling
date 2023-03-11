@@ -35,7 +35,7 @@ export default class CloudBlockClass extends SpriteClass {
         this.show=false;
         this.countDown=CloudBlockClass.REAPPEAR_TICK;
         this.playSound('pop');
-        this.addParticle2((this.x+(this.width/2)),(this.y-(this.height/2)),ParticleDefsClass.CLOUD_POP_PARTICLE);
+        this.addParticle((this.x+(this.width/2)),(this.y-(this.height/2)),ParticleDefsClass.CLOUD_POP_PARTICLE);
     }
     
     onCollideSprite(sprite) {

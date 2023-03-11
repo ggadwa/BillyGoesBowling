@@ -33,7 +33,7 @@ export default class BreakBlockClass extends SpriteClass {
         
         cx=this.x+Math.trunc(this.width*0.5);
         cy=this.y-Math.trunc(this.height*0.5);
-        this.addParticle2(cx,cy,ParticleDefsClass.BREAK_BLOCK_PARTICLE);
+        this.addParticle(cx,cy,ParticleDefsClass.BREAK_BLOCK_PARTICLE);
         this.playSound('crack');
         this.delete();
     }

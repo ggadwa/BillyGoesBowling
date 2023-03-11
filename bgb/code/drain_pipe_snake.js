@@ -54,12 +54,12 @@ export default class DrainPipeSnakeClass extends SpriteClass {
     breakPipe() {
         this.snakeHasPipe=false;
         this.invincibleCount=DrainPipeSnakeClass.INVINCIBLE_TICK;
-        this.addParticle2((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),ParticleDefsClass.DRAIN_PIPE_BREAK_PARTICLE);
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),ParticleDefsClass.DRAIN_PIPE_BREAK_PARTICLE);
         this.playSound('pipe_break'); 
     }
     
     kill() {
-        this.addParticle2((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),ParticleDefsClass.MONSTER_KILL_SMOKE_PARTICLE);
+        this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),ParticleDefsClass.MONSTER_KILL_SMOKE_PARTICLE);
         this.playSound('monster_die');
         this.delete();
     }

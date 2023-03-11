@@ -32,7 +32,7 @@ export default class ShurikinClass extends SpriteClass {
     
     kill() {
         this.playSound('ball_break');
-        this.addParticle2((this.x+(this.width/2)),(this.y-(this.height/2)),ParticleDefsClass.SHURIKIN_BREAK_PARTICLE);
+        this.addParticle((this.x+(this.width/2)),(this.y-(this.height/2)),ParticleDefsClass.SHURIKIN_BREAK_PARTICLE);
         this.delete();
     }
     

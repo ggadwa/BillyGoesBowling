@@ -1,7 +1,9 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import ParticleDefsClass from './particle_defs.js';
 import CloudBlockClass from './cloud_block.js';
+import BreakBlockClass from './break_block.js';
 import BreakBlockStrongClass from './break_block_strong.js';
+import PlayerSideScrollClass from './player_sidescroll.js';
 import ExecutionerClass from './executioner.js';
 
 export default class AxeClass extends SpriteClass {
@@ -33,7 +35,7 @@ export default class AxeClass extends SpriteClass {
     
     kill() {
         this.playSound('crack');
-        this.addParticle2((this.x+(this.width/2)),(this.y-(this.height/4)),ParticleDefsClass.AXE_SHATTER_PARTICLE);
+        this.addParticle((this.x+(this.width/2)),(this.y-(this.height/4)),ParticleDefsClass.AXE_SHATTER_PARTICLE);
         this.delete();
     }
     
@@ -44,9 +46,20 @@ export default class AxeClass extends SpriteClass {
             return;
         }
         
+        // break any break blocks but axes pass through
+        if (sprite instanceof BreakBlockClass) {
+            this.sendMessageToSpritesAroundSprite(0,0,0,32,BreakBlockClass,'explode',null);
+            return;
+        }
+        
         // break any strong blocks
         if (sprite instanceof BreakBlockStrongClass) {
             this.sendMessageToSpritesAroundSprite(0,0,0,32,BreakBlockStrongClass,'explode',null);
+            this.kill();
+        }
+        
+        // hitting player kills it
+        if (sprite instanceof PlayerSideScrollClass) {
             this.kill();
         }
     }

@@ -65,7 +65,7 @@ export default class RotoCarrotClass extends SpriteClass {
                 (sprite instanceof ShieldClass) ||
                 (sprite instanceof ShurikinClass) ||
                 (sprite instanceof FishClass)) {
-                   this.addParticle2((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),ParticleDefsClass.ParticleDefsClass.MONSTER_KILL_SMOKE_PARTICLE);
+                   this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),ParticleDefsClass.ParticleDefsClass.MONSTER_KILL_SMOKE_PARTICLE);
                    this.playSound('monster_die');
                    this.x=this.game.map.rightEdge+RotoCarrotClass.CARROT_RESET_DISTANCE;
                    return;

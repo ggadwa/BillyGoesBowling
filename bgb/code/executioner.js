@@ -1,6 +1,7 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import ParticleDefsClass from './particle_defs.js';
 import CloudBlockClass from './cloud_block.js';
+import BreakBlockClass from './break_block.js';
 import BreakBlockStrongClass from '../code/break_block_strong.js';
 import BallClass from './ball.js';
 import AxeClass from './axe.js';
@@ -65,7 +66,6 @@ export default class ExecutionerClass extends SpriteClass {
     }
     
     fireAxe() {
-        let sx;
         let playerSprite=this.getPlayerSprite();
         
         // are we in cool down?
@@ -95,12 +95,15 @@ export default class ExecutionerClass extends SpriteClass {
                
         // pop any clouds
         this.sendMessageToSpritesAroundSprite(0,0,0,32,CloudBlockClass,'pop',null);
+        
+        // break any break boxes
+        this.sendMessageToSpritesAroundSprite(0,0,0,32,BreakBlockClass,'explode',null);
     }
     
     kill() {
         this.isDead=true;
         this.gravityFactor=0.0;
-        this.skullParticle=this.addParticle2((this.x+(this.width/2)),(this.y-(this.height/2)),ParticleDefsClass.BOSS_KILL_PARTICLE);
+        this.skullParticle=this.addParticle((this.x+(this.width/2)),(this.y-(this.height/2)),ParticleDefsClass.BOSS_KILL_PARTICLE);
         this.playSound('boss_dead');
 
         // update the state
