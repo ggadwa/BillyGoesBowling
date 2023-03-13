@@ -45,7 +45,7 @@ export default class PlayerWorldClass extends SpriteClass {
         Object.seal(this);
     }
     
-    mapStartup() {
+    onMapStart() {
         this.drawOffsetX=Math.trunc((MapClass.MAP_TILE_SIZE-this.width)*0.5); // so world player draws in the center of tiles
     }
     

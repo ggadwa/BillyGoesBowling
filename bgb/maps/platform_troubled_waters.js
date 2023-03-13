@@ -1,5 +1,4 @@
 import MapClass from '../../rpjs/engine/map.js';
-import SideScrollNormalBaseMapClass from '../maps/side_scroll_normal_base.js';
 import PlayerSideScrollClass from '../code/player_sidescroll.js';
 import BlockClass from '../code/block.js';
 import BreakBlockClass from '../code/break_block.js';
@@ -16,7 +15,7 @@ import NinjaBunnyClass from '../code/ninja_bunny.js';
 import RotoCarrotClass from '../code/roto_carrot.js';
 import EasterHeadClass from '../code/easter_head.js';
 
-export default class PlatformTroubledWatersMapClass extends SideScrollNormalBaseMapClass {
+export default class PlatformTroubledWatersMapClass extends MapClass {
 
     create() {
         this.createTileData=new Uint16Array([
@@ -179,9 +178,15 @@ export default class PlatformTroubledWatersMapClass extends SideScrollNormalBase
         ];
     }
     
-    mapStartup()
-    {
-        super.mapStartup();
+    onMapStart() {
+        this.setCamera(this.getPlayerSprite(),MapClass.CAMERA_TYPE_SIDESCROLL);
+        
+        this.addParallaxBackground(this.game.imageList.get('backgrounds/sun'),0,0.0);
+        this.addParallaxBackground(this.game.imageList.get('backgrounds/clouds'),(this.game.canvasHeight-400),0.4);
+        this.addParallaxBackground(this.game.imageList.get('backgrounds/mountains'),(this.game.canvasHeight-300),0.6);
+
+        this.game.musicList.start('map');
+        
         this.addLiquid(this.game.imageList.get('liquids/water_top'),this.game.imageList.get('liquids/water_fill'),2032,5);
     }
 }

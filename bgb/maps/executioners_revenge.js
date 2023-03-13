@@ -1,5 +1,4 @@
 import MapClass from '../../rpjs/engine/map.js';
-import SideScrollNormalBaseMapClass from '../maps/side_scroll_normal_base.js';
 import PlayerSideScrollClass from '../code/player_sidescroll.js';
 import BlockClass from '../code/block.js';
 import BreakBlockClass from '../code/break_block.js';
@@ -13,7 +12,7 @@ import TrophyClass from '../code/trophy.js';
 import ButtonClass from '../code/button.js';
 import ExecutionerClass from '../code/executioner.js';
 
-export default class ExecutionersRevengeMapClass extends SideScrollNormalBaseMapClass {
+export default class ExecutionersRevengeMapClass extends MapClass {
 
     create() {
         this.createTileData=new Uint16Array([
@@ -356,7 +355,15 @@ export default class ExecutionersRevengeMapClass extends SideScrollNormalBaseMap
         ];
     }
     
-    mapStartup() {
-        super.mapStartup();
+    onMapStart() {
+        this.setCamera(this.getPlayerSprite(),MapClass.CAMERA_TYPE_SIDESCROLL);
+        
+        this.addParallaxBackground(this.game.imageList.get('backgrounds/sun'),0,0.0);
+        this.addParallaxBackground(this.game.imageList.get('backgrounds/clouds'),(this.game.canvasHeight-400),0.4);
+        this.addParallaxBackground(this.game.imageList.get('backgrounds/mountains'),(this.game.canvasHeight-300),0.6);
+
+        this.game.musicList.start('map');
+        
+        this.setCamera(this.getPlayerSprite(),MapClass.CAMERA_TYPE_SIDESCROLL);
     }
 }

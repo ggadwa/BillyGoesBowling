@@ -1,5 +1,4 @@
 import MapClass from '../../rpjs/engine/map.js';
-import SideScrollCastleBaseMapClass from '../maps/side_scroll_castle_base.js';
 import PlayerSideScrollClass from '../code/player_sidescroll.js';
 import BlockClass from '../code/block.js';
 import BreakBlockClass from '../code/break_block.js';
@@ -18,7 +17,7 @@ import RotoCarrotClass from '../code/roto_carrot.js';
 import EasterHeadClass from '../code/easter_head.js';
 import BoneyOneEyeClass from '../code/boney_one_eye.js';
 
-export default class BoneyOneEyeCastleMapClass extends SideScrollCastleBaseMapClass {
+export default class BoneyOneEyeCastleMapClass extends MapClass {
 
     create() {
         this.createTileData=new Uint16Array([
@@ -311,9 +310,15 @@ export default class BoneyOneEyeCastleMapClass extends SideScrollCastleBaseMapCl
         ];
     }
     
-    mapStartup()
-    {
-        super.mapStartup();
+    onMapStart() {
+        this.setCamera(this.getPlayerSprite(),MapClass.CAMERA_TYPE_SIDESCROLL);
+        
+        this.addParallaxBackground(this.game.imageList.get('backgrounds/sun'),0,0.0);
+        this.addParallaxBackground(this.game.imageList.get('backgrounds/clouds'),(this.game.canvasHeight-400),0.4);
+        this.addParallaxBackground(this.game.imageList.get('backgrounds/castle'),(this.game.canvasHeight-300),0.6);
+
+        this.game.musicList.start('boss');
+
         this.addLiquid(this.game.imageList.get('liquids/lava_top'),this.game.imageList.get('liquids/lava_fill'),2848,10);
     }
 }

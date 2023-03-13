@@ -91,7 +91,7 @@ export default class SpriteClass {
      * Override this to do any operations on this sprite
      * that happen when a map is started.
      */
-    mapStartup() {
+    onMapStart() {
     }
     
     /**
@@ -497,6 +497,10 @@ export default class SpriteClass {
             this.game.setData(name,value);
             this.game.persistData();
         }
+    }
+    
+    setCamera(cameraSprite,cameraType) {
+        this.game.map.setCamera(cameraSprite,cameraType);
     }
     
     // event staging

@@ -88,7 +88,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         return(true);
     }
     
-    mapStartup() {
+    onMapStart() {
         this.health=PlayerSideScrollClass.MAX_HEALTH;
         // add the ball sprite
         this.ballSprite=new BallClass(this.game,0,0,null);

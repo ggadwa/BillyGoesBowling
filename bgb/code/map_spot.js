@@ -26,7 +26,7 @@ export default class MapSpotClass extends SpriteClass {
         Object.seal(this);
     }
     
-    mapStartup() {
+    onMapStart() {
         let hasPin=(this.game.getData('pin_'+this.getData('map'))!==null);
         let hasTrophy=(this.game.getData('trophy_'+this.getData('map'))!==null);
         

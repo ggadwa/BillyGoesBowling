@@ -27,7 +27,7 @@ export default class LiquidClass {
         this.moveSpeed=moveSpeed;
     }
     
-    onRun(tick) {
+    runInternal(tick) {
         let triggerEvent=false; // triggers the liquid move done event
         
         // move any liquid

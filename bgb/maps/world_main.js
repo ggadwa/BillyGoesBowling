@@ -1,12 +1,14 @@
 import MapClass from '../../rpjs/engine/map.js';
-import WorldBaseMapClass from '../maps/world_base.js';
 import PlayerWorldClass from '../code/player_world.js';
 import MapSpotClass from '../code/map_spot.js';
 import MapCastleClass from '../code/map_castle.js';
 import MapCottageClass from '../code/map_cottage.js';
 import MapBlockClass from '../code/map_block.js';
 
-export default class WorldMainMapClass extends WorldBaseMapClass {
+export default class WorldMainMapClass extends MapClass {
+        
+    static TILE_IDX_ROAD_VERTICAL=46;
+    static TILE_IDX_ROAD_HORIZONTAL=44;
 
     create() {
         this.createTileData=new Uint16Array([
@@ -169,35 +171,51 @@ export default class WorldMainMapClass extends WorldBaseMapClass {
             new MapCastleClass(this.game,3712,1216,new Map([["title","King Ghastly's Castle"],["map","king_ghastly_castle"],["pin","24"]])),
             new MapCottageClass(this.game,4608,1216,null),
             new MapCastleClass(this.game,4288,2112,new Map([["title","Kangarang's Castle"],["map","kangarang_castle"],["pin","18"]])),
-            new MapSpotClass(this.game,3136,1088,new Map([["title","Test"],["map","test"]])),
-            new MapSpotClass(this.game,4800,704,new Map([["title","Executioner's Revenge"],["map","executioners_revenge"]]))
+            new MapSpotClass(this.game,3136,2048,new Map([["title","Test"],["map","test"]])),
+            new MapSpotClass(this.game,4800,704,new Map([["title","Executioner's Revenge"],["map","executioners_revenge"]])),
+            new MapSpotClass(this.game,3136,1088,new Map([["title","Eye in the Sky"],["map","eye_in_the_sky"]]))
         ];
     }
     
-    mapStartup() {
-        super.mapStartup();
+    onMapStart() {
+        let x,y,playerSprite;
+        
+        // setup
+        this.setCamera(this.getPlayerSprite(),MapClass.CAMERA_TYPE_OVERHEAD);
+        this.addTileBackground(this.game.imageList.get('backgrounds/water'),1.0,1.0,0.01,0.005);
+        this.game.musicList.start('world');
+        
+        // spots record where the player went into a map
+        // so we can reset position coming out
+        x=this.game.getData('worldXPos');
+        y=this.game.getData('worldYPos');
+        if ((x!=null) && (y!=null)) {
+            playerSprite=this.getPlayerSprite();
+            playerSprite.x=x;
+            playerSprite.y=y;
+        }
         
         // check the unlock flag
         if (this.game.isUnlocked()) {
-            this.changeTile(24,5,WorldBaseMapClass.TILE_IDX_ROAD_VERTICAL);
-            this.changeTile(8,12,WorldBaseMapClass.TILE_IDX_ROAD_VERTICAL);  
-            this.changeTile(41,11,WorldBaseMapClass.TILE_IDX_ROAD_VERTICAL);
-            this.changeTile(41,20,WorldBaseMapClass.TILE_IDX_ROAD_VERTICAL);
-            this.changeTile(48,16,WorldBaseMapClass.TILE_IDX_ROAD_HORIZONTAL);
-            this.changeTile(52,16,WorldBaseMapClass.TILE_IDX_ROAD_HORIZONTAL);
-            this.changeTile(65,18,WorldBaseMapClass.TILE_IDX_ROAD_HORIZONTAL);
+            this.changeTile(24,5,WorldMainMapClass.TILE_IDX_ROAD_VERTICAL);
+            this.changeTile(8,12,WorldMainMapClass.TILE_IDX_ROAD_VERTICAL);  
+            this.changeTile(41,11,WorldMainMapClass.TILE_IDX_ROAD_VERTICAL);
+            this.changeTile(41,20,WorldMainMapClass.TILE_IDX_ROAD_VERTICAL);
+            this.changeTile(48,16,WorldMainMapClass.TILE_IDX_ROAD_HORIZONTAL);
+            this.changeTile(52,16,WorldMainMapClass.TILE_IDX_ROAD_HORIZONTAL);
+            this.changeTile(65,18,WorldMainMapClass.TILE_IDX_ROAD_HORIZONTAL);
             return;
         }
         
         // otherwise unlock based on castles won
-        if (this.game.getData('boss_executioners_castle')!==null) this.changeTile(24,5,WorldBaseMapClass.TILE_IDX_ROAD_VERTICAL); // win castle 1
+        if (this.game.getData('boss_executioners_castle')!==null) this.changeTile(24,5,WorldMainMapClass.TILE_IDX_ROAD_VERTICAL); // win castle 1
         if (this.game.getData('boss_mr_cpu_castle')!==null) { // win castle 2
-            this.changeTile(8,12,WorldBaseMapClass.TILE_IDX_ROAD_VERTICAL);  
-            this.changeTile(41,11,WorldBaseMapClass.TILE_IDX_ROAD_VERTICAL);
-            this.changeTile(41,20,WorldBaseMapClass.TILE_IDX_ROAD_VERTICAL);
+            this.changeTile(8,12,WorldMainMapClass.TILE_IDX_ROAD_VERTICAL);  
+            this.changeTile(41,11,WorldMainMapClass.TILE_IDX_ROAD_VERTICAL);
+            this.changeTile(41,20,WorldMainMapClass.TILE_IDX_ROAD_VERTICAL);
         }
-        if (this.game.getData('boss_boney_one_eye_castle')!==null) this.changeTile(48,16,WorldBaseMapClass.TILE_IDX_ROAD_HORIZONTAL); // win castle 3
-        if (this.game.getData('boss_kangarang_castle')!==null) this.changeTile(52,16,WorldBaseMapClass.TILE_IDX_ROAD_HORIZONTAL); // win castle 4
-        if (this.game.getData('boss_king_ghastly_castle')!==null) this.changeTile(65,18,WorldBaseMapClass.TILE_IDX_ROAD_HORIZONTAL); // win castle 5
+        if (this.game.getData('boss_boney_one_eye_castle')!==null) this.changeTile(48,16,WorldMainMapClass.TILE_IDX_ROAD_HORIZONTAL); // win castle 3
+        if (this.game.getData('boss_kangarang_castle')!==null) this.changeTile(52,16,WorldMainMapClass.TILE_IDX_ROAD_HORIZONTAL); // win castle 4
+        if (this.game.getData('boss_king_ghastly_castle')!==null) this.changeTile(65,18,WorldMainMapClass.TILE_IDX_ROAD_HORIZONTAL); // win castle 5
     }
 }

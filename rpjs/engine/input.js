@@ -181,7 +181,7 @@ export default class InputClass {
         if (this.gamepadIndex===event.gamepad.index) this.gamepadIndex=-1;
     }
     
-    gamepadOnRun(tick) {
+    gamepadRunInternal(tick) {
         let gamepads,gamepad;
         
         // this is a lot of checks, but because of browser differences
@@ -262,8 +262,8 @@ export default class InputClass {
     }
     
     // input run
-    onRun(tick) {
-        this.gamepadOnRun(tick);
+    runInternal(tick) {
+        this.gamepadRunInternal(tick);
     }
 
 }

@@ -1,6 +1,15 @@
 //// TO DO
 
 
+
+
+- need createSprite/AddSprite in sprite, replace all game.map stuff
+
+
+
+
+
+
 - maps
    snakes_on_a_plain
    heads_up
@@ -24,10 +33,12 @@
 - to do
    
    snake_pit
+   eye in the sky
+   
 
    
    
-Maps (need 8):
+Maps:
   - working in a coal mine (break blocks in mine - use left/right blocks)
   - Ninja HQ (tall girder skyscraper)
   - Bunnies Love Carrots (carrots on top, bunnies on bottom, trophy at start need to cross what's left of break blocks between carrots and bunnies)
@@ -35,9 +46,11 @@ Maps (need 8):
   - carrot_armageddon
   - blocks of confusion (maybe use left and right here)
 
+- getTileData getSpriteData instead of one call, then don't need dups or variable sets
+- editor: double click sprite for info, use info for other stuff
 
 - background motion by tick
-
+- ducking?  Need collision offset box changes
 - clean up all unused imports
 - both game and sprite still have some non-"on" events
 - music needs a loop point, give music opening bars

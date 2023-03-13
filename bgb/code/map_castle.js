@@ -30,7 +30,7 @@ export default class MapCastleClass extends SpriteClass {
         return((parseInt(this.getData('pin'))<=parseInt(this.game.getGameDataCountForPrefix('pin_')))||(this.game.isUnlocked()));
     }
     
-    mapStartup() {
+    onMapStart() {
         if (this.game.getData('boss_'+this.getData('map'))!==null) {
             this.setCurrentImage('sprites/world_map_castle_wreck');
                     

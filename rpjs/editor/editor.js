@@ -54,9 +54,6 @@ export default class EditorClass {
         let mapName;
         let sel,opt;
         
-        // any resize events
-        window.addEventListener('resize',this.resize.bind(this),false);
-        
         // get the canvases
         this.mapCanvas=document.getElementById('editorMapCanvas');
         this.tilePaletteCanvas=document.getElementById('editorTilePaletteCanvas');
@@ -64,33 +61,6 @@ export default class EditorClass {
         
         // setup canvases
         this.setCanvasPixelAndContext();
-        
-        // events
-        this.mapCanvas.onmousedown=this.leftMouseDownMapCanvas.bind(this);
-        this.mapCanvas.onmousemove=this.leftMouseMoveMapCanvas.bind(this);
-        this.mapCanvas.onmouseup=this.leftMouseUpMapCanvas.bind(this);
-        this.mapCanvas.onmouseout=this.leftMouseUpMapCanvas.bind(this); // mouse out forces a mouse up
-        this.mapCanvas.onwheel=this.wheelMapCanvas.bind(this);
-        
-        document.onkeydown=this.keyDownMapCanvas.bind(this); // need to be on document
-        document.onkeyup=this.keyUpMapCanvas.bind(this);
-        
-        this.tilePaletteCanvas.onclick=this.clickTilePaletteCanvas.bind(this);
-        this.spritePaletteCanvas.onclick=this.clickSpritePaletteCanvas.bind(this);
-        
-        // toolbar buttons
-        document.getElementById('mapCombo').onchange=this.loadMap.bind(this);
-        document.getElementById('clearSelectionButton').onclick=this.clearSelection.bind(this);
-        document.getElementById('mapUpButton').onclick=this.mapUp.bind(this);
-        document.getElementById('mapDownButton').onclick=this.mapDown.bind(this);
-        document.getElementById('mapLeftButton').onclick=this.mapLeft.bind(this);
-        document.getElementById('mapRightButton').onclick=this.mapRight.bind(this);
-        document.getElementById('spriteInfo').onclick=this.infoOpen.bind(this);
-        document.getElementById('compileButton').onclick=this.compile.bind(this);
-        
-        // editor info button
-        document.getElementById('editorInfoOk').onclick=this.infoOk.bind(this);
-        document.getElementById('editorInfoCancel').onclick=this.infoCancel.bind(this);
 
         // current map offset
         this.offsetX=0;
@@ -137,7 +107,38 @@ export default class EditorClass {
         
         sel.selectIndex=0;
        
+        // first draw
         this.refresh();
+        
+        // events
+        this.mapCanvas.onmousedown=this.leftMouseDownMapCanvas.bind(this);
+        this.mapCanvas.onmousemove=this.leftMouseMoveMapCanvas.bind(this);
+        this.mapCanvas.onmouseup=this.leftMouseUpMapCanvas.bind(this);
+        this.mapCanvas.onmouseout=this.leftMouseUpMapCanvas.bind(this); // mouse out forces a mouse up
+        this.mapCanvas.onwheel=this.wheelMapCanvas.bind(this);
+        
+        document.onkeydown=this.keyDownMapCanvas.bind(this); // need to be on document
+        document.onkeyup=this.keyUpMapCanvas.bind(this);
+        
+        this.tilePaletteCanvas.onclick=this.clickTilePaletteCanvas.bind(this);
+        this.spritePaletteCanvas.onclick=this.clickSpritePaletteCanvas.bind(this);
+        
+        // toolbar buttons
+        document.getElementById('mapCombo').onchange=this.loadMap.bind(this);
+        document.getElementById('clearSelectionButton').onclick=this.clearSelection.bind(this);
+        document.getElementById('mapUpButton').onclick=this.mapUp.bind(this);
+        document.getElementById('mapDownButton').onclick=this.mapDown.bind(this);
+        document.getElementById('mapLeftButton').onclick=this.mapLeft.bind(this);
+        document.getElementById('mapRightButton').onclick=this.mapRight.bind(this);
+        document.getElementById('spriteInfo').onclick=this.infoOpen.bind(this);
+        document.getElementById('compileButton').onclick=this.compile.bind(this);
+        
+        // editor info button
+        document.getElementById('editorInfoOk').onclick=this.infoOk.bind(this);
+        document.getElementById('editorInfoCancel').onclick=this.infoCancel.bind(this);
+        
+        // any resize events
+        window.addEventListener('resize',this.resize.bind(this),false);
     }
     
     // setup canvas pixels and contexts

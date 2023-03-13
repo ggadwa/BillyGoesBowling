@@ -406,9 +406,9 @@ export default class GameClass {
             
             // run game and map logic
             // which runs the sprite logic
-            this.input.onRun(this.tick);
-            this.onRun(this.tick);
-            this.map.onRun(this.tick);
+            this.input.runInternal(this.tick);
+            this.onRun(this.tick); // project run
+            this.map.runInternal(this.tick);
             
             // check for map goto triggers 
             if (this.gotoMapName!==null) {

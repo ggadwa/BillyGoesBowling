@@ -20,7 +20,7 @@ export default class PinClass extends SpriteClass {
         Object.seal(this);
     }
     
-    mapStartup() {
+    onMapStart() {
         // if pin has been picked up once, then make it transparent
         if (this.getGameData('pin_'+this.getMapName())!==null) this.alpha=0.4;
         // win timer

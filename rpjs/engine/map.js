@@ -8,6 +8,11 @@ export default class MapClass {
     static MAP_TILE_WIDTH=256;
     static MAP_TILE_HEIGHT=128;
     static MAP_TILE_SIZE=64;
+    
+    static CAMERA_TYPE_NONE=0;
+    static CAMERA_TYPE_SIDESCROLL=1;
+    static CAMERA_TYPE_OVERHEAD=2;
+    static CAMERA_SIDESCROLL_NATURAL_MAP_HEIGHT_OFFSET=0.7;
 
     constructor(game) {
         this.game=game;
@@ -18,8 +23,12 @@ export default class MapClass {
         this.height=MapClass.MAP_TILE_HEIGHT*MapClass.MAP_TILE_SIZE;
         this.rightEdge=0;
         
+        this.cameraSprite=null;
+        this.cameraType=MapClass.CAMERA_TYPE_NONE;
+        
         this.offsetX=0;
         this.offsetY=0;
+        this.sideScrollMapY=0;
         
         this.backgrounds=[];
             
@@ -55,7 +64,7 @@ export default class MapClass {
         for (n=0;n!==this.sprites.length;n++) {
             sprite=this.sprites[n];
 
-            sprite.mapStartup();
+            sprite.onMapStart();
             if ((sprite.isPlayer()) && (this.playerIdx===-1)) this.playerIdx=n;
         }
         
@@ -78,7 +87,7 @@ export default class MapClass {
         this.backgrounds=[];
 
         // call any custom map startup
-        this.mapStartup();
+        this.onMapStart();
     }
     
     /**
@@ -86,6 +95,12 @@ export default class MapClass {
      * and sprites.
      */
     create() {
+    }
+    
+    /**
+     * Override this for once per tick processing.
+     */
+    onRun(tick) { 
     }
     
     /**
@@ -193,15 +208,7 @@ export default class MapClass {
      * moving sprites around for save states, etc.  All sprites in a map
      * also get this call.
      */
-    mapStartup() {   
-    }
-    
-    /**
-     * Override this to set this.offsetX and this.offsetY which set the
-     * top left coordinate of the map when drawing.  It's called every frame before
-     * drawing the map.
-     */
-    calcOffset() {
+    onMapStart() {   
     }
     
     /**
@@ -603,13 +610,98 @@ export default class MapClass {
         return(this.getMapViewportTopEdge()+this.game.canvasHeight);
     }
     
-    onRun(tick) {
+    // cameras
+    setCamera(cameraSprite,cameraType) {
+        this.cameraSprite=cameraSprite;
+        this.cameraType=cameraType;
+        
+        this.resetCamera();
+    }
+    
+    resetCamera() {
+        this.sideScrollMapY=this.cameraSprite.y-Math.trunc(this.game.canvasHeight*MapClass.CAMERA_SIDESCROLL_NATURAL_MAP_HEIGHT_OFFSET);
+    }
+    
+    cameraCalcOffset() {
+        // no camera sprite or none camera, do nothing
+        if ((this.cameraSprite==null) || (this.cameraType===MapClass.CAMERA_TYPE_NONE)) {
+            this.offsetX=0;
+            this.offsetY=0;
+            return;
+        }
+        
+        // other modes
+        switch (this.cameraType) {
+            case MapClass.CAMERA_TYPE_SIDESCROLL:
+                this.cameraCalcOffsetSideScroll();
+                break;
+            case MapClass.CAMERA_TYPE_OVERHEAD:
+                this.cameraCalcOffsetOverHead();
+                break;
+        }
+    }
+            
+    cameraCalcOffsetSideScroll() {
+        let offX,offY,playerY;
+        let wid=this.game.canvasWidth;
+        let rgt=this.game.map.width-wid;
+        let high=this.game.canvasHeight;
+        let bot=this.game.map.height-high;
+        
+        // the X offset follows the sprite
+        offX=this.cameraSprite.x-Math.trunc(wid*0.5);
+        if (offX<0) offX=0;
+        if (offX>rgt) offX=rgt;
+        
+        this.offsetX=offX;
+        
+        // we only change the current
+        // map Y if the sprite gets too close to edges
+        playerY=this.cameraSprite.y-(this.cameraSprite.height*2);
+        if (playerY<this.sideScrollMapY) this.sideScrollMapY=playerY;
+        
+        playerY=this.cameraSprite.y-Math.trunc(high*MapClass.CAMERA_SIDESCROLL_NATURAL_MAP_HEIGHT_OFFSET);
+        if (playerY>this.sideScrollMapY) this.sideScrollMapY=playerY;
+        
+        offY=this.sideScrollMapY;
+        if (offY<0) offY=0;
+        if (offY>bot) offY=bot;
+        
+        this.offsetY=offY;
+    }
+    
+    cameraCalcOffsetOverHead() {
+        let offX,offY;
+        let wid=this.game.canvasWidth;
+        let rgt=this.game.map.width-wid;
+        let high=this.game.canvasHeight;
+        let bot=this.game.map.height-high;
+        
+        // the offset tries to center on the sprite
+        offX=(this.cameraSprite.x+Math.trunc(this.cameraSprite.width*0.5))-Math.trunc(wid*0.5);
+        if (offX<0) offX=0;
+        if (offX>rgt) offX=rgt;
+        
+        this.offsetX=offX;
+        
+        offY=(this.cameraSprite.y-Math.trunc(this.cameraSprite.height*0.5))-Math.trunc(high*0.5);
+        if (offY<0) offY=0;
+        if (offY>bot) offY=bot;
+        
+        this.offsetY=offY;
+    }
+
+    // internal run loop
+    runInternal(tick) {
         let n;
         let sprite;
         
+        // project event
+        this.onRun(tick);
+        
         // liquids
         if (this.liquid!=null) {
-            if (this.liquid.onRun(tick)) {
+            if (this.liquid.runInternal(tick)) {
                 this.onLiquidMoveDone();
             }
         }
@@ -661,7 +753,7 @@ export default class MapClass {
         let tilePerWidth,tilePerHeight;
         
         // get the map offsets
-        this.calcOffset();
+        this.cameraCalcOffset();
         
         if (this.shakeCount!==-1) {
             this.shakeCount--;

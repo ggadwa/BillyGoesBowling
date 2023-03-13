@@ -24,7 +24,7 @@ export default class MapCottageClass extends SpriteClass {
         Object.seal(this);
     }
     
-    mapStartup() {
+    onMapStart() {
         // only send banner message once
         this.bannerHit=false;
     }

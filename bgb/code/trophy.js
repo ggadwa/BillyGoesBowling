@@ -19,7 +19,7 @@ export default class TrophyClass extends SpriteClass {
         Object.seal(this);
     }
 
-    mapStartup() {
+    onMapStart() {
         // if trophy has been picked up once, then make it transparent
         if (this.getGameData('trophy_'+this.getMapName())!==null) this.alpha=0.4;
     }

@@ -53,7 +53,7 @@ export default class RotoCarrotClass extends SpriteClass {
         Object.seal(this);
     }
     
-    mapStartup() {
+    onMapStart() {
         this.originalY=this.y;
         this.bombTick=RotoCarrotClass.BOMB_DROP_TICK+Math.trunc(Math.random()*RotoCarrotClass.BOMB_DROP_TICK_RANDOM_ADD);
     }

@@ -40,7 +40,7 @@ export default class DoorClass extends SpriteClass {
         playerSprite.x=door.x;
         playerSprite.y=door.y;
         
-        this.game.map.resetOffsetY();
+        this.game.map.resetCamera();
     }
     
 }

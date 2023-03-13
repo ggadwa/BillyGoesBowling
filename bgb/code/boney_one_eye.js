@@ -1,3 +1,4 @@
+import MapClass from '../../rpjs/engine/map.js';
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import ParticleDefsClass from './particle_defs.js';
 import CloudBlockClass from './cloud_block.js';
@@ -37,7 +38,7 @@ export default class BoneyOneEyeClass extends SpriteClass {
         Object.seal(this);
     }
     
-    mapStartup() {
+    onMapStart() {
         this.fireWait=BoneyOneEyeClass.FIRE_TICK+Math.trunc(Math.random()*BoneyOneEyeClass.FIRE_TICK_RANDOM_ADD);
         this.inAir=false;
         this.isDead=false;
@@ -87,7 +88,7 @@ export default class BoneyOneEyeClass extends SpriteClass {
         this.setGameData(('boss_explode_'+this.getMapName()),true);
         this.setGameDataIfLess(('time_'+this.getMapName()),this.game.stopCompletionTimer());
 
-        this.game.map.forceCameraSprite=this;
+        this.setCamera(this,MapClass.CAMERA_TYPE_OVERHEAD);
         
         this.shake=true;
         this.shakeSize=5;
