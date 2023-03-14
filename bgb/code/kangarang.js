@@ -68,7 +68,7 @@ export default class KangarangClass extends SpriteClass {
         x=(this.x+(this.width/2))-(KangarangClass.BOOMERANGE_SIZE/2);
         y=(this.y-(this.height/2))+(KangarangClass.BOOMERANGE_SIZE/2);
 
-        this.game.map.addSprite(new BoomerangClass(this.game,x,y,null));
+        this.game.map.addSprite(BoomerangClass,x,y,null);
 
         this.playSound('jump');
     }

@@ -41,7 +41,7 @@ export default class RotoCarrotClass extends SpriteClass {
         
         this.setCollideSpriteClassCollideIgnoreList([BombClass,CloudBlockClass,DoorClass,PinClass,TrophyClass]);
         this.setCollideSpriteClassStandOnIgnoreList([BombClass,CloudBlockClass,DoorClass,PinClass,TrophyClass]);
-        this.setCollideTileIndexIgnoreList([22,23]);
+        this.setCollideTileIndexIgnoreList([22,23,54]);
         
         this.originalY=0;
         this.bombTick=0;
@@ -65,7 +65,7 @@ export default class RotoCarrotClass extends SpriteClass {
                 (sprite instanceof ShieldClass) ||
                 (sprite instanceof ShurikinClass) ||
                 (sprite instanceof FishClass)) {
-                   this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),ParticleDefsClass.ParticleDefsClass.MONSTER_KILL_SMOKE_PARTICLE);
+                   this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.25)),ParticleDefsClass.MONSTER_KILL_SMOKE_PARTICLE);
                    this.playSound('monster_die');
                    this.x=this.game.map.rightEdge+RotoCarrotClass.CARROT_RESET_DISTANCE;
                    return;
@@ -73,7 +73,7 @@ export default class RotoCarrotClass extends SpriteClass {
     }
     
     dropBomb() {
-        this.addSprite(new BombClass(this.game,(this.x+16),(this.y-(this.height/3)),null));
+        this.addSprite(BombClass,(this.x+16),(this.y-(this.height/3)),null);
     }
 
     onRun(tick) {

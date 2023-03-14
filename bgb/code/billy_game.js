@@ -52,7 +52,7 @@ import EyeInTheSkyMapClass from '../maps/eye_in_the_sky.js';
 import ExecutionersRevengeMapClass from '../maps/executioners_revenge.js';
 import KangarangCastleMapClass from '../maps/kangarang_castle.js';
 import Cloud9MapClass from '../maps/cloud_9.js';
-import CarrotChorusMapClass from '../maps/carrot_chorus.js';
+import CarrotArmageddonMapClass from '../maps/carrot_armageddon.js';
 import RunningAheadMapClass from '../maps/running_ahead.js';
 import SpeedwayMapClass from '../maps/speedway.js';
 import PlatformPerilMapClass from '../maps/platform_peril.js';
@@ -300,7 +300,7 @@ export default class BillyGameClass extends GameClass {
         this.addMap('kangarang_castle',new KangarangCastleMapClass(this));
         
         this.addMap('cloud_9',new Cloud9MapClass(this));
-        this.addMap('carrot_chorus',new CarrotChorusMapClass(this));
+        this.addMap('carrot_armageddon',new CarrotArmageddonMapClass(this));
         this.addMap('running_ahead',new RunningAheadMapClass(this));
         this.addMap('speedway',new SpeedwayMapClass(this));
         this.addMap('platform_peril',new PlatformPerilMapClass(this));
@@ -456,7 +456,7 @@ export default class BillyGameClass extends GameClass {
                         min=Math.trunc(time/60.0);
                         sec=time-(min*60.0);
                         timeStr=min+':'+(sec<10?'0':'')+sec.toFixed(2);
-                        dx+=(10+this.measureUITextWidth(this.bannerTitleText));
+                        dx+=(5+this.measureUITextWidth(this.bannerTitleText));
                         this.setupUIText('18px Arial','#000000','left','alphabetic');
                         this.drawUIText(timeStr,dx,(this.canvasHeight-29));
                     }

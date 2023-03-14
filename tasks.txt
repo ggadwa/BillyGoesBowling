@@ -1,39 +1,49 @@
 //// TO DO
 
 
-
-
-- need createSprite/AddSprite in sprite, replace all game.map stuff
-
-
-
-
-
+add arrows to snake pit
 
 - maps
-   snakes_on_a_plain
-   heads_up
-   platform_troubled_waters
-   surfs_up
-   surfs_down
-   apocalypse_carrot
-   hills_ninja_bunny
-   buffet_of_blcoks
-   executioners_castle
-   puzzling_blocks
-   ninja_jail
-   raining_creeps
-   carrot_catacylism
-   mr_cpu_castle
-   ninja_moutain
-   boney_one_eye_castle
-   kangarang_castle
-   executioner's revenge
-
-- to do
-   
-   snake_pit
+   snakes on a plain
+   heads up
+   platform over troubled waters
+   surfs up
+   surfs down
+   apocalypse carrot
+   hills are alive with the sound of ninja bunnies
+   buffet of blocks
+   executioner's castle
+   puzzling blocks
+   ninja jail
+   it's raining creeps
+   carrot catacylism
+   mr cpu's castle
+   snake pit
+   ninja moutain
+   boney one eye's castle
    eye in the sky
+   executioner's revenge
+   kangarang's castle
+   cloud 9
+   carrot armageddon
+   running_ahead
+   spring-a-thon
+   king ghastly's castle
+
+- to fix
+   
+   ninja_horde
+   platform_peril
+   speedway
+
+- to make
+   working in a coal mine
+   ninja HQ
+   that sinking feeling
+   blocks of confusion
+   ???
+   ???
+   
    
 
    
@@ -43,7 +53,6 @@ Maps:
   - Ninja HQ (tall girder skyscraper)
   - Bunnies Love Carrots (carrots on top, bunnies on bottom, trophy at start need to cross what's left of break blocks between carrots and bunnies)
   - That Sinking Feeling (tower with raising water)
-  - carrot_armageddon
   - blocks of confusion (maybe use left and right here)
 
 - getTileData getSpriteData instead of one call, then don't need dups or variable sets

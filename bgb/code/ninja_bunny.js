@@ -44,7 +44,7 @@ export default class NinjaBunnyClass extends SpriteClass {
         
         this.setCollideSpriteClassCollideIgnoreList([ShurikinClass,CloudBlockClass,DoorClass,PinClass,TrophyClass]);
         this.setCollideSpriteClassStandOnIgnoreList([ShurikinClass,DoorClass,PinClass,TrophyClass]);
-        this.setCollideTileIndexIgnoreList([22,23]);
+        this.setCollideTileIndexIgnoreList([22,23,54]);
         
         Object.seal(this);
     }
@@ -104,8 +104,7 @@ export default class NinjaBunnyClass extends SpriteClass {
     }
     
     fireShurikin() {
-        this.currentShurikin=new ShurikinClass(this.game,(this.x+16),(this.y-(this.height*0.5)),null);
-        this.addSprite(this.currentShurikin);
+        this.currentShurikin=this.addSprite(ShurikinClass,(this.x+16),(this.y-(this.height*0.5)),null);
     }
     
     onRun(tick) {

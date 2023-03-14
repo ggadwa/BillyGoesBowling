@@ -79,7 +79,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         
         this.setCollideSpriteClassCollideIgnoreList([BallClass,ShieldClass]);
         this.setCollideSpriteClassStandOnIgnoreList([BallClass,ShieldClass]);
-        this.setCollideTileIndexIgnoreList([22,23]);
+        this.setCollideTileIndexIgnoreList([22,23,54]);
         
         Object.seal(this);
     }
@@ -90,12 +90,9 @@ export default class PlayerSideScrollClass extends SpriteClass {
     
     onMapStart() {
         this.health=PlayerSideScrollClass.MAX_HEALTH;
-        // add the ball sprite
-        this.ballSprite=new BallClass(this.game,0,0,null);
-        this.addSprite(this.ballSprite);
-        // add the shield sprite
-        this.shieldSprite=new ShieldClass(this.game,0,0,null);
-        this.addSprite(this.shieldSprite);
+        // add the ball and shield sprites
+        this.ballSprite=this.addSprite(BallClass,0,0,null);
+        this.shieldSprite=this.addSprite(ShieldClass,0,0,null);
     }
     
     hurtPlayer() {

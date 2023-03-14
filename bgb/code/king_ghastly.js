@@ -36,7 +36,7 @@ export default class KingGhastlyClass extends SpriteClass {
         this.canCollide=true;
         this.canStandOn=true;
         
-        this.setCollideTileIndexIgnoreList([22,23]);
+        this.setCollideTileIndexIgnoreList([22,23,54]);
         
         Object.seal(this);
     }

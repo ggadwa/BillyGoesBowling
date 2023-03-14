@@ -29,7 +29,7 @@ export default class FishClass extends SpriteClass {
         
         this.setCollideSpriteClassCollideIgnoreList([EasterHeadClass]);
         this.setCollideSpriteClassStandOnIgnoreList([EasterHeadClass]);
-        this.setCollideTileIndexIgnoreList([22,23]);
+        this.setCollideTileIndexIgnoreList([22,23,54]);
         
         Object.seal(this);
     }

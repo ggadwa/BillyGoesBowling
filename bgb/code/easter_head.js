@@ -71,7 +71,7 @@ export default class EasterHeadClass extends SpriteClass {
         sx=(this.x+(this.width/2))+EasterHeadClass.THROW_MARGIN_X;
         sy=(this.y-this.height)+EasterHeadClass.THROW_MARGIN_Y;
 
-        this.game.map.addSprite(new FishClass(this.game,sx,sy,null));
+        this.game.map.addSprite(FishClass,sx,sy,null);
         this.playSound('pipe_break');
         
         // show eyes

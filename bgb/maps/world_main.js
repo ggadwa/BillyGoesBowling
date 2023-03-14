@@ -162,7 +162,7 @@ export default class WorldMainMapClass extends MapClass {
             new MapSpotClass(this.game,2560,1472,new Map([["title","Ninja Mountain"],["map","ninja_mountain"]])),
             new MapCastleClass(this.game,2880,1088,new Map([["title","Boney One Eye's Castle"],["map","boney_one_eye_castle"],["pin",10]])),
             new MapSpotClass(this.game,3520,896,new Map([["title","Cloud 9"],["map","cloud_9"]])),
-            new MapSpotClass(this.game,3776,832,new Map([["title","Carrot Chorus"],["map","carrot_chorus"]])),
+            new MapSpotClass(this.game,3776,832,new Map([["title","Carrot Armageddon"],["map","carrot_armageddon"]])),
             new MapSpotClass(this.game,3968,896,new Map([["title","Running Ahead"],["map","running_ahead"]])),
             new MapSpotClass(this.game,3392,1344,new Map([["title","Speedway"],["map","speedway"]])),
             new MapSpotClass(this.game,3520,1600,new Map([["title","Platform Peril"],["map","platform_peril"]])),

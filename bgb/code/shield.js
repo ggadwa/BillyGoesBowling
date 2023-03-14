@@ -25,7 +25,7 @@ export default class ShieldClass extends SpriteClass {
         
         this.setCollideSpriteClassCollideIgnoreList([BallClass,PlayerSideScrollClass]);
         this.setCollideSpriteClassStandOnIgnoreList([BallClass,PlayerSideScrollClass]);
-        this.setCollideTileIndexIgnoreList([22,23]);
+        this.setCollideTileIndexIgnoreList([22,23,54]);
         
         Object.seal(this);
     }

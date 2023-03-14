@@ -203,8 +203,8 @@ export default class SpriteClass {
         this.height=img.height;
     }
     
-    addSprite(sprite) {
-        return(this.game.map.addSprite(sprite));
+    addSprite(typeClass,x,y,data) {
+        return(this.game.map.addSprite(typeClass,x,y,data));
     }
     
     addParticle(x,y,particleDef) {

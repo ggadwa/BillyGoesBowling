@@ -76,7 +76,7 @@ export default class ExecutionerClass extends SpriteClass {
         }
         
         // fire axe
-        this.game.map.addSprite(new AxeClass(this.game,this.axeLaunchPositions[this.axeLaunchIndex],(playerSprite.y-ExecutionerClass.AXE_Y_OFFSET),null));
+        this.game.map.addSprite(AxeClass,this.axeLaunchPositions[this.axeLaunchIndex],(playerSprite.y-ExecutionerClass.AXE_Y_OFFSET),null);
                 
         this.playSound('jump');
         

@@ -42,7 +42,7 @@ export default class MapClass {
         this.createTileData=null; // these are used to make the initial tile and sprite data, and moved to a working copy as they can change
         this.createSpriteData=null;
         
-        this.playerIdx=-1;
+        this.playerSprite=null;
         
         this.particles=[];
     }
@@ -58,17 +58,13 @@ export default class MapClass {
         this.tileData=this.createTileData.slice();
         this.sprites=this.createSprites.slice();
         
-        // call all the sprite map enter
-        this.playerIdx=-1;
-        
-        for (n=0;n!==this.sprites.length;n++) {
-            sprite=this.sprites[n];
-
-            sprite.onMapStart();
-            if ((sprite.isPlayer()) && (this.playerIdx===-1)) this.playerIdx=n;
+        // find the player sprite
+        this.playerSprite=null;
+        for (sprite of this.sprites) {
+            if ((sprite.isPlayer()) && (this.playerSprite==null)) this.playerSprite=sprite;
         }
         
-        if (this.playerIdx===-1) console.log('No player in map');
+        if (this.playerSprite==null) console.log('No player in map');
         
         // find the right edge of map
         this.rightEdge=0;
@@ -88,6 +84,10 @@ export default class MapClass {
 
         // call any custom map startup
         this.onMapStart();
+
+        for (sprite of this.sprites) {
+            sprite.onMapStart();
+        }
     }
     
     /**
@@ -106,23 +106,17 @@ export default class MapClass {
     /**
      * Adds a sprite in-game.
      * 
-     * @param {SpriteClass} The sprite to add to the map
-     * @returns {number} The index of the sprite (do not save, can change)
+     * @param {typeClass} The sprite to add to the map
+     * @returns The sprite
      */
-    addSprite(sprite) {
-        return(this.sprites.push(sprite)-1);
-    }
-    
-    removeSprite(spriteIdx) {
-        this.sprites.splice(spriteIdx,1);
-    }
-    
-    getSprite(spriteIdx) {
-        return(this.sprites[spriteIdx]);
+    addSprite(typeClass,x,y,data) {
+        let sprite=Reflect.construct(typeClass,[this.game,x,y,data]);
+        this.sprites.push(sprite);
+        return(sprite);
     }
     
     getPlayerSprite() {
-        return(this.sprites[this.playerIdx]);
+        return(this.playerSprite);
     }
     
     getSpritesOfType(typeClass) {
@@ -584,8 +578,7 @@ export default class MapClass {
         let sprite,x;
         let wid=this.game.canvasWidth;
 
-        sprite=this.sprites[this.playerIdx];
-        x=sprite.x-Math.trunc(wid*0.5);
+        x=this.playerSprite.x-Math.trunc(wid*0.5);
         if (x<0) x=0;
         
         return(x);
@@ -596,11 +589,10 @@ export default class MapClass {
     }
     
     getMapViewportTopEdge() {
-        let sprite,y;
+        let y;
         let high=this.game.canvasHeight;
 
-        sprite=this.sprites[this.playerIdx];
-        y=sprite.y-Math.trunc(high*0.5);
+        y=this.playerSprite.y-Math.trunc(high*0.5);
         if (y<0) y=0;
         
         return(y);
@@ -727,7 +719,6 @@ export default class MapClass {
         while (n<this.sprites.length) {
             if (this.sprites[n].isDeleted()) {
                 this.sprites.splice(n,1);
-                if (n<this.playerIdx) this.playerIdx--;     // make sure player index doesn't change
             }
             else {
                 n++;
