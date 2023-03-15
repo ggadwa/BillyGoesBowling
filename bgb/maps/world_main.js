@@ -1,4 +1,5 @@
 import MapClass from '../../rpjs/engine/map.js';
+import OverlayDefsClass from '../code/overlay_defs.js';
 import PlayerWorldClass from '../code/player_world.js';
 import MapSpotClass from '../code/map_spot.js';
 import MapCastleClass from '../code/map_castle.js';
@@ -183,7 +184,7 @@ export default class WorldMainMapClass extends MapClass {
         
         // setup
         this.setCamera(this.getPlayerSprite(),MapClass.CAMERA_TYPE_OVERHEAD);
-        this.addTileBackground(this.game.imageList.get('backgrounds/water'),1.0,1.0,0.01,0.005);
+        this.addOverlay(OverlayDefsClass.WORLD_BACKGROUND_OVERLAY);
         this.game.musicList.start('world');
         
         // spots record where the player went into a map

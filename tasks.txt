@@ -1,9 +1,9 @@
 //// TO DO
 
-- eyes need launch noise
-- banging sound for platforms
-- foreground overlay (has to move on it's own)
-   - change background to overlay?
+- sounds need to properly fade
+
+
+
 
 - maps
    snakes on a plain
@@ -36,10 +36,11 @@
    king ghastly's castle
 
    
-   
+- to fix
+   working in a coal mine
 
 - to make
-   working in a coal mine
+
    ninja HQ
    that sinking feeling
    blocks of confusion
@@ -51,24 +52,20 @@
    
    
 Maps:
-  - working in a coal mine (break blocks in mine - use left/right blocks)
   - Ninja HQ (tall girder skyscraper)
-  - Bunnies Love Carrots (carrots on top, bunnies on bottom, trophy at start need to cross what's left of break blocks between carrots and bunnies)
   - That Sinking Feeling (tower with raising water)
   - blocks of confusion (maybe use left and right here)
 
 - getTileData getSpriteData instead of one call, then don't need dups or variable sets
 - editor: double click sprite for info
 
-
-- background motion by tick
 - ducking?  Need collision offset box changes
 - clean up all unused imports
 - both game and sprite still have some non-"on" events
 - music needs a loop point, give music opening bars
 - pendant tile for castle levels (next to bush tile)
 
-- platforms need to push with API (and anything that stands on them)
+
 - get rid of all map. or game.
 
 - need transitions between worlds (closing squares)
@@ -85,50 +82,9 @@ Maps:
 
 
 
-
-//// ART
-
-//// MAPS
-
 ///// URL params
 
 saveSlot=[0|1|2]        save slot to use
 eraseSlot=[0|1|2]       erase save slot
 unlocked=0              unlock any locked items in game
 
-///// template for new map
-
-import MapClass from '../rpjs/engine/map.js';
-import SideScrollNormalBaseMapClass from '../maps/side_scroll_normal_base.js';
-import PlayerSideScrollClass from '../code/player_sidescroll.js';
-import BlockClass from '../code/block.js';
-import BreakBlockClass from '../code/break_block.js';
-import BreakBlockStrongClass from '../code/break_block_strong.js';
-import CloudBlockClass from '../code/cloud_block.js';
-import ExplodeBlockClass from '../code/explode_block.js';
-import PlatformClass from '../code/platform.js';
-import DoorClass from '../code/door.js';
-import PinClass from '../code/pin.js';
-import TrophyClass from '../code/trophy.js';
-import ButtonClass from '../code/button.js';
-import SpringClass from '../code/spring.js';
-import DrainPipeSnakeClass from '../code/drain_pipe_snake.js';
-import NinjaBunnyClass from '../code/ninja_bunny.js';
-import RotoCarrotClass from '../code/roto_carrot.js';
-import EasterHeadClass from '../code/easter_head.js';
-
-export default class CarrotCatacylismMapClass extends SideScrollNormalBaseMapClass
-{
-    create()
-    {
-        this.createTileData=null;
-        this.createSprites=[];
-    }
-    
-    mapStartup()
-    {
-        super.mapStartup();
-        
-        this.liquidY=3616;
-    }
-}

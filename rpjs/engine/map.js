@@ -1,4 +1,4 @@
-import BackgroundClass from './background.js';
+import OverlayClass from './overlay.js';
 import SpriteClass from './sprite.js';
 import ParticleClass from './particle.js';
 import LiquidClass from './liquid.js';
@@ -29,8 +29,6 @@ export default class MapClass {
         this.offsetX=0;
         this.offsetY=0;
         this.sideScrollMapY=0;
-        
-        this.backgrounds=[];
             
         this.liquid=null;
         
@@ -44,6 +42,7 @@ export default class MapClass {
         
         this.playerSprite=null;
         
+        this.overlays=[];
         this.particles=[];
     }
     
@@ -79,8 +78,8 @@ export default class MapClass {
             }
         }
         
-        // clear any backgrouns
-        this.backgrounds=[];
+        // clear any overlays
+        this.overlays=[];
 
         // call any custom map startup
         this.onMapStart();
@@ -160,6 +159,14 @@ export default class MapClass {
         return(particle);
     }
     
+    addOverlay(overlayDef) {
+        let overlay;
+        
+        overlay=new OverlayClass(this.game,overlayDef);
+        this.overlays.push(overlay);
+        overlay.start();
+    }
+    
     changeTile(x,y,tileIdx) {
         this.tileData[(y*MapClass.MAP_TILE_WIDTH)+x]=tileIdx;
     }
@@ -177,24 +184,6 @@ export default class MapClass {
     
     addLiquid(imgTop,imgFill,y,waveSize) {
         this.liquid=new LiquidClass(this,imgTop,imgFill,y,waveSize);
-    }
-    
-    /**
-     * Adds a single parallax background image to this map, to be drawn
-     * in add order.  Y is the y offset to draw at, and xFactor is how it moves
-     * along with the horizontal movement.  0.0 is no movement, 1.0 is movement
-     * at the same speed
-     */
-    addParallaxBackground(img,y,xFactor) {
-        this.backgrounds.push(new BackgroundClass(this,img,0,y,xFactor,0.0,0.0,0.0,false));
-    }
-    
-    /**
-     * Adds a single tile background image to this map.  xFactor/yFactor is how
-     * it follows the camera, and xScroll/yScroll is any automatic scrolling.
-     */
-    addTileBackground(img,xFactor,yFactor,xScroll,yScroll) {
-        this.backgrounds.push(new BackgroundClass(this,img,0,0,xFactor,yFactor,xScroll,yScroll,true));
     }
     
     /**
@@ -740,7 +729,7 @@ export default class MapClass {
     draw(ctx) {
         let x,y,offX,offY;
         let lx,rx,ty,by;
-        let background,tile,sprite,particle;
+        let overlay,tile,sprite,particle;
         let tilePerWidth,tilePerHeight;
         
         // get the map offsets
@@ -756,9 +745,9 @@ export default class MapClass {
         offX=Math.trunc(this.offsetX);
         offY=Math.trunc(this.offsetY);
 
-        // backgrounds
-        for (background of this.backgrounds) {
-            background.draw(ctx,offX,offY);
+        // background overlays
+        for (overlay of this.overlays) {
+            if (overlay.def.layer===OverlayClass.BACKGROUND_LAYER) overlay.draw(ctx,offX,offY);
         }
         
         // liquids
@@ -814,6 +803,11 @@ export default class MapClass {
         // draw the after sprite particles
         for (particle of this.particles) {
             if (particle.def.layer===ParticleClass.AFTER_SPRITES_LAYER) particle.draw(ctx,offX,offY);
+        }
+        
+        // foreground overlays
+        for (overlay of this.overlays) {
+            if (overlay.def.layer===OverlayClass.FOREGROUND_LAYER) overlay.draw(ctx,offX,offY);
         }
     }
     

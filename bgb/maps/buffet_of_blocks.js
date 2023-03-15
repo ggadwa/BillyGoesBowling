@@ -1,4 +1,5 @@
 import MapClass from '../../rpjs/engine/map.js';
+import OverlayDefsClass from '../code/overlay_defs.js';
 import PlayerSideScrollClass from '../code/player_sidescroll.js';
 import BlockClass from '../code/block.js';
 import BreakBlockClass from '../code/break_block.js';
@@ -321,9 +322,9 @@ export default class BuffetOfBlocksMapClass extends MapClass {
     onMapStart() {
         this.setCamera(this.getPlayerSprite(),MapClass.CAMERA_TYPE_SIDESCROLL);
         
-        this.addParallaxBackground(this.game.imageList.get('backgrounds/sun'),0,0.0);
-        this.addParallaxBackground(this.game.imageList.get('backgrounds/clouds'),(this.game.canvasHeight-400),0.4);
-        this.addParallaxBackground(this.game.imageList.get('backgrounds/mountains'),(this.game.canvasHeight-300),0.6);
+        this.addOverlay(OverlayDefsClass.SUN_BACKGROUND_OVERLAY);
+        this.addOverlay(OverlayDefsClass.CLOUD_BACKGROUND_OVERLAY);
+        this.addOverlay(OverlayDefsClass.MOUNTAIN_BACKGROUND_OVERLAY);
 
         this.game.musicList.start('map');
 

@@ -47,6 +47,7 @@ export default class PlatformClass extends SpriteClass
             this.xAdd=-this.xAdd;
             this.x+=this.xAdd;
             this.pauseCount=PlatformClass.PLATFORM_PAUSE_TICK;
+            this.playSound('slam');
             return;
         }
         

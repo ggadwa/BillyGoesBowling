@@ -15,6 +15,7 @@ export default class BurningEyeClass extends SpriteClass {
     constructor(game,x,y,data) {
         super(game,x,y,data);
 
+        this.doSound=true;
         this.speed=BurningEyeClass.EYE_SPEED+(Math.random()*BurningEyeClass.EYE_EXTRA_SPEED);
         this.burnFlameIdx=0;
         
@@ -76,6 +77,13 @@ export default class BurningEyeClass extends SpriteClass {
     onRun(tick) {
         let mx,my;
         
+        // first time make meteor sound
+        if (this.doSound) {
+            this.doSound=false;
+            this.playSound('meteor');
+        }
+        
+        // drop down
         this.y+=this.speed;
         this.checkCollision();
         

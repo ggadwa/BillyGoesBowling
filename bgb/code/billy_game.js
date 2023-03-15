@@ -225,6 +225,8 @@ export default class BillyGameClass extends GameClass {
         this.addImage('backgrounds/mountains');
         this.addImage('backgrounds/castle');
         this.addImage('backgrounds/water');
+        this.addImage('backgrounds/cave');
+        this.addImage('backgrounds/spotlight');
         
         this.addImage('liquids/water_top');
         this.addImage('liquids/water_fill');
@@ -266,6 +268,8 @@ export default class BillyGameClass extends GameClass {
         this.addSound('pickup');
         this.addSound('splash');
         this.addSound('jet');
+        this.addSound('meteor');
+        this.addSound('slam');
         this.addSound('funeral_march');
         
         // music

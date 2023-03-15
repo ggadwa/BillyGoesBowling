@@ -1,4 +1,5 @@
 import MapClass from '../../rpjs/engine/map.js';
+import OverlayDefsClass from '../code/overlay_defs.js';
 import PlayerSideScrollClass from '../code/player_sidescroll.js';
 import PinClass from '../code/pin.js';
 import TrophyClass from '../code/trophy.js';
@@ -155,9 +156,9 @@ export default class SurfsUpMapClass extends MapClass {
     onMapStart() {
         this.setCamera(this.getPlayerSprite(),MapClass.CAMERA_TYPE_SIDESCROLL);
         
-        this.addParallaxBackground(this.game.imageList.get('backgrounds/sun'),0,0.0);
-        this.addParallaxBackground(this.game.imageList.get('backgrounds/clouds'),(this.game.canvasHeight-400),0.4);
-        this.addParallaxBackground(this.game.imageList.get('backgrounds/mountains'),(this.game.canvasHeight-300),0.6);
+        this.addOverlay(OverlayDefsClass.SUN_BACKGROUND_OVERLAY);
+        this.addOverlay(OverlayDefsClass.MOVING_CLOUD_UPPER_BACKGROUND_OVERLAY);
+        this.addOverlay(OverlayDefsClass.MOVING_CLOUD_LOWER_BACKGROUND_OVERLAY);
 
         this.game.musicList.start('map');
         
