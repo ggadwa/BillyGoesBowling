@@ -48,6 +48,7 @@ import NinjaMountainMapClass from '../maps/ninja_mountain.js';
 import BoneyOneEyeCastleMapClass from '../maps/boney_one_eye_castle.js';
 
 import EyeInTheSkyMapClass from '../maps/eye_in_the_sky.js';
+import WorkingCoalMineMapClass from '../maps/working_coal_mine.js';
 
 import ExecutionersRevengeMapClass from '../maps/executioners_revenge.js';
 import KangarangCastleMapClass from '../maps/kangarang_castle.js';
@@ -296,6 +297,7 @@ export default class BillyGameClass extends GameClass {
         this.addMap('boney_one_eye_castle',new BoneyOneEyeCastleMapClass(this));
         
         this.addMap('eye_in_the_sky',new EyeInTheSkyMapClass(this));
+        this.addMap('working_coal_mine',new WorkingCoalMineMapClass(this));
         this.addMap('executioners_revenge',new ExecutionersRevengeMapClass(this));
         this.addMap('kangarang_castle',new KangarangCastleMapClass(this));
         

@@ -171,9 +171,10 @@ export default class WorldMainMapClass extends MapClass {
             new MapCastleClass(this.game,3712,1216,new Map([["title","King Ghastly's Castle"],["map","king_ghastly_castle"],["pin","24"]])),
             new MapCottageClass(this.game,4608,1216,null),
             new MapCastleClass(this.game,4288,2112,new Map([["title","Kangarang's Castle"],["map","kangarang_castle"],["pin","18"]])),
-            new MapSpotClass(this.game,3136,2048,new Map([["title","Test"],["map","test"]])),
+            new MapSpotClass(this.game,3264,2112,new Map([["title","Test"],["map","test"]])),
             new MapSpotClass(this.game,4800,704,new Map([["title","Executioner's Revenge"],["map","executioners_revenge"]])),
-            new MapSpotClass(this.game,3136,1088,new Map([["title","Eye in the Sky"],["map","eye_in_the_sky"]]))
+            new MapSpotClass(this.game,3136,1088,new Map([["title","Eye in the Sky"],["map","eye_in_the_sky"]])),
+            new MapSpotClass(this.game,3136,2048,new Map([["title","Working in a Coal Mine"],["map","working_coal_mine"]]))
         ];
     }
     

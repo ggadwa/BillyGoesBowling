@@ -1,7 +1,9 @@
 //// TO DO
 
-
-add arrows to snake pit
+- eyes need launch noise
+- banging sound for platforms
+- foreground overlay (has to move on it's own)
+   - change background to overlay?
 
 - maps
    snakes on a plain
@@ -28,13 +30,13 @@ add arrows to snake pit
    carrot armageddon
    running_ahead
    spring-a-thon
-   king ghastly's castle
-
-- to fix
-   
    ninja_horde
    platform_peril
    speedway
+   king ghastly's castle
+
+   
+   
 
 - to make
    working in a coal mine
@@ -56,7 +58,8 @@ Maps:
   - blocks of confusion (maybe use left and right here)
 
 - getTileData getSpriteData instead of one call, then don't need dups or variable sets
-- editor: double click sprite for info, use info for other stuff
+- editor: double click sprite for info
+
 
 - background motion by tick
 - ducking?  Need collision offset box changes

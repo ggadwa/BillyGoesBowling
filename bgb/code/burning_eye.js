@@ -10,11 +10,13 @@ export default class BurningEyeClass extends SpriteClass {
 
     static EYE_SPEED=2;
     static EYE_EXTRA_SPEED=3;
+    static FLAME_TICK=10;
         
     constructor(game,x,y,data) {
         super(game,x,y,data);
 
         this.speed=BurningEyeClass.EYE_SPEED+(Math.random()*BurningEyeClass.EYE_EXTRA_SPEED);
+        this.burnFlameIdx=0;
         
         // setup
         this.addImage('sprites/eye');
@@ -28,6 +30,7 @@ export default class BurningEyeClass extends SpriteClass {
         this.canStandOn=false;
         
         this.setCollideSpriteClassCollideIgnoreList([BurningEyeClass]);
+        this.setCollideTileIndexIgnoreList([22,23,54]);
         
         Object.seal(this);
     }
@@ -71,11 +74,33 @@ export default class BurningEyeClass extends SpriteClass {
     }
     
     onRun(tick) {
+        let mx,my;
+        
         this.y+=this.speed;
         this.checkCollision();
         
         if (this.isInLiquid()) {
             this.killEye();
+        }
+        
+        if ((tick%BurningEyeClass.FLAME_TICK)===0) {
+            mx=this.x+Math.trunc(this.width*0.5);
+            my=this.y-Math.trunc(this.height*0.5);
+            
+            switch (this.burnFlameIdx) {
+                case 0:
+                    this.addParticle(mx,my,ParticleDefsClass.JET_RED_PARTICLE);
+                    break;
+                case 1:
+                    this.addParticle(mx,my,ParticleDefsClass.JET_ORANGE_PARTICLE);
+                    break;
+                case 2:
+                    this.addParticle(mx,my,ParticleDefsClass.JET_YELLOW_PARTICLE);
+                    break;
+            }
+            
+            this.burnFlameIdx++;
+            if (this.burnFlameIdx===3) this.burnFlameIdx=0;
         }
     }
 }
