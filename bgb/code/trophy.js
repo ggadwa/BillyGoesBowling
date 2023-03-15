@@ -25,7 +25,7 @@ export default class TrophyClass extends SpriteClass {
     }
     
     pickup() {
-        this.setGameData(('trophy_'+this.getMapName()),true);
+        this.setGameData('got_trophy',true); // trophy only gets written to game data when player wins, so you have to pick it up and win to get it
         this.playSound('pickup');
         this.delete();
     }

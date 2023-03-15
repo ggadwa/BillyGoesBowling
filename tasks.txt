@@ -1,7 +1,7 @@
 //// TO DO
 
 - sounds need to properly fade
-
+- can not get trophy unless level is won
 
 
 

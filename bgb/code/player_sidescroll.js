@@ -93,6 +93,8 @@ export default class PlayerSideScrollClass extends SpriteClass {
         // add the ball and shield sprites
         this.ballSprite=this.addSprite(BallClass,0,0,null);
         this.shieldSprite=this.addSprite(ShieldClass,0,0,null);
+        // check to see if we got trophy in this level, we only get trophy if we also win level
+        this.setGameData('got_trophy',false);
     }
     
     hurtPlayer() {
@@ -138,6 +140,11 @@ export default class PlayerSideScrollClass extends SpriteClass {
         
         this.playSound('teleport');
         this.addParticle((this.x+(this.width/2)),(this.y-(this.height/2)),ParticleDefsClass.WARP_OUT_PARTICLE);
+        
+        // if we got trophy, mark it in game data
+        if (this.getGameData('got_trophy')) {
+            this.setGameData(('trophy_'+this.getMapName()),true);
+        }
     }
     
     onCollideSprite(sprite) {

@@ -116,6 +116,7 @@ export default class EditorClass {
         this.mapCanvas.onmouseup=this.leftMouseUpMapCanvas.bind(this);
         this.mapCanvas.onmouseout=this.leftMouseUpMapCanvas.bind(this); // mouse out forces a mouse up
         this.mapCanvas.onwheel=this.wheelMapCanvas.bind(this);
+        this.mapCanvas.ondblclick=this.mouseDoubleClickCanvas.bind(this);
         
         document.onkeydown=this.keyDownMapCanvas.bind(this); // need to be on document
         document.onkeyup=this.keyUpMapCanvas.bind(this);
@@ -596,6 +597,13 @@ export default class EditorClass {
         this.drawMapCanvas();
     }
     
+    mouseDoubleClickCanvas(event) {
+        let sprite=this.findSpriteForPosition(this.selectX,this.selectY);
+        if (sprite!=null) {
+            this.infoOpen();
+        }
+    }
+    
     // click tile canvas
     clickTilePaletteCanvas(event) {
         let wid=this.tilePaletteCanvas.width;
@@ -767,6 +775,10 @@ export default class EditorClass {
         
         this.infoSprite=sprite;
         
+        // stop main canvas keyboard events
+        document.onkeydown=null;
+        document.onkeyup=null;
+        
         // if blank keys, than make new keys
         if (sprite.data==null) sprite.data=new Map();
         
@@ -786,6 +798,9 @@ export default class EditorClass {
         
         document.getElementById('editorFade').style.display='';
         document.getElementById('editorInfo').style.display='';
+        
+        // focus on first item
+        document.getElementById('editorInfoName0').focus();
     }
     
     infoOk() {
@@ -808,13 +823,17 @@ export default class EditorClass {
         
         this.infoSprite=null;
         
-        document.getElementById('editorFade').style.display='none';
-        document.getElementById('editorInfo').style.display='none';
+        this.infoCancel();
     }
     
     infoCancel() {
+        // close dialog
         document.getElementById('editorFade').style.display='none';
         document.getElementById('editorInfo').style.display='none';
+        
+        // restore keyboard events
+        document.onkeydown=this.keyDownMapCanvas.bind(this); // need to be on document
+        document.onkeyup=this.keyUpMapCanvas.bind(this);
     }
     
     // compiling

@@ -3,6 +3,9 @@ import InputClass from '../../rpjs/engine/input.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
 
 export default class DoorClass extends SpriteClass {
+        
+    static DOOR_LOCK_TICK=100;
+    
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
@@ -21,6 +24,10 @@ export default class DoorClass extends SpriteClass {
         Object.seal(this);
     }
     
+    onMapStart() {
+        this.setGameData('door_lock_tick',0);
+    }
+    
     onRun(tick) {
         let door;
         let playerSprite=this.getPlayerSprite();
@@ -28,12 +35,16 @@ export default class DoorClass extends SpriteClass {
         // up on direction enters door
         if (!this.getInputStateIsNegative(InputClass.LEFT_STICK_Y)) return;
         
-        // are we colliding with player?
+        // are we colliding with player
         if (!this.collide(playerSprite)) return;
         
-        // always clear the key so doesn't open next door
-        this.clearInputState(InputClass.LEFT_STICK_Y);
+        // are we in a lock (so we don't jump between doors)
+        if ((this.getGameData('door_lock_tick')+DoorClass.DOOR_LOCK_TICK)>tick) return;
         
+        // start the door lock
+        this.setGameData('door_lock_tick',tick);
+        
+        // move to other door
         this.playSound('door');
         
         door=this.game.map.getFirstSpriteWithData('name',this.getData('goto'));
