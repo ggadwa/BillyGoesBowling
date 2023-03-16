@@ -1,7 +1,5 @@
 //// TO DO
 
-
-
 - maps
    snakes on a plain
    heads up
@@ -21,6 +19,8 @@
    ninja moutain
    boney one eye's castle
    eye in the sky
+
+   that sinking feeling
    executioner's revenge
    kangarang's castle
    cloud 9
@@ -35,14 +35,12 @@
    
 - to fix
    working in a coal mine
-   that sinking feeling
+   going down
+   
 
 - to make
-
    ninja HQ
-   
    blocks of confusion
-   ???
    ???
    
    
@@ -51,10 +49,9 @@
    
 Maps:
   - Ninja HQ (tall girder skyscraper)
-  - That Sinking Feeling (tower with raising water)
   - blocks of confusion (maybe use left and right here)
 
-
+- make # of trophies/etc = number of levels in UI
 - ducking?  Need collision offset box changes
 - clean up all unused imports
 - both game and sprite still have some non-"on" events

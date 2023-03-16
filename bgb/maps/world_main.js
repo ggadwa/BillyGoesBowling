@@ -178,7 +178,8 @@ export default class WorldMainMapClass extends MapClass {
             new MapSpotClass(this.game,4800,704,new Map([["title","Executioner's Revenge"],["map","executioners_revenge"]])),
             new MapSpotClass(this.game,3136,1088,new Map([["title","Eye in the Sky"],["map","eye_in_the_sky"]])),
             new MapSpotClass(this.game,3136,2048,new Map([["title","Working in a Coal Mine"],["map","working_coal_mine"]])),
-            new MapSpotClass(this.game,3520,2112,new Map([["title","That Sinking Feeling"],["map","sinking_feeling"]]))
+            new MapSpotClass(this.game,3520,2112,new Map([["title","That Sinking Feeling"],["map","sinking_feeling"]])),
+            new MapSpotClass(this.game,4864,1280,new Map([["title","Going Down"],["map","going_down"]]))
         ]);
     }
     

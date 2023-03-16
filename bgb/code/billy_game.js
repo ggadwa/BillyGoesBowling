@@ -51,6 +51,7 @@ import EyeInTheSkyMapClass from '../maps/eye_in_the_sky.js';
 import WorkingCoalMineMapClass from '../maps/working_coal_mine.js';
 import SinkingFeelingMapClass from '../maps/sinking_feeling.js';
 
+import GoingDownMapClass from '../maps/going_down.js';
 import ExecutionersRevengeMapClass from '../maps/executioners_revenge.js';
 import KangarangCastleMapClass from '../maps/kangarang_castle.js';
 import Cloud9MapClass from '../maps/cloud_9.js';
@@ -71,6 +72,7 @@ export default class BillyGameClass extends GameClass {
     static BANNER_MODE_NONE=3;
         
     static BANNER_FADE_TICK=20;
+    static BANNER_MAP_COUNT=29;
         
     static HEALTH_IMAGE_LIST=['ui/health_25','ui/health_50','ui/health_75','ui/health_100'];
 
@@ -304,6 +306,8 @@ export default class BillyGameClass extends GameClass {
         this.addMap('eye_in_the_sky',new EyeInTheSkyMapClass(this));
         this.addMap('working_coal_mine',new WorkingCoalMineMapClass(this));
         this.addMap('sinking_feeling',new SinkingFeelingMapClass(this));
+        
+        this.addMap('going_down',new GoingDownMapClass(this));
         this.addMap('executioners_revenge',new ExecutionersRevengeMapClass(this));
         this.addMap('kangarang_castle',new KangarangCastleMapClass(this));
         
@@ -408,11 +412,11 @@ export default class BillyGameClass extends GameClass {
             
             this.drawUIImage('ui/score_box',10,(this.canvasHeight-74));
             this.drawUIImage('ui/pin',20,(this.canvasHeight-67));
-            this.drawUIText((this.getGameDataCountForPrefix('pin_')+'/21'),110,(this.canvasHeight-33));
+            this.drawUIText((this.getGameDataCountForPrefix('pin_')+'/'+BillyGameClass.BANNER_MAP_COUNT),110,(this.canvasHeight-33));
             
             this.drawUIImage('ui/score_box',(this.canvasWidth-120),(this.canvasHeight-74));
             this.drawUIImage('ui/trophy',(this.canvasWidth-110),(this.canvasHeight-68));
-            this.drawUIText((this.getGameDataCountForPrefix('trophy_')+'/21'),(this.canvasWidth-20),(this.canvasHeight-33));
+            this.drawUIText((this.getGameDataCountForPrefix('trophy_')+'/'+BillyGameClass.BANNER_MAP_COUNT),(this.canvasWidth-20),(this.canvasHeight-33));
 
             if (this.bannerMode!==BillyGameClass.BANNER_MODE_NONE) {
             
