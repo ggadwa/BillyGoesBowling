@@ -47,15 +47,12 @@ export default class MapClass {
     }
     
     initialize() {
-        let n,x,y,edgeX;
+        let x,y,edgeX;
         let sprite;
         
-        // create the map
-        this.create();
-        
         // now copy the create arrays to the working arrays
-        this.tileData=this.createTileData.slice();
-        this.sprites=this.createSprites.slice();
+        this.tileData=this.getTileData();
+        this.sprites=this.getSpriteData();
         
         // find the player sprite
         this.playerSprite=null;

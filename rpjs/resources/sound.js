@@ -54,7 +54,7 @@ export default class SoundClass {
         let y=sprite.y-cameraSprite.y;
         
         // attenuate, and if <= 0, don't play sound 
-        vol=SetupClass.SOUND_VOLUME;-(Math.sqrt((x*x)+(y*y))*SoundClass.DISTANCE_ATTUATION);
+        vol=SetupClass.SOUND_VOLUME-(Math.sqrt((x*x)+(y*y))*SoundClass.DISTANCE_ATTUATION);
         if (vol<=0.0) return;
         
         // play sound  

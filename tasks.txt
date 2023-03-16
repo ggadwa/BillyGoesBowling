@@ -1,8 +1,5 @@
 //// TO DO
 
-- sounds need to properly fade
-- can not get trophy unless level is won
-
 
 
 - maps
@@ -38,11 +35,12 @@
    
 - to fix
    working in a coal mine
+   that sinking feeling
 
 - to make
 
    ninja HQ
-   that sinking feeling
+   
    blocks of confusion
    ???
    ???
@@ -56,26 +54,18 @@ Maps:
   - That Sinking Feeling (tower with raising water)
   - blocks of confusion (maybe use left and right here)
 
-- getTileData getSpriteData instead of one call, then don't need dups or variable sets
-- editor: double click sprite for info
 
 - ducking?  Need collision offset box changes
 - clean up all unused imports
 - both game and sprite still have some non-"on" events
 - music needs a loop point, give music opening bars
 - pendant tile for castle levels (next to bush tile)
-
-
 - get rid of all map. or game.
-
 - need transitions between worlds (closing squares)
 - make game & map private in sprite and map private in game?
-
 - smoke on quick turn around (by feet)
 - smoke on jump land
-
 - better water on world map?
-
 - update snake art?
 
 

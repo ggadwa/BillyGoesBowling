@@ -199,14 +199,13 @@ export default class EditorClass {
         // load map
         else {
             map=this.game.mapList.get(mapName);
-        
-            map.create(); // get the create copy to the working copy so we can make changes
-            this.tileData=map.createTileData.slice();
+
+            this.tileData=map.getTileData();
             
             // need to turn engine sprites into editor sprites
             this.sprites=[];
             
-            for (engineSprite of map.createSprites) {
+            for (engineSprite of map.getSpriteData()) {
                 this.sprites.push(new EditorSpriteClass(engineSprite.constructor.name,engineSprite.currentImage,engineSprite.x,engineSprite.y,engineSprite.data));
             }
        
@@ -841,8 +840,8 @@ export default class EditorClass {
         let n,sprite,first,str;
         
         // map tiles      
-        str='    create() {\r\n';
-        str+='        this.createTileData=new Uint16Array([';
+        str='    getTileData() {\r\n';
+        str+='        return(new Uint16Array([';
         
         for (n=0;n!=this.tileData.length;n++) {
             if (n!==0) str+=',';
@@ -850,10 +849,12 @@ export default class EditorClass {
             str+=this.tileData[n].toString();
         }
         
-        str+='\r\n        ]);\r\n\r\n';
+        str+='\r\n        ]));\r\n';
+        str+='    }\r\n\r\n';
         
         // sprites
-        str+='        this.createSprites=[\r\n'
+        str+='    getSpriteData() {\r\n';
+        str+='        return([\r\n'
         
         first=true;
         
@@ -879,7 +880,7 @@ export default class EditorClass {
             str+=')';
         }
         
-        str+='\r\n        ];\r\n';
+        str+='\r\n        ]);\r\n';
         str+='    }\r\n';
         
         // copy to clipboard

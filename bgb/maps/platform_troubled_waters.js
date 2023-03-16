@@ -18,8 +18,8 @@ import EasterHeadClass from '../code/easter_head.js';
 
 export default class PlatformTroubledWatersMapClass extends MapClass {
 
-    create() {
-        this.createTileData=new Uint16Array([
+    getTileData() {
+        return(new Uint16Array([
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -148,35 +148,37 @@ export default class PlatformTroubledWatersMapClass extends MapClass {
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-        ]);
+        ]));
+    }
 
-        this.createSprites=[
-            new PlayerSideScrollClass(this.game,256,1792,new Map([])),
-            new PlatformClass(this.game,640,1920,new Map([])),
-            new PlatformClass(this.game,1664,1856,new Map([])),
-            new PlatformClass(this.game,2816,1728,new Map([])),
-            new PlatformClass(this.game,3584,1728,new Map([])),
-            new PlatformClass(this.game,4672,1536,new Map([])),
-            new PlatformClass(this.game,5504,1728,new Map([])),
-            new PlatformClass(this.game,6464,1856,new Map([])),
-            new PlatformClass(this.game,7744,1792,new Map([])),
-            new PlatformClass(this.game,8128,1728,new Map([])),
-            new PlatformClass(this.game,8576,1664,new Map([])),
-            new PlatformClass(this.game,9344,1664,new Map([])),
-            new PlatformClass(this.game,9984,1664,new Map([])),
-            new PlatformClass(this.game,10688,1600,new Map([])),
-            new PlatformClass(this.game,12544,1664,new Map([])),
+    getSpriteData() {
+        return([
+            new PlayerSideScrollClass(this.game,256,1792,null),
+            new PlatformClass(this.game,640,1920,null),
+            new PlatformClass(this.game,1664,1856,null),
+            new PlatformClass(this.game,2816,1728,null),
+            new PlatformClass(this.game,3584,1728,null),
+            new PlatformClass(this.game,4672,1536,null),
+            new PlatformClass(this.game,5504,1728,null),
+            new PlatformClass(this.game,6464,1856,null),
+            new PlatformClass(this.game,7744,1792,null),
+            new PlatformClass(this.game,8128,1728,null),
+            new PlatformClass(this.game,8576,1664,null),
+            new PlatformClass(this.game,9344,1664,null),
+            new PlatformClass(this.game,9984,1664,null),
+            new PlatformClass(this.game,10688,1600,null),
+            new PlatformClass(this.game,12544,1664,null),
             new DoorClass(this.game,13568,1088,new Map([["name","Higher Door"],["goto","Lower Door"]])),
-            new TrophyClass(this.game,13056,1984,new Map([])),
+            new TrophyClass(this.game,13056,1984,null),
             new DoorClass(this.game,13248,1984,new Map([["name","Lower Door"],["goto","Higher Door"]])),
-            new DrainPipeSnakeClass(this.game,11520,1536,new Map([])),
-            new DrainPipeSnakeClass(this.game,11776,1536,new Map([])),
-            new DrainPipeSnakeClass(this.game,12096,1600,new Map([])),
-            new DrainPipeSnakeClass(this.game,10368,1472,new Map([])),
-            new EasterHeadClass(this.game,3392,1472,new Map([])),
-            new EasterHeadClass(this.game,5952,1472,new Map([])),
-            new PinClass(this.game,13248,1472,new Map([]))
-        ];
+            new DrainPipeSnakeClass(this.game,11520,1536,null),
+            new DrainPipeSnakeClass(this.game,11776,1536,null),
+            new DrainPipeSnakeClass(this.game,12096,1600,null),
+            new DrainPipeSnakeClass(this.game,10368,1472,null),
+            new EasterHeadClass(this.game,3392,1472,null),
+            new EasterHeadClass(this.game,5952,1472,null),
+            new PinClass(this.game,13248,1472,null)
+        ]);
     }
     
     onMapStart() {
