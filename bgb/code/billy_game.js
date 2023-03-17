@@ -46,11 +46,12 @@ import CarrotCatacylismMapClass from '../maps/carrot_catacylism.js';
 import SnakePitMapClass from '../maps/snake_pit.js';
 import NinjaMountainMapClass from '../maps/ninja_mountain.js';
 import BoneyOneEyeCastleMapClass from '../maps/boney_one_eye_castle.js';
-
 import EyeInTheSkyMapClass from '../maps/eye_in_the_sky.js';
 import WorkingCoalMineMapClass from '../maps/working_coal_mine.js';
+import NinjaHQMapClass from '../maps/ninja_hq.js';
+import BlocksConfusionMapClass from '../maps/blocks_confusion.js';
+import EasyMapClass from '../maps/easy.js';
 import SinkingFeelingMapClass from '../maps/sinking_feeling.js';
-
 import GoingDownMapClass from '../maps/going_down.js';
 import ExecutionersRevengeMapClass from '../maps/executioners_revenge.js';
 import KangarangCastleMapClass from '../maps/kangarang_castle.js';
@@ -306,7 +307,9 @@ export default class BillyGameClass extends GameClass {
         this.addMap('eye_in_the_sky',new EyeInTheSkyMapClass(this));
         this.addMap('working_coal_mine',new WorkingCoalMineMapClass(this));
         this.addMap('sinking_feeling',new SinkingFeelingMapClass(this));
-        
+        this.addMap('ninja_hq',new NinjaHQMapClass(this));
+        this.addMap('blocks_confusion',new BlocksConfusionMapClass(this));
+        this.addMap('easy',new EasyMapClass(this));
         this.addMap('going_down',new GoingDownMapClass(this));
         this.addMap('executioners_revenge',new ExecutionersRevengeMapClass(this));
         this.addMap('kangarang_castle',new KangarangCastleMapClass(this));

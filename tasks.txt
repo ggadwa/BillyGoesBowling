@@ -1,60 +1,18 @@
 //// TO DO
 
-- maps
-   snakes on a plain
-   heads up
-   platform over troubled waters
-   surfs up
-   surfs down
-   apocalypse carrot
-   hills are alive with the sound of ninja bunnies
-   buffet of blocks
-   executioner's castle
-   puzzling blocks
-   ninja jail
-   it's raining creeps
-   carrot catacylism
-   mr cpu's castle
-   snake pit
-   ninja moutain
-   boney one eye's castle
-   eye in the sky
-
-   that sinking feeling
-   executioner's revenge
-   kangarang's castle
-   cloud 9
-   carrot armageddon
-   running_ahead
-   spring-a-thon
-   ninja_horde
-   platform_peril
-   speedway
-   king ghastly's castle
-
    
 - to fix
    working in a coal mine
    going down
-   
-
-- to make
    ninja HQ
    blocks of confusion
-   ???
-   
-   
+
 
    
-   
-Maps:
-  - Ninja HQ (tall girder skyscraper)
-  - blocks of confusion (maybe use left and right here)
 
-- make # of trophies/etc = number of levels in UI
+
 - ducking?  Need collision offset box changes
 - clean up all unused imports
-- both game and sprite still have some non-"on" events
 - music needs a loop point, give music opening bars
 - pendant tile for castle levels (next to bush tile)
 - get rid of all map. or game.

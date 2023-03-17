@@ -87,12 +87,34 @@ export default class MapClass {
     }
     
     /**
-     * Override this to fill in the map data, which is the tile list
-     * and sprites.
+     * Override this to return a Uint16Array of MAP_TILE_WIDTH*MAP_TILE_HEIGHT that is the tile list for the map.
      */
-    create() {
+    getTileData() {
+        return(null);
     }
     
+    /**
+     * Override this to return an array of sprites in the map.
+     */
+    getSpriteData() {
+        return(null);
+    }
+    
+    /**
+     * Override this to deal with any setup when a map is started, like
+     * moving sprites around for save states, etc.  All sprites in a map
+     * also get this call.
+     */
+    onMapStart() {   
+    }
+    
+    /**
+     * Override this to detected when a liquid movement
+     * has finished.
+     */
+    onLiquidMoveDone() {
+    }
+        
     /**
      * Override this for once per tick processing.
      */
@@ -184,14 +206,6 @@ export default class MapClass {
     }
     
     /**
-     * Override this to deal with any setup when a map is started, like
-     * moving sprites around for save states, etc.  All sprites in a map
-     * also get this call.
-     */
-    onMapStart() {   
-    }
-    
-    /**
      * Get current liquid height.
      */
     getLiquidY() {
@@ -211,13 +225,6 @@ export default class MapClass {
      */
     moveLiquidTo(toY,moveSpeed) {
         if (this.liquid!=null) this.liquid.moveLiquidTo(toY,moveSpeed);
-    }
-    
-    /**
-     * Override this to detected when a liquid movement
-     * has finished.
-     */
-    onLiquidMoveDone() {
     }
     
     isInIgnoreList(sprite,ignoreList) {
