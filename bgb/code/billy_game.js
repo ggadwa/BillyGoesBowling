@@ -224,13 +224,13 @@ export default class BillyGameClass extends GameClass {
         this.addImage('particles/skull');
         this.addImage('particles/castle');
             
-        this.addImage('backgrounds/sun');
-        this.addImage('backgrounds/clouds');
-        this.addImage('backgrounds/mountains');
-        this.addImage('backgrounds/castle');
-        this.addImage('backgrounds/water');
-        this.addImage('backgrounds/cave');
-        this.addImage('backgrounds/spotlight');
+        this.addImage('overlays/sun');
+        this.addImage('overlays/clouds');
+        this.addImage('overlays/mountains');
+        this.addImage('overlays/castle');
+        this.addImage('overlays/water');
+        this.addImage('overlays/cave');
+        this.addImage('overlays/spotlight');
         
         this.addImage('liquids/water_top');
         this.addImage('liquids/water_fill');

@@ -10,7 +10,7 @@ export default class OverlayDefsClass {
         yFactor:0.0,
         xScroll:0.0,
         yScroll:0.0,
-        imageName:'backgrounds/sun'
+        imageName:'overlays/sun'
     };
     
     static CLOUD_BACKGROUND_OVERLAY={
@@ -21,7 +21,7 @@ export default class OverlayDefsClass {
         yFactor:0.0,
         xScroll:0.0,
         yScroll:0.0,
-        imageName:'backgrounds/clouds'
+        imageName:'overlays/clouds'
     };
     
     static MOVING_CLOUD_UPPER_BACKGROUND_OVERLAY={
@@ -32,7 +32,7 @@ export default class OverlayDefsClass {
         yFactor:0.0,
         xScroll:-0.4,
         yScroll:0.0,
-        imageName:'backgrounds/clouds'
+        imageName:'overlays/clouds'
     };
     
     static MOVING_CLOUD_LOWER_BACKGROUND_OVERLAY={
@@ -43,7 +43,7 @@ export default class OverlayDefsClass {
         yFactor:0.0,
         xScroll:0.2,
         yScroll:0.0,
-        imageName:'backgrounds/clouds'
+        imageName:'overlays/clouds'
     };
     
     static MOUNTAIN_BACKGROUND_OVERLAY={
@@ -54,7 +54,7 @@ export default class OverlayDefsClass {
         yFactor:0.0,
         xScroll:0.0,
         yScroll:0.0,
-        imageName:'backgrounds/mountains'
+        imageName:'overlays/mountains'
     };
     
     static CASTLE_BACKGROUND_OVERLAY={
@@ -65,7 +65,7 @@ export default class OverlayDefsClass {
         yFactor:0.0,
         xScroll:0.0,
         yScroll:0.0,
-        imageName:'backgrounds/castle'
+        imageName:'overlays/castle'
     };
     
     static MINE_BACKGROUND_OVERLAY={
@@ -76,7 +76,7 @@ export default class OverlayDefsClass {
         yFactor:0.0,
         xScroll:0.0,
         yScroll:0.0,
-        imageName:'backgrounds/cave'
+        imageName:'overlays/cave'
     };
     
     static MINE_FOREGROUND_OVERLAY={
@@ -87,7 +87,7 @@ export default class OverlayDefsClass {
         yFactor:0.0,
         xScroll:0.0,
         yScroll:0.0,
-        imageName:'backgrounds/spotlight'
+        imageName:'overlays/spotlight'
     };
     
     static WORLD_BACKGROUND_OVERLAY={
@@ -98,7 +98,7 @@ export default class OverlayDefsClass {
         yFactor:1.0,
         xScroll:0.3,
         yScroll:0.2,
-        imageName:'backgrounds/water'
+        imageName:'overlays/water'
     };
 
 }
