@@ -24,6 +24,8 @@ export default class OverlayClass {
     
     draw(ctx,offsetX,offsetY) {
         if (this.image==null) return;
+        
+        if (this.def.alpha!==1.0) ctx.globalAlpha=this.def.alpha;
 
         switch(this.def.overlayType) {
             case OverlayClass.TYPE_PARALLAX:
@@ -33,6 +35,8 @@ export default class OverlayClass {
                 this.drawTile(ctx,offsetX,offsetY);
                 return;
         }
+        
+        if (this.def.alpha!==1.0) ctx.globalAlpha=1.0;
     }
     
     drawTile(ctx,offsetX,offsetY) {

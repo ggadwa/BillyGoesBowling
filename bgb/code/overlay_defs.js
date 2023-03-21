@@ -10,6 +10,7 @@ export default class OverlayDefsClass {
         yFactor:0.0,
         xScroll:0.0,
         yScroll:0.0,
+        alpha:1.0,
         imageName:'overlays/sun'
     };
     
@@ -21,6 +22,7 @@ export default class OverlayDefsClass {
         yFactor:0.0,
         xScroll:0.0,
         yScroll:0.0,
+        alpha:1.0,
         imageName:'overlays/clouds'
     };
     
@@ -32,6 +34,7 @@ export default class OverlayDefsClass {
         yFactor:0.0,
         xScroll:-0.4,
         yScroll:0.0,
+        alpha:1.0,
         imageName:'overlays/clouds'
     };
     
@@ -43,6 +46,7 @@ export default class OverlayDefsClass {
         yFactor:0.0,
         xScroll:0.2,
         yScroll:0.0,
+        alpha:1.0,
         imageName:'overlays/clouds'
     };
     
@@ -54,6 +58,7 @@ export default class OverlayDefsClass {
         yFactor:0.0,
         xScroll:0.0,
         yScroll:0.0,
+        alpha:1.0,
         imageName:'overlays/mountains'
     };
     
@@ -65,6 +70,7 @@ export default class OverlayDefsClass {
         yFactor:0.0,
         xScroll:0.0,
         yScroll:0.0,
+        alpha:1.0,
         imageName:'overlays/castle'
     };
     
@@ -76,6 +82,7 @@ export default class OverlayDefsClass {
         yFactor:0.0,
         xScroll:0.0,
         yScroll:0.0,
+        alpha:1.0,
         imageName:'overlays/cave'
     };
     
@@ -87,6 +94,7 @@ export default class OverlayDefsClass {
         yFactor:0.0,
         xScroll:0.0,
         yScroll:0.0,
+        alpha:0.97,
         imageName:'overlays/spotlight'
     };
     
@@ -98,6 +106,7 @@ export default class OverlayDefsClass {
         yFactor:1.0,
         xScroll:0.3,
         yScroll:0.2,
+        alpha:1.0,
         imageName:'overlays/water'
     };
 

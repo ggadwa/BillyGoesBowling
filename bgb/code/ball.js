@@ -38,6 +38,8 @@ export default class BallClass extends SpriteClass {
     static BOWL_SPEED=15;
     static SLAM_UP_SPEED=15;
     static SLAM_DOWN_SPEED=20;
+    
+    static EXTRA_HORZ_TRAVEL=128; // extra travel if running in direction of bowl
         
     static BALL_CIRCLE_SPEED=5;
     static BALL_CIRCLE_OFFSET_X=8;
@@ -194,8 +196,8 @@ export default class BallClass extends SpriteClass {
                     this.travelX=0;
                     this.travelYAcross=this.travelYBottom;
                     this.travelMode=BallClass.TRAVEL_MODE_BOWL_ACROSS;
-                    this.travelLeftEdge=map.getMapViewportLeftEdge(); // we determine left & right edge when starting the bowl, so if we move stuff offscreen it still gets hit
-                    this.travelRightEdge=map.getMapViewportRightEdge();
+                    this.travelLeftEdge=map.getMapViewportLeftEdge()-(playerSprite.flipX?BallClass.EXTRA_HORZ_TRAVEL:0); // we determine left & right edge when starting the bowl, so if we move stuff offscreen it still gets hit
+                    this.travelRightEdge=map.getMapViewportRightEdge()+(playerSprite.flipX?0:BallClass.EXTRA_HORZ_TRAVEL);
                     py=this.travelYBottom;
                 }
                 else {
