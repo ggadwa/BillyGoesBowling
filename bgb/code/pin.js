@@ -22,16 +22,16 @@ export default class PinClass extends SpriteClass {
     
     onMapStart() {
         // if pin has been picked up once, then make it transparent
-        if (this.getGameData('pin_'+this.getMapName())!==null) this.alpha=0.4;
+        if (this.getCurrentSaveSlotData('pin_'+this.getMapName())!==null) this.alpha=0.4;
         // win timer
         this.game.startCompletionTimer();
     }
     
     pickup() {
         // update the win state
-        this.setGameData(('pin_'+this.getMapName()),true);
-        this.setGameData(('time_'+this.getMapName()),1000000);
-        this.setGameDataIfLess(('time_'+this.getMapName()),this.game.stopCompletionTimer());
+        this.setCurrentSaveSlotData(('pin_'+this.getMapName()),true);
+        this.setCurrentSaveSlotData(('time_'+this.getMapName()),1000000);
+        this.setCurrentSaveSlotDataIfLess(('time_'+this.getMapName()),this.game.stopCompletionTimer());
         
         this.playSound('pickup');
         

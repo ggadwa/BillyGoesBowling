@@ -25,7 +25,7 @@ export default class DoorClass extends SpriteClass {
     }
     
     onMapStart() {
-        this.setGameData('door_lock_tick',0);
+        this.setCurrentSaveSlotData('door_lock_tick',0);
     }
     
     onRun(tick) {
@@ -39,10 +39,10 @@ export default class DoorClass extends SpriteClass {
         if (!this.collide(playerSprite)) return;
         
         // are we in a lock (so we don't jump between doors)
-        if ((this.getGameData('door_lock_tick')+DoorClass.DOOR_LOCK_TICK)>tick) return;
+        if ((this.getCurrentSaveSlotData('door_lock_tick')+DoorClass.DOOR_LOCK_TICK)>tick) return;
         
         // start the door lock
-        this.setGameData('door_lock_tick',tick);
+        this.setCurrentSaveSlotData('door_lock_tick',tick);
         
         // move to other door
         this.playSound('door');

@@ -21,11 +21,11 @@ export default class TrophyClass extends SpriteClass {
 
     onMapStart() {
         // if trophy has been picked up once, then make it transparent
-        if (this.getGameData('trophy_'+this.getMapName())!==null) this.alpha=0.4;
+        if (this.getCurrentSaveSlotData('trophy_'+this.getMapName())!==null) this.alpha=0.4;
     }
     
     pickup() {
-        this.setGameData('got_trophy',true); // trophy only gets written to game data when player wins, so you have to pick it up and win to get it
+        this.setCurrentSaveSlotData('got_trophy',true); // trophy only gets written to game data when player wins, so you have to pick it up and win to get it
         this.playSound('pickup');
         this.delete();
     }

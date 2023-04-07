@@ -195,8 +195,8 @@ export default class WorldMainMapClass extends MapClass {
         
         // spots record where the player went into a map
         // so we can reset position coming out
-        x=this.game.getData('worldXPos');
-        y=this.game.getData('worldYPos');
+        x=this.getCurrentSaveSlotData('worldXPos');
+        y=this.getCurrentSaveSlotData('worldYPos');
         if ((x!=null) && (y!=null)) {
             playerSprite=this.getPlayerSprite();
             playerSprite.x=x;
@@ -216,14 +216,14 @@ export default class WorldMainMapClass extends MapClass {
         }
         
         // otherwise unlock based on castles won
-        if (this.game.getData('boss_executioners_castle')!==null) this.changeTile(24,5,WorldMainMapClass.TILE_IDX_ROAD_VERTICAL); // win castle 1
-        if (this.game.getData('boss_mr_cpu_castle')!==null) { // win castle 2
+        if (this.getCurrentSaveSlotData('boss_executioners_castle')!==null) this.changeTile(24,5,WorldMainMapClass.TILE_IDX_ROAD_VERTICAL); // win castle 1
+        if (this.getCurrentSaveSlotData('boss_mr_cpu_castle')!==null) { // win castle 2
             this.changeTile(8,12,WorldMainMapClass.TILE_IDX_ROAD_VERTICAL);  
             this.changeTile(41,11,WorldMainMapClass.TILE_IDX_ROAD_VERTICAL);
             this.changeTile(41,20,WorldMainMapClass.TILE_IDX_ROAD_VERTICAL);
         }
-        if (this.game.getData('boss_boney_one_eye_castle')!==null) this.changeTile(48,16,WorldMainMapClass.TILE_IDX_ROAD_HORIZONTAL); // win castle 3
-        if (this.game.getData('boss_kangarang_castle')!==null) this.changeTile(52,16,WorldMainMapClass.TILE_IDX_ROAD_HORIZONTAL); // win castle 4
-        if (this.game.getData('boss_king_ghastly_castle')!==null) this.changeTile(65,18,WorldMainMapClass.TILE_IDX_ROAD_HORIZONTAL); // win castle 5
+        if (this.getCurrentSaveSlotData('boss_boney_one_eye_castle')!==null) this.changeTile(48,16,WorldMainMapClass.TILE_IDX_ROAD_HORIZONTAL); // win castle 3
+        if (this.getCurrentSaveSlotData('boss_kangarang_castle')!==null) this.changeTile(52,16,WorldMainMapClass.TILE_IDX_ROAD_HORIZONTAL); // win castle 4
+        if (this.getCurrentSaveSlotData('boss_king_ghastly_castle')!==null) this.changeTile(65,18,WorldMainMapClass.TILE_IDX_ROAD_HORIZONTAL); // win castle 5
     }
 }

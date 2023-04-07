@@ -27,8 +27,8 @@ export default class MapSpotClass extends SpriteClass {
     }
     
     onMapStart() {
-        let hasPin=(this.game.getData('pin_'+this.getData('map'))!==null);
-        let hasTrophy=(this.game.getData('trophy_'+this.getData('map'))!==null);
+        let hasPin=(this.getCurrentSaveSlotData('pin_'+this.getData('map'))!==null);
+        let hasTrophy=(this.getCurrentSaveSlotData('trophy_'+this.getData('map'))!==null);
         
         // change image based on if the player has collected the
         // pin and/or the trophy
@@ -61,8 +61,8 @@ export default class MapSpotClass extends SpriteClass {
         // if space than jump to map
         // save the X/Y so we can restore when we exit
         if ((this.getInputStateBoolean(InputClass.BUTTON_A)) || (this.getInputStateBoolean(InputClass.BUTTON_B))) {
-            this.setGameData('worldXPos',playerSprite.x);
-            this.setGameData('worldYPos',playerSprite.y);
+            this.setCurrentSaveSlotData('worldXPos',playerSprite.x);
+            this.setCurrentSaveSlotData('worldYPos',playerSprite.y);
             this.game.gotoMap(this.getData('map'));
         }
     }

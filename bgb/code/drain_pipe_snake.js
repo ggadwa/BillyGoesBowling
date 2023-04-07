@@ -101,6 +101,19 @@ export default class DrainPipeSnakeClass extends SpriteClass {
         this.walkSpeed=0.0;
     }
     
+    onStoodOnSprite(sprite) {
+        // stood on by player breaks pipe or kills
+        if (sprite instanceof PlayerSideScrollClass) {
+            if (this.snakeHasPipe) {
+                this.breakPipe();
+            }
+            else {
+                this.kill();
+            }
+            return;            
+        }
+    }
+    
     onCollideTile(tileX,tileY,tileIdx) {
         // colliding with tiles turns snake around immediately
         this.flipX=!this.flipX;

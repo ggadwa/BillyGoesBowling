@@ -1,12 +1,10 @@
 //// TO DO
 
    
-- to fix
-   going down
+- need controllable random
 
-
-
-   
+- recording of moves to run under title page?
+- title page, save spots, etc   
 
 
 - ducking?  Need collision offset box changes
@@ -27,7 +25,5 @@
 
 ///// URL params
 
-saveSlot=[0|1|2]        save slot to use
-eraseSlot=[0|1|2]       erase save slot
 unlocked=0              unlock any locked items in game
 

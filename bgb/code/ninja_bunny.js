@@ -101,6 +101,12 @@ export default class NinjaBunnyClass extends SpriteClass {
     
     onStoodOnSprite(sprite) {
         this.bunnyPause=NinjaBunnyClass.BUNNY_PAUSE_TICK; // don't jump if stood on
+        
+        // if it's player, then kill the bunny and player takes damage
+        if (sprite instanceof PlayerSideScrollClass) {
+            this.kill();
+            return;            
+        }
     }
     
     fireShurikin() {

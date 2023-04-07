@@ -470,33 +470,24 @@ export default class SpriteClass {
         this.data.set(name,value);
     }
     
-    getGameData(name) {
-        return(this.game.getData(name));
+    getCurrentSaveSlotData(name) {
+        return(this.game.getCurrentSaveSlotData(name));
     }
     
-    setGameData(name,value) {
-        this.game.setData(name,value);
-        this.game.persistData();
+    setCurrentSaveSlotData(name,value) {
+        this.game.setCurrentSaveSlotData(name,value);
     }
     
-    getGameDataCountForPrefix(prefix) {
-        return(this.game.getGameDataCountForPrefix(prefix));
+    getCurrentSaveSlotDataCount(prefix) {
+        return(this.game.getCurrentSaveSlotDataCount(prefix));
     }
     
-    setGameDataIfLess(name,value) {
-        let oldValue;
-        
-        oldValue=this.game.getData(name);
-        if (oldValue==null) {
-            this.game.setData(name,value);
-            this.game.persistData();
-            return;
-        }
-        
-        if (value<oldValue) {
-            this.game.setData(name,value);
-            this.game.persistData();
-        }
+    setCurrentSaveSlotDataIfLess(name,value) {
+        this.game.setCurrentSaveSlotDataIfLess(name,value);
+    }
+    
+    deleteCurrentSaveSlotData(name) {
+        this.game.deleteCurrentSaveSlotData(name);
     }
     
     setCamera(cameraSprite,cameraType) {

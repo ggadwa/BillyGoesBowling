@@ -27,16 +27,16 @@ export default class MapCastleClass extends SpriteClass {
     }
     
     isUnlocked() {
-        return((parseInt(this.getData('pin'))<=parseInt(this.game.getGameDataCountForPrefix('pin_')))||(this.game.isUnlocked()));
+        return((parseInt(this.getData('pin'))<=parseInt(this.game.getCurrentSaveSlotDataCount('pin_')))||(this.game.isUnlocked()));
     }
     
     onMapStart() {
-        if (this.game.getData('boss_'+this.getData('map'))!==null) {
+        if (this.getCurrentSaveSlotData('boss_'+this.getData('map'))!==null) {
             this.setCurrentImage('sprites/world_map_castle_wreck');
                     
             // if just defeated, explode
-            if (this.game.getData('boss_explode_'+this.getData('map'))) {
-                this.game.deleteData('boss_explode_'+this.getData('map'));      // only happens once
+            if (this.getCurrentSaveSlotData('boss_explode_'+this.getData('map'))) {
+                this.deleteCurrentSaveSlotData('boss_explode_'+this.getData('map'));      // only happens once
                 this.addParticle((this.x+Math.trunc(this.width*0.5)),(this.y-Math.trunc(this.height*0.5)),ParticleDefsClass.CASTLE_BREAK_PARTICLE);
                 this.playSoundGlobal('explode');
             }
@@ -76,8 +76,8 @@ export default class MapCastleClass extends SpriteClass {
                 this.playSoundGlobal('locked_castle');
             }
             else {
-                this.setGameData('worldXPos',playerSprite.x);
-                this.setGameData('worldYPos',playerSprite.y);
+                this.setCurrentSaveSlotData('worldXPos',playerSprite.x);
+                this.setCurrentSaveSlotData('worldYPos',playerSprite.y);
                 this.game.gotoMap(this.getData('map'));
             }
         }

@@ -247,6 +247,8 @@ export default class BillyGameClass extends GameClass {
         this.addImage('ui/health_25');
         this.addImage('ui/banner');
         this.addImage('ui/win_banner');
+        this.addImage('ui/title');
+        this.addImage('ui/save_box');
         
         // sounds
         this.addSound('click');
@@ -326,12 +328,6 @@ export default class BillyGameClass extends GameClass {
         this.addMap('test',new TestMapClass(this));
     }
     
-    createData() {
-        if (!this.restorePersistedData()) {
-            // any new data we need if a new game
-        }
-    }
-    
     getEditorSpritePaletteList() {
         return([
             new PlayerWorldClass(this,0,0,null),
@@ -366,6 +362,10 @@ export default class BillyGameClass extends GameClass {
    
     getStartMap() {
         return('world_main');
+    }
+    
+    getAttractMap() {
+        return('puzzling_blocks');
     }
     
     onMessage(fromSprite,cmd,data) {
@@ -415,11 +415,11 @@ export default class BillyGameClass extends GameClass {
             
             this.drawUIImage('ui/score_box',10,(this.canvasHeight-74));
             this.drawUIImage('ui/pin',20,(this.canvasHeight-67));
-            this.drawUIText((this.getGameDataCountForPrefix('pin_')+'/'+BillyGameClass.BANNER_MAP_COUNT),110,(this.canvasHeight-33));
+            this.drawUIText((this.getCurrentSaveSlotDataCount('pin_')+'/'+BillyGameClass.BANNER_MAP_COUNT),110,(this.canvasHeight-33));
             
             this.drawUIImage('ui/score_box',(this.canvasWidth-120),(this.canvasHeight-74));
             this.drawUIImage('ui/trophy',(this.canvasWidth-110),(this.canvasHeight-68));
-            this.drawUIText((this.getGameDataCountForPrefix('trophy_')+'/'+BillyGameClass.BANNER_MAP_COUNT),(this.canvasWidth-20),(this.canvasHeight-33));
+            this.drawUIText((this.getCurrentSaveSlotDataCount('trophy_')+'/'+BillyGameClass.BANNER_MAP_COUNT),(this.canvasWidth-20),(this.canvasHeight-33));
 
             if (this.bannerMode!==BillyGameClass.BANNER_MODE_NONE) {
             
@@ -450,13 +450,13 @@ export default class BillyGameClass extends GameClass {
 
                     // checkmark for completing level
                     dx=lx+10;
-                    if ((this.getData('pin_'+this.bannerMapName)===true) || (this.getData('boss_'+this.bannerMapName)===true)) {
+                    if ((this.getCurrentSaveSlotData('pin_'+this.bannerMapName)===true) || (this.getCurrentSaveSlotData('boss_'+this.bannerMapName)===true)) {
                         this.drawUIImage('ui/checkmark',dx,(this.canvasHeight-67));
                         dx+=35;
                     }
 
                     // trophy for getting hidden trophy
-                    if (this.getData('trophy_'+this.bannerMapName)===true) {
+                    if (this.getCurrentSaveSlotData('trophy_'+this.bannerMapName)===true) {
                         this.drawUIImage('ui/trophy',dx,(this.canvasHeight-67));
                         dx+=35;
                     }
@@ -466,7 +466,7 @@ export default class BillyGameClass extends GameClass {
                     this.drawUIText(this.bannerTitleText,dx,(this.canvasHeight-29));
 
                     // times
-                    time=this.getData('time_'+this.bannerMapName);
+                    time=this.getCurrentSaveSlotData('time_'+this.bannerMapName);
                     if (time!==null) {
                         min=Math.trunc(time/60.0);
                         sec=time-(min*60.0);
@@ -488,5 +488,28 @@ export default class BillyGameClass extends GameClass {
                 this.drawSetAlpha(1.0);
             }
         }
+    }
+    
+    drawAttractSaveBox(slotIdx,x,y) {
+        this.drawUIImage('ui/save_box',x,y);
+        
+        this.drawUIText('Save Slot 1',(x+5),15);
+        
+        this.drawUIImage('ui/pin',(x+50),(y+10));
+        this.drawUIText((this.getSaveSlotDataCount(slotIdx,'pin_')+'/'+BillyGameClass.BANNER_MAP_COUNT),(x+50),(y+120));
+        
+        this.drawUIImage('ui/trophy',(x+117),(y+10));
+        this.drawUIText((this.getSaveSlotDataCount(slotIdx,'trophy_')+'/'+BillyGameClass.BANNER_MAP_COUNT),(x+130),(y+120));
+    }
+    
+    drawAttract() {
+        this.setupUIText('24px Arial','#000000','right','alphabetic');
+        this.drawUIImage('ui/title',10,10);
+        
+        this.drawAttractSaveBox(0,50,400);
+        this.drawAttractSaveBox(1,250,400);
+        this.drawAttractSaveBox(2,700,400);
+        
+        
     }
 }

@@ -84,9 +84,9 @@ export default class BoneyOneEyeClass extends SpriteClass {
         this.playSound('boss_dead');
 
         // update the state
-        this.setGameData(('boss_'+this.getMapName()),true);
-        this.setGameData(('boss_explode_'+this.getMapName()),true);
-        this.setGameDataIfLess(('time_'+this.getMapName()),this.game.stopCompletionTimer());
+        this.setCurrentSaveSlotData(('boss_'+this.getMapName()),true);
+        this.setCurrentSaveSlotData(('boss_explode_'+this.getMapName()),true);
+        this.setCurrentSaveSlotDataIfLess(('time_'+this.getMapName()),this.game.stopCompletionTimer());
 
         this.setCamera(this,MapClass.CAMERA_TYPE_OVERHEAD);
         

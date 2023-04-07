@@ -94,7 +94,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.ballSprite=this.addSprite(BallClass,0,0,null);
         this.shieldSprite=this.addSprite(ShieldClass,0,0,null);
         // check to see if we got trophy in this level, we only get trophy if we also win level
-        this.setGameData('got_trophy',false);
+        this.setCurrentSaveSlotData('got_trophy',false);
     }
     
     hurtPlayer() {
@@ -102,7 +102,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
         
         this.playSound('hurt');
         
-        //this.health--;
+        this.health--;
         if (this.health===0) {
             this.killPlayer();
             return;
@@ -142,8 +142,8 @@ export default class PlayerSideScrollClass extends SpriteClass {
         this.addParticle((this.x+(this.width/2)),(this.y-(this.height/2)),ParticleDefsClass.WARP_OUT_PARTICLE);
         
         // if we got trophy, mark it in game data
-        if (this.getGameData('got_trophy')) {
-            this.setGameData(('trophy_'+this.getMapName()),true);
+        if (this.getCurrentSaveSlotData('got_trophy')) {
+            this.setCurrentSaveSlotData(('trophy_'+this.getMapName()),true);
         }
     }
     
@@ -197,6 +197,14 @@ export default class PlayerSideScrollClass extends SpriteClass {
             (sprite instanceof KangarangClass) ||
             (sprite instanceof KingGhastlyClass)) {
                 this.killPlayer();
+                return;
+        }
+        
+        // get hurt standing on these monsters
+        if (
+            (sprite instanceof NinjaBunnyClass) ||
+            (sprite instanceof DrainPipeSnakeClass)) {
+                this.hurtPlayer();
                 return;
         }
     }

@@ -43,11 +43,18 @@ export default class GameClass {
         this.fps=0;
         this.tick=0;
         this.completionTimer=0;
+        this.inAttract=false;
         this.paused=true;
         this.canvasClicked=false;
         
-        // game data
-        this.data=new Map();
+        // rng
+        this.mwcW=0;
+        this.mwcZ=0;
+        
+        // save slot
+        this.currentSaveSlot=0;
+        
+        // game map
         this.map=null;
         this.gotoMapName=null;
         
@@ -80,6 +87,9 @@ export default class GameClass {
             console.log('Unable to create audio context');
             return;
         }
+        
+        // set seed
+        this.setRandomSeed(performance.now());
         
         // get the resource names
         this.attachResources();
@@ -120,13 +130,13 @@ export default class GameClass {
         // initial input
         this.input.initialize();
         
-        // initialize any game specific data
-        this.createData();
+        // start in attract mode
+        this.inAttract=false;
         
-        // load the starting map
+        // load the attract map
         this.map=this.mapList.get(this.getStartMap());
         if (this.map===undefined) {
-            alert('Unknown start map: '+this.getStartMap());
+            alert('Unknown start map: '+this.getAttractMap());
             return;
         }
 
@@ -147,7 +157,7 @@ export default class GameClass {
         this.audioContext.suspend();
         
         // force a first draw as game starts paused
-        this.draw(true);
+        this.draw();
         
         // on click for resuming
         this.canvas.onclick=this.clickCanvas.bind(this);
@@ -161,6 +171,25 @@ export default class GameClass {
         this.canvasClicked=true;
     }
     
+    // random
+    
+    setRandomSeed(seed)
+    {
+        this.mwcW=(seed<<16)&0xFFFF;
+        this.mwcZ=seed&0xFFFF;
+    }
+
+    random()
+    {
+        let r;
+
+        this.mwcZ=(36969*(this.mwcZ&0xFFFF)+(this.mwcZ>>16))&0xFFFFFFFF;
+        this.mwcW=(18000*(this.mwcW&0xFFFF)+(this.mwcW>>16))&0xFFFFFFFF;
+        r=((this.mwcZ<<16)+this.mwcW)&0xFFFFFFFF;
+
+        return((r/=0xFFFFFFFF)+0.5);
+    }
+
     /**
      * Override this to add in all the resources for this game
      * (images, sounds, music, maps)
@@ -188,63 +217,12 @@ export default class GameClass {
         this.mapList.add(name,map);
     }
     
-    // save slots
-    getSaveSlotName(paramName) {
-        let slotStr;
-        let slot=0;
-        
-        slotStr=this.urlParams.get(paramName);
-        if (slotStr!==null) {
-            try {
-                slot=parseInt(slotStr);
-            }
-            catch (e) {
-                slot=0;
-            }
-        }
-        
-        if ((slot<0) || (slot>2)) slot=0;
-
-        return(this.constructor.name+'_save_'+slot);
-    }
-    
     /**
      * Call to check if the unlocked URL param was included, which is a quick
      * way to unlock any blocks in a game for testing purposes
      */
     isUnlocked() {
         return(this.urlParams.get('unlocked')!==null);
-    }
-    
-    /**
-     * Restores data persisted to the players save slot to the main
-     * data for this game.  Returns FALSE if there is no data (then you
-     * should create default data.)
-     */
-    restorePersistedData() {
-        let item=window.localStorage.getItem(this.getSaveSlotName('saveSlot'));
-        if (item===null) return(false);
-        
-            // if the clear save spot is on, never load
-            // any data and erase any save
-            
-        if (this.urlParams.get('eraseSlot')!==null) {
-            window.localStorage.removeItem(this.getSaveSlotName('eraseSlot'));
-            return(false);
-        }
-        
-            // otherwise reload the data
-        
-        this.data=new Map(JSON.parse(item));
-        return(true);
-    }
-
-    /**
-     * Call this to persist the current state of the game data
-     * to the current save slot.
-     */
-    persistData() {
-        window.localStorage.setItem(this.getSaveSlotName('saveSlot'),JSON.stringify([...this.data]));
     }
     
     // misc game UIs
@@ -277,42 +255,63 @@ export default class GameClass {
     
     /**
      * Data set on the game is the only persistant data for the
-     * game.  Anything you set here can be restored or saved into
-     * the current slot by persistData and retreived by
-     * restorePersistedData.
+     * game.
      * 
      * Use this API to get data by name.
      */
-    getData(name) {
-        let val=this.data.get(name);
-        return((val===undefined)?null:val);
+    getSaveSlotData(slotIdx,name) {
+        let val=window.localStorage.getItem(this.constructor.name+'_'+slotIdx+'_'+name);
+        return((val===undefined)?null:JSON.parse(val));
     }
     
-    getGameDataCountForPrefix(prefix) {
-        let name;
+    getCurrentSaveSlotData(name) {
+        return(this.getSaveSlotData(this.currentSaveSlot,name));
+    }
+    
+    getSaveSlotDataCount(slotIdx,prefix) {
+        let n;
         let count=0;
+        let searchPrefix=this.constructor.name+'_'+slotIdx+'_'+prefix;
         
-        for (name of this.data.keys()) {
-            if (name.startsWith(prefix)) count++;
+        for (n=0;n!=window.localStorage.length;n++) {
+            if (window.localStorage.key(n).startsWith(searchPrefix)) count++;
         }
         
         return(count);
     }
     
-    /**
-     * Data set on the game is the only persistant data for the
-     * game.  Anything you set here can be restored or saved into
-     * the current slot by persistData and retreived by
-     * restorePersistedData.
-     * 
-     * Use this to set data by name.
-     */
-    setData(name,value) {
-        this.data.set(name,value);
+    getCurrentSaveSlotDataCount(prefix) {
+        return(this.getSaveSlotDataCount(this.currentSaveSlot,prefix));
     }
     
-    deleteData(name) {
-        this.data.delete(name);
+    setSaveSlotData(slotIdx,name,value) {
+        window.localStorage.setItem((this.constructor.name+'_'+slotIdx+'_'+name),JSON.stringify(value));
+    }
+    
+    setCurrentSaveSlotData(name,value) {
+        this.setSaveSlotData(this.currentSaveSlot,name,value);
+    }
+    
+    setCurrentSaveSlotDataIfLess(name,value) {
+        let oldValue;
+        
+        oldValue=this.getCurrentSaveSlotData(name);
+        if (oldValue==null) {
+            this.setCurrentSaveSlotData(name,value);
+            return;
+        }
+        
+        if (value<oldValue) {
+            this.setCurrentSaveSlotData(name,value);
+        }
+    }
+    
+    deleteSaveSlotData(slotIdx,name) {
+        window.localStorage.removeItem(this.constructor.name+'_'+slotIdx+'_'+name);
+    }
+    
+    deleteCurrentSaveSlotData(name) {
+        this.deleteSaveSlotData(this.currentSaveSlot,name);
     }
     
     gotoMap(name) {
@@ -335,18 +334,14 @@ export default class GameClass {
     }    
     
     /**
-     * Override this to create any data that needs to be
-     * persisted for game state.
-     */
-    createData() {
-    }
-            
-    /**
      * Override this to return the the starting map object.
      * 
      * @returns {MapClass}
      */
     getStartMap() {
+    }
+    
+    getAttractMap() {
     }
         
     /**
@@ -358,9 +353,16 @@ export default class GameClass {
     
     /**
      * Override this to draw the UI.  Use the drawUIImage, setupUIText,
-     * and drawUIText methods to draw the UI.
+     * and drawUIText methods to draw.
      */
     drawUI() {
+    }
+    
+    /**
+     * Override this to draw an attract mode items.  Use the drawUIImage, setupUIText,
+     * and drawUIText methods to draw.
+     */
+    drawAttract() {
     }
     
     drawSetAlpha(alpha) {
@@ -422,9 +424,9 @@ export default class GameClass {
         }
     }
     
-    draw(paused) {
+    draw() {
         // if paused, it's a single draw so we ignore the timing
-        if (!paused) {
+        if (!this.paused) {
             if ((this.timestamp-this.drawTimestamp)<GameClass.DRAW_TICK_FREQUENCY) return;
             this.drawTimestamp=this.timestamp;
         }
@@ -435,7 +437,8 @@ export default class GameClass {
         // draw the UI
         this.drawUI();
         this.drawFPS();
-        if (paused) this.drawPause();
+        if (this.inAttract) this.drawAttract();
+        if (this.paused) this.drawPause();
         
         // transfer to front canvas
         this.ctx.drawImage(this.backCanvas,0,0);
@@ -469,7 +472,7 @@ export default class GameClass {
                 this.paused=true;
                 this.canvasClicked=false;
                 this.audioContext.suspend();
-                this.draw(true);
+                this.draw();
                 return;
             }
         }
@@ -494,7 +497,7 @@ export default class GameClass {
         // any error exits the animation loop
         try {
             this.runInternal();
-            this.draw(false);
+            this.draw();
         }
         catch (e) {
             window.cancelAnimationFrame(id);

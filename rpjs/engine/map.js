@@ -121,6 +121,26 @@ export default class MapClass {
     onRun(tick) { 
     }
     
+    getCurrentSaveSlotData(name) {
+        return(this.game.getCurrentSaveSlotData(name));
+    }
+    
+    setCurrentSaveSlotData(name,value) {
+        this.game.setCurrentSaveSlotData(name,value);
+    }
+    
+    getCurrentSaveSlotDataCount(prefix) {
+        return(this.game.getCurrentSaveSlotDataCount(prefix));
+    }
+    
+    setCurrentSaveSlotDataIfLess(name,value) {
+        this.game.setCurrentSaveSlotDataIfLess(name,value);
+    }
+    
+    deleteCurrentSaveSlotData(name) {
+        this.game.deleteCurrentSaveSlotData(name);
+    }
+    
     /**
      * Adds a sprite in-game.
      * 
