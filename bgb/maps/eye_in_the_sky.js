@@ -402,9 +402,9 @@ export default class EyeInTheSkyMapClass extends MapClass {
         if ((tick%EyeInTheSkyMapClass.EYE_TICK)===0) {
             playerSprite=this.getPlayerSprite();
             
-            xAdd=(Math.random()*EyeInTheSkyMapClass.EYE_OFFSET*2)-EyeInTheSkyMapClass.EYE_OFFSET;
+            xAdd=this.randomScaled(EyeInTheSkyMapClass.EYE_OFFSET*2)-EyeInTheSkyMapClass.EYE_OFFSET;
             xAdd+=(playerSprite.flipX?(-EyeInTheSkyMapClass.FORWARD_OFFSET):EyeInTheSkyMapClass.FORWARD_OFFSET);
-            yAdd=EyeInTheSkyMapClass.EYE_HEIGHT+(Math.random()*EyeInTheSkyMapClass.EYE_EXTRA_HEIGHT);
+            yAdd=EyeInTheSkyMapClass.EYE_HEIGHT+this.randomScaled(EyeInTheSkyMapClass.EYE_EXTRA_HEIGHT);
             
             this.addSprite(BurningEyeClass,(playerSprite.x+xAdd),(playerSprite.y-yAdd),null);
         }

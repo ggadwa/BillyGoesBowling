@@ -1,3 +1,5 @@
+import RandomClass from './random.js';
+
 export default class SpriteClass {
         
     constructor(game,x,y,data) {
@@ -490,6 +492,22 @@ export default class SpriteClass {
         this.game.deleteCurrentSaveSlotData(name);
     }
     
+    random() {
+        return(RandomClass.random());
+    }
+    
+    randomScaled(scale) {
+        return(RandomClass.randomScaled(scale));
+    }
+    
+    randomScaledInt(scale) {
+        return(RandomClass.randomScaledInt(scale));
+    }
+    
+    randomBoolean() {
+        return(RandomClass.randomBoolean());
+    }
+    
     setCamera(cameraSprite,cameraType) {
         this.game.map.setCamera(cameraSprite,cameraType);
     }
@@ -571,8 +589,8 @@ export default class SpriteClass {
         // shaking
         if (this.shake) {
             if (((this.game.tick/this.shakePeriodTick)&0x1)===0) {
-                x+=(Math.random()*(this.shakeSize*2.0))-this.shakeSize;
-                y+=(Math.random()*(this.shakeSize*2.0))-this.shakeSize;
+                x+=(this.game.randomScaled(this.shakeSize*2.0)-this.shakeSize);
+                y+=(this.game.randomScaled(this.shakeSize*2.0)-this.shakeSize);
             }
         }
         

@@ -16,7 +16,7 @@ export default class BurningEyeClass extends SpriteClass {
         super(game,x,y,data);
 
         this.doSound=true;
-        this.speed=BurningEyeClass.EYE_SPEED+(Math.random()*BurningEyeClass.EYE_EXTRA_SPEED);
+        this.speed=BurningEyeClass.EYE_SPEED+this.randomScaled(BurningEyeClass.EYE_EXTRA_SPEED);
         this.burnFlameIdx=0;
         
         // setup

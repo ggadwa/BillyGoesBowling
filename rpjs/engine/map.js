@@ -1,3 +1,4 @@
+import RandomClass from './random.js';
 import OverlayClass from './overlay.js';
 import SpriteClass from './sprite.js';
 import ParticleClass from './particle.js';
@@ -288,7 +289,7 @@ export default class MapClass {
             checkSprite.collideSprite=sprite;
             sprite.stageEventCollideSprite(checkSprite);
             checkSprite.stageEventCollideSprite(sprite);
-            return(true);
+            break;
         }
         
         // check map
@@ -340,11 +341,11 @@ export default class MapClass {
                 checkSprite.collideTileRight=dx+MapClass.MAP_TILE_SIZE;
                 checkSprite.stageEventCollideTile(gx,gy,tileIdx);
                 
-                return(true);
+                break;
             }
         }
         
-        return(false);
+        return((checkSprite.collideSprite!==null) || (checkSprite.collideTileIdx!==-1));
     }
     
     checkCollisionStand(checkSprite,dist) {
@@ -615,6 +616,23 @@ export default class MapClass {
         return(this.getMapViewportTopEdge()+this.game.canvasHeight);
     }
     
+    // random
+    random() {
+        return(RandomClass.random());
+    }
+    
+    randomScaled(scale) {
+        return(RandomClass.randomScaled(scale));
+    }
+    
+    randomScaledInt(scale) {
+        return(RandomClass.randomScaledInt(scale));
+    }
+    
+    randomBoolean() {
+        return(RandomClass.randomBoolean());
+    }
+    
     // cameras
     setCamera(cameraSprite,cameraType) {
         this.cameraSprite=cameraSprite;
@@ -762,7 +780,7 @@ export default class MapClass {
         if (this.shakeCount!==-1) {
             this.shakeCount--;
             
-            this.offsetY+=(5-(Math.random()*10));
+            this.offsetY+=(5-this.game.randomScaledInt(10));
         }
         
         // need to make sure stuff lands on pixels

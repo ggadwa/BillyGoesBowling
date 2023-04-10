@@ -46,7 +46,7 @@ export default class DrainPipeSnakeClass extends SpriteClass {
         this.setCollideSpriteClassStandOnIgnoreList([DoorClass,PinClass,TrophyClass]);
         this.setCollideTileIndexIgnoreList([22,23,54]);
         
-        this.flipX=(Math.random()>0.5); // start with random direction
+        this.flipX=this.randomBoolean(); // start with random direction
         
         Object.seal(this);
     }

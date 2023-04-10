@@ -358,4 +358,55 @@ export default class ParticleDefsClass {
         lifeTick:90
     };
 
+    static BOMB_RED_PARTICLE={
+        layer:ParticleClass.AFTER_SPRITES_LAYER,
+        startSize:5,
+        endSize:45,
+        startAlpha:0.4,
+        endAlpha:0.01,
+        initialMoveX:4,
+        initialMoveY:4,
+        moveXFactor:0.1,
+        moveYFactor:0.1,
+        imageName:'particles/explode_red',
+        count:8,
+        rotateFactor:0.3,
+        reverse:false,
+        lifeTick:33
+    };
+    
+    static BOMB_ORANGE_PARTICLE={
+        layer:ParticleClass.AFTER_SPRITES_LAYER,
+        startSize:10,
+        endSize:35,
+        startAlpha:0.5,
+        endAlpha:0.01,
+        initialMoveX:3,
+        initialMoveY:3,
+        moveXFactor:0.1,
+        moveYFactor:0.1,
+        imageName:'particles/explode_orange',
+        count:4,
+        rotateFactor:0.25,
+        reverse:false,
+        lifeTick:31
+    };
+    
+    static BOMB_YELLOW_PARTICLE={
+        layer:ParticleClass.AFTER_SPRITES_LAYER,
+        startSize:15,
+        endSize:25,
+        startAlpha:0.6,
+        endAlpha:0.01,
+        initialMoveX:2,
+        initialMoveY:2,
+        moveXFactor:0.05,
+        moveYFactor:0.05,
+        imageName:'particles/explode_yellow',
+        count:2,
+        rotateFactor:0.2,
+        reverse:false,
+        lifeTick:29
+    };
+
 }

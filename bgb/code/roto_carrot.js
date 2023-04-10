@@ -48,14 +48,14 @@ export default class RotoCarrotClass extends SpriteClass {
         this.carrotPause=0;
         this.carrotArc=0;
         
-        this.speed=RotoCarrotClass.CARROT_SPEED+(Math.random()*RotoCarrotClass.CARROT_SPEED_RANDOM_ADD);
+        this.speed=RotoCarrotClass.CARROT_SPEED+this.randomScaled(RotoCarrotClass.CARROT_SPEED_RANDOM_ADD);
         
         Object.seal(this);
     }
     
     onMapStart() {
         this.originalY=this.y;
-        this.bombTick=RotoCarrotClass.BOMB_DROP_TICK+Math.trunc(Math.random()*RotoCarrotClass.BOMB_DROP_TICK_RANDOM_ADD);
+        this.bombTick=RotoCarrotClass.BOMB_DROP_TICK+this.randomScaledInt(RotoCarrotClass.BOMB_DROP_TICK_RANDOM_ADD);
     }
     
     onCollideSprite(sprite) {

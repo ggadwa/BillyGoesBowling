@@ -131,7 +131,7 @@ export default class MrCPUClass extends SpriteClass {
             
             if (this.grounded) {
                 this.mode=MrCPUClass.CPU_MODE_WALK;
-                this.walkCount=MrCPUClass.MIN_WALK_TICK+Math.trunc(MrCPUClass.RANDOM_WALK_TICK*Math.random());
+                this.walkCount=MrCPUClass.MIN_WALK_TICK+this.randomScaledInt(MrCPUClass.RANDOM_WALK_TICK);
                 this.moveX=((playerSprite.x<this.x)?-MrCPUClass.MAX_SPEED:MrCPUClass.MAX_SPEED);
                 this.land();
             }
@@ -150,12 +150,12 @@ export default class MrCPUClass extends SpriteClass {
             this.walkCount--;
             if (this.walkCount===0) {
                 if (!this.grounded) {
-                    this.walkCount=Math.trunc(MrCPUClass.RANDOM_WALK_TICK*Math.random()); // much shorter time walking
+                    this.walkCount=this.randomScaledInt(MrCPUClass.RANDOM_WALK_TICK); // much shorter time walking
                 }
                 else {
                     this.mode=MrCPUClass.CPU_MODE_JETPACK;
                     this.jetCount=MrCPUClass.JET_TICK;
-                    this.moveX=MrCPUClass.JETPACK_MOVE_SPEED*((Math.random()<0.5)?-1:1);
+                    this.moveX=MrCPUClass.JETPACK_MOVE_SPEED*(this.randomBoolean()?-1:1);
                     this.playSound('jet');
                 }
             }
@@ -180,7 +180,7 @@ export default class MrCPUClass extends SpriteClass {
         this.moveWithCollision(this.moveX,0);
         this.runGravity();
         
-        mx=this.x+Math.trunc(this.width*Math.random());
+        mx=this.x+this.randomScaled(this.width);
         switch (tick%4) {
             case 0:
                 this.addParticle(mx,this.y,ParticleDefsClass.JET_RED_PARTICLE);

@@ -1,3 +1,5 @@
+import RandomClass from './random.js';
+
 export default class ParticleClass {
     
     static BEFORE_SPRITES_LAYER=0;
@@ -40,10 +42,10 @@ export default class ParticleClass {
         rad=Math.PI*2.0;
             
         for (n=0;n!==this.def.count;n++) {
-            this.xs[n]=(((Math.random()*2.0)-1.0)*this.def.initialMoveX);
-            this.ys[n]=(((Math.random()*2.0)-1.0)*this.def.initialMoveY);
-            this.rot[n]=(this.def.rotateFactor===0.0)?0.0:(Math.random()*rad);
-            this.rotAdd[n]=Math.random(this.def.rotateFactor*2.0)-this.def.rotateFactor;
+            this.xs[n]=((RandomClass.randomScaled(2.0)-1.0)*this.def.initialMoveX);
+            this.ys[n]=((RandomClass.randomScaled(2.0)-1.0)*this.def.initialMoveY);
+            this.rot[n]=(this.def.rotateFactor===0.0)?0.0:RandomClass.randomScaled(rad);
+            this.rotAdd[n]=RandomClass.randomScaled(this.def.rotateFactor*2.0)-this.def.rotateFactor;
         }
     }
     

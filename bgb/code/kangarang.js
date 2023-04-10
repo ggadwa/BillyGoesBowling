@@ -45,7 +45,7 @@ export default class KangarangClass extends SpriteClass {
     }
     
     onMapStart() {
-        this.fireWait=KangarangClass.FIRE_TICK+Math.trunc(Math.random()*KangarangClass.FIRE_TICK_RANDOM_ADD);
+        this.fireWait=KangarangClass.FIRE_TICK+this.randomScaledInt(KangarangClass.FIRE_TICK_RANDOM_ADD);
         this.inAir=false;
         this.isDead=false;
         this.isFirstShow=true;
@@ -60,7 +60,7 @@ export default class KangarangClass extends SpriteClass {
         this.fireWait--;
         if (this.fireWait>0) return;
         
-        this.fireWait=KangarangClass.FIRE_TICK+Math.trunc(Math.random()*KangarangClass.FIRE_TICK_RANDOM_ADD);
+        this.fireWait=KangarangClass.FIRE_TICK+this.randomScaledInt(KangarangClass.FIRE_TICK_RANDOM_ADD);
         
         // don't fire but just wait again if too many boomerangs out
         if (this.countSpriteOfType(BoomerangClass)>KangarangClass.MAX_BOOMERANG) return;

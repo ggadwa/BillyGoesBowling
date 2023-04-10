@@ -23,7 +23,7 @@ export default class BombClass extends SpriteClass {
         
         this.setCollideSpriteClassCollideIgnoreList([RotoCarrotClass]);
         
-        this.speed=BombClass.BOMB_SPEED+(Math.random()*BombClass.BOMB_SPEED_RANDOM_ADD);
+        this.speed=BombClass.BOMB_SPEED+this.randomScaled(BombClass.BOMB_SPEED_RANDOM_ADD);
         
         Object.seal(this);
     }
@@ -35,9 +35,9 @@ export default class BombClass extends SpriteClass {
         cy=this.y+Math.trunc(this.height*0.5);
         
         this.addParticle(cx,cy,ParticleDefsClass.EXPLODE_SMOKE_PARTICLE);
-        this.addParticle(cx,cy,ParticleDefsClass.EXPLODE_RED_PARTICLE);
-        this.addParticle(cx,cy,ParticleDefsClass.EXPLODE_ORANGE_PARTICLE);
-        this.addParticle(cx,cy,ParticleDefsClass.EXPLODE_YELLOW_PARTICLE);
+        this.addParticle(cx,cy,ParticleDefsClass.BOMB_RED_PARTICLE);
+        this.addParticle(cx,cy,ParticleDefsClass.BOMB_ORANGE_PARTICLE);
+        this.addParticle(cx,cy,ParticleDefsClass.BOMB_YELLOW_PARTICLE);
         this.playSound('explode');
 
         this.delete();

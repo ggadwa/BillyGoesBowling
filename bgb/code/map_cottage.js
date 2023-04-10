@@ -46,8 +46,8 @@ export default class MapCottageClass extends SpriteClass {
         
             // fireworks
             for (n=0;n!==10;n++) {
-                cx=this.x+((100+Math.trunc(Math.random()*150))*((Math.random()>0.5)?-1:1));
-                cy=this.y+((100+Math.trunc(Math.random()*150))*((Math.random()>0.5)?-1:1));
+                cx=this.x+((100+this.randomScaled(150))*(this.randomBoolean()?-1:1));
+                cy=this.y+((100+this.randomScaled(150))*(this.randomBoolean?-1:1));
 
                 this.addParticle(cx,cy,ParticleDefsClass.FIREWORK_1_PARTICLE);
                 this.addParticle(cx,cy,ParticleDefsClass.FIREWORK_2_PARTICLE);

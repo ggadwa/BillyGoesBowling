@@ -17,7 +17,7 @@ export default class EasterHeadClass extends SpriteClass {
     constructor(game,x,y,data) {
         super(game,x,y,data);
         
-        this.fireCount=EasterHeadClass.FIRE_TICK+Math.trunc(Math.random()*EasterHeadClass.FIRE_RANDOM_TICK_ADD); // random firing times
+        this.fireCount=EasterHeadClass.FIRE_TICK+this.randomScaledInt(EasterHeadClass.FIRE_RANDOM_TICK_ADD); // random firing times
         this.eyeCount=0;
         this.sinkY=0;
         this.originalY=y;
@@ -47,12 +47,12 @@ export default class EasterHeadClass extends SpriteClass {
         
         // do not throw if already too many fish, but make a short timer
         if (this.countSpriteOfType(FishClass)>=EasterHeadClass.MAX_CONCURRENT_FISH) {
-            this.fireCount=Math.trunc(Math.random()*EasterHeadClass.FIRE_RANDOM_TICK_ADD);
+            this.fireCount=this.randomScaledInt(EasterHeadClass.FIRE_RANDOM_TICK_ADD);
             return;
         }
         
         // reset for next throw
-        this.fireCount=EasterHeadClass.FIRE_TICK+Math.trunc(Math.random()*EasterHeadClass.FIRE_RANDOM_TICK_ADD); // random firing times;
+        this.fireCount=EasterHeadClass.FIRE_TICK+this.randomScaledInt(EasterHeadClass.FIRE_RANDOM_TICK_ADD); // random firing times;
         
         // do not fire if too far away, but cut the fire time in half
         dist=this.distanceToSprite(playerSprite);

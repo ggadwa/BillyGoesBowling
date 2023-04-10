@@ -65,8 +65,8 @@ export default class BoomerangClass extends SpriteClass {
         if (this.needReset) {
             this.needReset=false;
             
-            this.acceleration=BoomerangClass.BOOMERANG_ACCELERATION_MIN+(Math.random()*BoomerangClass.BOOMERANG_ACCELERATION_ADD);
-            this.speed=BoomerangClass.MAX_BOOMERANG_SPEED_MIN+(Math.random()*BoomerangClass.MAX_BOOMERANG_SPEED_ADD);
+            this.acceleration=BoomerangClass.BOOMERANG_ACCELERATION_MIN+this.randomScaled(BoomerangClass.BOOMERANG_ACCELERATION_ADD);
+            this.speed=BoomerangClass.MAX_BOOMERANG_SPEED_MIN+this.randomScaled(BoomerangClass.MAX_BOOMERANG_SPEED_ADD);
         }
         
         // accelerate towards player

@@ -1,3 +1,4 @@
+import RandomClass from './random.js';
 import MapClass from './map.js';
 import ImageListClass from '../resources/image_list.js';
 import SoundListClass from '../resources/sound_list.js';
@@ -47,10 +48,6 @@ export default class GameClass {
         this.paused=true;
         this.canvasClicked=false;
         
-        // rng
-        this.mwcW=0;
-        this.mwcZ=0;
-        
         // save slot
         this.currentSaveSlot=0;
         
@@ -89,7 +86,7 @@ export default class GameClass {
         }
         
         // set seed
-        this.setRandomSeed(performance.now());
+        RandomClass.setSeedCurrentTimestamp();
         
         // get the resource names
         this.attachResources();
@@ -172,24 +169,22 @@ export default class GameClass {
     }
     
     // random
+    random() {
+        return(RandomClass.random());
+    }
     
-    setRandomSeed(seed)
-    {
-        this.mwcW=(seed<<16)&0xFFFF;
-        this.mwcZ=seed&0xFFFF;
+    randomScaled(scale) {
+        return(RandomClass.randomScaled(scale));
     }
-
-    random()
-    {
-        let r;
-
-        this.mwcZ=(36969*(this.mwcZ&0xFFFF)+(this.mwcZ>>16))&0xFFFFFFFF;
-        this.mwcW=(18000*(this.mwcW&0xFFFF)+(this.mwcW>>16))&0xFFFFFFFF;
-        r=((this.mwcZ<<16)+this.mwcW)&0xFFFFFFFF;
-
-        return((r/=0xFFFFFFFF)+0.5);
+    
+    randomScaledInt(scale) {
+        return(RandomClass.randomScaledInt(scale));
     }
-
+    
+    randomBoolean() {
+        return(RandomClass.randomBoolean());
+    }
+    
     /**
      * Override this to add in all the resources for this game
      * (images, sounds, music, maps)

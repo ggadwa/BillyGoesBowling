@@ -39,7 +39,7 @@ export default class BoneyOneEyeClass extends SpriteClass {
     }
     
     onMapStart() {
-        this.fireWait=BoneyOneEyeClass.FIRE_TICK+Math.trunc(Math.random()*BoneyOneEyeClass.FIRE_TICK_RANDOM_ADD);
+        this.fireWait=BoneyOneEyeClass.FIRE_TICK+this.randomScaledInt(BoneyOneEyeClass.FIRE_TICK_RANDOM_ADD);
         this.inAir=false;
         this.isDead=false;
         this.isFirstShow=true;
@@ -53,7 +53,7 @@ export default class BoneyOneEyeClass extends SpriteClass {
         this.fireWait--;
         if (this.fireWait>0) return;
         
-        this.fireWait=BoneyOneEyeClass.FIRE_TICK+Math.trunc(Math.random()*BoneyOneEyeClass.FIRE_TICK_RANDOM_ADD);
+        this.fireWait=BoneyOneEyeClass.FIRE_TICK+this.randomScaledInt(BoneyOneEyeClass.FIRE_TICK_RANDOM_ADD);
 
         // pick the eye side closest to player
         if (this.flipX) {

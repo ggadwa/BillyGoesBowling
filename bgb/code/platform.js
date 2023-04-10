@@ -1,4 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
+import BallClass from './ball.js';
 
 export default class PlatformClass extends SpriteClass
 {
@@ -23,37 +24,44 @@ export default class PlatformClass extends SpriteClass
         this.gravityMaxValue=0;
         this.canCollide=true;
         this.canStandOn=true;
-        
+
         this.setCollideTileIndexIgnoreList([22,23,54]);
         
         Object.seal(this);
     }
     
+    turnAround() {
+        this.xAdd=-this.xAdd;
+        this.x+=this.xAdd;
+        this.pauseCount=PlatformClass.PLATFORM_PAUSE_TICK;
+        this.playSound('slam');
+    }
+
+    onCollideSprite(sprite) {
+        // colliding with ball does not turn around platform
+        if (sprite instanceof BallClass)return;
+
+        this.turnAround();
+    }
+    
+    onCollideTile(tileX,tileY,tileIdx) {
+        this.turnAround();
+    }
+    
     onRun(tick) {
         let playerSprite=this.getPlayerSprite();
         
-            // are we paused?
-            
+        // are we paused?
         if (this.pauseCount>0) {
             this.pauseCount--;
             return;
         }
         
-            // move platform
-            
+        // move platform
         this.x+=this.xAdd;
+        this.checkCollision();
         
-        if (this.checkCollision()) {
-            this.xAdd=-this.xAdd;
-            this.x+=this.xAdd;
-            this.pauseCount=PlatformClass.PLATFORM_PAUSE_TICK;
-            this.playSound('slam');
-            return;
-        }
-        
-            // move player if standing
-            // on it
-            
+        // move player if standing on it
         if (playerSprite.standSprite===this) {
             playerSprite.moveWithCollision(this.xAdd,0);
         }
