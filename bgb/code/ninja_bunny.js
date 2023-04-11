@@ -10,6 +10,7 @@ import CloudBlockClass from './cloud_block.js';
 import DoorClass from './door.js';
 import PinClass from './pin.js';
 import TrophyClass from './trophy.js';
+import DrainPipeSnakeClass from '../code/drain_pipe_snake.js';
 
 export default class NinjaBunnyClass extends SpriteClass {
 
@@ -59,8 +60,6 @@ export default class NinjaBunnyClass extends SpriteClass {
     jumpAwayFromSprite(sprite) {
         this.jumpTowardsSprite(sprite);
         this.bunnyJumpDirection=-this.bunnyJumpDirection;
-        
-        this.playSound('jump');
     }
     
     kill() {
@@ -87,8 +86,12 @@ export default class NinjaBunnyClass extends SpriteClass {
             return;
         }
         
-        // another other sprite turns the bunny around
-        this.jumpAwayFromSprite(sprite);
+        // another bunny, snake bounce away
+        if (
+            (sprite instanceof NinjaBunnyClass) ||
+            (sprite instanceof DrainPipeSnakeClass)) {
+                this.jumpAwayFromSprite(sprite);
+        };
     }
     
     onStandOnSprite(sprite) {

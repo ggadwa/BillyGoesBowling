@@ -34,7 +34,7 @@ export default class BombClass extends SpriteClass {
         cx=this.x+Math.trunc(this.width*0.5);
         cy=this.y+Math.trunc(this.height*0.5);
         
-        this.addParticle(cx,cy,ParticleDefsClass.EXPLODE_SMOKE_PARTICLE);
+        this.addParticle(cx,cy,ParticleDefsClass.BOMB_SMOKE_PARTICLE);
         this.addParticle(cx,cy,ParticleDefsClass.BOMB_RED_PARTICLE);
         this.addParticle(cx,cy,ParticleDefsClass.BOMB_ORANGE_PARTICLE);
         this.addParticle(cx,cy,ParticleDefsClass.BOMB_YELLOW_PARTICLE);

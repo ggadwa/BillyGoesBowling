@@ -429,6 +429,10 @@ export default class SpriteClass {
         return(this.gravityMoveY);
     }
     
+    stopUpwardGravity() {
+        if (this.gravityMoveY<0) this.gravityMoveY=0;
+    }
+    
     stopAllGravity() {
         this.gravityFactor=0.0
         this.gravityMoveY=0;

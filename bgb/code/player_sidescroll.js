@@ -20,6 +20,7 @@ import EyeClass from './eye.js';
 import KangarangClass from '../code/kangarang.js';
 import BoomerangClass from './boomerang.js';
 import KingGhastlyClass from '../code/king_ghastly.js';
+import BurningEyeClass from '../code/burning_eye.js';
 
 export default class PlayerSideScrollClass extends SpriteClass {
 
@@ -160,6 +161,7 @@ export default class PlayerSideScrollClass extends SpriteClass {
             (sprite instanceof MrCPUClass) ||
             (sprite instanceof BoneyOneEyeClass) ||
             (sprite instanceof EyeClass) ||
+            (sprite instanceof BurningEyeClass) ||
             (sprite instanceof KangarangClass)||
             (sprite instanceof BoomerangClass)) {
                 this.hurtPlayer();

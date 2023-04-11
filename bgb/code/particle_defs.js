@@ -369,7 +369,7 @@ export default class ParticleDefsClass {
         moveXFactor:0.1,
         moveYFactor:0.1,
         imageName:'particles/explode_red',
-        count:8,
+        count:12,
         rotateFactor:0.3,
         reverse:false,
         lifeTick:33
@@ -386,7 +386,7 @@ export default class ParticleDefsClass {
         moveXFactor:0.1,
         moveYFactor:0.1,
         imageName:'particles/explode_orange',
-        count:4,
+        count:6,
         rotateFactor:0.25,
         reverse:false,
         lifeTick:31
@@ -407,6 +407,23 @@ export default class ParticleDefsClass {
         rotateFactor:0.2,
         reverse:false,
         lifeTick:29
+    };
+    
+    static BOMB_SMOKE_PARTICLE={
+        layer:ParticleClass.AFTER_SPRITES_LAYER,
+        startSize:1,
+        endSize:150,
+        startAlpha:0.4,
+        endAlpha:0.01,
+        initialMoveX:4,
+        initialMoveY:4,
+        moveXFactor:0.001,
+        moveYFactor:0.001,
+        imageName:'particles/smoke',
+        count:8,
+        rotateFactor:0.1,
+        reverse:false,
+        lifeTick:50
     };
 
 }

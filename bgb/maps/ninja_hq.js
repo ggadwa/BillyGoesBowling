@@ -257,7 +257,7 @@ export default class NinjaHQMapClass extends MapClass {
             new NinjaBunnyClass(this.game,2112,5696,null),
             new NinjaBunnyClass(this.game,2112,5504,null),
             new NinjaBunnyClass(this.game,1984,5760,null),
-            new NinjaBunnyClass(this.game,1984,5696,null),
+            new NinjaBunnyClass(this.game,1920,5120,null),
             new NinjaBunnyClass(this.game,2240,5504,null),
             new NinjaBunnyClass(this.game,1728,6016,null),
             new NinjaBunnyClass(this.game,1856,6080,null),
