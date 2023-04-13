@@ -128,12 +128,12 @@ export default class GameClass {
         this.input.initialize();
         
         // start in attract mode
-        this.inAttract=false;
+        this.inAttract=true;
         
         // load the attract map
-        this.map=this.mapList.get(this.getStartMap());
+        this.map=this.mapList.get(this.getAttractMap());
         if (this.map===undefined) {
-            alert('Unknown start map: '+this.getAttractMap());
+            alert('Unknown attract map: '+this.getAttractMap());
             return;
         }
 
@@ -430,10 +430,14 @@ export default class GameClass {
         this.map.draw(this.backCTX);
         
         // draw the UI
-        this.drawUI();
-        this.drawFPS();
-        if (this.inAttract) this.drawAttract();
+        if (this.inAttract) {
+            this.drawAttract();
+        }
+        else {
+            this.drawUI();
+        }
         if (this.paused) this.drawPause();
+        // this.drawFPS();
         
         // transfer to front canvas
         this.ctx.drawImage(this.backCanvas,0,0);

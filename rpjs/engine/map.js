@@ -676,7 +676,7 @@ export default class MapClass {
         if (offX<0) offX=0;
         if (offX>rgt) offX=rgt;
         
-        this.offsetX=offX;
+        this.offsetX=offX+this.cameraSprite.cameraOffsetX;
         
         // we only change the current
         // map Y if the sprite gets too close to edges
@@ -690,7 +690,7 @@ export default class MapClass {
         if (offY<0) offY=0;
         if (offY>bot) offY=bot;
         
-        this.offsetY=offY;
+        this.offsetY=offY+this.cameraSprite.cameraOffsetY;
     }
     
     cameraCalcOffsetOverHead() {

@@ -1,6 +1,7 @@
 import GameClass from '../../rpjs/engine/game.js';
 import PlayerWorldClass from './player_world.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
+import PlayerAttractClass from './player_attract.js';
 import BlockClass from './block.js';
 import BreakBlockClass from './break_block.js';
 import BreakBlockStrongClass from './break_block_strong.js';
@@ -63,6 +64,7 @@ import PlatformPerilMapClass from '../maps/platform_peril.js';
 import NinjaHordeMapClass from '../maps/ninja_horde.js';
 import SprintAThonMapClass from '../maps/spring_a_thon.js';
 import KingGhastlyCastleMapClass from '../maps/king_ghastly_castle.js';
+import AttractMapClass from '../maps/attract.js';
 import TestMapClass from '../maps/test.js';
 
 export default class BillyGameClass extends GameClass {
@@ -325,6 +327,7 @@ export default class BillyGameClass extends GameClass {
         this.addMap('spring_a_thon',new SprintAThonMapClass(this));
         this.addMap('king_ghastly_castle',new KingGhastlyCastleMapClass(this));
         
+        this.addMap('attract',new AttractMapClass(this));
         this.addMap('test',new TestMapClass(this));
     }
     
@@ -356,7 +359,8 @@ export default class BillyGameClass extends GameClass {
             new MapCastleClass(this,0,0,null),
             new MapCottageClass(this,0,0,null),
             new BreakBlockHalfLeftClass(this,0,0,null),
-            new BreakBlockHalfRightClass(this,0,0,null)
+            new BreakBlockHalfRightClass(this,0,0,null),
+            new PlayerAttractClass(this,0,0,null)
         ]);
     }
    
@@ -365,7 +369,7 @@ export default class BillyGameClass extends GameClass {
     }
     
     getAttractMap() {
-        return('puzzling_blocks');
+        return('attract');
     }
     
     onMessage(fromSprite,cmd,data) {
@@ -493,22 +497,24 @@ export default class BillyGameClass extends GameClass {
     drawAttractSaveBox(slotIdx,x,y) {
         this.drawUIImage('ui/save_box',x,y);
         
-        this.drawUIText('Save Slot 1',(x+5),15);
+        this.setupUIText('24px Arial','#000000','center','alphabetic');
+        this.drawUIText(('Save Slot '+(slotIdx+1)),(x+100),(y+30));
         
-        this.drawUIImage('ui/pin',(x+50),(y+10));
-        this.drawUIText((this.getSaveSlotDataCount(slotIdx,'pin_')+'/'+BillyGameClass.BANNER_MAP_COUNT),(x+50),(y+120));
+        this.setupUIText('20px Arial','#000000','left','alphabetic');
         
-        this.drawUIImage('ui/trophy',(x+117),(y+10));
-        this.drawUIText((this.getSaveSlotDataCount(slotIdx,'trophy_')+'/'+BillyGameClass.BANNER_MAP_COUNT),(x+130),(y+120));
+        this.drawUIImage('ui/pin',(x+10),(y+40));
+        this.drawUIText((this.getSaveSlotDataCount(slotIdx,'pin_')+'/'+BillyGameClass.BANNER_MAP_COUNT),(x+40),(y+75));
+        
+        this.drawUIImage('ui/trophy',(x+95),(y+38));
+        this.drawUIText((this.getSaveSlotDataCount(slotIdx,'trophy_')+'/'+BillyGameClass.BANNER_MAP_COUNT),(x+130),(y+75));
     }
     
     drawAttract() {
-        this.setupUIText('24px Arial','#000000','right','alphabetic');
-        this.drawUIImage('ui/title',10,10);
+        this.drawUIImage('ui/title',300,90);
         
-        this.drawAttractSaveBox(0,50,400);
-        this.drawAttractSaveBox(1,250,400);
-        this.drawAttractSaveBox(2,700,400);
+        this.drawAttractSaveBox(0,220,400);
+        this.drawAttractSaveBox(1,540,400);
+        this.drawAttractSaveBox(2,860,400);
         
         
     }

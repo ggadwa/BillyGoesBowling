@@ -28,6 +28,8 @@ export default class SpriteClass {
         this.shake=false;
         this.shakeSize=0;
         this.shakePeriodTick=0;
+        this.cameraOffsetX=0;
+        this.cameraOffsetY=0;
         this.resizeX=1.0;
         this.resizeY=1.0;
         
