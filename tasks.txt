@@ -3,8 +3,7 @@
    
 
 
-- recording of moves to run under title page?
-- title page, save spots, etc   
+- start -> back to attract? 
 
 
 - ducking?  Need collision offset box changes

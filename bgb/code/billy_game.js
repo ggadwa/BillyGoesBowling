@@ -1,4 +1,5 @@
 import GameClass from '../../rpjs/engine/game.js';
+import InputClass from '../../rpjs/engine/input.js';
 import PlayerWorldClass from './player_world.js';
 import PlayerSideScrollClass from './player_sidescroll.js';
 import PlayerAttractClass from './player_attract.js';
@@ -87,6 +88,8 @@ export default class BillyGameClass extends GameClass {
         this.bannerMapRequiredPinCount=0;
         this.bannerMode=BillyGameClass.BANNER_MODE_NONE;
         this.bannerFadeCount=0;
+        
+        this.saveSlotMoved=false;
         
         Object.seal(this);
     }
@@ -251,6 +254,7 @@ export default class BillyGameClass extends GameClass {
         this.addImage('ui/win_banner');
         this.addImage('ui/title');
         this.addImage('ui/save_box');
+        this.addImage('ui/save_box_selected');
         
         // sounds
         this.addSound('click');
@@ -281,9 +285,9 @@ export default class BillyGameClass extends GameClass {
         this.addSound('funeral_march');
         
         // music
-        this.addMusic('world');
-        this.addMusic('map');
-        this.addMusic('boss');
+        this.addMusic('world',5,10);
+        this.addMusic('map',5,10);
+        this.addMusic('boss',5,10);
         
         // maps
         this.addMap('world_main',new WorldMainMapClass(this));
@@ -364,14 +368,11 @@ export default class BillyGameClass extends GameClass {
         ]);
     }
    
-    getStartMap() {
-        return('world_main');
-    }
-    
     getAttractMap() {
         return('attract');
     }
     
+    // running
     onMessage(fromSprite,cmd,data) {
         switch (cmd) {
             case 'banner_set':
@@ -390,7 +391,7 @@ export default class BillyGameClass extends GameClass {
         }
     }
     
-    onRun(tick) {
+    runGame(tick) {
         switch (this.bannerMode) {
             case BillyGameClass.BANNER_MODE_FADE_IN:
                 this.bannerFadeCount--;
@@ -403,7 +404,57 @@ export default class BillyGameClass extends GameClass {
         }
     }
     
-    drawUI() {
+    runAttract() {
+        let saveSlot=this.getCurrentSaveSlot();
+        
+        // move save slot
+        if (this.saveSlotMoved) {
+            if (
+                    (!this.getInputStateIsNegative(InputClass.LEFT_STICK_X)) &&
+                    (!this.getInputStateIsPositive(InputClass.LEFT_STICK_X)) &&
+                    (!this.getInputStateIsNegative(InputClass.LEFT_STICK_Y)) &&
+                    (!this.getInputStateIsPositive(InputClass.LEFT_STICK_Y)) &&
+                    (!this.getInputStateBoolean(InputClass.SELECT))) {
+                this.saveSlotMoved=false;
+            }
+        }
+        else {
+            if ((this.getInputStateIsNegative(InputClass.LEFT_STICK_X)) || (this.getInputStateIsPositive(InputClass.LEFT_STICK_Y))) {
+                saveSlot--;
+                if (saveSlot<0) saveSlot=2;
+                this.setCurrentSaveSlot(saveSlot);
+                this.saveSlotMoved=true;
+            }
+            if ((this.getInputStateIsPositive(InputClass.LEFT_STICK_X)) || (this.getInputStateIsNegative(InputClass.LEFT_STICK_Y)) || this.getInputStateBoolean(InputClass.SELECT)) {
+                saveSlot++;
+                if (saveSlot>2) saveSlot=0;
+                this.setCurrentSaveSlot(saveSlot);
+                this.saveSlotMoved=true;
+            }
+        }
+        
+        // start a game
+        if (
+                (this.getInputStateBoolean(InputClass.START)) ||
+                (this.getInputStateBoolean(InputClass.BUTTON_A)) ||
+                (this.getInputStateBoolean(InputClass.BUTTON_B)) ||
+                (this.getInputStateBoolean(InputClass.BUTTON_X)) ||
+                (this.getInputStateBoolean(InputClass.BUTTON_Y))) {
+                    this.gotoMap('world_main');
+            }
+    }
+    
+    onRun(tick) {
+        if (this.isInAttract()) {
+            this.runAttract(tick);
+        }
+        else {
+            this.runGame(tick);
+        }
+    }
+    
+    // drawing
+    drawUIGame() {
         let mx,lx,rx,dx,wid;
         let time,min,sec,timeStr;
         let playerSprite=this.map.getPlayerSprite();
@@ -494,8 +545,8 @@ export default class BillyGameClass extends GameClass {
         }
     }
     
-    drawAttractSaveBox(slotIdx,x,y) {
-        this.drawUIImage('ui/save_box',x,y);
+    drawUIAttractSaveBox(slotIdx,x,y) {
+        this.drawUIImage(((slotIdx===this.getCurrentSaveSlot())?'ui/save_box_selected':'ui/save_box'),x,y);
         
         this.setupUIText('24px Arial','#000000','center','alphabetic');
         this.drawUIText(('Save Slot '+(slotIdx+1)),(x+100),(y+30));
@@ -509,13 +560,19 @@ export default class BillyGameClass extends GameClass {
         this.drawUIText((this.getSaveSlotDataCount(slotIdx,'trophy_')+'/'+BillyGameClass.BANNER_MAP_COUNT),(x+130),(y+75));
     }
     
-    drawAttract() {
-        this.drawUIImage('ui/title',300,90);
-        
-        this.drawAttractSaveBox(0,220,400);
-        this.drawAttractSaveBox(1,540,400);
-        this.drawAttractSaveBox(2,860,400);
-        
-        
+    drawUIAttract() {
+        this.drawUIImage('ui/title',290,90);
+        this.drawUIAttractSaveBox(0,220,400);
+        this.drawUIAttractSaveBox(1,540,400);
+        this.drawUIAttractSaveBox(2,860,400);
+    }
+    
+    drawUI() {
+        if (this.isInAttract()) {
+            this.drawUIAttract();
+        }
+        else {
+            this.drawUIGame();
+        }
     }
 }

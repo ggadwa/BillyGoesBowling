@@ -2,9 +2,11 @@ import SetupClass from '../engine/setup.js';
 
 export default class MusicClass {
 
-    constructor(audioContext,name) {
+    constructor(audioContext,name,loopStart,loopEnd) {
         this.audioContext=audioContext;
         this.name=name;
+        this.loopStart=loopStart;
+        this.loopEnd=loopEnd;
         
         this.buffer=null;
         
@@ -38,6 +40,8 @@ export default class MusicClass {
 
         source=this.audioContext.createBufferSource();
         source.loop=true;
+        source.loopStart=this.loopStart;
+        source.loopEnd=this.loopEnd;
         source.buffer=this.buffer;
         
         gain=this.audioContext.createGain();

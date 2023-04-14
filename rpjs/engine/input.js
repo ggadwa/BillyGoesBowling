@@ -12,8 +12,9 @@ export default class InputClass {
     static LEFT_SHOULDER_BOTTOM=9;
     static RIGHT_SHOULDER_TOP=10;
     static RIGHT_SHOULDER_BOTTOM=11;
+    static PAUSE=12;
     
-    static INPUT_COUNT=12;
+    static INPUT_COUNT=13;
     
     static INPUT_DEAD_ZONE=0.5;
     
@@ -89,8 +90,14 @@ export default class InputClass {
             case 'ArrowRight':
                 this.inputStates[InputClass.BUTTON_B]=1.0;
                 break;
-            case 'Escape':
+            case 'Enter':
                 this.inputStates[InputClass.START]=1.0;
+                break;
+            case 'Backquote':
+                this.inputStates[InputClass.SELECT]=1.0;
+                break;
+            case 'Escape':
+                this.inputStates[InputClass.PAUSE]=1.0;
                 break;
         }
     }
@@ -126,8 +133,14 @@ export default class InputClass {
             case 'ArrowRight':
                 this.inputStates[InputClass.BUTTON_B]=0.0;
                 break;
-            case 'Escape':
+            case 'Enter':
                 this.inputStates[InputClass.START]=0.0;
+                break;
+            case 'Backquote':
+                this.inputStates[InputClass.SELECT]=0.0;
+                break;
+            case 'Escape':
+                this.inputStates[InputClass.PAUSE]=0.0;
                 break;
         }
     }

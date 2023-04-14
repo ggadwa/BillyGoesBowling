@@ -204,8 +204,8 @@ export default class GameClass {
         this.soundList.add(name);
     }
     
-    addMusic(name) {
-        this.musicList.add(name);
+    addMusic(name,loopStart,loopEnd) {
+        this.musicList.add(name,loopStart,loopEnd);
     }
     
     addMap(name,map) {
@@ -308,7 +308,15 @@ export default class GameClass {
     deleteCurrentSaveSlotData(name) {
         this.deleteSaveSlotData(this.currentSaveSlot,name);
     }
+
+    getCurrentSaveSlot() {
+        return(this.currentSaveSlot);
+    }
     
+    setCurrentSaveSlot(currentSaveSlot) {
+        this.currentSaveSlot=currentSaveSlot;
+    }
+
     gotoMap(name) {
         this.gotoMapName=name;
     }
@@ -321,6 +329,31 @@ export default class GameClass {
         return((window.performance.now()-this.completionTimer)/1000.0);
     }
     
+    isInAttract() {
+        return(this.inAttract);
+    }
+    
+    // input
+    clearInputState(inputConstant) {
+        this.input.clearInputState(inputConstant);
+    }
+    
+    getInputStateFloat(inputConstant) {
+        return(this.input.getInputStateFloat(inputConstant));
+    }
+    
+    getInputStateIsNegative(inputConstant) {
+        return(this.input.getInputStateIsNegative(inputConstant));
+    }
+    
+    getInputStateIsPositive(inputConstant) {
+        return(this.input.getInputStateIsPositive(inputConstant));
+    }
+    
+    getInputStateBoolean(inputConstant) {
+        return(this.input.getInputStateBoolean(inputConstant));
+    }
+    
     /**
      * Override this to listen to messages from sprites, this
      * is up to the game developer as how to use cmd and data.
@@ -329,13 +362,10 @@ export default class GameClass {
     }    
     
     /**
-     * Override this to return the the starting map object.
+     * Override this to return the the attract map object.
      * 
      * @returns {MapClass}
      */
-    getStartMap() {
-    }
-    
     getAttractMap() {
     }
         
@@ -351,13 +381,6 @@ export default class GameClass {
      * and drawUIText methods to draw.
      */
     drawUI() {
-    }
-    
-    /**
-     * Override this to draw an attract mode items.  Use the drawUIImage, setupUIText,
-     * and drawUIText methods to draw.
-     */
-    drawAttract() {
     }
     
     drawSetAlpha(alpha) {
@@ -407,8 +430,10 @@ export default class GameClass {
             this.onRun(this.tick); // project run
             this.map.runInternal(this.tick);
             
-            // check for map goto triggers 
+            // check for map goto triggers
+            // this always clears attract mode
             if (this.gotoMapName!==null) {
+                this.inAttract=false;
                 this.input.clearInputState(null);
                 this.map=this.mapList.get(this.gotoMapName);
                 this.map.initialize();
@@ -430,12 +455,7 @@ export default class GameClass {
         this.map.draw(this.backCTX);
         
         // draw the UI
-        if (this.inAttract) {
-            this.drawAttract();
-        }
-        else {
-            this.drawUI();
-        }
+        this.drawUI();
         if (this.paused) this.drawPause();
         // this.drawFPS();
         
@@ -467,7 +487,7 @@ export default class GameClass {
 
         // pausing?
         if (!this.paused) {
-            if (this.input.getInputStateBoolean(InputClass.START)) {
+            if (this.input.getInputStateBoolean(InputClass.PAUSE)) {
                 this.paused=true;
                 this.canvasClicked=false;
                 this.audioContext.suspend();

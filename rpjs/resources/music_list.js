@@ -24,8 +24,8 @@ export default class MusicListClass {
         await Promise.all(promises);
     }
     
-    add(name) {
-        this.musics.set(name,new MusicClass(this.game.audioContext,name));
+    add(name,loopStart,loopEnd) {
+        this.musics.set(name,new MusicClass(this.game.audioContext,name,loopStart,loopEnd));
     }
     
     /**
