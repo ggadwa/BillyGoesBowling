@@ -237,7 +237,7 @@ export default class SnakesOnAPlainMapClass extends MapClass {
         this.addOverlay(OverlayDefsClass.CLOUD_BACKGROUND_OVERLAY);
         this.addOverlay(OverlayDefsClass.MOUNTAIN_BACKGROUND_OVERLAY);
 
-        this.game.musicList.start('map');
+        this.game.musicList.start('snake');
         
         this.addLiquid(this.game.imageList.get('liquids/water_top'),this.game.imageList.get('liquids/water_fill'),1184,5);
     }

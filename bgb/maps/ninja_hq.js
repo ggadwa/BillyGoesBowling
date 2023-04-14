@@ -322,6 +322,6 @@ export default class NinjaHQMapClass extends MapClass {
         this.addOverlay(OverlayDefsClass.CLOUD_BACKGROUND_OVERLAY);
         this.addOverlay(OverlayDefsClass.MOUNTAIN_BACKGROUND_OVERLAY);
 
-        this.game.musicList.start('map');
+        this.game.musicList.start('ninja');
     }
 }

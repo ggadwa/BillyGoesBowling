@@ -183,7 +183,7 @@ export default class SurfsDownMapClass extends MapClass {
         this.addOverlay(OverlayDefsClass.MOVING_CLOUD_UPPER_BACKGROUND_OVERLAY);
         this.addOverlay(OverlayDefsClass.MOVING_CLOUD_LOWER_BACKGROUND_OVERLAY);
 
-        this.game.musicList.start('map');
+        this.game.musicList.start('rush');
         
         this.addLiquid(this.game.imageList.get('liquids/water_top'),this.game.imageList.get('liquids/water_fill'),992,5);
         this.moveLiquidTo(1984,1.5);

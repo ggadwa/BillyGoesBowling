@@ -332,7 +332,7 @@ export default class SinkingFeelingMapClass extends MapClass {
         this.addOverlay(OverlayDefsClass.MOVING_CLOUD_UPPER_BACKGROUND_OVERLAY);
         this.addOverlay(OverlayDefsClass.MOVING_CLOUD_LOWER_BACKGROUND_OVERLAY);
 
-        this.game.musicList.start('map');
+        this.game.musicList.start('rush');
         
         this.addLiquid(this.game.imageList.get('liquids/water_top'),this.game.imageList.get('liquids/water_fill'),7936,5);
         this.moveLiquidTo(1000,0.6);

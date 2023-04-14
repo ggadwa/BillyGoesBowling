@@ -191,6 +191,6 @@ export default class WorkingCoalMineMapClass extends MapClass {
         this.addOverlay(OverlayDefsClass.MINE_BACKGROUND_OVERLAY);
         this.addOverlay(OverlayDefsClass.MINE_FOREGROUND_OVERLAY);
 
-        this.game.musicList.start('map');
+        this.game.musicList.start('ninja');
     }
 }

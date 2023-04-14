@@ -285,9 +285,12 @@ export default class BillyGameClass extends GameClass {
         this.addSound('funeral_march');
         
         // music
-        this.addMusic('world',5,10);
-        this.addMusic('map',5,10);
-        this.addMusic('boss',5,10);
+        this.addMusic('world',1.5,43.5);
+        this.addMusic('snake',2.667,34.667);
+        this.addMusic('ninja',2.526,35.368);
+        this.addMusic('rush',3.0,31.5);
+        this.addMusic('carrot',2.182,26.182);
+        this.addMusic('boss',0,16.5);
         
         // maps
         this.addMap('world_main',new WorldMainMapClass(this));

@@ -365,7 +365,7 @@ export default class ExecutionersRevengeMapClass extends MapClass {
         this.addOverlay(OverlayDefsClass.CLOUD_BACKGROUND_OVERLAY);
         this.addOverlay(OverlayDefsClass.MOUNTAIN_BACKGROUND_OVERLAY);
 
-        this.game.musicList.start('map');
+        this.game.musicList.start('rush');
         
         this.setCamera(this.getPlayerSprite(),MapClass.CAMERA_TYPE_SIDESCROLL);
     }
