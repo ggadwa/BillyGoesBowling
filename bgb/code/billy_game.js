@@ -449,6 +449,7 @@ export default class BillyGameClass extends GameClass {
                 (this.getInputStateBoolean(InputClass.BUTTON_B)) ||
                 (this.getInputStateBoolean(InputClass.BUTTON_X)) ||
                 (this.getInputStateBoolean(InputClass.BUTTON_Y))) {
+                    this.clearInputState();
                     this.gotoMap('world_main');
             }
     }
