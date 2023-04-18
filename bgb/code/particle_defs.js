@@ -325,7 +325,7 @@ export default class ParticleDefsClass {
     };
     
     static FIREWORK_1_PARTICLE={
-        layer:ParticleClass.AFTER_SPRITES_LAYER,
+        layer:ParticleClass.BEFORE_SPRITES_LAYER,
         startSize:32,
         endSize:128,
         startAlpha:0.8,
@@ -342,7 +342,41 @@ export default class ParticleDefsClass {
     };
 
     static FIREWORK_2_PARTICLE={
-        layer:ParticleClass.AFTER_SPRITES_LAYER,
+        layer:ParticleClass.BEFORE_SPRITES_LAYER,
+        startSize:32,
+        endSize:128,
+        startAlpha:0.8,
+        endAlpha:0.1,
+        initialMoveX:8,
+        initialMoveY:8,
+        moveXFactor:0.25,
+        moveYFactor:0.25,
+        imageName:'particles/explode_orange',
+        count:10,
+        rotateFactor:0.4,
+        reverse:false,
+        lifeTick:35
+    };
+
+    static FIREWORK_3_PARTICLE={
+        layer:ParticleClass.BEFORE_SPRITES_LAYER,
+        startSize:32,
+        endSize:128,
+        startAlpha:0.8,
+        endAlpha:0.1,
+        initialMoveX:8,
+        initialMoveY:8,
+        moveXFactor:0.25,
+        moveYFactor:0.25,
+        imageName:'particles/explode_yellow',
+        count:10,
+        rotateFactor:0.4,
+        reverse:false,
+        lifeTick:35
+    };
+
+    static FIREWORK_DEBRIS_PARTICLE={
+        layer:ParticleClass.BEFORE_SPRITES_LAYER,
         startSize:10,
         endSize:10,
         startAlpha:1.0,

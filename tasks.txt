@@ -2,8 +2,10 @@
 
    
 
+- move firework to bowling sensei
 
-- start -> back to attract? 
+- firework sound
+- bowling sensei
 
 
 - ducking?  Need collision offset box changes

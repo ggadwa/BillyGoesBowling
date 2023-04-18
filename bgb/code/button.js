@@ -49,6 +49,11 @@ export default class ButtonClass extends SpriteClass {
             this.moveLiquidTo(this.data.get('liquid_y'),this.data.get('liquid_move_speed'));
         }
         
+        // mode = world return to world
+        if (mode==='world') {
+            this.sendMessage(this.getPlayerSprite(),'warp_out',null);
+        }
+        
         // click sound
         this.playSound('click');
         

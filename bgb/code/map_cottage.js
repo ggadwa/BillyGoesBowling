@@ -1,5 +1,5 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
-import ParticleDefsClass from './particle_defs.js';
+import InputClass from '../../rpjs/engine/input.js';
 import PlayerWorldClass from './player_world.js';
 
 export default class MapCottageClass extends SpriteClass {
@@ -30,7 +30,6 @@ export default class MapCottageClass extends SpriteClass {
     }
         
     onRun(tick) {
-        let n,cx,cy;
         let playerSprite=this.getPlayerSprite();
         
         // are we colliding with player?
@@ -39,21 +38,18 @@ export default class MapCottageClass extends SpriteClass {
             return;
         }
         
-        // trigger the win banner and fireworks
+        // change UI
         if (!this.bannerHit) {
-            this.sendMessageToGame('banner_set',{"title":null,"map":null,"pin":this.getData('pin')});
+            this.sendMessageToGame('banner_set',{"title":"Princess Bowling Sensei's Cottage","map":null,"pin":-1});
             this.bannerHit=true;
+        }
         
-            // fireworks
-            for (n=0;n!==10;n++) {
-                cx=this.x+((100+this.randomScaled(150))*(this.randomBoolean()?-1:1));
-                cy=this.y+((100+this.randomScaled(150))*(this.randomBoolean?-1:1));
-
-                this.addParticle(cx,cy,ParticleDefsClass.FIREWORK_1_PARTICLE);
-                this.addParticle(cx,cy,ParticleDefsClass.FIREWORK_2_PARTICLE);
-            }
-
-            this.playSoundGlobal('pickup');
+        // if space than jump to map
+        // save the X/Y so we can restore when we exit
+        if ((this.getInputStateBoolean(InputClass.BUTTON_A)) || (this.getInputStateBoolean(InputClass.BUTTON_B))) {
+            this.setCurrentSaveSlotData('worldXPos',playerSprite.x);
+            this.setCurrentSaveSlotData('worldYPos',playerSprite.y);
+            this.game.gotoMap('won');
         }
     }
 }
