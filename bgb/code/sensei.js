@@ -22,6 +22,7 @@ export default class SenseiClass extends SpriteClass {
         
         // setup
         this.addImage('sprites/sensei_1');
+        this.addImage('sprites/sensei_2');
         this.setCurrentImage('sprites/sensei_1');
         
         this.show=true;
@@ -97,11 +98,11 @@ export default class SenseiClass extends SpriteClass {
         this.runGravity();
         
         // image
-        if (((tick/5)&0x1)===0) {
+        if (((tick/6)&0x1)===0) {
             this.setCurrentImage('sprites/sensei_1');
         }
         else {
-            this.setCurrentImage('sprites/sensei_1');
+            this.setCurrentImage('sprites/sensei_2');
         }
     }
     

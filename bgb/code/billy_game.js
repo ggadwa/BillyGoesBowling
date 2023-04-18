@@ -170,6 +170,7 @@ export default class BillyGameClass extends GameClass {
         this.addImage('sprites/billy_world_2');
         this.addImage('sprites/billy_world_3');
         this.addImage('sprites/sensei_1');
+        this.addImage('sprites/sensei_2');
         this.addImage('sprites/pin');
         this.addImage('sprites/block');
         this.addImage('sprites/break_block');
@@ -293,7 +294,7 @@ export default class BillyGameClass extends GameClass {
         this.addMusic('ninja',2.526,35.368);
         this.addMusic('rush',3.0,31.5);
         this.addMusic('carrot',2.182,26.182);
-        this.addMusic('boss',0,16.5);
+        this.addMusic('boss',0.75,36.844);
         
         // maps
         this.addMap('world_main',new WorldMainMapClass(this));
