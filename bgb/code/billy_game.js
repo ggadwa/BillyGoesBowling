@@ -71,6 +71,8 @@ import WonMapClass from '../maps/won.js';
 import TestMapClass from '../maps/test.js';
 
 export default class BillyGameClass extends GameClass {
+        
+    static VERSION='beta2';
 
     static BANNER_MODE_FADE_IN=0;
     static BANNER_MODE_FADE_OUT=1;
@@ -576,6 +578,9 @@ export default class BillyGameClass extends GameClass {
         this.drawUIAttractSaveBox(0,220,400);
         this.drawUIAttractSaveBox(1,540,400);
         this.drawUIAttractSaveBox(2,860,400);
+        
+        this.setupUIText('16px Arial','#000000','left','alphabetic');
+        this.drawUIText(BillyGameClass.VERSION,5,630);
     }
     
     drawUI() {

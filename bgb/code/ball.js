@@ -29,6 +29,9 @@ export default class BallClass extends SpriteClass {
     static TRAVEL_MODE_SLAM_UP=4;
     static TRAVEL_MODE_SLAM_DOWN=5;
     static TRAVEL_MODE_CIRCLE=6;
+    
+    static TRAVEL_CIRCLE_DIRECTION_CLOCKWISE=0;
+    static TRAVEL_CIRCLE_DIRECTION_COUNTERCLOCKWISE=1;
         
     static HEAD_PIXEL_DISTANCE=10;
         
@@ -59,6 +62,7 @@ export default class BallClass extends SpriteClass {
         this.travelAngle=0;
         this.travelLeftEdge=0;
         this.travelRightEdge=0;
+        this.travelCircleDirection=BallClass.TRAVEL_CIRCLE_DIRECTION_CLOCKWISE;
         
         this.reformTick=0;
         this.reformParticle=null;
@@ -250,15 +254,24 @@ export default class BallClass extends SpriteClass {
                 break;
                 
             case BallClass.TRAVEL_MODE_CIRCLE:
-                this.travelAngle+=BallClass.BALL_CIRCLE_SPEED;
-                if (this.travelAngle===360) {
-                    this.returnBall(false);
+                if (this.travelCircleDirection===BallClass.TRAVEL_CIRCLE_DIRECTION_CLOCKWISE) {
+                    this.travelAngle+=BallClass.BALL_CIRCLE_SPEED;
+                    if (this.travelAngle===360) {
+                        this.returnBall(false);
+                        break;
+                    }
                 }
                 else {
-                    rad=(Math.PI/180.0)*this.travelAngle;
-                    px=(playerSprite.x+BallClass.BALL_CIRCLE_OFFSET_X)+(Math.sin(rad)*BallClass.BALL_CIRCLE_RADIUS_X);
-                    py=(playerSprite.y-BallClass.BALL_CIRCLE_OFFSET_Y)-(Math.cos(rad)*BallClass.BALL_CIRCLE_RADIUS_Y);
+                    this.travelAngle-=BallClass.BALL_CIRCLE_SPEED;
+                    if (this.travelAngle===0) {
+                        this.returnBall(false);
+                        break;
+                    }
                 }
+
+                rad=(Math.PI/180.0)*this.travelAngle;
+                px=(playerSprite.x+BallClass.BALL_CIRCLE_OFFSET_X)+(Math.sin(rad)*BallClass.BALL_CIRCLE_RADIUS_X);
+                py=(playerSprite.y-BallClass.BALL_CIRCLE_OFFSET_Y)-(Math.cos(rad)*BallClass.BALL_CIRCLE_RADIUS_Y);
                 break;
         }
         
@@ -311,7 +324,14 @@ export default class BallClass extends SpriteClass {
             // we chain this so only ball in right state can activate
             if ((this.getInputStateBoolean(InputClass.BUTTON_X)) || (this.getInputStateBoolean(InputClass.RIGHT_SHOULDER_TOP)) || (this.getInputStateBoolean(InputClass.RIGHT_SHOULDER_BOTTOM))) {
                 this.travelMode=BallClass.TRAVEL_MODE_CIRCLE;
-                this.travelAngle=0.0;
+                if (!playerSprite.flipX) {
+                    this.travelCircleDirection=BallClass.TRAVEL_CIRCLE_DIRECTION_CLOCKWISE;
+                    this.travelAngle=0.0;
+                }
+                else {
+                    this.travelCircleDirection=BallClass.TRAVEL_CIRCLE_DIRECTION_COUNTERCLOCKWISE;
+                    this.travelAngle=360.0;
+                }
                 this.sendMessage(playerSprite,'start_shield',null);
                 
                 this.playSound('bowl');

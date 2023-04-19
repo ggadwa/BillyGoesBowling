@@ -1,5 +1,9 @@
 import SpriteClass from '../../rpjs/engine/sprite.js';
 import BallClass from './ball.js';
+import ShieldClass from './shield.js';
+import BombClass from './bomb.js';
+import FishClass from './fish.js';
+import ShurikinClass from './shurikin.js';
 
 export default class PlatformClass extends SpriteClass
 {
@@ -25,6 +29,7 @@ export default class PlatformClass extends SpriteClass
         this.canCollide=true;
         this.canStandOn=true;
 
+        this.setCollideSpriteClassCollideIgnoreList([BallClass,ShieldClass,ShurikinClass,FishClass,BombClass]);
         this.setCollideTileIndexIgnoreList([22,23,54]);
         
         Object.seal(this);
@@ -38,9 +43,6 @@ export default class PlatformClass extends SpriteClass
     }
 
     onCollideSprite(sprite) {
-        // colliding with ball does not turn around platform
-        if (sprite instanceof BallClass)return;
-
         this.turnAround();
     }
     

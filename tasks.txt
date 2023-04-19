@@ -2,10 +2,11 @@
 
    
 
-- move firework to bowling sensei
-
-- firework sound
-- bowling sensei
+* add version #
+* shield rotates around direction of travel
+* platforms don't stop for fish or bombs
+* buffet of blocks has bad tile at end
+* need outline so health is obvious in working in a coal mine
 
 
 - ducking?  Need collision offset box changes
