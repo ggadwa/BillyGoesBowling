@@ -72,7 +72,7 @@ import TestMapClass from '../maps/test.js';
 
 export default class BillyGameClass extends GameClass {
         
-    static VERSION='beta2';
+    static VERSION='beta3';
 
     static BANNER_MODE_FADE_IN=0;
     static BANNER_MODE_FADE_OUT=1;

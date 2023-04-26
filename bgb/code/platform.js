@@ -8,7 +8,7 @@ import ShurikinClass from './shurikin.js';
 export default class PlatformClass extends SpriteClass
 {
     static PLATFORM_SPEED=5;
-    static PLATFORM_PAUSE_TICK=20; 
+    static PLATFORM_PAUSE_TICK=60; 
 
     constructor(game,x,y,data)
     {
