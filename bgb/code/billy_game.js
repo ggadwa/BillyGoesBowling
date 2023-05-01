@@ -72,7 +72,7 @@ import TestMapClass from '../maps/test.js';
 
 export default class BillyGameClass extends GameClass {
         
-    static VERSION='beta3';
+    static VERSION='Version 1.0';
 
     static BANNER_MODE_FADE_IN=0;
     static BANNER_MODE_FADE_OUT=1;
@@ -579,7 +579,9 @@ export default class BillyGameClass extends GameClass {
         this.drawUIAttractSaveBox(1,540,400);
         this.drawUIAttractSaveBox(2,860,400);
         
-        this.setupUIText('16px Arial','#000000','left','alphabetic');
+        this.setupUIText('bold 16px Arial','#000000','left','alphabetic');
+        this.drawUIText("By Brian Barnes",5,590);
+        this.drawUIText("https://github.com/ggadwa/BillyGoesBowling",5,610);
         this.drawUIText(BillyGameClass.VERSION,5,630);
     }
     
